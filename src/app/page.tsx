@@ -30,13 +30,6 @@ export default function PricingPage() {
             <li><a href="#support">Support</a></li>
           </ul>
           <div className="nav-right">
-            <a className="nav-email" href="mailto:james@blueprintcode.ai" title="Email James at Blueprint Code">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect width="20" height="16" x="2" y="4" rx="2"/>
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-              </svg>
-              <span>james@blueprintcode.ai</span>
-            </a>
             <a className="nav-cta" href="mailto:james@blueprintcode.ai">Start a project</a>
           </div>
         </div>
@@ -63,8 +56,8 @@ export default function PricingPage() {
           <div className="hero-contact reveal">
             <a href="mailto:james@blueprintcode.ai" className="btn-contact">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect width="20" height="16" x="2" y="4" rx="2"/>
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+                <rect width="20" height="16" x="2" y="4" rx="2" />
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
               </svg>
               <span>Get in touch — <b>james@blueprintcode.ai</b></span>
             </a>
@@ -852,18 +845,28 @@ export default function PricingPage() {
       {/* ============ FOOTER ============ */}
       <footer className="footer" id="contact">
         <div className="container">
-          <LogoMark className="footer-mark" width={52} height={52} aria-label="Blueprint Code logo" />
-          <p className="tagline">Design. Build. Code. Launch.</p>
-          
-          <div className="footer-contact">
-            <p className="footer-contact-label">Ready to build or have a project in mind?</p>
-            <a href="mailto:james@blueprintcode.ai" className="footer-email-link">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-                <rect width="20" height="16" x="2" y="4" rx="2"/>
-                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
-              </svg>
-              <span>james@blueprintcode.ai</span>
-            </a>
+          <div className="footer-card">
+            <div className="footer-card-glow" aria-hidden="true" />
+            <div className="footer-card-inner">
+              <LogoMark className="footer-mark" width={56} height={56} aria-label="Blueprint Code logo" />
+              <p className="tagline">Design. Build. Code. Launch.</p>
+              <h2 className="footer-title">Let&apos;s build something exceptional</h2>
+              <p className="footer-desc">
+                Have a new build, 3D configurator, or bespoke digital project in mind? Connect directly with our lead engineer.
+              </p>
+
+              <div className="footer-actions">
+                <a href="mailto:james@blueprintcode.ai" className="footer-email-btn">
+                  <span className="email-status-dot" aria-hidden="true" />
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                    <rect width="20" height="16" x="2" y="4" rx="2" />
+                    <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7" />
+                  </svg>
+                  <span>james@blueprintcode.ai</span>
+                </a>
+              </div>
+              <p className="footer-subtext">Quick response · NDA protected · Transparent fixed-price proposals</p>
+            </div>
           </div>
 
           <p className="note">
