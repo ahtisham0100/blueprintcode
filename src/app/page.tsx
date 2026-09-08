@@ -29,7 +29,16 @@ export default function PricingPage() {
             <li><a href="#alacarte">À la carte</a></li>
             <li><a href="#support">Support</a></li>
           </ul>
-          <a className="nav-cta" href="#contact">Start a project</a>
+          <div className="nav-right">
+            <a className="nav-email" href="mailto:james@blueprintcode.ai" title="Email James at Blueprint Code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+              </svg>
+              <span>james@blueprintcode.ai</span>
+            </a>
+            <a className="nav-cta" href="mailto:james@blueprintcode.ai">Start a project</a>
+          </div>
         </div>
       </nav>
 
@@ -51,6 +60,15 @@ export default function PricingPage() {
             Websites, e-commerce infrastructure, bespoke 3D product configurators, and AI
             automation for ambitious businesses across the UK, US &amp; Europe.
           </p>
+          <div className="hero-contact reveal">
+            <a href="mailto:james@blueprintcode.ai" className="btn-contact">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+              </svg>
+              <span>Get in touch — <b>james@blueprintcode.ai</b></span>
+            </a>
+          </div>
           <div className="meta reveal">
             <div className="meta-item">
               <div className="meta-label">Project Range</div>
@@ -836,6 +854,18 @@ export default function PricingPage() {
         <div className="container">
           <LogoMark className="footer-mark" width={52} height={52} aria-label="Blueprint Code logo" />
           <p className="tagline">Design. Build. Code. Launch.</p>
+          
+          <div className="footer-contact">
+            <p className="footer-contact-label">Ready to build or have a project in mind?</p>
+            <a href="mailto:james@blueprintcode.ai" className="footer-email-link">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <rect width="20" height="16" x="2" y="4" rx="2"/>
+                <path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/>
+              </svg>
+              <span>james@blueprintcode.ai</span>
+            </a>
+          </div>
+
           <p className="note">
             All prices are standard 2026 rates in GBP and exclude VAT. Final scope and fixed quotes
             are confirmed at project kick-off. Ranges reflect project complexity.
