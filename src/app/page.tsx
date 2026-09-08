@@ -351,7 +351,7 @@ export default function PricingPage() {
                   <span className="chip" aria-hidden="true">E3</span>
                   <div className="card-title-wrap">
                     <h4>Enterprise Digital Showroom</h4>
-                    <div className="price"><span className="from">from</span>£35,000</div>
+                    <div className="price"><span className="from">from</span>£50,000</div>
                   </div>
                 </div>
                 <p className="card-desc">
