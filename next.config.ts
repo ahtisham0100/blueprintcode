@@ -11,6 +11,14 @@ const nextConfig: NextConfig = {
         source: "/aura-mirror-demo/",
         destination: "/aura-mirror-demo/index.html",
       },
+      {
+        source: "/antera-elevator-configurator-concept",
+        destination: "/antera-elevator-configurator-concept/index.html",
+      },
+      {
+        source: "/antera-elevator-configurator-concept/",
+        destination: "/antera-elevator-configurator-concept/index.html",
+      },
     ];
   },
 };
