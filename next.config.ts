@@ -19,6 +19,14 @@ const nextConfig: NextConfig = {
         source: "/antera-elevator-configurator-concept/",
         destination: "/antera-elevator-configurator-concept/index.html",
       },
+      {
+        source: "/bracelet-configurator-baked",
+        destination: "/bracelet-configurator-baked/index.html",
+      },
+      {
+        source: "/bracelet-configurator-baked/",
+        destination: "/bracelet-configurator-baked/index.html",
+      },
     ];
   },
 };
