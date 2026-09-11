@@ -17,6 +17,10 @@ const staticDemos = [
   "aura-mirror-demo",
   "antera-elevator-configurator-concept",
   "bracelet-configurator-baked",
+  "maison-cacao-demo-suite",
+  "maison-cacao-dashboard-demo",
+  "maison-cacao-order-operations",
+  "maison-cacao-customer-segmentation",
 ];
 
 const nextConfig: NextConfig = {
