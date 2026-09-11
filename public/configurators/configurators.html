@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Configurators &amp; commerce tools — Blueprint Code</title>
+<meta name="description" content="Guided selectors, specification builders, real-time 3D configurators and quote engines — built as commercial tools, not visual novelties. Worked examples from a live retail business.">
+<meta property="og:title" content="Configurators &amp; commerce tools — Blueprint Code">
+<meta property="og:description" content="Product logic wearing an interface. Six tool types, one connected system, proven on a trading business.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://blueprintcode.ai/configurators">
+<link rel="canonical" href="https://blueprintcode.ai/configurators">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+:root{
+  --ground:#0B1A2E;
+  --ground-2:#0E2136;
+  --line:#2C4A6E;
+  --line-soft:#1D3552;
+  --ink:#EAF1F8;
+  --ink-2:#8FA9C6;
+  --ink-3:#5F7C9E;
+  --max:1240px;
+  --gut:32px;
+  --display:'Bebas Neue',Impact,sans-serif;
+  --data:'DM Mono',ui-monospace,Menlo,Consolas,monospace;
+  --prose:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+}
+/* critical: keeps a page readable if site.css hasn't loaded yet */
+body{background:var(--ground);color:var(--ink-2);font-family:var(--prose)}
+h1{font-size:clamp(44px,7.4vw,96px);margin-bottom:28px;max-width:15ch}
+h2{font-size:clamp(32px,4.8vw,58px);margin-bottom:20px;max-width:19ch}
+h3{font-size:23px;margin-bottom:8px}
+p{max-width:66ch;margin-bottom:18px}
+p:last-child{margin-bottom:0}
+/* register */
+  .register{width:100%;border-collapse:collapse;border-top:1px solid var(--ink)}
+.register caption{text-align:left;font-family:var(--data);font-size:12px;letter-spacing:.08em;color:var(--ink-3);padding-bottom:14px}
+.register th{font-family:var(--data);font-size:11px;letter-spacing:.16em;color:var(--ink-3);font-weight:400;text-align:left;padding:12px 16px 12px 0;border-bottom:1px solid var(--line)}
+.register td{padding:14px 16px 14px 0;border-bottom:1px solid var(--line-soft);font-size:14.5px;color:var(--ink-2)}
+.register td:first-child{font-family:var(--data);font-size:13px;color:var(--ink-3);white-space:nowrap}
+.register td:nth-child(2){color:var(--ink)}
+.register th:last-child,.register td:last-child{text-align:right;padding-right:0;font-family:var(--data);font-size:12.5px;color:var(--ink)}
+.register tr:hover td{background:rgba(234,241,248,.035)}
+/* tool types */
+  .types{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line);margin-top:8px}
+.type{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 26px;display:flex;flex-direction:column}
+.type h3{margin:24px 0 10px}
+.type > p{font-size:14px;color:var(--ink-3);margin-bottom:20px}
+.type .eg{margin-top:auto;padding-top:18px;border-top:1px solid var(--line-soft);font-family:var(--data);font-size:11px;letter-spacing:.1em;color:var(--ink-3);line-height:1.7}
+.type .eg b{display:block;color:var(--ink-2);font-weight:500;margin-top:4px;letter-spacing:.05em}
+/* schematic */
+  .schematic{border:1px solid var(--line);background:var(--ground-2);padding:40px;margin-top:8px}
+.sch-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px}
+.node{border:1px solid var(--line);background:var(--ground);padding:16px 14px;font-family:var(--data);font-size:10.5px;letter-spacing:.07em;color:var(--ink-2);line-height:1.6}
+.node b{display:block;color:var(--ink);font-weight:500;margin-bottom:5px;letter-spacing:.1em}
+.spine{margin:14px 0;height:1px;background:var(--line);position:relative}
+.spine::before,.spine::after{content:'';position:absolute;top:-6px;width:1px;height:13px;background:var(--ink)}
+.spine::before{left:0}
+.spine::after{right:0}
+.profile{border:1px solid var(--ink);background:var(--ground);padding:20px;text-align:left}
+.profile b{font-family:var(--data);font-size:11px;letter-spacing:.14em;color:var(--ink);display:block;margin-bottom:6px}
+.profile span{font-size:14px;color:var(--ink-2)}
+.sch-out{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:14px}
+/* under the surface */
+  .cols{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-left:1px solid var(--line);margin-top:8px}
+.col{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 26px}
+/* levels */
+  .levels{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line);margin-top:8px}
+.level{border-right:1px solid var(--line);border-bottom:1px solid var(--line);padding:28px 26px;display:flex;flex-direction:column;min-height:280px}
+.level .num{font-family:var(--data);font-size:12px;letter-spacing:.1em;color:var(--ink-3)}
+.level h3{font-size:28px;margin:28px 0 12px}
+.level p{font-size:13.5px;color:var(--ink-3);margin:0}
+.level .from{margin-top:auto;padding-top:24px;font-family:var(--data);font-size:12px;letter-spacing:.06em;color:var(--ink)}
+.levels-note{font-family:var(--data);font-size:12.5px;letter-spacing:.04em;color:var(--ink-3);margin-top:22px;line-height:1.8;max-width:70ch}
+/* inverted sprint — house rule */
+  .invert{background:var(--ink);color:var(--ground);padding:80px 0;border-top:0}
+@media(max-width:900px){
+  .two,.types,.cols,.levels,.sprint-head,.sprint-cols{grid-template-columns:1fr}
+  .sch-grid{grid-template-columns:1fr 1fr}
+  nav a:not(.button){display:none}
+  .register td:nth-child(3),.register th:nth-child(3){display:none}
+}
+@media(max-width:560px){
+  section,.close{padding:60px 0}
+  .sch-grid,.sch-out{grid-template-columns:1fr}
+  .schematic{padding:24px}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="head">
+  <div class="sheet">
+    <a class="mark" href="/"><b>BLUEPRINT CODE</b><span>CONFIGURATORS</span></a>
+    <button class="burger" type="button" aria-expanded="false" aria-label="Menu">Menu</button>
+    <nav>
+      <a href="/configurators" aria-current="page">Configurators</a>
+      <a href="/prototypes">Prototypes</a>
+      <a href="/ppav-case-study">Case study</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/insights">Insights</a>
+      <a href="/about">About</a>
+      <a class="button" href="#contact">Start a project</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+
+<div class="sheet title-block">
+  <dl class="stamp">
+    <div class="row"><dt>DISCIPLINE</dt><dd>Interactive commerce tools</dd></div>
+    <div class="row"><dt>TOOL TYPES</dt><dd>Six, combinable</dd></div>
+    <div class="row"><dt>WORKED EXAMPLE</dt><dd>PP-AV — five connected tools, live</dd></div>
+    <div class="row"><dt>ISSUE</dt><dd>2026</dd></div>
+  </dl>
+
+  <h1>Product logic wearing an interface.</h1>
+  <p class="standfirst">A configurator is not a 3D viewer with a price underneath. It's your product rules, your margin and your expertise, encoded once and then given away to every customer at the same quality — including the ones who arrive at eleven at night when nobody's answering the phone.</p>
+
+  <table class="register">
+    <caption>Tool register</caption>
+    <thead>
+      <tr><th scope="col">Ref</th><th scope="col">Tool type</th><th scope="col">What it decides</th><th scope="col">Live example</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>TT-01</td><td><a href="#tt-01">Guided selector</a></td><td>Which product, from a long catalogue</td><td>Projector Selector</td></tr>
+      <tr><td>TT-02</td><td><a href="#tt-01">Specification builder</a></td><td>What a whole system should contain</td><td>Cinema &amp; Hi-Fi Planner</td></tr>
+      <tr><td>TT-03</td><td><a href="#tt-01">Compatibility checker</a></td><td>Whether these things work together</td><td>Screen Finder</td></tr>
+      <tr><td>TT-04</td><td><a href="#tt-01">Real-time 3D configurator</a></td><td>How the finished item will look</td><td>3D Cabinet Configurator</td></tr>
+      <tr><td>TT-05</td><td><a href="#tt-01">Quote &amp; CPQ builder</a></td><td>What it costs, formally</td><td>Cinema specification output</td></tr>
+      <tr><td>TT-06</td><td><a href="#tt-01">Advisory layer</a></td><td>What to do when the customer doesn't know</td><td>Audio Designer — "guide me"</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ============ 01 TOOL TYPES ============ -->
+<section id="tt-01">
+  <div class="sheet">
+    <p class="sheet-no">SHEET 01 — TOOL TYPES</p>
+    <div class="two">
+      <h2>Six shapes, mixed to fit the sale.</h2>
+      <div>
+        <p>Most businesses need two or three of these, not all six. Which ones depends entirely on where your customers currently get stuck — and that's usually obvious from the questions your sales team answers most often.</p>
+        <p>Every example below is a tool we built for our own retail business and still operate today.</p>
+      </div>
+    </div>
+
+    <div class="types">
+      <div class="type">
+        <span class="lbl">TT-01</span>
+        <h3>Guided selector</h3>
+        <p>Plain-English questions in, a short shortlist out, with the reason each item was chosen. For catalogues too large or too technical to browse.</p>
+        <span class="eg">LIVE EXAMPLE<b>Projector Selector — matches to room, throw distance and light</b></span>
+      </div>
+      <div class="type">
+        <span class="lbl">TT-02</span>
+        <h3>Specification builder</h3>
+        <p>Assembles a complete multi-item system rather than a single product. The customer leaves with a plan, not a basket of guesses.</p>
+        <span class="eg">LIVE EXAMPLE<b>Cinema &amp; Hi-Fi Planner — room in, full specification out</b></span>
+      </div>
+      <div class="type">
+        <span class="lbl">TT-03</span>
+        <h3>Compatibility checker</h3>
+        <p>Stops the wrong combination before it reaches checkout. Cheaper than the return, and considerably cheaper than the review.</p>
+        <span class="eg">LIVE EXAMPLE<b>Screen Finder — material, gain and geometry against the room</b></span>
+      </div>
+      <div class="type">
+        <span class="lbl">TT-04</span>
+        <h3>Real-time 3D configurator</h3>
+        <p>For products where finish and proportion carry the price. Live materials, live geometry, no render queue and no imagination required.</p>
+        <span class="eg">LIVE EXAMPLE<b>3D Cabinet Configurator — finishes, sizes and options</b></span>
+      </div>
+      <div class="type">
+        <span class="lbl">TT-05</span>
+        <h3>Quote &amp; CPQ builder</h3>
+        <p>Turns a configuration into a document a business can act on — priced, saved, shared, sent, and picked up again three weeks later.</p>
+        <span class="eg">LIVE EXAMPLE<b>Cinema specification — save, email or buy outright</b></span>
+      </div>
+      <div class="type">
+        <span class="lbl">TT-06</span>
+        <h3>Advisory layer</h3>
+        <p>The route for customers who can't answer the first question. Handles "I don't know" without dead-ending them or handing them to a form.</p>
+        <span class="eg">LIVE EXAMPLE<b>Audio Designer — a dedicated "guide me" path</b></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 02 CONNECTED ============ -->
+<section id="connected">
+  <div class="sheet">
+    <p class="sheet-no">SHEET 02 — THE CONNECTED SYSTEM</p>
+    <div class="two">
+      <h2>The tools are the easy part. Connecting them isn't.</h2>
+      <div>
+        <p>Five separate tools that each ask the same six questions is five abandoned sessions. The architectural decision that makes the difference is storing the customer's answers once, in a shared profile, and letting every tool read from it.</p>
+        <p>Each tool stays short. Collectively they behave like one system that remembers you.</p>
+        <p class="pull">A room measured in the planner is still measured when the customer reaches the screen finder an hour later.</p>
+      </div>
+    </div>
+
+    <div class="schematic">
+      <span class="lbl">PP-AV — SCHEMATIC</span>
+      <div class="spine"></div>
+      <div class="sch-grid">
+        <div class="node"><b>01</b>Room Planner</div>
+        <div class="node"><b>02</b>Audio Designer</div>
+        <div class="node"><b>03</b>Projector Selector</div>
+        <div class="node"><b>04</b>Screen Finder</div>
+        <div class="node"><b>05</b>3D Cabinet</div>
+      </div>
+      <div class="spine"></div>
+      <div class="profile">
+        <b>SHARED CUSTOMER PROFILE</b>
+        <span>Room dimensions, seating, light, budget, layout, choices already made — written once, read by every tool.</span>
+      </div>
+      <div class="sch-out">
+        <div class="node"><b>OUTPUT</b>One complete specification</div>
+        <div class="node"><b>HAND-OFF</b>Basket, saved quote or enquiry</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 03 UNDER THE SURFACE ============ -->
+<section id="architecture">
+  <div class="sheet">
+    <p class="sheet-no">SHEET 03 — UNDER THE SURFACE</p>
+    <div class="two">
+      <h2>Where these projects usually fail.</h2>
+      <div>
+        <p>Rarely on the rendering. Almost always on the commercial rules — the combinations that can't be built, the discount that applies differently than anyone wrote down, the configuration that reaches the warehouse in a form nobody can pick.</p>
+        <p>One real example: a volume discount that counts units rather than distinct products. Trivial to state, easy to implement backwards, and wrong in a way that only shows up in the margin report months later.</p>
+      </div>
+    </div>
+
+    <div class="cols">
+      <div class="col">
+        <span class="lbl">CUSTOMER-FACING</span>
+        <ul class="ticks">
+          <li>Responsive guided journeys, built mobile-first</li>
+          <li>Live visual feedback as options change</li>
+          <li>Alternatives offered when something won't work</li>
+          <li>Save, share and return to a configuration</li>
+          <li>One readable summary at the end</li>
+        </ul>
+      </div>
+      <div class="col">
+        <span class="lbl">COMMERCE ARCHITECTURE</span>
+        <ul class="ticks">
+          <li>Pricing authority on the server, never in the browser</li>
+          <li>Product and compatibility rules held as data, not code</li>
+          <li>WooCommerce, Shopify or API hand-off to checkout</li>
+          <li>Configurations that reach fulfilment in a pickable form</li>
+          <li>Structured so an AI advisory layer can be added later</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ============ 04 LEVELS ============ -->
+<section id="levels">
+  <div class="sheet">
+    <p class="sheet-no">SHEET 04 — BUILD LEVELS</p>
+    <div class="two">
+      <h2>Three levels, priced in public.</h2>
+      <p>Scope and price are fixed against a written technical specification at kick-off. Full rates, add-ons and retainers sit on the schedule.</p>
+    </div>
+    <div class="levels">
+      <div class="level">
+        <span class="num">01 / CFG</span>
+        <h3>Foundation configurator</h3>
+        <p>One product family. Options, rules, live preview, dynamic pricing and lead capture.</p>
+        <span class="from">FROM £7,500</span>
+      </div>
+      <div class="level">
+        <span class="num">02 / PRO</span>
+        <h3>Professional suite</h3>
+        <p>Multiple tools, conditional logic, quotes and PDFs, CRM and ecommerce integration, trade pricing.</p>
+        <span class="from">£15,000 — £30,000</span>
+      </div>
+      <div class="level">
+        <span class="num">03 / DXS</span>
+        <h3>Enterprise digital showroom</h3>
+        <p>Connected tools, shared profile, CPQ, ERP and API integration, AR, multi-brand and multi-language.</p>
+        <span class="from">FROM £35,000</span>
+      </div>
+    </div>
+    <p class="levels-note">Every configurator build starts with a Prototype Sprint. Optional add-ons — AR, trade portal, AI recommendations, cinematic rendering — are listed on the <a href="/pricing">schedule of rates</a>.</p>
+  </div>
+</section>
+
+<!-- ============ SPRINT (inverted) ============ -->
+<div class="invert" id="sprint">
+  <div class="sheet">
+    <p class="sheet-no">HOW EVERY BUILD STARTS</p>
+    <div class="sprint-head">
+      <h2>Prototype Sprint.</h2>
+      <p>Three to five weeks aimed at whichever part of your brief nobody is sure about yet. Something real in a browser, not a slide deck. The fee is credited in full against the build if you proceed within 90 days.</p>
+    </div>
+    <div class="sprint-cols">
+      <div class="sprint-col">
+        <h4>WHAT YOU GET</h4>
+        <ul>
+          <li>One real product, configurable and interactive</li>
+          <li>A single core option path — the one that matters most to your sale</li>
+          <li>Real materials and finishes, not placeholders</li>
+          <li>Technical feasibility notes and recommended architecture</li>
+          <li>Fixed quote for the full build</li>
+        </ul>
+      </div>
+      <div class="sprint-col">
+        <h4>PRICE</h4>
+        <ul>
+          <li>£1,500 — 2D or image-based configuration, options and pricing logic</li>
+          <li>£3,000 — real-time 3D with material and finish switching</li>
+        </ul>
+        <span class="strip">CREDITED IN FULL AGAINST THE BUILD</span>
+      </div>
+    </div>
+    <div class="actions">
+      <a class="button" href="/prototypes">See three we've built</a>
+      <a class="button" href="#contact">Book a sprint</a>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CLOSE ============ -->
+<section class="close" id="contact">
+  <div class="sheet">
+    <p class="sheet-no">START HERE</p>
+    <h2>What question does your sales team answer most often?</h2>
+    <p>That question is usually the tool. Send it to us, along with the product and how you currently sell it, and we'll tell you which of the six shapes above fits — and whether you need one or three.</p>
+    <div class="actions">
+      <a class="button solid" href="mailto:james@blueprintcode.ai?subject=Configurator enquiry">Discuss a configurator</a>
+      <a class="button" href="/ppav-case-study">Read the PP-AV case study</a>
+    </div>
+  </div>
+</section>
+</main>
+
+<footer>
+  <div class="sheet tb">
+    <div>DOCUMENT<b>CONFIGURATORS &amp; COMMERCE TOOLS</b></div>
+    <div>STUDIO<b>BLUEPRINT CODE</b></div>
+    <div>WORKED EXAMPLE<b>PP-AV — 5 CONNECTED TOOLS</b></div>
+    <div>CONTACT<b><a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a></b></div>
+  </div>
+</footer>
+<script>
+/* Live demos load only when asked — three Three.js prototypes booting at once
+   would stall the page. Also pauses looping films for reduced-motion users. */
+document.querySelectorAll('.media-launch').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var frame = btn.closest('.media');
+    var src = frame.getAttribute('data-src');
+    if(!src) return;
+    var f = document.createElement('iframe');
+    f.src = src;
+    f.loading = 'lazy';
+    f.title = frame.getAttribute('data-title') || 'Live prototype';
+    f.setAttribute('allow','fullscreen');
+    frame.appendChild(f);
+    frame.setAttribute('data-live','');
+  });
+});
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('.media--loop video').forEach(function(v){ v.pause(); });
+}
+var burger = document.querySelector('.burger');
+if(burger){
+  burger.addEventListener('click', function(){
+    var open = document.body.classList.toggle('nav-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>

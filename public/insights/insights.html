@@ -1,0 +1,381 @@
+<!DOCTYPE html>
+<html lang="en-GB">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Field notes — Blueprint Code</title>
+<meta name="description" content="Practical field notes on product configurators, digital showrooms, ecommerce systems and commercial prototyping, from a studio that runs its own retail operation.">
+<meta property="og:title" content="Field notes — Blueprint Code">
+<meta property="og:description" content="Configurator costs, 2D versus 3D, digital showrooms, and lessons from running a multi-market retailer.">
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://blueprintcode.ai/insights">
+<link rel="canonical" href="https://blueprintcode.ai/insights">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site.css">
+<style>
+:root{
+  --ground:#0B1A2E;
+  --ground-2:#0E2136;
+  --line:#2C4A6E;
+  --line-soft:#1D3552;
+  --ink:#EAF1F8;
+  --ink-2:#8FA9C6;
+  --ink-3:#5F7C9E;
+  --max:1240px;
+  --gut:32px;
+  --display:'Bebas Neue',Impact,sans-serif;
+  --data:'DM Mono',ui-monospace,Menlo,Consolas,monospace;
+  --prose:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+}
+/* critical: keeps a page readable if site.css hasn't loaded yet */
+body{background:var(--ground);color:var(--ink-2);font-family:var(--prose)}
+.insights-index{border-top:1px solid var(--ink);margin-top:8px}
+.entry{
+  display:grid;grid-template-columns:112px 1fr auto;gap:28px;align-items:baseline;
+  width:100%;text-align:left;background:0;border:0;border-bottom:1px solid var(--line);
+  padding:26px 0;cursor:pointer;color:inherit;font:inherit;
+}
+.entry:hover{background:rgba(234,241,248,.035)}
+.entry .ref{font-family:var(--data);font-size:11px;letter-spacing:.12em;color:var(--ink-3);line-height:1.7}
+.entry .ref b{display:block;color:var(--ink-2);font-weight:500;margin-top:4px}
+.entry h3{font-family:var(--display);font-size:29px;color:var(--ink);font-weight:400;letter-spacing:.025em;margin-bottom:8px}
+.entry p{font-size:14.5px;color:var(--ink-3);max-width:62ch;margin:0}
+.entry .go{font-family:var(--data);font-size:11px;letter-spacing:.12em;color:var(--ink);white-space:nowrap;border-bottom:1px solid var(--line)}
+.entry:hover .go{border-bottom-color:var(--ink)}
+
+/* slide-in reading panel */
+.scrim{position:fixed;inset:0;z-index:60;background:rgba(6,13,23,.72);opacity:0;pointer-events:none;transition:opacity .28s ease}
+body.reading .scrim{opacity:1;pointer-events:auto}
+.panel{
+  position:fixed;top:0;right:0;bottom:0;z-index:61;width:min(820px,100%);
+  background:var(--ground);border-left:1px solid var(--line);
+  transform:translateX(100%);transition:transform .34s cubic-bezier(.2,.7,.2,1);
+  display:flex;flex-direction:column;
+}
+.panel[data-open]{transform:translateX(0)}
+.panel-bar{
+  flex:none;display:flex;align-items:center;justify-content:space-between;gap:20px;
+  height:64px;padding:0 28px;border-bottom:1px solid var(--line);background:var(--ground);
+}
+.panel-bar span{font-family:var(--data);font-size:11px;letter-spacing:.14em;color:var(--ink-3)}
+.panel-close{background:0;border:1px solid var(--line);color:var(--ink);font-family:var(--data);font-size:11px;letter-spacing:.12em;padding:10px 16px;cursor:pointer;text-transform:uppercase}
+.panel-close:hover{background:var(--ink);color:var(--ground)}
+.panel-body{overflow-y:auto;padding:44px 28px 80px;-webkit-overflow-scrolling:touch}
+.panel-body > .inner{max-width:66ch;margin:0 auto}
+.panel-body h2{font-size:30px;margin:44px 0 14px;max-width:24ch}
+.panel-body h3{font-size:21px;margin:30px 0 10px}
+.panel-body p{font-size:16px;line-height:1.75;margin-bottom:18px;max-width:none}
+.panel-body .intro{font-size:18.5px;line-height:1.7;color:var(--ink);margin-bottom:26px}
+.panel-body ul,.panel-body ol{margin:0 0 22px 0}
+.panel-body li{font-size:15.5px;color:var(--ink-2);padding:8px 0 8px 25px;position:relative;border-bottom:1px solid var(--line-soft)}
+.panel-body li:last-child{border-bottom:0}
+.panel-body ul li::before{content:'';position:absolute;left:0;top:20px;width:12px;height:1px;background:var(--ink-3)}
+.panel-body ol{counter-reset:n}
+.panel-body ol li{counter-increment:n}
+.panel-body ol li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;top:8px;font-family:var(--data);font-size:11px;color:var(--ink-3)}
+.panel-body blockquote{border-left:2px solid var(--ink);padding-left:22px;margin:30px 0;font-size:18px;line-height:1.6;color:var(--ink)}
+.panel-body .note{border:1px solid var(--line);background:var(--ground-2);padding:22px 24px;margin:30px 0;font-size:15px}
+.panel-body .note .data{display:block;font-family:var(--data);font-size:11px;letter-spacing:.14em;color:var(--ink-3);margin-bottom:8px}
+.panel-body .table-wrap{overflow-x:auto;margin:26px 0}
+.panel-body table{width:100%;border-collapse:collapse;border-top:1px solid var(--ink)}
+.panel-body th{font-family:var(--data);font-size:11px;letter-spacing:.14em;color:var(--ink-3);font-weight:400;text-align:left;padding:12px 16px 12px 0;border-bottom:1px solid var(--line)}
+.panel-body td{padding:13px 16px 13px 0;border-bottom:1px solid var(--line-soft);font-size:14.5px;color:var(--ink-2)}
+.panel-body td:first-child{color:var(--ink)}
+.panel-body a{border-bottom:1px solid var(--line)}
+.panel-body a:hover{border-bottom-color:var(--ink)}
+.panel-head{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:30px}
+.panel-head h2{font-size:clamp(30px,4.4vw,46px);margin:14px 0 0;max-width:22ch}
+.panel-foot{border-top:1px solid var(--line);margin-top:44px;padding-top:26px;display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+body.reading{overflow:hidden}
+@media (prefers-reduced-motion:reduce){
+  .panel{transition:none}
+  .scrim{transition:none}
+}
+@media(max-width:700px){
+  .entry{grid-template-columns:1fr;gap:12px}
+  .entry .go{justify-self:start}
+  .panel-body{padding:32px 20px 70px}
+  .panel-bar{padding:0 20px}
+}
+
+.standalone{max-width:70ch}
+.standalone h2{font-size:32px;margin:46px 0 14px;max-width:24ch}
+.standalone h3{font-size:21px;margin:30px 0 10px}
+.standalone p{font-size:16.5px;line-height:1.75;margin-bottom:18px;max-width:none}
+.standalone .intro{font-size:19px;line-height:1.7;color:var(--ink);margin-bottom:28px}
+.standalone ul,.standalone ol{margin:0 0 22px 0}
+.standalone li{font-size:15.5px;color:var(--ink-2);padding:8px 0 8px 25px;position:relative;border-bottom:1px solid var(--line-soft)}
+.standalone li:last-child{border-bottom:0}
+.standalone ul li::before{content:'';position:absolute;left:0;top:20px;width:12px;height:1px;background:var(--ink-3)}
+.standalone ol{counter-reset:n}
+.standalone ol li{counter-increment:n}
+.standalone ol li::before{content:counter(n,decimal-leading-zero);position:absolute;left:0;top:8px;font-family:var(--data);font-size:11px;color:var(--ink-3)}
+.standalone blockquote{border-left:2px solid var(--ink);padding-left:22px;margin:32px 0;font-size:18.5px;line-height:1.6;color:var(--ink)}
+.standalone .note{border:1px solid var(--line);background:var(--ground-2);padding:22px 24px;margin:30px 0;font-size:15px}
+.standalone .note .data{display:block;font-family:var(--data);font-size:11px;letter-spacing:.14em;color:var(--ink-3);margin-bottom:8px}
+.standalone .table-wrap{overflow-x:auto;margin:26px 0}
+.standalone table{width:100%;border-collapse:collapse;border-top:1px solid var(--ink)}
+.standalone th{font-family:var(--data);font-size:11px;letter-spacing:.14em;color:var(--ink-3);font-weight:400;text-align:left;padding:12px 16px 12px 0;border-bottom:1px solid var(--line)}
+.standalone td{padding:13px 16px 13px 0;border-bottom:1px solid var(--line-soft);font-size:14.5px;color:var(--ink-2)}
+.standalone td:first-child{color:var(--ink)}
+.standalone a{border-bottom:1px solid var(--line)}
+.standalone a:hover{border-bottom-color:var(--ink)}
+a.entry{text-decoration:none}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="head">
+  <div class="sheet">
+    <a class="mark" href="/"><b>BLUEPRINT CODE</b><span>FIELD NOTES</span></a>
+    <button class="burger" type="button" aria-expanded="false" aria-label="Menu">Menu</button>
+    <nav>
+      <a href="/configurators">Configurators</a>
+      <a href="/prototypes">Prototypes</a>
+      <a href="/ppav-case-study">Case study</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/insights" aria-current="page">Insights</a>
+      <a href="/about">About</a>
+      <a class="button" href="#contact">Start a project</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div class="sheet title-block">
+  <dl class="stamp">
+    <div class="row"><dt>SERIES</dt><dd>Field notes — insights from the build</dd></div>
+    <div class="row"><dt>DISCIPLINE</dt><dd>Interactive commerce</dd></div>
+    <div class="row"><dt>ENTRIES</dt><dd>4 published</dd></div>
+    <div class="row"><dt>ISSUE</dt><dd>2026</dd></div>
+  </dl>
+
+  <h1>Field notes.</h1>
+  <p class="standfirst">Practical thinking from building product configurators, connected ecommerce systems and an international retail operation of our own. Select an entry to read it.</p>
+</div>
+
+<section id="index">
+  <div class="sheet">
+    <p class="sheet-no">INDEX — 4 ENTRIES</p>
+    <div class="insights-index">
+      <button class="entry" data-slug="configurator-cost">
+        <span class="ref">INS-001<b>COST &amp; SCOPE</b></span>
+        <span>
+          <h3>What does a product configurator cost in 2026?</h3>
+          <p>Realistic price bands, the variables that move them, and how to avoid paying production money before the difficult idea is proven.</p>
+        </span>
+        <span class="go">3 MIN READ &rarr;</span>
+      </button>
+      <button class="entry" data-slug="2d-vs-3d">
+        <span class="ref">INS-002<b>VISUAL METHOD</b></span>
+        <span>
+          <h3>2D vs 3D product configurators</h3>
+          <p>When images and rules are enough, when real-time 3D earns its cost, and how to choose without buying technology for its own sake.</p>
+        </span>
+        <span class="go">3 MIN READ &rarr;</span>
+      </button>
+      <button class="entry" data-slug="digital-showroom">
+        <span class="ref">INS-003<b>STRATEGY</b></span>
+        <span>
+          <h3>Why complex products need a digital showroom</h3>
+          <p>A product page displays information. A digital showroom turns uncertainty into a guided, commercially useful buying journey.</p>
+        </span>
+        <span class="go">3 MIN READ &rarr;</span>
+      </button>
+      <button class="entry" data-slug="ppav-growth">
+        <span class="ref">INS-004<b>OPERATOR NOTE</b></span>
+        <span>
+          <h3>From an eBay account to a multi-market retailer</h3>
+          <p>Six lessons from growing PP-AV into an international commerce operation with five connected sales tools.</p>
+        </span>
+        <span class="go">3 MIN READ &rarr;</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<section class="close" id="contact">
+  <div class="sheet">
+    <p class="sheet-no">START HERE</p>
+    <h2>What is your product making customers work too hard to understand?</h2>
+    <p>Prove the difficult part first, in a focused Prototype Sprint — £1,500 to £3,000, credited in full against the build.</p>
+    <div class="actions">
+      <a class="button solid" href="mailto:james@blueprintcode.ai?subject=Prototype Sprint enquiry">Discuss your project</a>
+      <a class="button" href="/configurators">What we build</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<div class="scrim" id="scrim"></div>
+<div class="panel" id="reader" role="dialog" aria-modal="true">
+  <div class="panel-bar">
+    <span id="reader-ref">FIELD NOTE</span>
+    <button class="panel-close" type="button">Close</button>
+  </div>
+  <div class="panel-body">
+      <div class="inner" id="a-configurator-cost" data-ref="INS-001 / COST &amp; SCOPE" data-title="What does a product configurator cost in 2026?" hidden>
+        <div class="panel-head">
+          <span class="lbl">INS-001 &middot; COST &amp; SCOPE &middot; 3 MIN READ</span>
+          <h2>What does a product configurator cost in 2026?</h2>
+        </div>
+<p class="intro">In 2026, a credible custom product configurator can begin at around <strong>£7,500</strong>, while a professional commercial system commonly sits between <strong>£15,000 and £30,000</strong>. A multi-tool digital showroom can start from <strong>£35,000</strong> and rise substantially when it includes complex 3D, enterprise integrations, dealer portals or custom commerce infrastructure.</p><p>Those bands are more useful than a suspiciously precise quotation made before anyone has mapped the product rules. Two configurators that look similar in a screenshot can require completely different amounts of work underneath.</p>
+<h2>The four practical price levels</h2><div class="table-wrap"><table><thead><tr><th>Level</th><th>Typical scope</th><th>Indicative price</th></tr></thead><tbody><tr><td>Prototype Sprint</td><td>One difficult interaction or product idea, working in a browser</td><td>£1,500–£3,000</td></tr><tr><td>Foundation Configurator</td><td>Focused options, rules, live preview and lead capture</td><td>From £7,500</td></tr><tr><td>Professional Suite</td><td>Advanced logic, pricing, ecommerce and business integrations</td><td>£15,000–£30,000</td></tr><tr><td>Enterprise Digital Showroom</td><td>Multiple connected tools, 3D, accounts, data and guided commerce</td><td>From £35,000</td></tr></tbody></table></div><p>These are custom-development ranges rather than plugin licence prices. An off-the-shelf app may be enough for simple colour, text or image choices. Custom development becomes valuable when the product has genuine dependencies, unusual visuals, quoting requirements or a sales process that standard software cannot express.</p>
+<h2>What actually changes the price?</h2><h3>1. product logic</h3><p>A configurator with ten independent colour choices is relatively straightforward. A configurator where material changes affect dimensions, available accessories, manufacturing rules, delivery method and price is not.</p><p>The important number is rarely the number of options. It is the number of <strong>relationships between options</strong>.</p><h3>2. visual method</h3><p>Static images, layered renders and real-time 3D each solve different problems. Image-based configuration is efficient when the camera angle is fixed and the customer mainly needs to compare finishes. Real-time 3D becomes worthwhile when shape, layout, viewpoint or spatial understanding affects the sale.</p><h3>3. pricing and quoting</h3><p>A displayed starting price is simple. A server-authoritative calculation involving dimensions, components, customer type, quantity, tax, shipping and discount bands needs careful architecture and testing.</p><h3>4. integrations</h3><p>The tool may need to create a WooCommerce or Shopify basket, push a qualified lead into a CRM, generate a PDF specification, request freight pricing or retrieve live product data. Every integration adds value, but also adds failure states and responsibility.</p><h3>5. product data</h3><p>Clean, structured data can reduce build time. Inconsistent spreadsheets, undocumented exceptions and missing assets move work from development into product discovery and data preparation.</p><h3>6. administration</h3><p>If staff need to add products, adjust rules or upload materials without a developer, an administration layer must be designed as carefully as the customer interface.</p>
+<blockquote>The expensive part is not drawing a configurator screen. It is making the answer commercially correct every time.</blockquote>
+<h2>Why start with a paid prototype?</h2><p>A prototype should prove the part carrying the most uncertainty: perhaps a mirrored 3D surface, a modular placement system, an unusual pricing rule or the interaction between many product choices.</p><p>Blueprint Code’s Prototype Sprint costs <strong><a href="/pricing">£1,500 for a 2D or image-based concept</a></strong> and <strong>£3,000 for a real-time 3D concept</strong>. It runs for approximately three to five weeks and is credited in full against the main configurator build when the project proceeds within the agreed period.</p><p>This gives both sides evidence before a larger commitment. It also produces something useful for internal approval, investment discussions or testing with customers.</p>
+<h2>Common costing mistakes</h2><ul><li><strong>Pricing from screens alone:</strong> the visible steps reveal little about the logic underneath.</li><li><strong>Treating every option as independent:</strong> compatibility rules are often where the real project sits.</li><li><strong>Leaving product data until development:</strong> unresolved data questions become expensive technical interruptions.</li><li><strong>Assuming the prototype is production code:</strong> a proof can validate direction without yet covering security, analytics, accessibility or every edge case.</li><li><strong>Ignoring operation after launch:</strong> products, prices and integrations change.</li></ul>
+<h2>What should a serious quotation include?</h2><p>Expect a written definition of the customer journey, product rules, visual method, integrations, deliverables, exclusions, testing responsibility, deployment and support. A range is appropriate during discovery; a fixed figure only becomes meaningful when the boundaries are understood.</p><div class="note"><span class="data">Planning note</span>Prepare a representative product set, existing pricing logic, a list of known exceptions and examples of the final output your sales team needs. That will improve any estimate more than a longer feature wish list.</div><h2>The short answer</h2><p>Budget <strong>from £7,500</strong> for a focused custom configurator, <strong>£15,000–£30,000</strong> for a professional commercial suite and <strong>£35,000+</strong> for a connected digital showroom. Prove the difficult part first, and do not choose 3D unless it materially improves the customer’s decision.</p>
+        <div class="panel-foot">
+          <a class="button" href="/pricing">See the rates</a>
+          <a class="button" href="/prototypes">See the prototypes</a>
+        </div>
+      </div>
+      <div class="inner" id="a-2d-vs-3d" data-ref="INS-002 / VISUAL METHOD" data-title="2D vs 3D product configurators" hidden>
+        <div class="panel-head">
+          <span class="lbl">INS-002 &middot; VISUAL METHOD &middot; 3 MIN READ</span>
+          <h2>2D vs 3D product configurators</h2>
+        </div>
+<p class="intro">Use 2D or layered imagery when customers need to compare colours, finishes, text or components from a controlled viewpoint. Use real-time 3D when they need to understand shape, proportion, spatial arrangement or the product from multiple angles.</p><p>The decision should follow the buying problem. Starting with technology often creates an expensive experience that looks impressive but does not improve the sale.</p>
+<h2>What counts as a 2d configurator?</h2><p>A 2D configurator can change photographs, rendered layers, SVG components or interface diagrams as customers choose options. It can still contain sophisticated compatibility logic, pricing and ecommerce integration. “2D” describes the visual method, not the intelligence of the system.</p><p>It works particularly well for personalised prints, apparel details, front-facing furniture finishes, screen specifications, packaging, jewellery layouts and products whose important choices can be understood from one or two prepared views.</p>
+<h2>What real-time 3d adds</h2><p>A 3D configurator renders a model in the browser and allows the interface to change its geometry, material, components, camera or environment. Customers can usually rotate, zoom and inspect the configured object.</p><p>It becomes commercially useful for modular structures, architectural interiors, configurable furniture, machinery, vehicles and products where size or spatial relationship is difficult to communicate through static images.</p><div class="table-wrap"><table><thead><tr><th>Question</th><th>2D / image-based</th><th>Real-time 3D</th></tr></thead><tbody><tr><td>Fixed viewing angle sufficient?</td><td>Usually ideal</td><td>Often unnecessary</td></tr><tr><td>Shape changes materially?</td><td>Possible with prepared assets</td><td>Strong fit</td></tr><tr><td>Customer must inspect all sides?</td><td>Requires multiple images</td><td>Natural interaction</td></tr><tr><td>Asset production</td><td>Images or layered renders</td><td>Optimised 3D models and materials</td></tr><tr><td>Device demands</td><td>Generally lighter</td><td>Requires performance planning</td></tr><tr><td>Prototype starting point</td><td>Approximately £1,500</td><td>Approximately £3,000</td></tr></tbody></table></div>
+<h2>When 2d is the better commercial decision</h2><ul><li>The customer views the product mainly from one angle.</li><li>Changes are surface-level rather than structural.</li><li>Excellent photography or renders already exist.</li><li>Fast loading on lower-powered devices matters more than free camera movement.</li><li>The main value lies in rules, recommendations or pricing.</li><li>The budget should prioritise ecommerce integration over 3D assets.</li></ul><p>A well-designed 2D configurator will outperform weak 3D if it answers the buying question faster.</p>
+<h2>When 3d earns its place</h2><ul><li>Dimensions or geometry change with the configuration.</li><li>Customers need to understand how modules connect.</li><li>Material response—reflection, texture or finish—is part of the buying decision.</li><li>The object needs to be inspected from several angles.</li><li>Placement within a room or environment matters.</li><li>The visual experience itself supports a premium brand position.</li></ul><p>Our <a href="/prototypes">mirrored elevator-cabin prototype</a> is a good example. The technical uncertainty was not a list of finishes; it was whether a browser-based cabin could produce convincing planar reflections of the external environment. That question required 3D.</p>
+<h2>The hybrid option</h2><p>Many of the strongest systems combine methods. A real-time 3D product may use 2D diagrams for measurements. A guided selector may use photography until the final configuration opens in 3D. Mobile users may receive a lighter presentation while desktop customers see the full scene.</p><p>Hybrid architecture lets each stage use the clearest and most efficient representation.</p>
+<blockquote>Choose the visual method by asking what the customer cannot confidently understand today.</blockquote>
+<h2>Do not forget the invisible layer</h2><p>Whether the view is 2D or 3D, a commercial configurator still needs to handle:</p><ul><li>Available and unavailable combinations</li><li>Pricing and discounts</li><li>Product codes and configuration data</li><li>Basket, quote or CRM hand-off</li><li>Saved configurations</li><li>Accessibility and mobile use</li><li>Analytics and operational updates</li></ul><p>A beautiful model with unreliable commercial output is a visual demo, not a production sales system.</p>
+<h2>How to decide with minimal risk</h2><ol><li>Write down the specific uncertainty preventing the purchase.</li><li>Identify the minimum visual method capable of resolving it.</li><li>Test the hardest interaction with representative product data.</li><li>Review it on the actual devices customers use.</li><li>Only then scope the production integrations and full catalogue.</li></ol><div class="note"><span class="data">Prototype bands</span>A Blueprint Code <a href="/configurators">image-based Prototype Sprint</a> is £1,500. A real-time 3D Sprint is £3,000. Both are credited against the main build when it proceeds within the agreed period.</div><h2>The short answer</h2><p>Use 2D when the buying decision is mostly about options, information and controlled visual comparison. Use 3D when customers must understand changing form, space or material behaviour. When uncertain, prototype the same critical decision in the simplest credible form before commissioning the larger system.</p>
+        <div class="panel-foot">
+          <a class="button" href="/pricing">See the rates</a>
+          <a class="button" href="/prototypes">See the prototypes</a>
+        </div>
+      </div>
+      <div class="inner" id="a-digital-showroom" data-ref="INS-003 / STRATEGY" data-title="Why complex products need a digital showroom" hidden>
+        <div class="panel-head">
+          <span class="lbl">INS-003 &middot; STRATEGY &middot; 3 MIN READ</span>
+          <h2>Why complex products need a digital showroom</h2>
+        </div>
+<p class="intro">A product page presents a product. A digital showroom helps a customer work out what they need, what works together and what they should do next.</p><p>That difference matters when the catalogue contains technical dependencies, configurable dimensions, unfamiliar terminology or several products that must form one working system.</p>
+<h2>The product-page assumption</h2><p>Most ecommerce templates are built around a familiar sequence: title, images, description, variants, price and add-to-basket. That works when the customer knows which product they want and only needs confidence in the seller.</p><p>It becomes less effective when the customer is asking:</p><ul><li>Which model suits my room or application?</li><li>Will these components work together?</li><li>Which material solves my particular problem?</li><li>What size or quantity do I need?</li><li>What will the complete system cost?</li><li>What happens if I choose the wrong option?</li></ul><p>Adding more specification tables rarely resolves that uncertainty. It can simply transfer the work from the business to the customer.</p>
+<h2>What a digital showroom does</h2><p>A digital showroom combines content, product logic and interactive tools into a guided commercial journey. It may include:</p><ul><li>A room or application planner</li><li>A guided product selector</li><li>A compatibility checker</li><li>A 2D or 3D configurator</li><li>A price or specification calculator</li><li>Alternative recommendations</li><li>A saved project or formal quotation</li><li>An AI advisory layer grounded in the customer’s configuration</li></ul><p>The purpose is not to recreate a physical shop visually. It is to recreate its most valuable behaviour: understanding the customer’s circumstances and reducing the risk of a poor decision.</p>
+<h2>The pp-av example</h2><p>PP-AV sells home-cinema equipment, where purchases depend on room dimensions, viewing habits, light conditions, speaker layouts, projector capability and product compatibility.</p><p>Instead of relying only on category and product pages, we developed <a href="/ppav-case-study">five connected tools</a>:</p><ol><li><strong>Cinema Room Planner</strong> — the master journey for room and system information.</li><li><strong>Audio System Designer</strong> — speaker layout, electronics and compatibility.</li><li><strong>Projector Selector</strong> — recommendation based on room and usage.</li><li><strong>Screen Finder</strong> — material and screen guidance.</li><li><strong>3D Cabinet Configurator</strong> — live visual configuration for laser-TV furniture.</li></ol><p>Each tool can help independently. Together, they behave like a knowledgeable showroom and return the customer to one commercial plan.</p><blockquote>A digital showroom should not trap the customer in a funnel. It should preserve their decisions while letting them move naturally between specialist questions.</blockquote>
+<h2>Where the commercial value comes from</h2><h3>Better-qualified customers</h3><p>A customer who completes a planner or configurator has expressed needs in structured form. Even when they do not purchase immediately, the resulting enquiry is more useful than “please send me more information.”</p><h3>Larger, more coherent orders</h3><p>When the website explains the whole system, customers can understand why complementary items belong together rather than evaluating each basket line in isolation.</p><h3>Less repetitive support</h3><p>Common presales questions become part of the guided journey, allowing human experts to focus on exceptions and valuable conversations.</p><h3>Ownable differentiation</h3><p>Competitors can copy a discount or product description. Reproducing connected logic, data and interactive experience is much harder.</p><h3>Structured data for future ai</h3><p>Once customer inputs and commercial rules are structured, an AI assistant can explain recommendations, flag conflicts and answer questions using actual project context rather than generic chat.</p>
+<h2>When a digital showroom is not necessary</h2><p>It may be excessive when products are simple, low-consideration and easily compared; when the catalogue is too small to create real confusion; or when the business has not documented its own product rules.</p><p>In those cases, clearer product pages, filtering or a focused calculator may solve the problem more efficiently.</p>
+<h2>How to start</h2><ol><li>List the questions your sales team answers repeatedly.</li><li>Identify the choices most likely to cause returns, abandonment or hesitation.</li><li>Map the minimum information needed to make a safe recommendation.</li><li>Choose one difficult interaction to prototype.</li><li>Connect additional tools only when the shared data genuinely improves the journey.</li></ol><div class="note"><span class="data">Architecture principle</span>The master system should own shared customer and project data. Specialist tools can then receive what they need and return their decisions without forcing the customer to start again.</div><h2>The short answer</h2><p>Complex products need a digital showroom when buying successfully requires guidance, calculation or compatibility—not merely information. Begin with the most expensive point of customer uncertainty, prove that interaction, and expand into a connected platform only where the commercial case supports it.</p>
+        <div class="panel-foot">
+          <a class="button" href="/pricing">See the rates</a>
+          <a class="button" href="/prototypes">See the prototypes</a>
+        </div>
+      </div>
+      <div class="inner" id="a-ppav-growth" data-ref="INS-004 / OPERATOR NOTE" data-title="From an eBay account to a multi-market retailer" hidden>
+        <div class="panel-head">
+          <span class="lbl">INS-004 &middot; OPERATOR NOTE &middot; 3 MIN READ</span>
+          <h2>From an eBay account to a multi-market retailer</h2>
+        </div>
+<p class="intro">PP-AV is Blueprint Code’s in-house commerce venture—not a client commission or a portfolio demonstration. That distinction matters because we experience the operational consequences of the systems we design.</p><p>The business began with approximately £3,000 of working capital and an established eBay account. Over six years it developed into a multi-market specialist retailer operating through its own ecommerce platform, eight Amazon marketplaces and eBay Global, with approximately £50,000 in stock and five connected planning and configuration tools.</p><p>The result is useful evidence, but the lessons behind it are more valuable.</p>
+<h2>1. capital efficiency shapes better systems</h2><p>When capital is limited, the business cannot solve every problem by buying inventory or adding staff. It has to become selective about stock, suppliers, channels and automation.</p><p>PP-AV increasingly uses direct supplier shipping where appropriate and avoids tying cash up in products without a clear route to sale. The technology follows the same discipline: build tools that remove an identifiable commercial constraint rather than adding features for appearance.</p><blockquote>Limited capital is not an excuse for limited ambition. It forces the operating model and the software to justify themselves.</blockquote>
+<h2>2. marketplaces provide reach, but not differentiation</h2><p>eBay and Amazon can provide access to customers who would never discover a specialist independent website first. They also impose fees, listing structures, price visibility and platform rules that the seller does not control.</p><p>The direct platform therefore needs to offer something marketplaces cannot reproduce. For PP-AV, that became specialist guidance, connected planning and configurable systems rather than another catalogue presenting the same products.</p><p>The useful strategy is not “marketplace or own site.” Each channel performs a different commercial job.</p>
+<h2>3. complex products need guidance before persuasion</h2><p>Home-cinema customers can hesitate because the decision itself is difficult. More promotional copy does not solve uncertainty about room size, screen material, projector suitability or audio compatibility.</p><p>We built guided tools because the business needed them:</p><ul><li>Cinema Room Planner</li><li>Audio System Designer</li><li>Projector Selector</li><li>Screen Finder</li><li>3D Cabinet Configurator</li></ul><p>This changed the website from a passive product catalogue into a digital showroom capable of helping customers form a coherent specification.</p>
+<h2>4. the basket is part of the product experience</h2><p>A configured system should not disintegrate into unrelated product lines at the final step. The basket needs to retain configuration metadata and communicate that the customer has built one considered solution.</p><p>For made-to-order and configurable products, the order record must also preserve the specification clearly enough for fulfilment, support and later reference. The hand-off from configurator to ecommerce is not a technical footnote; it determines whether the experience is commercially usable.</p>
+<h2>5. connected tools become more valuable than isolated tools</h2><p>A projector selector can recommend a projector. A screen finder can recommend a material. A room planner can record dimensions. Their larger value appears when the same customer does not need to repeat information and each decision informs the next.</p><p>The Cinema Room Planner acts as the master journey while specialist tools receive relevant context and return their results. That architecture supports a future advisory layer capable of explaining recommendations and detecting conflicts across the complete system.</p><div class="note"><span class="data">System lesson</span>Do not combine every decision into one enormous interface. Preserve one source of shared project data while allowing specialist tools to remain focused.</div>
+<h2>6. operating after launch changes how you build</h2><p>Products change. Supplier feeds are imperfect. Prices move. Marketplaces introduce new restrictions. Customers use tools in ways the designer did not predict.</p><p>Owning PP-AV means Blueprint Code cannot regard deployment as the finish line. We have to maintain product logic, diagnose failures, improve mobile journeys and consider what staff need to operate the system over time.</p><p>That experience affects our client work. We ask earlier questions about administration, error states, data ownership, pricing authority and support because we have lived with the alternative.</p>
+<h2>What the numbers do—and do not—prove</h2><div class="table-wrap"><table><thead><tr><th>Starting point</th><th>Current operation</th></tr></thead><tbody><tr><td>Approximately £3,000 working capital</td><td>Approximately £50,000 in stock</td></tr><tr><td>Established eBay account</td><td>Own platform, eight Amazon marketplaces and eBay Global</td></tr><tr><td>Marketplace-led selling</td><td>Connected digital showroom</td></tr><tr><td>Conventional product discovery</td><td>Five customer-facing planning and configuration tools</td></tr></tbody></table></div><p>The growth does not mean every decision was perfect, or that software alone created the business. It demonstrates something narrower and more useful: commercial experience, capital discipline and technical capability have been applied together in a live operation over six years.</p>
+<h2>The lesson we carry into blueprint code</h2><p>We do not build ecommerce systems from the position of an outside observer. We understand product data, pricing, margins, customer acquisition, marketplace operations, integrations and the commercial consequences of technical decisions.</p><p>For clients selling complex products, that means the conversation begins with how the customer buys and how the business operates—not with a predetermined framework or fashionable interface.</p>
+        <div class="panel-foot">
+          <a class="button" href="/pricing">See the rates</a>
+          <a class="button" href="/prototypes">See the prototypes</a>
+        </div>
+      </div>
+  </div>
+</div>
+
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Blog","name":"Blueprint Code — Field Notes",
+"url":"https://blueprintcode.ai/insights","blogPost":[{"@type":"BlogPosting","headline":"What does a product configurator cost in 2026?","description":"Realistic price bands, the variables that move them, and how to avoid paying production money before the difficult idea is proven.","wordCount":729,"author":{"@type":"Organization","name":"Blueprint Code"},"publisher":{"@type":"Organization","name":"Blueprint Code"},"mainEntityOfPage":"https://blueprintcode.ai/insights#configurator-cost"},{"@type":"BlogPosting","headline":"2D vs 3D product configurators","description":"When images and rules are enough, when real-time 3D earns its cost, and how to choose without buying technology for its own sake.","wordCount":680,"author":{"@type":"Organization","name":"Blueprint Code"},"publisher":{"@type":"Organization","name":"Blueprint Code"},"mainEntityOfPage":"https://blueprintcode.ai/insights#2d-vs-3d"},{"@type":"BlogPosting","headline":"Why complex products need a digital showroom","description":"A product page displays information. A digital showroom turns uncertainty into a guided, commercially useful buying journey.","wordCount":698,"author":{"@type":"Organization","name":"Blueprint Code"},"publisher":{"@type":"Organization","name":"Blueprint Code"},"mainEntityOfPage":"https://blueprintcode.ai/insights#digital-showroom"},{"@type":"BlogPosting","headline":"From an eBay account to a multi-market retailer","description":"Six lessons from growing PP-AV into an international commerce operation with five connected sales tools.","wordCount":778,"author":{"@type":"Organization","name":"Blueprint Code"},"publisher":{"@type":"Organization","name":"Blueprint Code"},"mainEntityOfPage":"https://blueprintcode.ai/insights#ppav-growth"}]}
+</script>
+<script>
+(function(){
+  var panel=document.getElementById('reader'),
+      scrim=document.getElementById('scrim'),
+      bar=document.getElementById('reader-ref'),
+      body=panel.querySelector('.panel-body'),
+      last=null;
+
+  function open(slug,push){
+    var art=document.getElementById('a-'+slug);
+    if(!art) return;
+    body.querySelectorAll('.inner').forEach(function(n){n.hidden=true;});
+    art.hidden=false;
+    bar.textContent=art.getAttribute('data-ref');
+    panel.setAttribute('data-open','');
+    panel.setAttribute('aria-label',art.getAttribute('data-title'));
+    document.body.classList.add('reading');
+    body.scrollTop=0;
+    panel.querySelector('.panel-close').focus();
+    if(push) history.pushState({slug:slug},'','#'+slug);
+  }
+  function close(push){
+    panel.removeAttribute('data-open');
+    document.body.classList.remove('reading');
+    if(last) last.focus();
+    if(push) history.pushState({},'',location.pathname);
+  }
+  document.querySelectorAll('.entry').forEach(function(b){
+    b.addEventListener('click',function(){last=b;open(b.getAttribute('data-slug'),true);});
+  });
+  panel.querySelector('.panel-close').addEventListener('click',function(){close(true);});
+  scrim.addEventListener('click',function(){close(true);});
+  document.addEventListener('keydown',function(e){
+    if(e.key==='Escape'&&document.body.classList.contains('reading')) close(true);
+  });
+  window.addEventListener('popstate',function(){
+    var s=location.hash.replace('#','');
+    if(s) open(s,false); else close(false);
+  });
+  if(location.hash) open(location.hash.replace('#',''),false);
+})();
+</script>
+
+
+<footer>
+  <div class="sheet tb">
+    <div>DOCUMENT<b>FIELD NOTES</b></div>
+    <div>STUDIO<b>BLUEPRINT CODE</b></div>
+    <div>ENTRIES<b>2026 — 04 PUBLISHED</b></div>
+    <div>CONTACT<b><a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a></b></div>
+  </div>
+</footer>
+<script>
+/* Live demos load only when asked — three Three.js prototypes booting at once
+   would stall the page. Also pauses looping films for reduced-motion users. */
+document.querySelectorAll('.media-launch').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var frame = btn.closest('.media');
+    var src = frame.getAttribute('data-src');
+    if(!src) return;
+    var f = document.createElement('iframe');
+    f.src = src;
+    f.loading = 'lazy';
+    f.title = frame.getAttribute('data-title') || 'Live prototype';
+    f.setAttribute('allow','fullscreen');
+    frame.appendChild(f);
+    frame.setAttribute('data-live','');
+  });
+});
+if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
+  document.querySelectorAll('.media--loop video').forEach(function(v){ v.pause(); });
+}
+var burger = document.querySelector('.burger');
+if(burger){
+  burger.addEventListener('click', function(){
+    var open = document.body.classList.toggle('nav-open');
+    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
+  });
+}
+</script>
+</body>
+</html>

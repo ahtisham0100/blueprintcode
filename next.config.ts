@@ -1,33 +1,43 @@
 import type { NextConfig } from "next";
 
+// Static HTML pages that live in public/<name>/<name>.html.
+// Each is served at /<name> and also at /<name>.html so the
+// existing relative links inside the pages keep working.
+const staticPages = [
+  "about",
+  "configurators",
+  "insights",
+  "ppav-case-study",
+  "pricing",
+  "prototypes",
+];
+
+// Static demo folders that live in public/<name>/index.html.
+const staticDemos = [
+  "aura-mirror-demo",
+  "antera-elevator-configurator-concept",
+  "bracelet-configurator-baked",
+];
+
 const nextConfig: NextConfig = {
   async rewrites() {
-    return [
-      {
-        source: "/aura-mirror-demo",
-        destination: "/aura-mirror-demo/index.html",
-      },
-      {
-        source: "/aura-mirror-demo/",
-        destination: "/aura-mirror-demo/index.html",
-      },
-      {
-        source: "/antera-elevator-configurator-concept",
-        destination: "/antera-elevator-configurator-concept/index.html",
-      },
-      {
-        source: "/antera-elevator-configurator-concept/",
-        destination: "/antera-elevator-configurator-concept/index.html",
-      },
-      {
-        source: "/bracelet-configurator-baked",
-        destination: "/bracelet-configurator-baked/index.html",
-      },
-      {
-        source: "/bracelet-configurator-baked/",
-        destination: "/bracelet-configurator-baked/index.html",
-      },
-    ];
+    return {
+      beforeFiles: [
+        // Home page -> public/index/index.html (takes precedence over src/app/page.tsx)
+        { source: "/", destination: "/index/index.html" },
+        { source: "/index.html", destination: "/index/index.html" },
+      ],
+      afterFiles: [
+        ...staticPages.flatMap((name) => [
+          { source: `/${name}`, destination: `/${name}/${name}.html` },
+          { source: `/${name}.html`, destination: `/${name}/${name}.html` },
+        ]),
+        ...staticDemos.map((name) => ({
+          source: `/${name}`,
+          destination: `/${name}/index.html`,
+        })),
+      ],
+    };
   },
 };
 
