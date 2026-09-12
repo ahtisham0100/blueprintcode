@@ -21,8 +21,28 @@
     @media(max-width:560px){header{align-items:flex-start}.prototype{display:none}.controls,.results{padding:20px}.grid2{grid-template-columns:1fr 1fr}.engine-card{padding:21px;grid-template-columns:1fr}.motor{display:none}.engine h3{font-size:34px}.footer{display:block}.footer span{display:block;margin-top:5px}}
     .motor .cap:after{content:attr(data-hp)}
   </style>
+<!--BPC:ASSETS:START-->
+<link rel="stylesheet" href="/partials/site-chrome.css">
+<!--BPC:ASSETS:END-->
 </head>
 <body>
+<!--BPC:HEADER:START-->
+<div class="bpc-chrome bpc-head" role="banner">
+  <div class="bpc-sheet">
+    <a class="bpc-mark" href="/"><b>BLUEPRINT CODE</b><span>MARINE ENGINE FIT ARCHITECTURE DEMO</span></a>
+    <button class="bpc-burger" type="button" aria-expanded="false" aria-label="Menu">Menu</button>
+    <div class="bpc-nav" role="navigation" aria-label="Primary">
+      <a href="/configurators">Configurators</a>
+      <a href="/prototypes">Prototypes</a>
+      <a href="/ppav-case-study">Case study</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/insights">Insights</a>
+      <a href="/about">About</a>
+      <a class="bpc-button" href="#contact">Start a project</a>
+    </div>
+  </div>
+</div>
+<!--BPC:HEADER:END-->
   <div class="modal" id="intro"><div class="modalbox"><div class="eyebrow">Blueprint Code AI · rapid proof of concept</div><h2>The architecture decision, made tangible.</h2><p>This demonstrator was built from the public brief before applying. Products, prices and compatibility rules are illustrative; the working model shows how ten family pages can serve 63 purchasable engines, power a buyer-led finder and later connect cleanly to parts and dealer data.</p><p class="fine">This is a focused architecture prototype, not a finished store or a claim about the undisclosed catalogue.</p><button id="enter">Explore the model</button></div></div>
   <div class="shell">
     <header><div class="brand"><div class="mark">BC</div><div>Blueprint Code AI<small>Marine commerce architecture demo</small></div></div><div class="prototype">Illustrative data · working interaction</div></header>
@@ -75,5 +95,18 @@
     document.getElementById('enter').addEventListener('click',()=>document.getElementById('intro').classList.add('hide'));
     recommend();
   </script>
+<!--BPC:FOOTER:START-->
+<div class="bpc-chrome bpc-footer" role="contentinfo">
+  <div class="bpc-sheet bpc-tb">
+    <div>DOCUMENT<b>MARINE ENGINE FIT ARCHITECTURE DEMO</b></div>
+    <div>STUDIO<b>BLUEPRINT CODE</b></div>
+    <div>FORMAT<b>LIVE DEMO</b></div>
+    <div>CONTACT<b><a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a></b></div>
+  </div>
+</div>
+<!--BPC:FOOTER:END-->
+<!--BPC:SCRIPT:START-->
+<script defer src="/partials/site-chrome.js"></script>
+<!--BPC:SCRIPT:END-->
 </body>
 </html>

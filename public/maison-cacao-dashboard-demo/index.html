@@ -13,8 +13,28 @@
     @media(max-width:680px){.app{display:block}.sidebar{display:none}.mobile-brand{display:flex;align-items:center;gap:10px;margin-bottom:20px}.mobile-brand .seal{color:var(--gold);border-color:var(--gold)}.mobile-brand b{font-family:Georgia,serif;font-weight:500}.main{padding:20px 15px 34px}.top{align-items:center}.top p{display:none}.refresh{font-size:0;padding:10px}.refresh::after{content:'↻';font-size:18px}.controls{align-items:stretch}.control{width:100%}.control select{width:100%}.periods{flex:1}.periods button{flex:1}.status-note{display:none}.kpis{grid-template-columns:1fr 1fr;gap:10px}.kpi{padding:15px}.kpi strong{font-size:23px}.panel{padding:16px}.chart{height:220px}.legend{display:none}}
     .suite-home{position:fixed;z-index:20;right:22px;top:82px;background:#9d6e30;color:white;text-decoration:none;border-radius:8px;padding:10px 14px;font-size:13px;font-weight:700;box-shadow:0 8px 22px #0003}
   </style>
+<!--BPC:ASSETS:START-->
+<link rel="stylesheet" href="/partials/site-chrome.css">
+<!--BPC:ASSETS:END-->
 </head>
 <body>
+<!--BPC:HEADER:START-->
+<div class="bpc-chrome bpc-head" role="banner">
+  <div class="bpc-sheet">
+    <a class="bpc-mark" href="/"><b>BLUEPRINT CODE</b><span>COMMERCE OVERVIEW</span></a>
+    <button class="bpc-burger" type="button" aria-expanded="false" aria-label="Menu">Menu</button>
+    <div class="bpc-nav" role="navigation" aria-label="Primary">
+      <a href="/configurators">Configurators</a>
+      <a href="/prototypes">Prototypes</a>
+      <a href="/ppav-case-study">Case study</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/insights">Insights</a>
+      <a href="/about">About</a>
+      <a class="bpc-button" href="#contact">Start a project</a>
+    </div>
+  </div>
+</div>
+<!--BPC:HEADER:END-->
 <a class="suite-home" href="maison-cacao-demo-suite.html">← Back to demo suite</a>
 <div class="app">
   <aside class="sidebar">
@@ -80,5 +100,18 @@
   document.getElementById('channel').addEventListener('change',update);document.getElementById('compare').addEventListener('change',()=>{document.querySelectorAll('.change span').forEach(s=>s.textContent=document.getElementById('compare').value==='Previous period'?'vs previous':'vs last year')});
   document.getElementById('refresh').addEventListener('click',()=>{const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),1800)});update();
 </script>
+<!--BPC:FOOTER:START-->
+<div class="bpc-chrome bpc-footer" role="contentinfo">
+  <div class="bpc-sheet bpc-tb">
+    <div>DOCUMENT<b>MAISON CACAO — DASHBOARD</b></div>
+    <div>STUDIO<b>BLUEPRINT CODE</b></div>
+    <div>FORMAT<b>LIVE DEMO</b></div>
+    <div>CONTACT<b><a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a></b></div>
+  </div>
+</div>
+<!--BPC:FOOTER:END-->
+<!--BPC:SCRIPT:START-->
+<script defer src="/partials/site-chrome.js"></script>
+<!--BPC:SCRIPT:END-->
 </body>
 </html>

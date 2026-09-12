@@ -1,0 +1,183 @@
+/* ==========================================================================
+   Blueprint Code — global site chrome (header + footer)
+   SINGLE SOURCE OF TRUTH for the shared header and footer styling.
+   Edit here; every page picks it up (it is linked, not copied).
+
+   Fully self-contained and isolated:
+   - all selectors are scoped under .bpc-chrome and use bpc- class names
+   - CSS variables are declared on .bpc-chrome (not :root)
+   - the markup uses role="banner"/"navigation"/"contentinfo" divs instead of
+     bare <header>/<nav>/<footer>, so nothing here collides with a page's own
+     CSS (site.css or any standalone demo), in either direction.
+   ========================================================================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;600&display=swap');
+
+.bpc-chrome {
+  --bpc-ground: #0B1A2E;
+  --bpc-ground-2: #0E2136;
+  --bpc-line: #2C4A6E;
+  --bpc-line-soft: #1D3552;
+  --bpc-ink: #EAF1F8;
+  --bpc-ink-2: #8FA9C6;
+  --bpc-ink-3: #5F7C9E;
+  --bpc-max: 1240px;
+  --bpc-gut: 32px;
+  --bpc-display: 'Bebas Neue', Impact, sans-serif;
+  --bpc-data: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+  --bpc-prose: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  box-sizing: border-box;
+}
+.bpc-chrome *,
+.bpc-chrome *::before,
+.bpc-chrome *::after { box-sizing: border-box; }
+
+.bpc-sheet {
+  width: min(var(--bpc-max), calc(100% - var(--bpc-gut) * 2));
+  margin: auto;
+  position: relative;
+  z-index: 1;
+}
+
+/* ---------- header ---------- */
+.bpc-head {
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 2000;
+  background: var(--bpc-ground);
+  border-bottom: 1px solid var(--bpc-line);
+  font-family: var(--bpc-prose);
+}
+.bpc-head .bpc-sheet {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.bpc-mark {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  text-decoration: none;
+}
+.bpc-mark b {
+  font-family: var(--bpc-display);
+  font-size: 25px;
+  font-weight: 400;
+  color: var(--bpc-ink);
+  letter-spacing: .02em;
+}
+.bpc-mark span {
+  font-family: var(--bpc-data);
+  font-size: 10px;
+  letter-spacing: .14em;
+  color: var(--bpc-ink-3);
+}
+.bpc-nav {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+.bpc-nav a {
+  font-family: var(--bpc-data);
+  font-size: 11px;
+  letter-spacing: .1em;
+  color: var(--bpc-ink-3);
+  text-decoration: none;
+}
+.bpc-nav a:hover { color: var(--bpc-ink); }
+.bpc-nav a[aria-current] { color: var(--bpc-ink); }
+.bpc-button {
+  display: inline-block;
+  border: 1px solid var(--bpc-ink);
+  padding: 12px 20px;
+  color: var(--bpc-ink);
+  font-family: var(--bpc-data);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.bpc-button:hover { background: var(--bpc-ink); color: var(--bpc-ground); }
+.bpc-burger {
+  display: none;
+  background: 0;
+  border: 1px solid var(--bpc-line);
+  color: var(--bpc-ink);
+  font-family: var(--bpc-data);
+  font-size: 11px;
+  letter-spacing: .11em;
+  padding: 11px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.bpc-burger:hover { border-color: var(--bpc-ink); }
+
+/* ---------- footer ---------- */
+.bpc-footer {
+  border-top: 2px solid var(--bpc-ink);
+  padding: 24px 0 44px;
+  background: var(--bpc-ground);
+  font-family: var(--bpc-prose);
+}
+.bpc-tb {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  font-family: var(--bpc-data);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--bpc-ink-3);
+}
+.bpc-tb > div {
+  padding: 14px 18px 14px 0;
+  border-right: 1px solid var(--bpc-line-soft);
+}
+.bpc-tb > div:last-child { border-right: 0; }
+.bpc-tb b {
+  display: block;
+  color: var(--bpc-ink);
+  font-weight: 400;
+  margin-top: 5px;
+  letter-spacing: .08em;
+}
+.bpc-tb a {
+  color: var(--bpc-ink-3);
+  border-bottom: 1px solid var(--bpc-line);
+  text-decoration: none;
+}
+.bpc-tb a:hover { border-bottom-color: var(--bpc-ink); color: var(--bpc-ink); }
+
+/* ---------- responsive / mobile menu ---------- */
+@media (max-width: 850px) {
+  .bpc-nav a:not(.bpc-button) { display: none; }
+  .bpc-burger { display: block; }
+  .bpc-tb { grid-template-columns: repeat(2, 1fr); }
+
+  .bpc-head.bpc-open { height: auto; }
+  .bpc-head.bpc-open .bpc-sheet {
+    flex-wrap: wrap;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .bpc-head.bpc-open .bpc-nav {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    gap: 0;
+  }
+  .bpc-head.bpc-open .bpc-nav a:not(.bpc-button) {
+    display: block;
+    font-size: 14px;
+    letter-spacing: .12em;
+    padding: 18px 0;
+    border-bottom: 1px solid var(--bpc-line-soft);
+  }
+  .bpc-head.bpc-open .bpc-nav a.bpc-button {
+    margin-top: 20px;
+    text-align: center;
+  }
+}

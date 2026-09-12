@@ -124,25 +124,30 @@ ul li::before{content:'';position:absolute;left:0;top:17px;width:11px;height:1px
   .item,.cap,.sched{break-inside:avoid}
 }
 </style>
+<!--BPC:ASSETS:START-->
+<link rel="stylesheet" href="/partials/site-chrome.css">
+<!--BPC:ASSETS:END-->
 </head>
 <body>
 <a class="skip" href="#main">Skip to content</a>
 
-<header class="head">
-  <div class="sheet">
-    <a class="mark" href="/"><b>BLUEPRINT CODE</b><span>RATES 2026</span></a>
-    <button class="burger" type="button" aria-expanded="false" aria-label="Menu">Menu</button>
-    <nav>
+<!--BPC:HEADER:START-->
+<div class="bpc-chrome bpc-head" role="banner">
+  <div class="bpc-sheet">
+    <a class="bpc-mark" href="/"><b>BLUEPRINT CODE</b><span>RATES 2026</span></a>
+    <button class="bpc-burger" type="button" aria-expanded="false" aria-label="Menu">Menu</button>
+    <div class="bpc-nav" role="navigation" aria-label="Primary">
       <a href="/configurators">Configurators</a>
       <a href="/prototypes">Prototypes</a>
       <a href="/ppav-case-study">Case study</a>
       <a href="/pricing" aria-current="page">Pricing</a>
       <a href="/insights">Insights</a>
       <a href="/about">About</a>
-      <a class="button" href="#contact">Start a project</a>
-    </nav>
+      <a class="bpc-button" href="#contact">Start a project</a>
+    </div>
   </div>
-</header>
+</div>
+<!--BPC:HEADER:END-->
 
 <main id="main">
 <span id="top"></span>
@@ -622,14 +627,16 @@ ul li::before{content:'';position:absolute;left:0;top:17px;width:11px;height:1px
 </section>
 </main>
 
-<footer>
-  <div class="sheet tb">
+<!--BPC:FOOTER:START-->
+<div class="bpc-chrome bpc-footer" role="contentinfo">
+  <div class="bpc-sheet bpc-tb">
     <div>DOCUMENT<b>SCHEDULE OF RATES</b></div>
     <div>STUDIO<b>BLUEPRINT CODE</b></div>
     <div>ISSUE<b>2026 — SHEETS 01/06</b></div>
     <div>CONTACT<b><a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a></b></div>
   </div>
-</footer>
+</div>
+<!--BPC:FOOTER:END-->
 <script>
 /* Live demos load only when asked — three Three.js prototypes booting at once
    would stall the page. Also pauses looping films for reduced-motion users. */
@@ -650,13 +657,9 @@ document.querySelectorAll('.media-launch').forEach(function(btn){
 if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){
   document.querySelectorAll('.media--loop video').forEach(function(v){ v.pause(); });
 }
-var burger = document.querySelector('.burger');
-if(burger){
-  burger.addEventListener('click', function(){
-    var open = document.body.classList.toggle('nav-open');
-    burger.setAttribute('aria-expanded', open ? 'true' : 'false');
-  });
-}
 </script>
+<!--BPC:SCRIPT:START-->
+<script defer src="/partials/site-chrome.js"></script>
+<!--BPC:SCRIPT:END-->
 </body>
 </html>

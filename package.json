@@ -5,7 +5,9 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "build:chrome": "node scripts/inject-chrome.mjs",
+    "prebuild": "node scripts/inject-chrome.mjs"
   },
   "dependencies": {
     "next": "16.3.4",
