@@ -1,0 +1,696 @@
+/* ==========================================================================
+   home.css — Blueprint Code homepage design system
+   Applied to the / route (src/app/page.tsx + Home.tsx). Scoped under .bp-root
+   so it never collides with the pricing / not-found styles in globals.css.
+   Palette, type, layout and motion follow the Blueprint Code Homepage
+   reference implementation.
+   ========================================================================== */
+
+.bp-root {
+  /* palette */
+  --bp-bg: #0A1628;
+  --bp-card: #0F1E33;
+  --bp-light: #EEF3F9;
+  --bp-ink: #EEF3F9;
+  --bp-body: #9FB3CB;
+  --bp-muted: #6C83A1;
+  --bp-accent: #8ED0FF;
+  --bp-accent-2: #A9DCFF;
+  --bp-accent-dark: #1E6FA8;
+  --bp-border: rgba(255, 255, 255, 0.08);
+  --bp-border-nav: rgba(255, 255, 255, 0.07);
+  --bp-border-hover: rgba(142, 208, 255, 0.35);
+  --bp-light-border: rgba(10, 22, 40, 0.12);
+
+  /* type */
+  --bp-head: 'Instrument Sans', system-ui, -apple-system, sans-serif;
+  --bp-prose: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+  --bp-mono: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+
+  --bp-max: 1200px;
+  --bp-gut: 28px;
+
+  position: relative;
+  min-height: 100vh;
+  background: var(--bp-bg);
+  color: var(--bp-body);
+  font-family: var(--bp-prose);
+  overflow-x: clip; /* contain the grid texture without breaking sticky nav */
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+.bp-root *,
+.bp-root *::before,
+.bp-root *::after { box-sizing: border-box; }
+
+.bp-root h1,
+.bp-root h2,
+.bp-root h3,
+.bp-root h4,
+.bp-root p,
+.bp-root ul { margin: 0; }
+
+.bp-root a { color: var(--bp-ink); text-decoration: none; }
+.bp-root a:hover { color: var(--bp-accent); }
+.bp-root ul { list-style: none; padding: 0; }
+
+/* ---- keyframes ----------------------------------------------------------- */
+@keyframes bp-rise { from { opacity: 0; transform: translateY(22px); } to { opacity: 1; transform: none; } }
+@keyframes bp-pulse { 0%, 100% { box-shadow: 0 0 0 4px rgba(142, 208, 255, 0.15); } 50% { box-shadow: 0 0 0 8px rgba(142, 208, 255, 0.05); } }
+@keyframes bp-flow { from { background-position: 0 0; } to { background-position: 0 26px; } }
+
+/* ---- scroll reveal (progressive enhancement) ----------------------------- */
+/* Visible by default; only hidden once JS marks the document, so no-JS and
+   crawlers always see content. */
+.bp-js .bp-reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.8s cubic-bezier(0.2, 0.7, 0.2, 1),
+    transform 0.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+  transition-delay: var(--d, 0s);
+}
+.bp-js .bp-reveal.bp-in { opacity: 1; transform: none; }
+
+.bp-hero-anim { animation: bp-rise 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) both; animation-delay: var(--d, 0s); }
+
+/* ---- blueprint grid texture ---------------------------------------------- */
+.bp-grid {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background-image:
+    linear-gradient(rgba(142, 208, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(142, 208, 255, 0.045) 1px, transparent 1px);
+  background-size: 64px 64px;
+  -webkit-mask-image: linear-gradient(#000 0, #000 620px, transparent 1100px);
+  mask-image: linear-gradient(#000 0, #000 620px, transparent 1100px);
+}
+
+/* ---- skip link ----------------------------------------------------------- */
+.bp-skip {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: var(--bp-accent);
+  color: var(--bp-bg);
+  padding: 10px 16px;
+  border-radius: 8px;
+  font-family: var(--bp-mono);
+  font-size: 13px;
+}
+.bp-skip:focus { left: 16px; top: 12px; }
+
+/* ---- shared container ---------------------------------------------------- */
+.bp-wrap { max-width: var(--bp-max); margin: 0 auto; padding: 0 var(--bp-gut); }
+
+/* ---- nav ----------------------------------------------------------------- */
+.bp-nav {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  background: rgba(10, 22, 40, 0.72);
+  border-bottom: 1px solid var(--bp-border-nav);
+}
+.bp-nav-inner {
+  max-width: var(--bp-max);
+  margin: 0 auto;
+  padding: 0 var(--bp-gut);
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.bp-brand { display: flex; align-items: center; gap: 10px; }
+.bp-brand:hover { color: var(--bp-ink); }
+.bp-mark {
+  width: 26px;
+  height: 26px;
+  display: block;
+  flex: none;
+  border-radius: 6px;
+}
+.bp-brand-name {
+  font-family: var(--bp-head);
+  font-weight: 600;
+  font-size: 15px;
+  letter-spacing: -0.01em;
+  color: var(--bp-ink);
+}
+.bp-navlinks {
+  display: flex;
+  align-items: center;
+  gap: clamp(14px, 2.4vw, 28px);
+  font-size: 14px;
+  font-weight: 500;
+  white-space: nowrap;
+}
+.bp-navlinks a { color: var(--bp-body); }
+.bp-navlinks a:hover { color: var(--bp-ink); }
+.bp-nav-cta {
+  background: var(--bp-ink);
+  color: var(--bp-bg) !important;
+  padding: 9px 16px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 13.5px;
+  flex: none;
+  transition: background 0.25s;
+}
+.bp-nav-cta:hover { background: #fff; }
+
+/* ---- buttons ------------------------------------------------------------- */
+.bp-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 14px 22px;
+  border-radius: 10px;
+  white-space: nowrap;
+  flex: none;
+  font-family: var(--bp-prose);
+  font-size: 15px;
+  font-weight: 600;
+  cursor: pointer;
+  border: 1px solid transparent;
+  transition: background 0.25s, border-color 0.25s, transform 0.3s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.3s, color 0.25s;
+}
+.bp-arrow { font-family: var(--bp-mono); transition: transform 0.3s; }
+.bp-btn:hover .bp-arrow { transform: translateX(3px); }
+
+.bp-btn-primary { background: var(--bp-accent); color: var(--bp-bg); }
+.bp-btn-primary:hover {
+  background: var(--bp-accent-2);
+  color: var(--bp-bg);
+  transform: translateY(-2px);
+  box-shadow: 0 12px 30px -12px rgba(142, 208, 255, 0.6);
+}
+.bp-btn-secondary { border-color: rgba(255, 255, 255, 0.14); color: var(--bp-ink); font-weight: 500; }
+.bp-btn-secondary:hover { border-color: rgba(255, 255, 255, 0.3); color: var(--bp-ink); transform: translateY(-2px); }
+
+.bp-btn-dark { background: var(--bp-bg); color: var(--bp-ink); }
+.bp-btn-dark:hover { background: #16294A; color: var(--bp-ink); transform: translateY(-2px); }
+
+/* ---- section scaffolding ------------------------------------------------- */
+.bp-section {
+  position: relative;
+  z-index: 1;
+  max-width: var(--bp-max);
+  margin: 0 auto;
+  padding: 96px var(--bp-gut);
+}
+.bp-section--border { border-top: 1px solid var(--bp-border-nav); }
+.bp-section--top0 { padding-top: 0; }
+
+.bp-section-head {
+  display: grid;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  gap: 56px;
+  align-items: start;
+}
+
+.bp-eyebrow {
+  font-family: var(--bp-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bp-accent);
+}
+.bp-eyebrow--muted { color: var(--bp-muted); }
+.bp-eyebrow--light { color: var(--bp-accent-dark); }
+
+.bp-h2 {
+  font-family: var(--bp-head);
+  font-weight: 500;
+  font-size: clamp(34px, 4.2vw, 54px);
+  line-height: 1.05;
+  letter-spacing: -0.03em;
+  color: var(--bp-ink);
+  margin-top: 18px;
+  text-wrap: balance;
+}
+.bp-h2--dark { color: var(--bp-bg); }
+
+.bp-h3 {
+  font-family: var(--bp-head);
+  font-weight: 500;
+  font-size: 22px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: var(--bp-ink);
+}
+
+.bp-lead {
+  font-size: 18px;
+  line-height: 1.65;
+  max-width: 56ch;
+  text-wrap: pretty;
+  padding-top: 34px;
+}
+.bp-lead--dark { color: #3E5470; padding-top: 24px; max-width: 50ch; }
+
+/* ---- hero ---------------------------------------------------------------- */
+.bp-hero {
+  position: relative;
+  z-index: 1;
+  max-width: var(--bp-max);
+  margin: 0 auto;
+  padding: 104px var(--bp-gut) 72px;
+}
+.bp-hero-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--bp-mono);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bp-muted);
+}
+.bp-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--bp-accent);
+  display: inline-block;
+  flex: none;
+  animation: bp-pulse 2.4s ease-in-out infinite;
+}
+.bp-h1 {
+  font-family: var(--bp-head);
+  font-weight: 500;
+  font-size: clamp(44px, 6.4vw, 84px);
+  line-height: 1.02;
+  letter-spacing: -0.035em;
+  color: var(--bp-ink);
+  max-width: 15ch;
+  margin: 26px 0 28px;
+  text-wrap: balance;
+}
+.bp-hero-row {
+  display: grid;
+  grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
+  gap: 48px;
+  align-items: end;
+}
+.bp-hero-lead {
+  font-size: 19px;
+  line-height: 1.6;
+  max-width: 56ch;
+  color: var(--bp-body);
+  text-wrap: pretty;
+}
+.bp-hero-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 32px; }
+.bp-hero-aside { border-left: 1px solid var(--bp-border); padding-left: 24px; }
+.bp-aside-label {
+  font-family: var(--bp-mono);
+  font-size: 12px;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  color: var(--bp-ink);
+  margin-bottom: 12px;
+  line-height: 1.4;
+}
+.bp-hero-aside p { font-size: 14px; line-height: 1.6; }
+
+/* datum */
+.bp-datum {
+  margin-top: 56px;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 1px;
+  background: var(--bp-border);
+  border: 1px solid var(--bp-border);
+  border-radius: 12px;
+  overflow: hidden;
+}
+.bp-datum-cell { background: var(--bp-bg); padding: 22px 24px; }
+.bp-datum-label {
+  font-family: var(--bp-mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--bp-muted);
+}
+.bp-datum-value {
+  font-family: var(--bp-head);
+  font-size: 22px;
+  font-weight: 500;
+  color: var(--bp-ink);
+  margin-top: 8px;
+  letter-spacing: -0.02em;
+}
+
+/* ---- 01 configurators ---------------------------------------------------- */
+.bp-cfg-intro { margin-top: 56px; max-width: 62ch; }
+.bp-cfg-intro .bp-h3 { font-size: 26px; margin: 14px 0 12px; }
+.bp-cfg-intro p { font-size: 16px; line-height: 1.6; }
+
+/* Scroll-driven sticky stack: each card pins to the viewport while the one
+   beneath scales down and darkens (native scroll-driven animation, no JS). */
+.bp-cards {
+  --n: 5;
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+.bp-card {
+  position: sticky;
+  top: calc(84px + var(--i, 0) * 15px);
+  margin-bottom: 18px;
+  border: 1px solid var(--bp-border);
+  border-radius: 16px;
+  background: var(--bp-card);
+  overflow: hidden;
+  transform-origin: 50% 0;
+  transition: border-color 0.3s;
+  will-change: transform, filter;
+}
+.bp-card:last-child { margin-bottom: 0; }
+/* Per-card capability accent — colours the frame + glow so each stands out. */
+.bp-card:nth-child(1) { --cap: #6db1ff; }
+.bp-card:nth-child(2) { --cap: #4fd0a0; }
+.bp-card:nth-child(3) { --cap: #f0b35a; }
+.bp-card:nth-child(4) { --cap: #b79cff; }
+.bp-card:nth-child(5) { --cap: #ff9ec4; }
+.bp-card {
+  border-color: color-mix(in srgb, var(--cap, #6db1ff) 40%, var(--bp-border));
+  box-shadow: 0 26px 70px -38px color-mix(in srgb, var(--cap, #6db1ff) 55%, transparent);
+}
+.bp-card:hover { border-color: color-mix(in srgb, var(--cap, #6db1ff) 75%, transparent); }
+.bp-cap-frame {
+  display: block;
+  width: 100%;
+  height: 560px;
+  border: 0;
+  background: var(--bp-card);
+}
+/* Layered navy shades (theme palette) so the pile reads as depth. */
+.bp-card:nth-child(1) { background: #16294a; }
+.bp-card:nth-child(2) { background: #13223d; }
+.bp-card:nth-child(3) { background: #0f1e33; }
+.bp-card:nth-child(4) { background: #0c1a2d; }
+.bp-card:nth-child(5) { background: #0a1628; }
+
+@supports (animation-timeline: view()) {
+  /* One timeline for the whole stack (the container scrolls normally, so its
+     progress never freezes the way a sticky element's own view() would). Each
+     card compresses over its slice of that progress, so they scale + darken
+     one after another as the next rises over them. The last card stays crisp. */
+  .bp-cards {
+    view-timeline-name: --bp-stack;
+    view-timeline-axis: block;
+  }
+  .bp-card:not(:last-child) {
+    animation: bp-card-stack linear both;
+    animation-timeline: --bp-stack;
+    animation-range: cover calc((var(--i) + 0.5) / var(--n) * 100%)
+                     cover calc((var(--i) + 1.5) / var(--n) * 100%);
+  }
+  @keyframes bp-card-stack {
+    to { transform: scale(0.9); filter: brightness(0.58); }
+  }
+}
+
+.bp-card-tag { font-family: var(--bp-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--bp-accent); }
+.bp-card h3 { font-family: var(--bp-head); font-weight: 500; font-size: 22px; color: var(--bp-ink); margin: 14px 0 10px; letter-spacing: -0.02em; line-height: 1.2; }
+.bp-card p { font-size: 15px; line-height: 1.55; max-width: 60ch; }
+.bp-cfg-actions { margin-top: 40px; }
+
+/* ---- 02 sprint (light section) ------------------------------------------- */
+.bp-sprint { position: relative; z-index: 1; background: var(--bp-light); color: #3E5470; }
+.bp-sprint > .bp-wrap { padding-top: 96px; padding-bottom: 96px; }
+
+/* One grid for the whole section: every row shares the same left/right edges. */
+.bp-sprint-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px 24px; align-items: start; }
+.bp-sprint-full { grid-column: 1 / -1; }
+.bp-sprint-lead { padding-top: 0; max-width: none; }
+
+.bp-get-card { border: 1px solid var(--bp-light-border); border-radius: 14px; padding: 26px; background: #fff; margin-top: 12px; }
+.bp-get-card .bp-eyebrow { margin-bottom: 16px; }
+/* Two-column list fills the full-width card; collapses to one column < 760px. */
+.bp-ticklist { columns: 2; column-gap: 40px; font-size: 15px; color: #1B2B45; }
+.bp-ticklist li { display: flex; gap: 10px; line-height: 1.5; break-inside: avoid; margin-bottom: 12px; }
+.bp-ticklist li:last-child { margin-bottom: 0; }
+.bp-tick { color: var(--bp-accent-dark); font-family: var(--bp-mono); font-weight: 700; flex: none; }
+
+/* Price cards: price -> bold label -> one detail line, parallel and scannable. */
+.bp-price-card { position: relative; border: 1px solid var(--bp-light-border); border-radius: 14px; padding: 22px 26px; background: #fff; }
+.bp-price-num { font-family: var(--bp-head); font-size: 30px; font-weight: 600; letter-spacing: -0.03em; color: var(--bp-bg); }
+.bp-price-label { font-weight: 700; font-size: 15px; color: var(--bp-bg); margin-top: 10px; }
+.bp-price-detail { font-size: 14px; line-height: 1.5; color: #3E5470; margin-top: 2px; }
+/* Marked card: the common choice, with hover lift + deeper shadow. */
+.bp-price-card--pick { border: 2px solid var(--bp-accent-dark); transition: transform 0.25s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.25s; }
+.bp-price-card--pick:hover { transform: translateY(-2px); box-shadow: 0 18px 40px -20px rgba(10, 22, 40, 0.35); }
+.bp-price-pill { position: absolute; top: -11px; left: 26px; background: var(--bp-accent-dark); color: #fff; font-family: var(--bp-mono); font-size: 11px; letter-spacing: 0.04em; padding: 3px 10px; border-radius: 999px; }
+
+/* Credited line promoted to a body-size accent panel, directly after pricing. */
+.bp-credit { font-size: 15px; line-height: 1.6; color: #1B2B45; background: rgba(30, 111, 168, 0.1); border: 1px solid rgba(30, 111, 168, 0.18); border-radius: 12px; padding: 16px 20px; }
+.bp-credit strong { color: var(--bp-bg); font-weight: 600; }
+
+.bp-sprint-actions { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+.bp-btn-dark-ghost { border-color: rgba(10, 22, 40, 0.22); color: var(--bp-bg); font-weight: 500; }
+.bp-btn-dark-ghost:hover { border-color: rgba(10, 22, 40, 0.5); color: var(--bp-bg); transform: translateY(-2px); }
+
+/* Single entrance effect for the list items + price cards. Resting state is
+   gated on `.bp-js` (added by script) and reduced-motion, so with JS disabled
+   or reduced motion the content is visible without the observer running. */
+@media (prefers-reduced-motion: no-preference) {
+  .bp-js .bp-sprint-rise { opacity: 0; transform: translateY(8px); transition: opacity 0.4s ease, transform 0.4s ease; transition-delay: var(--rise-d, 0s); }
+  .bp-js .bp-sprint-rise.is-in { opacity: 1; transform: none; }
+}
+
+/* ---- 03 selected work ---------------------------------------------------- */
+/* Four equal-width, full-height columns; 1px grid gaps read as hairlines. */
+.bp-worklist {
+  margin-top: 48px;
+  list-style: none;
+  padding: 0;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1px;
+  background: var(--bp-border);
+  border-top: 1px solid var(--bp-border);
+  border-bottom: 1px solid var(--bp-border);
+}
+.bp-work-item { position: relative; display: flex; background: var(--bp-bg); min-height: clamp(440px, 60vh, 620px); }
+/* The whole column is the link; text pinned to the bottom. */
+.bp-work-link {
+  position: relative;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 26px 24px;
+  color: inherit;
+  overflow: hidden;
+  isolation: isolate;
+}
+.bp-work-link:focus-visible { outline: 2px solid var(--bp-accent); outline-offset: -2px; }
+/* At rest the image sits in the top region of the card (the space with no
+   text); on hover it grows to fill the whole column. */
+.bp-work-img {
+  position: absolute; left: 0; right: 0; top: 0; height: 60%; z-index: 0;
+  background-size: cover; background-position: center;
+  transform: scale(1.06); transform-origin: center;
+}
+/* Bottom-weighted scrim so the title stays legible over bright screenshots. */
+.bp-work-scrim {
+  position: absolute; inset: 0; z-index: 1;
+  background: linear-gradient(to bottom, rgba(10, 22, 40, 0.15) 30%, rgba(10, 22, 40, 0.82));
+  opacity: 0;
+}
+.bp-work-body { position: relative; z-index: 2; display: flex; flex-direction: column; gap: 10px; }
+.bp-work-title {
+  font-family: var(--bp-head); font-weight: 500; font-size: 22px; letter-spacing: -0.02em;
+  color: var(--bp-ink); display: flex; align-items: center; gap: 8px;
+  text-shadow: 0 1px 10px rgba(10, 22, 40, 0.5);
+}
+.bp-work-title .bp-arrow { font-family: var(--bp-mono); }
+.bp-work-cta { font-family: var(--bp-mono); font-size: 12px; letter-spacing: 0.06em; color: var(--bp-accent); }
+/* Wrapper around description (+ tags) — height animates so the space collapses. */
+.bp-work-fade { overflow: hidden; max-height: 120px; opacity: 1; }
+.bp-work-desc { display: block; font-size: 14.5px; line-height: 1.5; color: var(--bp-body); }
+.bp-work-tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 10px; }
+.bp-work-tag { font-family: var(--bp-mono); font-size: 11px; color: var(--bp-muted); border: 1px solid var(--bp-border); border-radius: 999px; padding: 3px 8px; }
+
+@media (prefers-reduced-motion: no-preference) {
+  .bp-work-img { transition: height 0.55s cubic-bezier(0.2, 0.7, 0.2, 1), transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1); }
+  .bp-work-scrim { transition: opacity 0.5s ease; }
+  .bp-work-fade { transition: max-height 0.5s cubic-bezier(0.2, 0.7, 0.2, 1), opacity 0.35s ease; }
+  .bp-work-title .bp-arrow { transition: transform 0.3s; }
+}
+/* Hover AND keyboard focus: the top-band image grows to fill the column and
+   the description collapses. Title, mono line and arrow stay. */
+.bp-work-link:hover .bp-work-img,
+.bp-work-link:focus-visible .bp-work-img { height: 100%; transform: scale(1); }
+.bp-work-link:hover .bp-work-scrim,
+.bp-work-link:focus-visible .bp-work-scrim { opacity: 1; }
+.bp-work-link:hover .bp-work-fade,
+.bp-work-link:focus-visible .bp-work-fade { max-height: 0; opacity: 0; }
+.bp-work-link:hover .bp-work-title .bp-arrow,
+.bp-work-link:focus-visible .bp-work-title .bp-arrow { transform: translateX(4px); }
+
+/* Stacked layouts and touch devices have no hover: lock the rest state — image
+   kept in the top band, scrim off, description visible (overrides any
+   sticky-tap :hover). Text sits on the card, so contrast is unaffected. */
+@media (max-width: 900px), (hover: none) {
+  .bp-work-link:hover .bp-work-img,
+  .bp-work-link:focus-visible .bp-work-img,
+  .bp-work-img { height: 60%; transform: none; }
+  .bp-work-link:hover .bp-work-scrim,
+  .bp-work-link:focus-visible .bp-work-scrim,
+  .bp-work-scrim { opacity: 0; }
+  .bp-work-link:hover .bp-work-fade,
+  .bp-work-link:focus-visible .bp-work-fade,
+  .bp-work-fade { max-height: 120px; opacity: 1; }
+}
+
+/* ---- 04 featured --------------------------------------------------------- */
+.bp-featured {
+  display: grid;
+  grid-template-columns: minmax(0, 1.05fr) minmax(0, 0.95fr);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bp-card);
+}
+.bp-featured-copy { padding: 52px; }
+.bp-featured-sublabel { font-family: var(--bp-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--bp-muted); margin-top: 14px; }
+.bp-featured-copy .bp-h2 { font-size: clamp(30px, 3.4vw, 42px); line-height: 1.1; margin: 14px 0 20px; }
+.bp-featured-copy > p { font-size: 16px; line-height: 1.65; text-wrap: pretty; }
+.bp-featured-copy a.bp-inline { color: var(--bp-ink); border-bottom: 1px solid rgba(255, 255, 255, 0.3); }
+.bp-featured-ticks { margin-top: 22px; display: flex; flex-direction: column; gap: 9px; font-size: 14.5px; }
+.bp-featured-ticks li { display: flex; gap: 12px; line-height: 1.5; color: var(--bp-body); }
+.bp-featured-ticks .bp-tick { color: var(--bp-accent); }
+.bp-featured-visual {
+  position: relative;
+  border-left: 1px solid var(--bp-border);
+  padding: clamp(20px, 3vw, 36px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0d1b2e;
+  overflow: hidden;
+}
+.bp-featured-svg {
+  display: block;
+  width: 100%;
+  max-width: 100%;
+  height: auto;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+.bp-featured-btn { margin-top: 32px; display: inline-flex; }
+
+/* ---- 05 levels ----------------------------------------------------------- */
+.bp-levels { margin-top: 48px; display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 16px; }
+.bp-level {
+  display: flex;
+  flex-direction: column;
+  min-height: 280px;
+  padding: 28px;
+  border: 1px solid var(--bp-border);
+  border-radius: 14px;
+  background: var(--bp-card);
+  transition: border-color 0.3s, transform 0.4s cubic-bezier(0.2, 0.7, 0.2, 1), box-shadow 0.4s;
+}
+.bp-level:hover { border-color: var(--bp-border-hover); transform: translateY(-4px); box-shadow: 0 20px 40px -24px rgba(0, 0, 0, 0.8); }
+.bp-level-code { font-family: var(--bp-mono); font-size: 11px; letter-spacing: 0.08em; color: var(--bp-muted); }
+.bp-level h3 { font-family: var(--bp-head); font-weight: 500; font-size: 22px; letter-spacing: -0.02em; color: var(--bp-ink); margin: 26px 0 10px; line-height: 1.15; }
+.bp-level p { font-size: 14px; line-height: 1.55; }
+.bp-level-price { margin-top: auto; padding-top: 24px; font-family: var(--bp-mono); font-size: 13px; letter-spacing: 0.02em; color: var(--bp-ink); }
+.bp-level-price a { color: var(--bp-ink); }
+.bp-ladder-note { margin-top: 22px; font-size: 14px; color: var(--bp-muted); }
+.bp-ladder-note a { color: var(--bp-body); border-bottom: 1px solid rgba(255, 255, 255, 0.2); }
+
+/* ---- 06 about ------------------------------------------------------------ */
+.bp-about-body { padding-top: 34px; }
+.bp-principles { margin-top: 36px; display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 28px; }
+.bp-principle-line { width: 24px; height: 1px; background: var(--bp-accent); margin-bottom: 14px; }
+.bp-principle h3 { font-family: var(--bp-head); font-weight: 500; font-size: 17px; color: var(--bp-ink); margin-bottom: 8px; }
+.bp-principle p { font-size: 14px; line-height: 1.55; }
+
+/* ---- close / CTA card ---------------------------------------------------- */
+.bp-close-card {
+  border: 1px solid rgba(142, 208, 255, 0.25);
+  border-radius: 20px;
+  padding: 72px 56px;
+  text-align: center;
+  background: radial-gradient(70% 100% at 50% 0%, rgba(142, 208, 255, 0.14), var(--bp-card) 70%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 22px;
+}
+.bp-close-card .bp-h2 { font-size: clamp(32px, 4.4vw, 56px); line-height: 1.05; letter-spacing: -0.035em; max-width: 18ch; margin-top: 0; }
+.bp-close-card p { font-size: 17px; line-height: 1.65; max-width: 54ch; text-wrap: pretty; }
+.bp-close-actions { display: flex; gap: 12px; flex-wrap: wrap; justify-content: center; margin-top: 8px; }
+
+/* ---- footer -------------------------------------------------------------- */
+.bp-footer { position: relative; z-index: 1; border-top: 1px solid var(--bp-border-nav); }
+.bp-footer-inner {
+  max-width: var(--bp-max);
+  margin: 0 auto;
+  padding: 36px var(--bp-gut);
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 24px;
+  font-family: var(--bp-mono);
+  font-size: 11.5px;
+  letter-spacing: 0.06em;
+  color: var(--bp-muted);
+}
+.bp-footer-brand { display: flex; align-items: center; gap: 10px; white-space: nowrap; }
+.bp-footer-mark { width: 14px; height: 14px; border: 1.5px solid var(--bp-accent); border-radius: 2px; display: block; flex: none; }
+.bp-footer-brand b { color: var(--bp-ink); font-weight: 400; }
+.bp-footer-meta { display: flex; flex-wrap: wrap; gap: 28px; white-space: nowrap; }
+.bp-footer-meta a { color: var(--bp-body); }
+
+/* ---- responsive ---------------------------------------------------------- */
+@media (max-width: 900px) {
+  .bp-section-head,
+  .bp-hero-row,
+  .bp-featured { grid-template-columns: 1fr; }
+  .bp-featured-visual { border-left: 0; border-top: 1px solid var(--bp-border); }
+  .bp-lead, .bp-lead--dark { padding-top: 0; }
+  .bp-hero-aside { border-left: 0; padding-left: 0; border-top: 1px solid var(--bp-border); padding-top: 20px; }
+  /* No sticky-stack on small screens — the capability cards flow normally. */
+  .bp-card { position: relative; top: auto; transform: none; filter: none; animation: none; }
+  /* Selected work: two columns below 900px. */
+  .bp-worklist { grid-template-columns: 1fr 1fr; }
+  .bp-work-item { min-height: 380px; }
+}
+@media (max-width: 860px) {
+  .bp-navlinks a:not(.bp-nav-cta) { display: none; }
+}
+@media (max-width: 760px) {
+  .bp-sprint-grid { grid-template-columns: 1fr; }
+  .bp-ticklist { columns: 1; }
+}
+@media (max-width: 640px) {
+  .bp-hero { padding-top: 72px; }
+  .bp-featured-copy { padding: 32px 26px; }
+  .bp-close-card { padding: 48px 26px; }
+  .bp-hero-actions, .bp-close-actions { width: 100%; }
+}
+@media (max-width: 560px) {
+  /* Selected work: single column. */
+  .bp-worklist { grid-template-columns: 1fr; }
+}
+
+/* ---- reduced motion ------------------------------------------------------ */
+@media (prefers-reduced-motion: reduce) {
+  .bp-js .bp-reveal,
+  .bp-hero-anim { opacity: 1; transform: none; transition: none; animation: none; }
+  .bp-dot, .bp-flow-line { animation: none; }
+  .bp-card:hover, .bp-level:hover, .bp-btn:hover { transform: none; }
+  /* Undo the sticky stack — cards flow normally, no pin/scale/darken. */
+  .bp-card { position: relative; top: auto; transform: none; filter: none; animation: none; margin-bottom: 16px; }
+}

@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blueprint Code — Integrations</title>
+<link rel="stylesheet" href="/capabilities/cap.css">
+<style>:root{--accent:#b79cff;--accent-2:#8f6fe6;--glow:rgba(183,156,255,.15);--tint:rgba(183,156,255,.06)}</style>
+</head><body>
+<section class="card" data-demo="connect">
+  <div class="copy">
+    <div class="eyebrow">Connect</div>
+    <h2>WooCommerce, Shopify and CRM integration</h2>
+    <p class="lede">Configuration flows straight to checkout or pipeline.</p>
+    <p class="more">A finished configuration is a structured payload. For a shop it becomes a line item with every option recorded; for a sales team it becomes a deal with the spec attached — same data, different destination.</p>
+    <div class="foot"><a href="/prototypes">See a live build →</a><span class="tag">REST</span><span class="tag">webhooks</span></div>
+  </div>
+  <div class="demo">
+    <div class="demo-label"><span>Where the configuration goes</span><b id="c-mode-label">Checkout</b></div>
+    <div class="demo-body connect">
+      <div class="seg" style="max-width:320px" id="c-mode"><button data-v="checkout" class="on">Checkout</button><button data-v="pipeline">Sales pipeline</button></div>
+      <div class="flow">
+        <div class="node"><div class="t">Configurator</div>Cabinet · 2.0 m · Walnut<br><span class="mono" style="font-size:12px;color:var(--dim)">config_id 7f3a</span></div>
+        <div class="wire"><span class="pkt"></span></div>
+        <div class="targets" id="targets"></div>
+      </div>
+      <pre class="payload" id="payload"></pre>
+    </div>
+  </div>
+</section>
+<script src="/capabilities/cap-frame.js" defer></script>
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const TARGETS={checkout:[{n:'WooCommerce',s:'line item created'},{n:'Shopify',s:'cart attributes set'},{n:'HubSpot',s:'idle'}],
+               pipeline:[{n:'WooCommerce',s:'idle'},{n:'Shopify',s:'idle'},{n:'HubSpot',s:'deal created · £4,190'}]};
+const PAYLOAD={checkout:`{
+  <span class="k">"event"</span>: <span class="s">"configuration.completed"</span>,
+  <span class="k">"config_id"</span>: <span class="s">"7f3a"</span>,
+  <span class="k">"destination"</span>: <span class="s">"checkout"</span>,
+  <span class="k">"line_item"</span>: {
+    <span class="k">"sku"</span>: <span class="s">"CAB-200-WAL"</span>,
+    <span class="k">"qty"</span>: <span class="n">1</span>,
+    <span class="k">"price"</span>: <span class="n">4190.00</span>,
+    <span class="k">"options"</span>: { <span class="k">"width_mm"</span>: <span class="n">2000</span>, <span class="k">"finish"</span>: <span class="s">"walnut"</span>, <span class="k">"lift"</span>: <span class="s">"motorised"</span> }
+  }
+}`,pipeline:`{
+  <span class="k">"event"</span>: <span class="s">"configuration.completed"</span>,
+  <span class="k">"config_id"</span>: <span class="s">"7f3a"</span>,
+  <span class="k">"destination"</span>: <span class="s">"pipeline"</span>,
+  <span class="k">"deal"</span>: {
+    <span class="k">"stage"</span>: <span class="s">"quote_sent"</span>,
+    <span class="k">"amount"</span>: <span class="n">4190.00</span>,
+    <span class="k">"contact"</span>: <span class="s">"j.smith@example.com"</span>,
+    <span class="k">"attachments"</span>: [<span class="s">"spec-7f3a.pdf"</span>, <span class="s">"render-7f3a.png"</span>]
+  }
+}`};
+function start(){
+  function set(mode){
+    $('#c-mode-label').textContent=mode==='checkout'?'Checkout':'Sales pipeline';
+    $('#targets').innerHTML=TARGETS[mode].map(t=>`<div class="tgt ${t.s!=='idle'?'live':''}"><span>${t.n}</span><span class="st">${t.s}</span></div>`).join('');
+    $('#payload').innerHTML=PAYLOAD[mode];
+  }
+  $$('button',$('#c-mode')).forEach(b=>b.onclick=()=>{$$('button',$('#c-mode')).forEach(x=>x.classList.remove('on'));b.classList.add('on');set(b.dataset.v)});
+  set('checkout');
+}
+if(document.readyState!=='loading') start(); else addEventListener('DOMContentLoaded',start);
+})();
+</script>
+</body></html>

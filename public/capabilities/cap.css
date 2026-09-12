@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap');
+/* Shared styles for the Blueprint Code capability demo cards.
+   Each capability is served as its own page and embedded in the homepage
+   via an iframe, so these class names stay isolated from the site's CSS. */
+:root{
+  --bg:#0a111f; --card:#0f1a2e; --card2:#132039; --line:#1f2c47; --line2:#2a3a5c;
+  --text:#eef2f9; --muted:#97a6c1; --dim:#5f6f8f; --accent:#6db1ff; --accent-2:#3d7fe0;
+  --ok:#5ad19a; --warn:#f0b35a; --bad:#ef7a7a;
+  /* Per-card accent (each capability page overrides these). */
+  --glow:rgba(109,177,255,.10); --tint:rgba(109,177,255,.05);
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,SFMono-Regular,Menlo,monospace;
+  color-scheme:dark;
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--card);color:var(--text);font-family:var(--sans);font-size:16px;line-height:1.5}
+button,select,input{font-family:inherit;font-size:inherit;color:inherit}
+button:focus-visible,select:focus-visible,input:focus-visible,.chip:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.card{background:var(--card);
+  display:grid;grid-template-columns:minmax(300px,4fr) minmax(0,7fr);overflow:hidden;min-height:560px}
+.card .copy{padding:44px 40px;display:flex;flex-direction:column;gap:14px;border-right:1px solid var(--line);min-width:0}
+.eyebrow{font-family:var(--mono);font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--dim)}
+.card h2{margin:6px 0 0;font-size:clamp(26px,2.6vw,36px);line-height:1.12;letter-spacing:-.02em;font-weight:600;text-wrap:balance}
+.card .lede{margin:0;color:var(--muted);font-size:17px;max-width:38ch}
+.card .more{margin:0;color:var(--muted);font-size:15px;max-width:42ch;line-height:1.55}
+.card .foot{margin-top:auto;display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.card .foot a{color:var(--accent);text-decoration:none;font-weight:500;font-size:15px}
+.card .foot a:hover{text-decoration:underline}
+.tag{font-family:var(--mono);font-size:11px;color:var(--dim);border:1px solid var(--line2);border-radius:999px;padding:3px 9px;letter-spacing:.04em}
+.demo{position:relative;padding:32px;min-width:0;display:flex;flex-direction:column;background:
+  radial-gradient(900px 400px at 80% -10%,var(--glow),transparent 60%),var(--card)}
+.demo-label{font-family:var(--mono);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--dim);margin-bottom:16px;display:flex;justify-content:space-between}
+.demo-label b{font-weight:500;color:var(--muted)}
+.demo-body{flex:1;min-height:0;display:grid;gap:18px}
+
+/* generic controls */
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:13px;color:var(--muted)}
+.select{appearance:none;background:var(--card2);border:1px solid var(--line2);border-radius:8px;padding:10px 36px 10px 12px;color:var(--text);
+  background-image:linear-gradient(45deg,transparent 50%,var(--muted) 50%),linear-gradient(135deg,var(--muted) 50%,transparent 50%);
+  background-position:calc(100% - 18px) 50%,calc(100% - 13px) 50%;background-size:5px 5px;background-repeat:no-repeat;cursor:pointer}
+.select option:disabled{color:#6b7a95}
+.btn{background:var(--accent-2);border:0;color:#fff;border-radius:8px;padding:11px 18px;font-weight:600;cursor:pointer;transition:opacity .2s,transform .1s}
+.btn:hover{transform:translateY(-1px)}
+.btn:disabled{opacity:.35;cursor:not-allowed;transform:none}
+.btn.ghost{background:transparent;border:1px solid var(--line2);color:var(--text);font-weight:500}
+.panel{background:var(--card2);border:1px solid var(--line);border-radius:10px;padding:16px}
+.mono{font-family:var(--mono)}
+
+/* 3D */
+.d3{grid-template-rows:1fr auto}
+.d3 canvas{width:100%;height:100%;display:block;border-radius:10px}
+.stage{position:relative;min-height:220px;background:linear-gradient(180deg,#0c1628,#0a1220);border:1px solid var(--line);border-radius:10px;overflow:hidden}
+.stage .fps{position:absolute;right:10px;top:8px;font-family:var(--mono);font-size:11px;color:var(--dim)}
+.swatches{display:flex;gap:10px;flex-wrap:wrap}
+.sw{display:flex;align-items:center;gap:8px;background:var(--card2);border:1px solid var(--line2);border-radius:999px;padding:6px 12px 6px 6px;cursor:pointer;font-size:13px;color:var(--muted)}
+.sw i{width:22px;height:22px;border-radius:50%;display:block;border:1px solid rgba(255,255,255,.15)}
+.sw.on{border-color:var(--accent);color:var(--text)}
+
+/* rules */
+.rules{grid-template-columns:1fr 1fr;grid-template-rows:auto auto 1fr}
+.rules .field{grid-column:span 1}
+.rules .why{grid-column:1/-1;display:flex;gap:10px;align-items:flex-start;font-size:14px;color:var(--muted);min-height:44px}
+.rules .why .dot{width:8px;height:8px;border-radius:50%;margin-top:7px;flex:none;background:var(--dim)}
+.rules .why.ok .dot{background:var(--ok)} .rules .why.bad .dot{background:var(--bad)}
+.rules .basket{grid-column:1/-1;display:flex;align-items:center;gap:14px;align-self:end}
+.rules .basket .sum{font-family:var(--mono);font-size:13px;color:var(--dim)}
+.rules .badge{display:inline-flex;gap:6px;align-items:center;font-size:12px;font-family:var(--mono);color:var(--dim)}
+.rules .badge.off{color:var(--bad)}
+
+/* price */
+.price{grid-template-columns:1fr 1fr}
+.price .controls{display:flex;flex-direction:column;gap:16px}
+.range{display:flex;flex-direction:column;gap:6px}
+.range .row{display:flex;justify-content:space-between;font-size:13px;color:var(--muted)}
+.range .row b{color:var(--text);font-weight:500;font-family:var(--mono)}
+input[type=range]{width:100%;accent-color:var(--accent)}
+.seg{display:flex;gap:0;border:1px solid var(--line2);border-radius:8px;overflow:hidden}
+.seg button{flex:1;background:transparent;border:0;padding:9px 6px;font-size:13px;color:var(--muted);cursor:pointer;border-right:1px solid var(--line2)}
+.seg button:last-child{border-right:0}
+.seg button.on{background:var(--card2);color:var(--text)}
+.total{display:flex;flex-direction:column;gap:2px}
+.total .n{font-size:40px;font-weight:600;letter-spacing:-.03em;font-family:var(--mono);font-variant-numeric:tabular-nums;line-height:1.05}
+.total small{color:var(--dim);font-size:12px;font-family:var(--mono)}
+.spec{display:grid;grid-template-columns:auto 1fr;gap:6px 14px;font-size:13px}
+.spec dt{color:var(--dim);font-family:var(--mono);font-size:12px}
+.spec dd{margin:0;color:var(--text);font-variant-numeric:tabular-nums}
+.spec dd.flash{color:var(--accent);transition:color .6s}
+.toast{position:absolute;left:32px;bottom:20px;background:var(--card2);border:1px solid var(--ok);color:var(--text);border-radius:8px;padding:9px 14px;font-size:13px;opacity:0;transform:translateY(8px);transition:.3s;pointer-events:none}
+.toast.show{opacity:1;transform:none}
+
+/* connect */
+.connect{grid-template-rows:auto 1fr auto}
+.flow{position:relative;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;gap:0;min-height:170px}
+.node{background:var(--card2);border:1px solid var(--line2);border-radius:10px;padding:14px 16px;font-size:14px}
+.node .t{font-family:var(--mono);font-size:11px;color:var(--dim);letter-spacing:.08em;text-transform:uppercase;margin-bottom:6px}
+.wire{position:relative;height:2px;width:min(180px,18vw);background:var(--line2);overflow:visible}
+.wire .pkt{position:absolute;top:50%;left:0;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:4px;background:var(--accent);box-shadow:0 0 14px var(--accent);animation:pkt 1.8s linear infinite}
+@keyframes pkt{0%{left:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{left:100%;opacity:0}}
+.targets{display:flex;flex-direction:column;gap:8px}
+.tgt{display:flex;justify-content:space-between;align-items:center;background:var(--card2);border:1px solid var(--line2);border-radius:8px;padding:9px 12px;font-size:13px;opacity:.45;transition:.3s}
+.tgt.live{opacity:1;border-color:var(--accent)}
+.tgt .st{font-family:var(--mono);font-size:11px;color:var(--dim)}
+.tgt.live .st{color:var(--ok)}
+pre.payload{margin:0;background:#0a1322;border:1px solid var(--line);border-radius:10px;padding:14px;font-family:var(--mono);font-size:12.5px;line-height:1.5;color:var(--muted);overflow:auto;max-height:190px}
+pre.payload .k{color:var(--accent)} pre.payload .s{color:var(--ok)} pre.payload .n{color:var(--warn)}
+
+/* ai */
+.ai{grid-template-columns:1.1fr 1fr}
+.chat{display:flex;flex-direction:column;gap:12px;min-height:0}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{background:var(--card2);border:1px solid var(--line2);border-radius:999px;padding:7px 12px;font-size:13px;color:var(--muted);cursor:pointer;text-align:left}
+.chip:hover,.chip.on{border-color:var(--accent);color:var(--text)}
+.msgs{display:flex;flex-direction:column;gap:10px;flex:1;overflow:auto;max-height:320px}
+.msg{max-width:92%;padding:10px 14px;border-radius:12px;font-size:14px;line-height:1.5}
+.msg.u{align-self:flex-end;background:var(--accent-2);color:#fff;border-bottom-right-radius:4px}
+.msg.a{align-self:flex-start;background:var(--card2);border:1px solid var(--line);border-bottom-left-radius:4px;color:var(--text)}
+.cursor::after{content:"▍";color:var(--accent);animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.cfg{display:flex;flex-direction:column;gap:10px}
+.cfg .row{display:flex;justify-content:space-between;gap:12px;font-size:13px;border-bottom:1px solid var(--line);padding-bottom:8px}
+.cfg .row span:first-child{color:var(--dim);font-family:var(--mono);font-size:12px}
+.cfg .row span:last-child{color:var(--dim);transition:color .4s}
+.cfg .row.set span:last-child{color:var(--text)}
+
+/* The single card fills the iframe; height is driven by content (the parent
+   sizes the iframe to it), so no nested scrollbars. A per-card accent top bar
+   and faint background tint make each capability read distinctly. */
+html,body{height:auto}
+.card{border-radius:0;border:0;border-top:3px solid var(--accent);box-shadow:none;
+  background:linear-gradient(var(--tint),var(--tint)),var(--card)}
+.card .copy{background:linear-gradient(180deg,var(--tint),transparent 220px)}
+
+/* mobile: single column */
+@media (max-width:900px){
+  .card{grid-template-columns:1fr;min-height:0}
+  .card .copy{border-right:0;border-bottom:1px solid var(--line);padding:28px 22px}
+  .demo{padding:22px}
+  .rules,.price,.ai{grid-template-columns:1fr}
+  .flow{grid-template-columns:1fr;gap:12px}.wire{width:2px;height:40px;margin:0 auto}.wire .pkt{animation-name:pktv}
+  @keyframes pktv{0%{top:0;opacity:0}10%{opacity:1}90%{opacity:1}100%{top:100%;opacity:0}}
+  .toast{position:static;margin-top:12px}
+}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}

@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blueprint Code — Dynamic pricing</title>
+<link rel="stylesheet" href="/capabilities/cap.css">
+<style>:root{--accent:#f0b35a;--accent-2:#d9932f;--glow:rgba(240,179,90,.14);--tint:rgba(240,179,90,.05)}</style>
+</head><body>
+<section class="card" data-demo="price">
+  <div class="copy">
+    <div class="eyebrow">Price</div>
+    <h2>Dynamic pricing and specification</h2>
+    <p class="lede">Live totals, quotes and spec sheets as options change.</p>
+    <p class="more">Price is computed from the configuration, not looked up from a list of SKUs — so a 127-inch screen in a material you only stock in 120 and 135 still gets a correct number. The spec sheet rewrites itself alongside.</p>
+    <div class="foot"><a href="/prototypes">See a live build →</a><span class="tag">quote PDF</span><span class="tag">spec sheet</span></div>
+  </div>
+  <div class="demo">
+    <div class="demo-label"><span>Custom projection screen</span><b>inc. VAT, ex. delivery</b></div>
+    <div class="demo-body price">
+      <div class="controls">
+        <div class="range"><div class="row"><span>Diagonal</span><b id="p-diag-v">120"</b></div><input type="range" id="p-diag" min="80" max="150" value="120"></div>
+        <div class="range"><div class="row"><span>Aspect ratio</span><b id="p-ar-v">16:9</b></div><div class="seg" id="p-ar"><button data-v="16:9" class="on">16:9</button><button data-v="2.35:1">2.35:1</button><button data-v="4:3">4:3</button></div></div>
+        <div class="range"><div class="row"><span>Material</span></div><div class="seg" id="p-mat"><button data-v="std" class="on">Matte white</button><button data-v="alr">ALR</button><button data-v="fresnel">Fresnel ALR</button></div></div>
+        <div class="range"><div class="row"><span>Mounting</span></div><div class="seg" id="p-mnt"><button data-v="fixed" class="on">Fixed frame</button><button data-v="motor">Motorised</button><button data-v="floor">Floor-rising</button></div></div>
+      </div>
+      <div class="panel" style="display:flex;flex-direction:column;gap:16px">
+        <div class="total"><small>TOTAL</small><div class="n" id="p-total">£0</div><small id="p-lead">lead time 10–12 working days</small></div>
+        <dl class="spec" id="spec"></dl>
+        <div style="margin-top:auto;display:flex;gap:10px"><button class="btn" id="p-quote">Download quote</button><button class="btn ghost" id="p-spec">Spec sheet</button></div>
+      </div>
+    </div>
+    <div class="toast" id="p-toast">Quote PDF generated — in the real build this is a download</div>
+  </div>
+</section>
+<script src="/capabilities/cap-frame.js" defer></script>
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const MAT={std:{n:'Matte white 1.0',psf:42,base:290,lead:'10–12'},alr:{n:'ALR grey 0.8',psf:78,base:420,lead:'12–15'},fresnel:{n:'Fresnel ALR 0.6',psf:140,base:690,lead:'18–22'}};
+const MNT={fixed:{n:'Fixed frame, velvet',add:0},motor:{n:'Motorised tab-tension',add:640},floor:{n:'Floor-rising motorised',add:980}};
+const AR={'16:9':[16,9],'2.35:1':[2.35,1],'4:3':[4,3]};
+function start(){
+  const st={diag:120,ar:'16:9',mat:'std',mnt:'fixed'}; let shown=0;
+  const seg=(id,k)=>$$('button',$(id)).forEach(b=>b.onclick=()=>{$$('button',$(id)).forEach(x=>x.classList.remove('on'));b.classList.add('on');st[k]=b.dataset.v;render()});
+  seg('#p-ar','ar');seg('#p-mat','mat');seg('#p-mnt','mnt');
+  $('#p-diag').addEventListener('input',e=>{st.diag=+e.target.value;render()});
+  function render(){
+    const [a,b]=AR[st.ar]; const w=st.diag*a/Math.hypot(a,b), h=st.diag*b/Math.hypot(a,b);
+    const wm=Math.round(w*25.4), hm=Math.round(h*25.4);
+    const area=w*h/144; const m=MAT[st.mat];
+    let price=m.base+area*m.psf*(1+(st.diag>135?.12:0))+MNT[st.mnt].add;
+    price=Math.ceil(price/10)*10-1;
+    $('#p-diag-v').textContent=st.diag+'"'; $('#p-ar-v').textContent=st.ar; $('#p-lead').textContent='lead time '+m.lead+' working days';
+    animate(shown,price); shown=price;
+    const rows=[['Viewable',`${wm} × ${hm} mm`],['Diagonal',`${st.diag}" (${Math.round(st.diag*2.54)} cm)`],['Surface',m.n],['Gain',m.n.split(' ').pop()],['Frame',MNT[st.mnt].n],['Frame width',st.mnt==='fixed'?'80 mm':'—'],['Weight',`${(area*(st.mat==='fresnel'?.55:.3)+(st.mnt==='fixed'?9:14)).toFixed(1)} kg`],['SKU',`PS-${st.mat.toUpperCase()}-${st.diag}-${st.ar.replace(/[:.]/g,'')}-${st.mnt.slice(0,2).toUpperCase()}`]];
+    const dl=$('#spec'); const old=[...dl.querySelectorAll('dd')].map(d=>d.textContent);
+    dl.innerHTML=rows.map(r=>`<dt>${r[0]}</dt><dd>${r[1]}</dd>`).join('');
+    [...dl.querySelectorAll('dd')].forEach((d,i)=>{if(old[i]!==undefined&&old[i]!==d.textContent){d.classList.add('flash');setTimeout(()=>d.classList.remove('flash'),500)}});
+  }
+  function animate(from,to){const el=$('#p-total'); if(reduce){el.textContent='£'+to.toLocaleString('en-GB');return;} const t0=performance.now(),d=420;
+    (function f(t){const p=Math.min(1,(t-t0)/d),e=1-Math.pow(1-p,3);el.textContent='£'+Math.round(from+(to-from)*e).toLocaleString('en-GB');if(p<1)requestAnimationFrame(f)})(t0);}
+  const toast=(m)=>{const t=$('#p-toast');t.textContent=m;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200)};
+  $('#p-quote').onclick=()=>toast('Quote PDF generated — in the real build this downloads');
+  $('#p-spec').onclick=()=>toast('Spec sheet generated from the current configuration');
+  render();
+}
+if(document.readyState!=='loading') start(); else addEventListener('DOMContentLoaded',start);
+})();
+</script>
+</body></html>

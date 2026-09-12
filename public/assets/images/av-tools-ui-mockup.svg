@@ -1,0 +1,100 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="687" height="375" viewBox="0 0 687 375" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="687" y2="375" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#071A2E"/>
+      <stop offset="1" stop-color="#06182A"/>
+    </linearGradient>
+    <linearGradient id="card" x1="0" y1="0" x2="0" y2="1">
+      <stop stop-color="#0A223D"/>
+      <stop offset="1" stop-color="#081D35"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Background -->
+  <rect width="687" height="375" fill="url(#bg)"/>
+
+  <!-- Main cards -->
+  <g stroke="#087FD4" stroke-width="1" fill="url(#card)">
+    <rect x="22.5" y="7.5" width="260" height="290" rx="8"/>
+    <rect x="291.5" y="7.5" width="186" height="144" rx="8"/>
+    <rect x="487.5" y="7.5" width="186" height="144" rx="8"/>
+    <rect x="291.5" y="159.5" width="186" height="138" rx="8"/>
+    <rect x="487.5" y="159.5" width="186" height="138" rx="8"/>
+    <rect x="22.5" y="309.5" width="651" height="55" rx="8"/>
+  </g>
+
+  <!-- Room planner icon box -->
+  <rect x="40" y="25" width="51" height="51" rx="8" fill="#092541" stroke="#0B8BE5"/>
+  <g stroke="#17A0F4" stroke-width="2" fill="none">
+    <rect x="53.5" y="39.5" width="9" height="9"/>
+    <rect x="67" y="39.5" width="9" height="9"/>
+    <rect x="53.5" y="53" width="9" height="9"/>
+    <rect x="67" y="53" width="9" height="9"/>
+  </g>
+
+  <!-- Main title -->
+  <g font-family="Arial, Helvetica, sans-serif">
+    <text x="40" y="109" font-size="20" font-weight="700" fill="#F4F7FA">Room planner</text>
+    <text x="40" y="135" font-size="12" fill="#4B8AC4">Design and visualise your perfect AV space.</text>
+    <text x="40" y="153" font-size="12" fill="#4B8AC4">Configure layouts, seating, and equipment</text>
+    <text x="40" y="171" font-size="12" fill="#4B8AC4">placement end-to-end.</text>
+
+    <text x="40" y="276" font-size="14" fill="#4C8BC3">01</text>
+    <text x="217" y="276" font-size="13" font-weight="700" fill="#25A8F5">Open ↗</text>
+
+    <!-- Audio designer -->
+    <text x="309" y="40" font-size="14" fill="#4C8BC3">02</text>
+    <rect x="417.5" y="25" width="41" height="41" rx="8" fill="#092541" stroke="#0B8BE5"/>
+    <g stroke="#16A5F5" stroke-width="1.7" stroke-linecap="round">
+      <path d="M426 43v5M430 39v13M434 36v19M438 40v11M442 34v21M446 39v13M450 37v17"/>
+    </g>
+    <text x="308" y="84" font-size="16" font-weight="700" fill="#F4F7FA">Audio designer</text>
+    <text x="308" y="105" font-size="12" fill="#4B8AC4">Configure speaker zones and</text>
+    <text x="308" y="123" font-size="12" fill="#4B8AC4">acoustic profiles.</text>
+
+    <!-- Projector -->
+    <text x="504" y="40" font-size="14" fill="#4C8BC3">03</text>
+    <rect x="613" y="25" width="43" height="41" rx="8" fill="#092541" stroke="#0B8BE5"/>
+    <g stroke="#17A0F4" stroke-width="1.7" fill="none">
+      <rect x="624" y="35" width="22" height="15"/>
+      <path d="M620 54h30M629 54v3h12v-3"/>
+    </g>
+    <text x="504" y="84" font-size="16" font-weight="700" fill="#F4F7FA">Projector</text>
+    <text x="504" y="105" font-size="12" fill="#4B8AC4">Match projectors to room size</text>
+    <text x="504" y="123" font-size="12" fill="#4B8AC4">and throw ratio.</text>
+
+    <!-- Screen finder -->
+    <text x="309" y="191" font-size="14" fill="#4C8BC3">04</text>
+    <rect x="417.5" y="177" width="43" height="41" rx="8" fill="#092541" stroke="#0B8BE5"/>
+    <g stroke="#17A0F4" stroke-width="1.6" stroke-linecap="round">
+      <path d="M426 189h6v-6M432 183l-7 7"/>
+      <path d="M452 189h-6v-6M446 183l7 7"/>
+      <path d="M426 205h6v6M432 211l-7-7"/>
+      <path d="M452 205h-6v6M446 211l7-7"/>
+    </g>
+    <text x="308" y="236" font-size="16" font-weight="700" fill="#F4F7FA">Screen finder</text>
+    <text x="308" y="257" font-size="12" fill="#4B8AC4">Find the ideal screen size and</text>
+    <text x="308" y="275" font-size="12" fill="#4B8AC4">aspect ratio.</text>
+
+    <!-- 3D cabinet -->
+    <text x="504" y="191" font-size="14" fill="#4C8BC3">05</text>
+    <rect x="613" y="177" width="43" height="41" rx="8" fill="#092541" stroke="#0B8BE5"/>
+    <g stroke="#17A0F4" stroke-width="1.6" fill="none" stroke-linejoin="round">
+      <path d="M635 183l12 7-12 7-12-7 12-7z"/>
+      <path d="M623 190v14l12 7 12-7V190"/>
+      <path d="M635 197v14"/>
+    </g>
+    <text x="504" y="236" font-size="16" font-weight="700" fill="#F4F7FA">3D cabinet</text>
+    <text x="504" y="257" font-size="12" fill="#4B8AC4">Visualise rack and cabinet</text>
+    <text x="504" y="275" font-size="12" fill="#4B8AC4">builds in 3D.</text>
+
+    <!-- Data layer -->
+    <circle cx="45.5" cy="337" r="6" fill="#12D98A" stroke="none"/>
+    <text x="67" y="329" font-size="9" font-weight="700" letter-spacing="1.1" fill="#4D7399">DATA LAYER</text>
+    <text x="67" y="349" font-size="16" font-weight="500" fill="#1EA2F1">Commerce Core</text>
+
+    <!-- Live pill -->
+    <rect x="613.5" y="326.5" width="42" height="23" rx="11.5" fill="#062B28" stroke="#00A97A"/>
+    <text x="624" y="342" font-size="10" font-weight="700" fill="#00D88C">Live</text>
+  </g>
+</svg>

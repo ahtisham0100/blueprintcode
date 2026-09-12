@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blueprint Code — AI guidance</title>
+<link rel="stylesheet" href="/capabilities/cap.css">
+<style>:root{--accent:#ff9ec4;--accent-2:#e86fa6;--glow:rgba(255,158,196,.14);--tint:rgba(255,158,196,.06)}</style>
+</head><body>
+<section class="card" data-demo="ai">
+  <div class="copy">
+    <div class="eyebrow">AI</div>
+    <h2>AI-assisted product guidance</h2>
+    <p class="lede">Plain-English questions turned into the right configuration.</p>
+    <p class="more">The assistant only recommends what the rule engine allows, so it can't suggest a combination the shop wouldn't sell. Answers fill the configuration directly rather than sending the customer off to do it themselves.</p>
+    <div class="foot"><a href="/prototypes">See a live build →</a><span class="tag">rule-bound</span></div>
+  </div>
+  <div class="demo">
+    <div class="demo-label"><span>Ask about a room</span><b>scripted demo</b></div>
+    <div class="demo-body ai">
+      <div class="chat">
+        <div class="chips" id="chips"></div>
+        <div class="msgs" id="msgs"></div>
+      </div>
+      <div class="panel cfg" id="cfg"></div>
+    </div>
+  </div>
+</section>
+<script src="/capabilities/cap-frame.js" defer></script>
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const CFG=['Projector','Screen','Size','Mounting','Estimate'];
+const SCRIPTS=[
+ {q:'Bright lounge, 4 m wide, big window opposite the sofa.',
+  a:'Daylight on the wall rules out a matte white screen. I\'d go ultra-short-throw laser TV with a Fresnel ALR surface — it rejects light from the window and the ceiling. 4 m of wall fits a 120" comfortably; a fixed frame keeps the surface flat.',
+  c:['UST laser TV','Fresnel ALR 0.6','120" 16:9','Fixed frame','≈ £4,690']},
+ {q:'Dedicated cinema room, blackout, want the biggest screen for 5 m.',
+  a:'With full blackout you don\'t pay for ALR. A long-throw 4K projector on a matte white 1.0 surface gives the widest, most accurate image. At 5 m throw a 150" 2.35:1 scope screen fits and keeps 16:9 content sized for the seating distance.',
+  c:['Long-throw 4K','Matte white 1.0','150" 2.35:1','Fixed frame','≈ £3,590']},
+ {q:'Rented flat, can\'t drill, occasional film nights.',
+  a:'No drilling points to a floor-rising screen with a portable projector — nothing on the walls and it packs away. Long-throw ALR handles the lamps in the evening. 100" is the practical limit for a portable unit.',
+  c:['Portable LED','ALR long-throw 0.8','100" 16:9','Floor-rising','≈ £1,890']}];
+function start(){
+  const cfg=$('#cfg'); cfg.innerHTML=CFG.map(k=>`<div class="row"><span>${k}</span><span>—</span></div>`).join('');
+  const chips=$('#chips'); let busy=false;
+  SCRIPTS.forEach((s,i)=>{const b=document.createElement('button');b.className='chip';b.textContent=s.q;b.onclick=()=>run(i,b);chips.appendChild(b)});
+  function run(i,b){ if(busy)return; busy=true; $$('.chip').forEach(c=>c.classList.remove('on')); b.classList.add('on');
+    const s=SCRIPTS[i], m=$('#msgs'); m.innerHTML='';
+    const u=document.createElement('div');u.className='msg u';u.textContent=s.q;m.appendChild(u);
+    const a=document.createElement('div');a.className='msg a cursor';m.appendChild(a);
+    $$('.row',cfg).forEach(r=>{r.classList.remove('set');r.lastElementChild.textContent='—'});
+    if(reduce){a.textContent=s.a;a.classList.remove('cursor');fillAll();busy=false;return;}
+    let n=0; const words=s.a.split(' '); const step=Math.ceil(words.length/CFG.length);
+    (function tick(){ if(n<words.length){a.textContent=words.slice(0,++n).join(' '); const k=Math.floor((n-1)/step); if(k<CFG.length)setRow(k); m.scrollTop=m.scrollHeight; setTimeout(tick,28+Math.random()*40);} else {a.classList.remove('cursor');fillAll();busy=false;} })();
+    function setRow(k){const r=$$('.row',cfg)[k]; if(!r.classList.contains('set')){r.classList.add('set');r.lastElementChild.textContent=s.c[k];}}
+    function fillAll(){s.c.forEach((_,k)=>setRow(k))}
+  }
+  run(0,chips.firstElementChild);
+}
+if(document.readyState!=='loading') start(); else addEventListener('DOMContentLoaded',start);
+})();
+</script>
+</body></html>

@@ -1,0 +1,64 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blueprint Code — 3D visualisation</title>
+<link rel="stylesheet" href="/capabilities/cap.css">
+<style>:root{--accent:#6db1ff;--accent-2:#3d7fe0;--glow:rgba(109,177,255,.14);--tint:rgba(109,177,255,.05)}</style>
+</head><body>
+<section class="card" data-demo="three">
+  <div class="copy">
+    <div class="eyebrow">3D</div>
+    <h2>2D and real-time 3D visualisation</h2>
+    <p class="lede">Material and finish switching customers can trust.</p>
+    <p class="more">Physically-based materials, so a walnut veneer and a matte lacquer read differently under the same light. Runs in the browser with no plugin, and falls back to pre-rendered 2D where WebGL isn't available.</p>
+    <div class="foot"><a href="/prototypes">See a live build →</a><span class="tag">three.js</span><span class="tag">PBR</span></div>
+  </div>
+  <div class="demo">
+    <div class="demo-label"><span>Laser TV cabinet · finish</span><b id="fin-name">Walnut</b></div>
+    <div class="demo-body d3">
+      <div class="stage" id="stage"><span class="fps" id="fps">drag to rotate</span></div>
+      <div class="swatches" id="swatches"></div>
+    </div>
+  </div>
+</section>
+<script src="/capabilities/cap-frame.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+const finishes=[
+ {n:'Walnut',c:0x5a3a24,r:.55,m:.05},{n:'Matte black',c:0x15171a,r:.85,m:.1},{n:'White gloss',c:0xe9e9e6,r:.18,m:.05},
+ {n:'Oak',c:0xb08a5a,r:.6,m:.03},{n:'Graphite',c:0x4a4f57,r:.35,m:.7}];
+function start(){
+  const stage=$('#stage'); if(!window.THREE){stage.innerHTML='<div style="padding:20px;color:var(--muted)">3D unavailable — 2D fallback would render here.</div>';return;}
+  const W=stage.clientWidth,H=stage.clientHeight;
+  const ren=new THREE.WebGLRenderer({antialias:true,alpha:true}); ren.setPixelRatio(Math.min(devicePixelRatio,2)); ren.setSize(W,H); stage.prepend(ren.domElement);
+  const sc=new THREE.Scene(); const cam=new THREE.PerspectiveCamera(32,W/H,.1,50); cam.position.set(0,1.1,5.2); cam.lookAt(0,0,0);
+  sc.add(new THREE.HemisphereLight(0xbfd4ff,0x0a111f,.9));
+  const key=new THREE.DirectionalLight(0xffffff,1.1); key.position.set(3,4,3); sc.add(key);
+  const rim=new THREE.DirectionalLight(0x6db1ff,.6); rim.position.set(-4,2,-3); sc.add(rim);
+  const mat=new THREE.MeshStandardMaterial({color:finishes[0].c,roughness:finishes[0].r,metalness:finishes[0].m});
+  const g=new THREE.Group();
+  const body=new THREE.Mesh(new THREE.BoxGeometry(3.2,.9,.9),mat); g.add(body);
+  const top=new THREE.Mesh(new THREE.BoxGeometry(3.3,.06,.98),new THREE.MeshStandardMaterial({color:0x1a1f2a,roughness:.3,metalness:.4})); top.position.y=.48; g.add(top);
+  for(let i=-1;i<=1;i++){const d=new THREE.Mesh(new THREE.BoxGeometry(1.0,.7,.03),mat); d.position.set(i*1.06,-.02,.47); g.add(d);
+    const h=new THREE.Mesh(new THREE.BoxGeometry(.35,.02,.03),new THREE.MeshStandardMaterial({color:0xcfd4dc,metalness:.9,roughness:.25})); h.position.set(i*1.06,-.02,.5); g.add(h);}
+  const lens=new THREE.Mesh(new THREE.CylinderGeometry(.06,.06,.1,24),new THREE.MeshStandardMaterial({color:0x111318,metalness:.8,roughness:.2})); lens.rotation.x=Math.PI/2; lens.position.set(0,.55,.15); g.add(lens);
+  const floor=new THREE.Mesh(new THREE.PlaneGeometry(12,12),new THREE.MeshStandardMaterial({color:0x0b1426,roughness:1})); floor.rotation.x=-Math.PI/2; floor.position.y=-.47; sc.add(floor);
+  sc.add(g); g.rotation.y=-.4;
+  let drag=false,lx=0,vel=0; const el=ren.domElement;
+  el.addEventListener('pointerdown',e=>{drag=true;lx=e.clientX;el.setPointerCapture(e.pointerId)});
+  el.addEventListener('pointermove',e=>{if(!drag)return;vel=(e.clientX-lx)*.01;g.rotation.y+=vel;lx=e.clientX});
+  el.addEventListener('pointerup',()=>drag=false); el.addEventListener('pointercancel',()=>drag=false);
+  (function loop(){requestAnimationFrame(loop); if(document.hidden)return; if(!drag){vel*=.92;g.rotation.y+=(reduce?0:.004)+vel;} ren.render(sc,cam);})();
+  addEventListener('resize',()=>{const W=stage.clientWidth,H=stage.clientHeight;if(W&&H){ren.setSize(W,H);cam.aspect=W/H;cam.updateProjectionMatrix();}});
+  const sw=$('#swatches');
+  finishes.forEach((f,i)=>{const b=document.createElement('button');b.className='sw'+(i?'':' on');b.innerHTML=`<i style="background:#${f.c.toString(16).padStart(6,'0')}"></i>${f.n}`;
+    b.onclick=()=>{$$('.sw',sw).forEach(x=>x.classList.remove('on'));b.classList.add('on');mat.color.setHex(f.c);mat.roughness=f.r;mat.metalness=f.m;$('#fin-name').textContent=f.n;};sw.appendChild(b);});
+}
+if(document.readyState!=='loading') start(); else addEventListener('DOMContentLoaded',start);
+})();
+</script>
+</body></html>

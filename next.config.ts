@@ -27,11 +27,9 @@ const staticDemos = [
 const nextConfig: NextConfig = {
   async rewrites() {
     return {
-      beforeFiles: [
-        // Home page -> public/index/index.html (takes precedence over src/app/page.tsx)
-        { source: "/", destination: "/index/index.html" },
-        { source: "/index.html", destination: "/index/index.html" },
-      ],
+      // The home page is now the React route src/app/page.tsx, so the "/"
+      // rewrite to public/index/index.html has been removed. The old static
+      // file still lives at public/index/index.html for reference.
       afterFiles: [
         ...staticPages.flatMap((name) => [
           { source: `/${name}`, destination: `/${name}/${name}.html` },

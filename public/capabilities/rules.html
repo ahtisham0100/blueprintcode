@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en"><head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Blueprint Code — Compatibility rules</title>
+<link rel="stylesheet" href="/capabilities/cap.css">
+<style>:root{--accent:#4fd0a0;--accent-2:#2fae82;--glow:rgba(79,208,160,.14);--tint:rgba(79,208,160,.055)}</style>
+</head><body>
+<section class="card" data-demo="rules">
+  <div class="copy">
+    <div class="eyebrow">Rules</div>
+    <h2>Compatibility and recommendation logic</h2>
+    <p class="lede">Only valid combinations reach the basket.</p>
+    <p class="more">Every option knows what it can and can't sit next to. Invalid choices grey out with a reason instead of failing at checkout, and the basket button only wakes up when the build is sound.</p>
+    <div class="foot"><a href="/prototypes">See a live build →</a><span class="tag">rule engine</span></div>
+  </div>
+  <div class="demo">
+    <div class="demo-label"><span>Projector + screen + room</span><b id="rule-state">3 of 3 valid</b></div>
+    <div class="demo-body rules">
+      <div class="field"><label for="r-proj">Projector</label><select class="select" id="r-proj"></select></div>
+      <div class="field"><label for="r-screen">Screen material</label><select class="select" id="r-screen"></select></div>
+      <div class="field"><label for="r-room">Room light</label><select class="select" id="r-room"></select></div>
+      <div class="field"><label>Rule check</label><div id="rule-badges" style="display:flex;flex-direction:column;gap:6px;padding-top:6px"></div></div>
+      <div class="why" id="why"><span class="dot"></span><span id="why-text"></span></div>
+      <div class="basket"><button class="btn" id="r-add">Add to basket</button><span class="sum" id="r-sum"></span></div>
+    </div>
+  </div>
+</section>
+<script src="/capabilities/cap-frame.js" defer></script>
+<script>
+(function(){
+const $=(s,r=document)=>r.querySelector(s), $$=(s,r=document)=>[...r.querySelectorAll(s)];
+const PROJ=[{v:'ust',n:'Ultra-short-throw laser TV'},{v:'long',n:'Long-throw 4K'},{v:'port',n:'Portable LED'}];
+const SCREEN=[{v:'alr-ust',n:'ALR — UST (lenticular)'},{v:'white',n:'Matte white 1.0 gain'},{v:'alr-lt',n:'ALR — long-throw'},{v:'fresnel',n:'Fresnel ALR'}];
+const ROOM=[{v:'dark',n:'Dedicated dark room'},{v:'amb',n:'Living room, curtains'},{v:'bright',n:'Bright, daytime use'}];
+const PRICES={ust:2999,long:1899,port:499,'alr-ust':1290,white:590,'alr-lt':890,fresnel:1690};
+function screenIssue(p,s){
+  if(p==='ust'&&(s==='white'||s==='alr-lt')) return 'UST projectors need a UST-specific surface — a standard or long-throw ALR screen shows hotspotting from the steep angle.';
+  if(p!=='ust'&&(s==='alr-ust'||s==='fresnel')) return 'UST-type screens reject light from above; a long-throw or portable projector would be dimmed by 60–80%.';
+  return null;}
+function roomIssue(s,r){
+  if(r==='bright'&&s==='white') return 'A matte white surface washes out in daylight — ALR or Fresnel keeps contrast.';
+  if(r==='bright'&&s==='alr-lt') return 'Long-throw ALR copes with lamps but not daytime windows; Fresnel is the safe choice here.';
+  return null;}
+function start(){
+  const sp=$('#r-proj'),ss=$('#r-screen'),sr=$('#r-room');
+  const fill=(sel,list)=>list.forEach(o=>{const op=document.createElement('option');op.value=o.v;op.textContent=o.n;sel.appendChild(op)});
+  fill(sp,PROJ);fill(ss,SCREEN);fill(sr,ROOM);
+  sp.value='ust';ss.value='alr-ust';sr.value='amb';
+  function update(){
+    const p=sp.value,s=ss.value,r=sr.value;
+    $$('option',ss).forEach(o=>{const iss=screenIssue(p,o.value);o.disabled=!!iss;o.textContent=SCREEN.find(x=>x.v===o.value).n+(iss?'  — incompatible':'');});
+    $$('option',sr).forEach(o=>{const iss=roomIssue(s,o.value);o.disabled=!!iss;o.textContent=ROOM.find(x=>x.v===o.value).n+(iss?'  — not recommended':'');});
+    const a=screenIssue(p,s),b=roomIssue(s,r);
+    const badges=$('#rule-badges'); badges.innerHTML=
+      `<span class="badge ${a?'off':''}">${a?'✕':'✓'} projector ↔ screen</span><span class="badge ${b?'off':''}">${b?'✕':'✓'} screen ↔ room</span><span class="badge">✓ size in stock</span>`;
+    const why=$('#why'); why.className='why '+(a||b?'bad':'ok');
+    $('#why-text').textContent=a||b||'Valid build. '+(p==='ust'?'Laser TV with a lenticular ALR surface is the right pairing for this room.':'Good pairing — recommended for this room.');
+    const n=(a?1:0)+(b?1:0); $('#rule-state').textContent=n?`${3-n} of 3 valid`:'3 of 3 valid';
+    $('#r-add').disabled=!!(a||b);
+    $('#r-sum').textContent='£'+(PRICES[p]+PRICES[s]).toLocaleString('en-GB')+' · 2 items';
+  }
+  [sp,ss,sr].forEach(x=>x.addEventListener('change',update));
+  $('#r-add').onclick=()=>{$('#r-add').textContent='Added ✓';setTimeout(()=>$('#r-add').textContent='Add to basket',1400)};
+  update();
+}
+if(document.readyState!=='loading') start(); else addEventListener('DOMContentLoaded',start);
+})();
+</script>
+</body></html>
