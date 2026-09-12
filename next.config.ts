@@ -21,6 +21,7 @@ const staticDemos = [
   "maison-cacao-dashboard-demo",
   "maison-cacao-order-operations",
   "maison-cacao-customer-segmentation",
+  "premium-muay-thai-customiser",
 ];
 
 const nextConfig: NextConfig = {
