@@ -25,6 +25,10 @@ import { fileURLToPath } from 'node:url';
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const PUBLIC = join(ROOT, 'public');
 const PARTIALS = join(PUBLIC, 'partials');
+// Directories whose HTML must never receive the shared chrome. `capabilities`
+// holds standalone fragments embedded as <iframe>s on the homepage; injecting a
+// nav + footer into them would render the site chrome inside each card.
+const SKIP_DIRS = new Set([PARTIALS, join(PUBLIC, 'capabilities')]);
 
 /* ---- markers -------------------------------------------------------------- */
 const M = (name) => ({
@@ -132,7 +136,7 @@ function walk(dir, acc = []) {
     const full = join(dir, name);
     const st = statSync(full);
     if (st.isDirectory()) {
-      if (full === PARTIALS) continue; // never process the source partials
+      if (SKIP_DIRS.has(full)) continue; // never process partials or iframe fragments
       walk(full, acc);
     } else if (/\.html$/i.test(name)) {
       acc.push(full);
