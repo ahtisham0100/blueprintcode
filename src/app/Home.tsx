@@ -2,96 +2,20 @@
 
 import { useEffect } from 'react';
 import type { CSSProperties } from 'react';
+import { initBlueprintRoll } from './blueprintRoll';
 
-/** Per-item reveal stagger delay as a CSS custom property. */
-const d = (seconds: number): CSSProperties =>
-  ({ '--d': `${seconds}s` } as CSSProperties);
-
-/** Sprint entrance stagger (~60ms per item) as a CSS custom property. */
-const rise = (i: number): CSSProperties =>
-  ({ '--rise-d': `${i * 60}ms` } as CSSProperties);
+/** Inline CSS custom property (typed for JSX style props). */
+const accent = (c: string): CSSProperties => ({ ['--accent']: c } as CSSProperties);
 
 export default function Home() {
-  // Scroll reveal via IntersectionObserver. Progressive enhancement: the
-  // `bp-js` class is what hides [data-reveal] elements, so without JS (or
-  // before this runs) everything stays visible for readers and crawlers.
-  useEffect(() => {
-    const root = document.documentElement;
-    root.classList.add('bp-js');
-
-    const els = Array.from(document.querySelectorAll<HTMLElement>('.bp-reveal'));
-    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
-    if (reduce || !('IntersectionObserver' in window)) {
-      els.forEach((el) => el.classList.add('bp-in'));
-      return () => root.classList.remove('bp-js');
-    }
-
-    const io = new IntersectionObserver(
-      (entries) => {
-        entries.forEach((entry) => {
-          if (entry.isIntersecting) {
-            entry.target.classList.add('bp-in');
-            io.unobserve(entry.target);
-          }
-        });
-      },
-      { threshold: 0.12, rootMargin: '0px 0px -40px 0px' },
-    );
-    els.forEach((el) => io.observe(el));
-
-    return () => {
-      io.disconnect();
-      root.classList.remove('bp-js');
-    };
-  }, []);
-
-  // Size each capability iframe to its own content (the page inside posts its
-  // height), so there are no nested scrollbars. Same-origin messages only.
-  useEffect(() => {
-    function onMessage(e: MessageEvent) {
-      if (e.origin !== window.location.origin) return;
-      const data = e.data as { __bpcHeight?: number } | null;
-      if (!data || typeof data.__bpcHeight !== 'number') return;
-      const frames = document.querySelectorAll<HTMLIFrameElement>('.bp-cap-frame');
-      frames.forEach((f) => {
-        if (f.contentWindow === e.source) {
-          f.style.height = `${Math.max(520, Math.ceil(data.__bpcHeight!))}px`;
-        }
-      });
-    }
-    window.addEventListener('message', onMessage);
-    return () => window.removeEventListener('message', onMessage);
-  }, []);
-
-  // Sprint section entrance: reveal the list items + price cards once when the
-  // grid scrolls into view, then disconnect. The resting (hidden) state lives
-  // only in a `.bp-js`-gated, reduced-motion-guarded CSS rule, so the content
-  // is visible without JavaScript and for reduced-motion users.
-  useEffect(() => {
-    const grid = document.querySelector('.bp-sprint-grid');
-    if (!grid) return;
-    const items = grid.querySelectorAll('.bp-sprint-rise');
-    if (!items.length) return;
-    const io = new IntersectionObserver(
-      (entries) => {
-        if (entries.some((e) => e.isIntersecting)) {
-          items.forEach((el) => el.classList.add('is-in'));
-          io.disconnect();
-        }
-      },
-      { threshold: 0.15 },
-    );
-    io.observe(grid);
-    return () => io.disconnect();
-  }, []);
+  // Drive the blueprint-roll page-turn once the section is in the DOM.
+  useEffect(() => initBlueprintRoll(), []);
 
   return (
     <div className="bp-root">
       <a className="bp-skip" href="#main">Skip to content</a>
-      <div className="bp-grid" aria-hidden="true" />
 
-      {/* ============ NAV ============ */}
+      {/* ============ NAV (global) ============ */}
       <header className="bp-nav" role="banner">
         <div className="bp-nav-inner">
           <a className="bp-brand" href="/" aria-label="Blueprint Code home">
@@ -117,358 +41,266 @@ export default function Home() {
         </div>
       </header>
 
-      <main id="main">
-        {/* ============ HERO ============ */}
-        <section className="bp-hero" aria-labelledby="hero-h">
-          <div className="bp-hero-eyebrow bp-hero-anim">
-            <span className="bp-dot" aria-hidden="true" />
-            CONFIGURATORS / COMMERCE / AI
-          </div>
-          <h1 id="hero-h" className="bp-h1 bp-hero-anim" style={d(0.1)}>
-            We make complex products easier to buy.
-          </h1>
-          <div className="bp-hero-row bp-hero-anim" style={d(0.22)}>
-            <div>
-              <p className="bp-hero-lead">
-                Blueprint Code builds product configurators, recommendation engines and
-                connected ecommerce systems for businesses whose products can&apos;t be
-                explained by a standard product page.
-              </p>
-              <div className="bp-hero-actions">
-                <a className="bp-btn bp-btn-primary" href="#sprint">
-                  Start with a prototype <span className="bp-arrow" aria-hidden="true">→</span>
-                </a>
-                <a className="bp-btn bp-btn-secondary" href="/prototypes">View our work</a>
-              </div>
-            </div>
-            <aside className="bp-hero-aside">
-              <div className="bp-aside-label">DESIGNED FROM THE COMMERCIAL PROBLEM OUT.</div>
-              <p>
-                We combine product logic, UX, real-time 3D, ecommerce and AI into tools
-                customers can understand and businesses can operate.
-              </p>
-            </aside>
-          </div>
+      {/* ============ BLUEPRINT-ROLL HOMEPAGE CONTENT ============ */}
+      <main id="main" className="brc">
+        <span id="top" />
 
-          <div className="bp-datum">
-            <div className="bp-datum-cell bp-reveal" style={d(0)}>
-              <div className="bp-datum-label">LEAD CAPABILITY</div>
-              <div className="bp-datum-value">CONFIGURATORS</div>
+        {/* ============ HERO ============ */}
+        <section className="hero" style={{ borderTop: 0 }}>
+          <div className="sheet">
+            <div className="titlebar">
+              <span>Sheet 00 / Company overview</span>
+              <span>Discipline: Interactive commerce</span>
+              <span>Status: Operational</span>
             </div>
-            <div className="bp-datum-cell bp-reveal" style={d(0.08)}>
-              <div className="bp-datum-label">LIVE SYSTEM</div>
-              <div className="bp-datum-value">5 CONNECTED TOOLS</div>
+            <div className="hero-grid">
+              <div>
+                <span className="lbl">CONFIGURATORS / COMMERCE / AI</span>
+                <h1>We make complex products easier to buy.</h1>
+                <p className="lead">Blueprint Code builds product configurators, recommendation engines and connected ecommerce systems for businesses whose products can&apos;t be explained by a standard product page.</p>
+                <div className="hero-actions">
+                  <a className="button solid" href="#sprint">Start with a prototype</a>
+                  <a className="button" href="#work">View our work</a>
+                </div>
+              </div>
+              <aside className="hero-side">
+                <b>DESIGNED FROM THE COMMERCIAL PROBLEM OUT.</b>
+                <p>We combine product logic, UX, real-time 3D, ecommerce and AI into tools customers can understand and businesses can operate.</p>
+              </aside>
             </div>
-            <div className="bp-datum-cell bp-reveal" style={d(0.16)}>
-              <div className="bp-datum-label">COMMERCE REACH</div>
-              <div className="bp-datum-value">8 AMAZON MARKETS</div>
-            </div>
-            <div className="bp-datum-cell bp-reveal" style={d(0.24)}>
-              <div className="bp-datum-label">DELIVERY</div>
-              <div className="bp-datum-value">UK + GLOBAL</div>
+            <div className="datum">
+              <div><span className="lbl">LEAD CAPABILITY</span><b>CONFIGURATORS</b></div>
+              <div><span className="lbl">LIVE SYSTEM</span><b>5 CONNECTED TOOLS</b></div>
+              <div><span className="lbl">COMMERCE REACH</span><b>8 AMAZON MARKETS</b></div>
+              <div><span className="lbl">DELIVERY</span><b>UK + GLOBAL</b></div>
             </div>
           </div>
         </section>
 
         {/* ============ 01 CONFIGURATORS ============ */}
-        <section id="configurators" className="bp-section bp-section--border" aria-labelledby="cfg-h">
-          <div className="bp-section-head bp-reveal">
-            <div>
-              <div className="bp-eyebrow">01 — PRIMARY EXPERTISE</div>
-              <h2 id="cfg-h" className="bp-h2">Product configurators built to sell.</h2>
+        <section id="configurators">
+          <div className="sheet">
+            <p className="section-no">01 / PRIMARY EXPERTISE</p>
+            <div className="roll-intro">
+              <h2>Product configurators built to sell.</h2>
+              <p>Turn product complexity into a clear customer journey. From a focused option builder to a complete digital showroom, the interface is only the visible layer. Scroll through the blueprint to see the commercial systems underneath.</p>
             </div>
-            <p className="bp-lead">
-              Not visual novelties. We build commercial tools that apply product rules, guide
-              decisions, calculate specifications, update pricing and connect the final
-              configuration to checkout, quote or CRM.
-            </p>
-          </div>
-
-          <div className="bp-cfg-intro bp-reveal">
-            <div className="bp-eyebrow bp-eyebrow--muted">PROFESSIONAL CONFIGURATOR SUITE</div>
-            <h3 className="bp-h3">Turn product complexity into a clear customer journey.</h3>
-            <p>
-              From a focused option builder to a complete digital showroom, the interface is
-              only the visible layer.
-            </p>
-          </div>
-
-          <div className="bp-cards">
-            {[
-              { key: 'three', title: '2D and real-time 3D visualisation' },
-              { key: 'rules', title: 'Compatibility and recommendation logic' },
-              { key: 'price', title: 'Dynamic pricing and specification' },
-              { key: 'connect', title: 'WooCommerce, Shopify and CRM integration' },
-              { key: 'ai', title: 'AI-assisted product guidance' },
-            ].map((c, i) => (
-              <div className="bp-card" style={{ '--i': i } as CSSProperties} key={c.key}>
-                <iframe
-                  className="bp-cap-frame"
-                  src={`/capabilities/${c.key}.html`}
-                  title={c.title}
-                  loading="lazy"
-                  scrolling="no"
-                />
+            <div className="roll-track" id="blueprint-roll">
+              <div className="roll-stage">
+                <article className="roll-sheet" style={accent('#69aef5')}>
+                  <div className="roll-copy"><span className="lbl">3D / SHEET 01</span><h3>2D and real-time 3D visualisation</h3><p>Material and finish switching customers can trust. Physically based surfaces behave differently under the same light, run directly in the browser and fall back gracefully where WebGL is unavailable.</p><a className="roll-link" href="#work">See a live build →</a><div className="chips"><span className="chip">three.js</span><span className="chip">PBR</span></div></div>
+                  <div className="roll-demo"><div className="demo-head"><span>LASER TV CABINET · FINISH</span><b>GRAPHITE</b></div><div className="demo-ui cabinet-scene"><div className="cabinet" /></div><div className="chips"><span className="chip">Walnut</span><span className="chip">Matte black</span><span className="chip">White gloss</span><span className="chip">Oak</span><span className="chip">Graphite</span></div></div>
+                </article>
+                <article className="roll-sheet" style={accent('#58d8b2')}>
+                  <div className="roll-copy"><span className="lbl">RULES / SHEET 02</span><h3>Compatibility and recommendation logic</h3><p>Every option knows what it can and cannot sit next to. Invalid choices grey out with a reason instead of failing at checkout, and the basket only becomes available when the build is sound.</p><a className="roll-link" href="#work">See a live build →</a><div className="chips"><span className="chip">rule engine</span></div></div>
+                  <div className="roll-demo"><div className="demo-head"><span>PROJECTOR + SCREEN + ROOM</span><b>3 OF 3 VALID</b></div><div className="demo-ui"><div className="select-grid"><div className="field"><span>Projector</span><div className="fake-select">Ultra-short-throw laser TV</div></div><div className="field"><span>Screen material</span><div className="fake-select">ALR — UST (lenticular)</div></div><div className="field"><span>Room light</span><div className="fake-select">Living room, curtains</div></div><div className="field"><span>Rule check</span><div className="fake-select">All checks passed</div></div></div><p className="valid">Valid build. This pairing is right for the room.</p></div><div className="basket"><b>Add to basket</b><span>£4,289 · 2 items</span></div></div>
+                </article>
+                <article className="roll-sheet" style={accent('#d99a39')}>
+                  <div className="roll-copy"><span className="lbl">PRICE / SHEET 03</span><h3>Dynamic pricing and specification</h3><p>Live totals, quotes and specification sheets change with the options. Price is computed from the configuration rather than looked up from a list, while the technical specification rewrites itself alongside it.</p><a className="roll-link" href="#work">See a live build →</a><div className="chips"><span className="chip">quote PDF</span><span className="chip">spec sheet</span></div></div>
+                  <div className="roll-demo"><div className="demo-head"><span>CUSTOM PROJECTION SCREEN</span><b>INC. VAT, EX. DELIVERY</b></div><div className="demo-ui price-ui"><div className="options"><div className="option-row">Diagonal <b>120&quot;</b></div><div className="option-row">Aspect ratio <b>16:9</b></div><div className="option-row">Material <b>Matte white</b></div><div className="option-row">Mounting <b>Fixed frame</b></div></div><div className="quote"><span className="lbl">TOTAL</span><strong>£2,089</strong><div className="spec"><span>Viewable</span><b>2657 × 1494 mm</b><span>Diagonal</span><b>120&quot; (305 cm)</b><span>Frame</span><b>80 mm velvet</b><span>Weight</span><b>21.8 kg</b></div></div></div></div>
+                </article>
+                <article className="roll-sheet" style={accent('#b898ff')}>
+                  <div className="roll-copy"><span className="lbl">CONNECT / SHEET 04</span><h3>WooCommerce, Shopify and CRM integration</h3><p>A finished configuration becomes structured commerce data: a detailed line item for a shop, or a qualified deal with the complete specification attached for a sales team.</p><a className="roll-link" href="#work">See a live build →</a><div className="chips"><span className="chip">REST</span><span className="chip">webhooks</span></div></div>
+                  <div className="roll-demo"><div className="demo-head"><span>WHERE THE CONFIGURATION GOES</span><b>CHECKOUT</b></div><div className="demo-ui"><div className="flow"><div className="node"><span className="lbl">CONFIGURATOR</span><b>Cabinet · 2.0 m · Walnut</b></div><div className="line" /><div className="targets"><div className="node">WooCommerce item created</div><div className="node">Shopify attributes set</div><div className="node">CRM deal ready</div></div></div></div></div>
+                </article>
+                <article className="roll-sheet" style={accent('#ff91c5')}>
+                  <div className="roll-copy"><span className="lbl">AI / SHEET 05</span><h3>AI-assisted product guidance</h3><p>Plain-English questions become valid configurations. The assistant stays bound to the rule engine, so it cannot recommend a combination the business would not actually sell.</p><a className="roll-link" href="#work">See a live build →</a><div className="chips"><span className="chip">rule-bound</span></div></div>
+                  <div className="roll-demo"><div className="demo-head"><span>ASK ABOUT A ROOM</span><b>SCRIPTED DEMO</b></div><div className="demo-ui ai-grid"><div className="prompts"><div className="prompt active">Bright lounge, 4 m wide, big window opposite the sofa.</div><div className="prompt">Dedicated cinema room, blackout, biggest screen for 5 m.</div><div className="answer">Daylight rules out a matte white screen. A UST laser TV with a Fresnel ALR surface rejects light from the window and ceiling.</div></div><div className="recommend"><span className="lbl">RECOMMENDATION</span><div><span>Projector</span><b>UST laser TV</b></div><div><span>Screen</span><b>Fresnel ALR</b></div><div><span>Size</span><b>120&quot; 16:9</b></div><div><span>Estimate</span><b>≈ £4,690</b></div></div></div></div>
+                </article>
               </div>
-            ))}
-          </div>
-
-          <div className="bp-cfg-actions bp-reveal">
-            <a className="bp-btn bp-btn-secondary" href="#contact">Discuss a configurator</a>
+              <div className="roll-controls"><div className="roll-arrows"><button className="roll-arrow" id="roll-prev" type="button" aria-label="Previous blueprint sheet">←</button><button className="roll-arrow" id="roll-next" type="button" aria-label="Next blueprint sheet">→</button></div><span className="roll-progress" id="roll-progress">SHEET 01 / 05</span><span className="roll-hint">AUTO TURN / 10 SECONDS</span></div>
+              <div className="roll-timer" aria-hidden="true" />
+            </div>
+            <a className="button" href="#contact">Discuss a configurator</a>
           </div>
         </section>
 
-        {/* ============ 02 PROTOTYPE SPRINT ============ */}
-        <section id="sprint" className="bp-sprint" aria-labelledby="sprint-h">
-          <div className="bp-wrap">
-            <div className="bp-sprint-grid">
-              <div className="bp-sprint-intro">
-                <div className="bp-eyebrow bp-eyebrow--light">02 — PROTOTYPE SPRINT</div>
-                <h2 id="sprint-h" className="bp-h2 bp-h2--dark">Proof before promises.</h2>
-              </div>
-              <p className="bp-lead bp-lead--dark bp-sprint-lead">
-                Before anyone commits to a full build, we make a working prototype of your
-                product in three to five weeks. Something real in a browser, not a slide deck.
-                The fee is credited in full against the build if you proceed within 90 days.
-              </p>
-
-              <div className="bp-get-card bp-sprint-full">
-                <div className="bp-eyebrow bp-eyebrow--light">WHAT YOU GET</div>
-                <ul className="bp-ticklist">
-                  <li className="bp-sprint-rise" style={rise(0)}><span className="bp-tick" aria-hidden="true">✓</span>One real product, configurable and interactive</li>
-                  <li className="bp-sprint-rise" style={rise(1)}><span className="bp-tick" aria-hidden="true">✓</span>A single core option path — the one that matters most to your sale</li>
-                  <li className="bp-sprint-rise" style={rise(2)}><span className="bp-tick" aria-hidden="true">✓</span>Real materials and finishes, not placeholders</li>
-                  <li className="bp-sprint-rise" style={rise(3)}><span className="bp-tick" aria-hidden="true">✓</span>Technical feasibility notes and recommended architecture</li>
-                  <li className="bp-sprint-rise" style={rise(4)}><span className="bp-tick" aria-hidden="true">✓</span>Fixed quote for the full build</li>
+        {/* ============ 02 PROTOTYPE SPRINT (inverted) ============ */}
+        <div className="invert" id="sprint">
+          <div className="sheet">
+            <p className="section-no">02 / PROTOTYPE SPRINT</p>
+            <div className="sprint-head">
+              <h2>Proof before promises.</h2>
+              <p>Before anyone commits to a full build, we make a working prototype of your product in three to five weeks. Something real in a browser, not a slide deck. The fee is credited in full against the build if you proceed within 90 days.</p>
+            </div>
+            <div className="sprint-cols">
+              <div className="sprint-col">
+                <h4>WHAT YOU GET</h4>
+                <ul>
+                  <li>One real product, configurable and interactive</li>
+                  <li>A single core option path — the one that matters most to your sale</li>
+                  <li>Real materials and finishes, not placeholders</li>
+                  <li>Technical feasibility notes and recommended architecture</li>
+                  <li>Fixed quote for the full build</li>
                 </ul>
               </div>
+              <div className="sprint-col">
+                <h4>PRICE</h4>
+                <ul>
+                  <li>£1,500 — 2D or image-based configuration, options and pricing logic</li>
+                  <li>£3,000 — real-time 3D with material and finish switching</li>
+                </ul>
+                <span className="strip">CREDITED IN FULL AGAINST THE BUILD</span>
+              </div>
+            </div>
+            <div className="hero-actions"><a className="button" href="#contact">Book a sprint</a></div>
+          </div>
+        </div>
 
-              <div className="bp-price-card bp-sprint-rise" style={rise(5)}>
-                <div className="bp-price-num">£1,500</div>
-                <div className="bp-price-label">2D / image-based</div>
-                <p className="bp-price-detail">Options and pricing logic</p>
-              </div>
-              <div className="bp-price-card bp-price-card--pick bp-sprint-rise" style={rise(6)}>
-                <span className="bp-price-pill">Common choice</span>
-                <div className="bp-price-num">£3,000</div>
-                <div className="bp-price-label">Real-time 3D</div>
-                <p className="bp-price-detail">Material and finish switching</p>
-              </div>
-
-              <div className="bp-credit bp-sprint-full">
-                <strong>Credited in full against the build.</strong> Proceed within 90 days and the sprint fee comes off the project price.
-              </div>
-
-              <div className="bp-sprint-actions bp-sprint-full">
-                <a className="bp-btn bp-btn-dark" href="#contact">
-                  Book a sprint <span className="bp-arrow" aria-hidden="true">→</span>
-                </a>
-                <a className="bp-btn bp-btn-dark-ghost" href="/pricing">See the rates</a>
-              </div>
+        {/* ============ 03 WORK ============ */}
+        <section id="work">
+          <div className="sheet">
+            <p className="section-no">03 / SELECTED WORK</p>
+            <div className="section-grid">
+              <h2>Systems already running.</h2>
+              <p className="section-copy">Each of these began as a focused prototype that solved the hardest part of the brief before anything else was built.</p>
+            </div>
+            <div className="project-index">
+              <article className="project">
+                <span className="n">01</span>
+                <h3>Cinema system designer</h3>
+                <p>Five connected tools returning one complete buying plan.</p>
+                <a className="status" href="/ppav-case-study">Read case study</a>
+              </article>
+              <article className="project">
+                <span className="n">02</span>
+                <h3>Mirrored elevator cabin</h3>
+                <p>True planar reflection, moving doors and environment-aware 3D.</p>
+                <span className="status">DEMO ON REQUEST</span>
+              </article>
+              <article className="project">
+                <span className="n">03</span>
+                <h3>Modular dock builder</h3>
+                <p>Grid-based layout, accessories, validation and quote generation.</p>
+                <span className="status">DEMO ON REQUEST</span>
+              </article>
+              <article className="project">
+                <span className="n">04</span>
+                <h3>Personalised product builder</h3>
+                <p>Drag-and-drop product customisation with anchored components.</p>
+                <span className="status">DEMO ON REQUEST</span>
+              </article>
             </div>
           </div>
         </section>
 
-        {/* ============ 03 SELECTED WORK ============ */}
-        <section id="work" className="bp-section" aria-labelledby="work-h">
-          <div className="bp-section-head bp-reveal">
-            <div>
-              <div className="bp-eyebrow">03 — SELECTED WORK</div>
-              <h2 id="work-h" className="bp-h2">Systems already running.</h2>
-            </div>
-            <p className="bp-lead">
-              Each of these began as a focused prototype that solved the hardest part of the
-              brief before anything else was built.
-            </p>
-          </div>
-
-          <ul className="bp-worklist">
-            {[
-              { title: 'Cinema system designer', desc: 'Five connected tools returning one complete buying plan.', cta: 'Read case study', href: '/ppav-case-study', img: '/assets/images/Prism.png' },
-              { title: 'Mirrored elevator cabin', desc: 'True planar reflection, moving doors and environment-aware 3D.', cta: 'View prototype', href: '/prototypes', img: '/assets/images/aura-mirror-demo.png' },
-              { title: 'Outboard motor selector', desc: 'Plain-English questions in, a shortlist of correctly sized motors out.', cta: 'View prototype', href: '/prototypes', img: '/assets/images/Ripple.png' },
-              { title: 'Charm bracelet builder', desc: 'Drag to rearrange charms along the chain, with live pricing.', cta: 'View prototype', href: '/prototypes', img: '/assets/images/bracelet-config.png' },
-            ].map((p, i) => (
-              <li className="bp-work-item bp-reveal" style={d(i * 0.08)} key={p.title}>
-                <a className="bp-work-link" href={p.href}>
-                  <span className="bp-work-img" aria-hidden="true" style={{ backgroundImage: `url("${p.img}")` }} />
-                  <span className="bp-work-scrim" aria-hidden="true" />
-                  <span className="bp-work-body">
-                    <h3 className="bp-work-title">{p.title} <span className="bp-arrow" aria-hidden="true">→</span></h3>
-                    <span className="bp-work-cta">{p.cta}</span>
-                    <span className="bp-work-fade">
-                      <span className="bp-work-desc">{p.desc}</span>
-                      {/* tags slot ready — awaiting tag copy */}
-                    </span>
-                  </span>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* ============ 04 FEATURED · PP-AV ============ */}
-        <section id="ppav" className="bp-section bp-section--top0" aria-labelledby="ppav-h">
-          <div className="bp-featured bp-reveal">
-            <div className="bp-featured-copy">
-              <div className="bp-eyebrow">04 — FEATURED PROJECT</div>
-              <div className="bp-featured-sublabel">PP-AV / LIVE COMMERCE BUSINESS</div>
-              <h2 id="ppav-h" className="bp-h2">
-                A digital retailer that behaves like a knowledgeable showroom.
-              </h2>
-              <p>
-                For PP-AV we connected a Cinema Room Planner, Audio Designer, Projector
-                Selector, Screen Finder and 3D Cabinet Configurator to a wider international
-                commerce operation.
-              </p>
-              <ul className="bp-featured-ticks">
-                <li><span className="bp-tick" aria-hidden="true">✓</span>Professional Configurator Suite</li>
-                <li><span className="bp-tick" aria-hidden="true">✓</span>Enterprise Commerce Core</li>
-                <li><span className="bp-tick" aria-hidden="true">✓</span>Direct PP-AV ecommerce</li>
-                <li>
-                  <span className="bp-tick" aria-hidden="true">✓</span>
-                  <a className="bp-inline" href="https://www.amazon.com/stores/PHOENIXPROJECTORSAV/" rel="noopener">Eight Amazon marketplaces</a>
-                </li>
-                <li>
-                  <span className="bp-tick" aria-hidden="true">✓</span>
-                  <a className="bp-inline" href="https://www.ebay.co.uk/str/phoenixprojectorsav" rel="noopener">eBay Global</a>
-                </li>
-              </ul>
-              <a className="bp-btn bp-btn-secondary bp-featured-btn" href="/ppav-case-study">
-                View full case study <span className="bp-arrow" aria-hidden="true">→</span>
-              </a>
-            </div>
-            <div className="bp-featured-visual">
-              {/* eslint-disable-next-line @next/next/no-img-element -- static SVG asset, no next/image optimisation needed */}
-              <img
-                className="bp-featured-svg"
-                src="/assets/images/av-tools-ui-mockup.svg"
-                alt="Blueprint Code AV tools suite mockup: Room planner, Audio designer, Projector, Screen finder and 3D cabinet, connected to the Commerce Core data layer."
-                width={687}
-                height={375}
-                loading="lazy"
-                decoding="async"
-              />
+        {/* ============ 04 FEATURED ============ */}
+        <section id="ppav">
+          <div className="sheet">
+            <p className="section-no">04 / FEATURED PROJECT</p>
+            <div className="case">
+              <div className="case-copy">
+                <span className="lbl">PP-AV / LIVE COMMERCE BUSINESS</span>
+                <h2>A digital retailer that behaves like a knowledgeable showroom.</h2>
+                <p>For PP-AV we connected a Cinema Room Planner, Audio Designer, Projector Selector, Screen Finder and 3D Cabinet Configurator to a wider international commerce operation.</p>
+                <ul className="ticks">
+                  <li>Professional Configurator Suite</li>
+                  <li>Enterprise Commerce Core</li>
+                  <li>Direct PP-AV ecommerce</li>
+                  <li><a href={'https://www.amazon.co.uk/stores/PhoenixScreens%E2%80%94byPP-AV/page/6E75E02A-C32F-448E-8B42-7F9A9F8BF683?lp_asin=B0HDTZS2LM&ref_=ast_bln'} target="_blank" rel="noopener">Eight Amazon marketplaces</a></li>
+                  <li>eBay Global</li>
+                </ul>
+                <a className="button" href="/ppav-case-study">View full case study</a>
+              </div>
+              <div className="case-drawing">
+                <div className="tools">
+                  <span>01 / ROOM PLANNER</span>
+                  <span>02 / AUDIO DESIGNER</span>
+                  <span>03 / PROJECTOR</span>
+                  <span>04 / SCREEN FINDER</span>
+                  <span>05 / 3D CABINET</span>
+                </div>
+                <div className="core">CONNECTED TO — COMMERCE CORE</div>
+                <div className="case-stat">CONNECTED SALES TOOLS<b>05</b>ONE UNIFIED JOURNEY</div>
+              </div>
             </div>
           </div>
         </section>
 
         {/* ============ 05 BUILD LEVELS ============ */}
-        <section id="levels" className="bp-section bp-section--border" aria-labelledby="levels-h">
-          <div className="bp-section-head bp-reveal">
-            <div>
-              <div className="bp-eyebrow">05 — BUILD LEVELS</div>
-              <h2 id="levels-h" className="bp-h2">The right scale for the commercial job.</h2>
+        <section id="levels">
+          <div className="sheet">
+            <p className="section-no">05 / BUILD LEVELS</p>
+            <div className="section-grid">
+              <h2>The right scale for the commercial job.</h2>
+              <p className="section-copy">Three configurator levels, each a step up in logic and integration. Scope and price are fixed against a written technical specification at kick-off.</p>
             </div>
-            <p className="bp-lead">
-              Three configurator levels, each a step up in logic and integration. Scope and
-              price are fixed against a written technical specification at kick-off.
-            </p>
+            <div className="levels">
+              <div className="level">
+                <span className="num">01 / CFG</span>
+                <h3>Foundation configurator</h3>
+                <p>Focused options, rules, live preview and lead capture.</p>
+                <span className="from">FROM £7,500</span>
+              </div>
+              <div className="level">
+                <span className="num">02 / PRO</span>
+                <h3>Professional configurator suite</h3>
+                <p>Advanced logic, dynamic pricing, integrations and ecommerce.</p>
+                <span className="from">£15,000 — £30,000</span>
+              </div>
+              <div className="level">
+                <span className="num">03 / DXS</span>
+                <h3>Enterprise digital showroom</h3>
+                <p>Multiple tools, 3D, guided commerce and intelligent assistance.</p>
+                <span className="from">FROM £35,000</span>
+              </div>
+              <div className="level other">
+                <span className="num">SEPARATE LADDER</span>
+                <h3>Commerce infrastructure</h3>
+                <p>Websites, stores, multi-channel and enterprise commerce. Tier 1 to Tier 4, sold alongside or without a configurator.</p>
+                <span className="from"><a href="/pricing">£5,000 — £120,000+ / SEE SCHEDULE</a></span>
+              </div>
+            </div>
+            <p className="ladder-note">Every configurator build starts with a Prototype Sprint. Full published rates, add-ons and retainers are on the <a href="/pricing">schedule of rates</a>.</p>
           </div>
-
-          <div className="bp-levels">
-            <div className="bp-level bp-reveal" style={d(0)}>
-              <span className="bp-level-code">01 / CFG</span>
-              <h3>Foundation configurator</h3>
-              <p>Focused options, rules, live preview and lead capture.</p>
-              <span className="bp-level-price">FROM £7,500</span>
-            </div>
-            <div className="bp-level bp-reveal" style={d(0.08)}>
-              <span className="bp-level-code">02 / PRO</span>
-              <h3>Professional configurator suite</h3>
-              <p>Advanced logic, dynamic pricing, integrations and ecommerce.</p>
-              <span className="bp-level-price">£15,000 — £30,000</span>
-            </div>
-            <div className="bp-level bp-reveal" style={d(0.16)}>
-              <span className="bp-level-code">03 / DXS</span>
-              <h3>Enterprise digital showroom</h3>
-              <p>Multiple tools, 3D, guided commerce and intelligent assistance.</p>
-              <span className="bp-level-price">FROM £35,000</span>
-            </div>
-            <div className="bp-level bp-reveal" style={d(0.24)}>
-              <span className="bp-level-code">SEPARATE LADDER</span>
-              <h3>Commerce infrastructure</h3>
-              <p>
-                Websites, stores, multi-channel and enterprise commerce. Tier 1 to Tier 4,
-                sold alongside or without a configurator.
-              </p>
-              <span className="bp-level-price"><a href="/pricing">£5,000 — £120,000+ / SEE SCHEDULE</a></span>
-            </div>
-          </div>
-
-          <p className="bp-ladder-note bp-reveal">
-            Every configurator build starts with a Prototype Sprint. Full published rates,
-            add-ons and retainers are on the <a href="/pricing">schedule of rates</a>.
-          </p>
         </section>
 
         {/* ============ 06 ABOUT ============ */}
-        <section id="about" className="bp-section bp-section--top0" aria-labelledby="about-h">
-          <div className="bp-section-head bp-reveal">
-            <div>
-              <div className="bp-eyebrow">06 — BLUEPRINT CODE</div>
-              <h2 id="about-h" className="bp-h2">Built by people who understand the sale.</h2>
+        <section id="about">
+          <div className="sheet">
+            <p className="section-no">06 / BLUEPRINT CODE</p>
+            <div className="section-grid">
+              <h2>Built by people who understand the sale.</h2>
+              <p className="section-copy">Blueprint Code brings together commercial product thinking, software engineering, UX design and specialist 3D capability. We work from the buying problem outward, not from a fashionable technology inward.</p>
             </div>
-            <div className="bp-about-body">
-              <p className="bp-lead" style={{ paddingTop: 0 }}>
-                Blueprint Code brings together commercial product thinking, software
-                engineering, UX design and specialist 3D capability. We work from the buying
-                problem outward, not from a fashionable technology inward.
-              </p>
-              <div className="bp-principles">
-                <div className="bp-principle bp-reveal" style={d(0.15)}>
-                  <div className="bp-principle-line" aria-hidden="true" />
-                  <h3>Commercial logic</h3>
-                  <p>Rules, pricing and customer decisions shape the system from the start.</p>
-                </div>
-                <div className="bp-principle bp-reveal" style={d(0.25)}>
-                  <div className="bp-principle-line" aria-hidden="true" />
-                  <h3>Show and tell</h3>
-                  <p>Focused prototypes make difficult ideas tangible before the larger build.</p>
-                </div>
-                <div className="bp-principle bp-reveal" style={d(0.35)}>
-                  <div className="bp-principle-line" aria-hidden="true" />
-                  <h3>Own the outcome</h3>
-                  <p>Architecture, interaction, testing and launch are treated as one responsibility.</p>
-                </div>
+            <div className="principles">
+              <div className="principle">
+                <b>COMMERCIAL LOGIC</b>
+                <p>Rules, pricing and customer decisions shape the system from the start.</p>
+              </div>
+              <div className="principle">
+                <b>SHOW AND TELL</b>
+                <p>Focused prototypes make difficult ideas tangible before the larger build.</p>
+              </div>
+              <div className="principle">
+                <b>OWN THE OUTCOME</b>
+                <p>Architecture, interaction, testing and launch are treated as one responsibility.</p>
               </div>
             </div>
           </div>
         </section>
 
-        {/* ============ 07 CLOSE ============ */}
-        <section id="contact" className="bp-section bp-section--top0" aria-labelledby="close-h">
-          <div className="bp-close-card bp-reveal">
-            <div className="bp-eyebrow">07 — START A PROJECT</div>
-            <h2 id="close-h" className="bp-h2">
-              What is your product making customers work too hard to understand?
-            </h2>
-            <p>
-              Send us the product, the current sales process and the decisions customers find
-              difficult. We&apos;ll identify the right first build — usually a Prototype Sprint.
-            </p>
-            <div className="bp-close-actions">
-              <a className="bp-btn bp-btn-primary" href="mailto:james@blueprintcode.ai?subject=Blueprint Code project">
-                Discuss your project
-              </a>
-              <a className="bp-btn bp-btn-secondary" href="/pricing">See the rates</a>
+        {/* ============ CLOSE ============ */}
+        <section className="close" id="contact">
+          <div className="sheet">
+            <p className="section-no">07 / START A PROJECT</p>
+            <h2>What is your product making customers work too hard to understand?</h2>
+            <p>Send us the product, the current sales process and the decisions customers find difficult. We&apos;ll identify the right first build — usually a Prototype Sprint.</p>
+            <div className="hero-actions">
+              <a className="button solid" href="mailto:james@blueprintcode.ai?subject=Blueprint Code project">Discuss your project</a>
+              <a className="button" href="/pricing">See the rates</a>
             </div>
           </div>
         </section>
       </main>
 
-      {/* ============ FOOTER ============ */}
-      <footer className="bp-footer" role="contentinfo">
-        <div className="bp-footer-inner">
-          <div className="bp-footer-brand">
-            <span className="bp-footer-mark" aria-hidden="true" />
-            <b>BLUEPRINT CODE</b>
-            <span>· BUILD SYSTEMS / 2026</span>
-          </div>
-          <div className="bp-footer-meta">
-            <span>UK — MONMOUTHSHIRE</span>
-            <a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a>
-          </div>
+      {/* ============ FOOTER (global — from the reference homepage) ============ */}
+      <footer className="bp-roll-footer" role="contentinfo">
+        <div className="footer-grid">
+          <div>COMPANY<b>BLUEPRINT CODE</b></div>
+          <div>SPECIALISM<b>INTERACTIVE COMMERCE</b></div>
+          <div>CONTACT<b><a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a></b></div>
+          <div>REFERENCE<b>BPC / 2026</b></div>
         </div>
       </footer>
     </div>

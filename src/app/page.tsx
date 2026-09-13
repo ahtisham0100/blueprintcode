@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Home from './Home';
 import './home.css';
+import './blueprint.css';
 
 export const metadata: Metadata = {
   title: 'Blueprint Code — Product configurators, commerce & AI systems',
