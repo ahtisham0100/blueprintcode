@@ -17,6 +17,8 @@ const staticDemos = [
   "maison-cacao-customer-segmentation",
   "premium-muay-thai-customiser",
   "max-kpi-japan",
+  "signet-ring-configurator-demo-3",
+  "signet-ring-configurator-demo",
 ];
 
 const nextConfig: NextConfig = {
