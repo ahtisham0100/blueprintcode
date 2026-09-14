@@ -1,0 +1,589 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>WALL — Rotunda Proof</title>
+
+<style>
+:root {
+  --gold:#d8bb85;
+  --gold-dim:#c8a66a;
+  --ink:#f4f0e8;
+  --muted:#8f8a80;
+  --panel-w:230px;
+  --panel-h:330px;
+}
+
+* { box-sizing:border-box }
+
+body {
+  margin:0;
+  height:100vh;
+  overflow:hidden;
+  color:var(--ink);
+  font-family:Arial,Helvetica,sans-serif;
+  background:#07070a;
+}
+
+.sr-only{position:absolute;width:1px;height:1px;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+
+/* =====================================================================
+   THE ROOM
+   A layered stand-in for the rendered rotunda. In production this whole
+   block is replaced by one backdrop plate:
+       .room { background:url(media/rotunda.jpg) center/cover }
+   The camera never moves, so a still plate is enough — the ring turns
+   inside a fixed room.
+   ===================================================================== */
+.room { position:fixed; inset:0; overflow:hidden; z-index:0 }
+
+.room .sky {            /* the opening above, and the light beyond it */
+  position:absolute; left:50%; top:-20%;
+  width:min(1100px,86vw); height:52vh;
+  transform:translateX(-50%);
+  border-radius:0 0 50% 50%/0 0 100% 100%;
+  background:
+    radial-gradient(120% 100% at 50% 100%,#6b6252 0,#2a2722 45%,transparent 70%),
+    linear-gradient(#8a93a0,#5d6268 60%,#3a3833);
+  filter:blur(1px);
+  opacity:.55;
+}
+.room .ceiling {        /* the lit ring around the opening */
+  position:absolute; left:50%; top:-14%;
+  width:min(1160px,92vw); height:46vh;
+  transform:translateX(-50%);
+  border-radius:0 0 50% 50%/0 0 100% 100%;
+  border-bottom:2px solid #e8cb95;
+  box-shadow:0 26px 70px -18px #e0be8455, inset 0 -30px 60px -40px #f0d6a0;
+  opacity:.75;
+}
+.room .horizon {        /* warm falloff behind the ring */
+  position:absolute; inset:0;
+  background:
+    radial-gradient(70% 46% at 50% 44%,#54473380 0,transparent 68%),
+    radial-gradient(120% 90% at 50% 38%,#191713 0,#0b0a0b 58%,#060608 100%);
+}
+.room .floor {
+  position:absolute; left:50%; bottom:-6%;
+  width:210vw; height:62vh;
+  transform:translateX(-50%);
+  background:
+    radial-gradient(60% 70% at 50% 0%,#3a332a 0,#17151400 70%),
+    linear-gradient(#141312,#0a0a0b 55%,#070709);
+}
+.room .floor:before,    /* the inlaid circles in the marble */
+.room .floor:after {
+  content:""; position:absolute; left:50%; transform:translateX(-50%);
+  border:1px solid #c8a66a2e; border-radius:50%;
+}
+.room .floor:before { top:16%; width:132vw; height:40vh }
+.room .floor:after  { top:30%; width:168vw; height:44vh; border-color:#c8a66a1c }
+.room .vignette {
+  position:absolute; inset:0;
+  background:radial-gradient(75% 65% at 50% 46%,transparent 40%,#000 100%);
+  opacity:.82;
+}
+
+/* ===================== CHROME ===================== */
+header {
+  position:relative; z-index:20;
+  height:86px; padding:0 40px;
+  display:flex; align-items:flex-start; justify-content:space-between;
+  padding-top:26px;
+}
+.logo { font:300 26px/1 Georgia,serif; letter-spacing:.42em }
+.tagline, .strapline {
+  font-size:9px; letter-spacing:.24em; line-height:1.9; color:var(--muted);
+  text-transform:uppercase;
+}
+.strapline { text-align:right }
+.strapline b { display:block; color:#cfc7b8; font-weight:400 }
+
+.controls {
+  position:absolute; z-index:20; top:104px; left:50%;
+  width:min(980px,92%); transform:translateX(-50%);
+}
+.search-row { display:flex; gap:12px; align-items:center; justify-content:center }
+.search {
+  flex:1; max-width:660px;
+  padding:16px 26px;
+  color:var(--ink);
+  background:#0d0c0bd0;
+  border:1px solid #c8a66a4d;
+  border-radius:40px;
+  outline:none;
+  font-size:14px;
+}
+.search::placeholder { color:#7d7871 }
+.search:focus-visible { border-color:var(--gold); box-shadow:0 0 0 3px #c8a66a2e }
+.mic {
+  width:48px; height:48px; flex:0 0 48px;
+  border-radius:50%; cursor:pointer;
+  color:var(--gold); background:#0d0c0bd0;
+  border:1px solid #c8a66a4d; font-size:17px;
+}
+.categories { display:flex; justify-content:center; flex-wrap:wrap; gap:9px; margin-top:16px }
+.categories button {
+  padding:9px 18px; font-size:12px;
+  color:#b6afa4; background:#0d0c0bbb;
+  border:1px solid #ffffff1f; border-radius:30px; cursor:pointer;
+}
+.categories button.active { color:#1a160f; background:var(--gold); border-color:var(--gold) }
+.categories button:focus-visible, .card:focus-visible, .close:focus-visible, .mic:focus-visible {
+  outline:2px solid var(--gold); outline-offset:3px;
+}
+
+/* ===================== THE RING ===================== */
+.arena {
+  position:absolute; z-index:10;
+  inset:210px 0 120px;
+  perspective:1500px;
+  perspective-origin:50% 42%;
+  cursor:grab; touch-action:none;
+}
+.arena.is-dragging { cursor:grabbing }
+
+.ring {
+  position:absolute; left:50%; top:46%;
+  width:0; height:0;
+  transform-style:preserve-3d;
+  will-change:transform;
+}
+
+.card {
+  position:absolute;
+  width:var(--panel-w); height:var(--panel-h);
+  margin:calc(var(--panel-h) / -2) 0 0 calc(var(--panel-w) / -2);
+  padding:0; border:0; background:none;
+  transform-style:preserve-3d;
+  cursor:pointer; font:inherit; color:inherit; text-align:center;
+  -webkit-box-reflect:below 6px linear-gradient(transparent 62%,#0000002e);
+}
+
+/* the panel itself — frame, art, rim light */
+.face {
+  position:absolute; inset:0;
+  overflow:hidden;
+  background:var(--art);
+  border:1px solid #d8bb8533;
+  box-shadow:
+    inset 0 0 60px #00000080,
+    0 30px 60px -20px #000c;
+}
+.face:after {           /* vertical gold rim light down both edges */
+  content:""; position:absolute; inset:0; pointer-events:none;
+  background:
+    linear-gradient(90deg,#e8cb9559 0,transparent 7%,transparent 93%,#e8cb9559 100%),
+    linear-gradient(180deg,transparent 42%,#05050ae8 100%);
+}
+.copy { position:absolute; z-index:2; left:14px; right:14px; top:34px }
+.name { font:300 21px/1 Georgia,serif; letter-spacing:.3em; color:#f6f1e6 }
+.motto { margin-top:9px; font-size:8px; letter-spacing:.28em; color:#bfae91; text-transform:uppercase }
+.sector {
+  position:absolute; z-index:2; left:0; right:0; bottom:20px;
+  font-size:8px; letter-spacing:.26em; color:#9d9689; text-transform:uppercase;
+}
+
+/* front-and-centre treatment */
+.card.focus .face {
+  border-color:#e8cb9577;
+  box-shadow:
+    inset 0 0 80px #00000066,
+    0 0 0 1px #e8cb9540,
+    0 40px 90px -24px #e0be8455,
+    0 0 120px -30px #e8cb9566;
+}
+
+/* the lit plinth under the front panel */
+.plinth {
+  position:absolute; z-index:9; left:50%; bottom:6%;
+  width:min(430px,46vw); height:64px;
+  transform:translateX(-50%);
+  border-radius:50%;
+  background:radial-gradient(60% 100% at 50% 40%,#f0d6a03d 0,transparent 72%);
+  box-shadow:0 0 90px 26px #e0be8412;
+  pointer-events:none;
+  transition:opacity .35s;
+}
+
+.spotlight {
+  position:absolute; z-index:15; left:50%; bottom:38px;
+  width:90%; transform:translateX(-50%);
+  text-align:center; pointer-events:none;
+}
+.spotlight small { font-size:9px; letter-spacing:.26em; color:var(--gold-dim); text-transform:uppercase }
+.spotlight h2 { margin:9px 0 5px; font:300 28px Georgia,serif; letter-spacing:.14em }
+.spotlight p { margin:0; font-size:10px; letter-spacing:.14em; color:var(--muted) }
+
+/* ===================== SHOWCASE ===================== */
+.showcase {
+  position:fixed; inset:0; z-index:40;
+  display:grid; place-items:center; padding:22px;
+  background:#000000c4; backdrop-filter:blur(16px);
+  opacity:0; pointer-events:none; transition:opacity .3s;
+}
+.showcase.open { opacity:1; pointer-events:auto }
+.panel {
+  position:relative; width:min(880px,100%); min-height:480px;
+  padding:64px; display:flex; flex-direction:column; justify-content:flex-end;
+  overflow:hidden; border:1px solid #d8bb8566; background:var(--art);
+}
+.panel:after { content:""; position:absolute; inset:0; background:linear-gradient(180deg,transparent,#07070af5) }
+.panel-content { position:relative; z-index:2; max-width:540px; text-align:left }
+.panel .sector-line { font-size:9px; letter-spacing:.26em; color:var(--gold-dim); text-transform:uppercase }
+.panel h2 { margin:14px 0; font:300 50px Georgia,serif; letter-spacing:.1em }
+.panel p { color:#b9b3a8; line-height:1.7; font-size:14px }
+.close {
+  position:absolute; z-index:4; top:22px; right:22px;
+  width:40px; height:40px; border-radius:50%; cursor:pointer;
+  color:#fff; background:#00000099; border:1px solid #ffffff3d; font-size:20px;
+}
+
+/* ===================== NOTICE ===================== */
+.notice {
+  position:fixed; inset:0; z-index:60;
+  display:grid; place-items:center; padding:22px;
+  background:#000000e0; backdrop-filter:blur(12px);
+}
+.notice article {
+  max-width:540px; padding:38px;
+  background:#0e0d0c; border:1px solid #c8a66a5c;
+}
+.notice .kicker { font-size:9px; letter-spacing:.26em; color:var(--gold-dim); text-transform:uppercase }
+.notice h1 { margin:16px 0; font:300 32px Georgia,serif; letter-spacing:.08em }
+.notice p { color:#a09a90; line-height:1.7; font-size:13px }
+.notice button {
+  margin-top:22px; padding:14px 26px; cursor:pointer;
+  color:#1a160f; background:var(--gold); border:0;
+  font-size:11px; letter-spacing:.2em; text-transform:uppercase;
+}
+
+@media (prefers-reduced-motion:reduce) { .showcase,.plinth { transition:none } }
+
+@media(max-width:900px) {
+  :root { --panel-w:190px; --panel-h:272px }
+  header { padding:22px 20px 0 }
+  .tagline,.strapline { display:none }
+  .arena { inset:214px 0 126px }
+}
+@media(max-width:600px) {
+  :root { --panel-w:158px; --panel-h:226px }
+  .arena { perspective:1050px; inset:222px 0 118px }
+  .panel { padding:32px }
+  .panel h2 { font-size:34px }
+  .categories button { padding:7px 13px; font-size:11px }
+}
+</style>
+</head>
+
+<body>
+
+<div class="room" aria-hidden="true">
+  <div class="horizon"></div>
+  <div class="sky"></div>
+  <div class="ceiling"></div>
+  <div class="floor"></div>
+  <div class="vignette"></div>
+</div>
+
+<header>
+  <div>
+    <div class="logo">WALL</div>
+    <div class="tagline">People<br>Ideas<br>Businesses<br>A more open tomorrow</div>
+  </div>
+  <div class="strapline"><b>A brighter<br>business world</b><br><br>Explore<br>Connect<br>Create</div>
+</header>
+
+<div class="controls">
+  <label class="sr-only" for="search">Search businesses</label>
+  <div class="search-row">
+    <input class="search" id="search" type="search" placeholder="Discover exceptional businesses…">
+    <button class="mic" type="button" aria-label="Search by voice">◉</button>
+  </div>
+  <div class="categories" role="group" aria-label="Filter by category">
+    <button class="active">All</button>
+    <button>Automotive</button>
+    <button>Real Estate</button>
+    <button>Hospitality</button>
+    <button>Wellness</button>
+    <button>Design</button>
+    <button>Food &amp; Beverage</button>
+    <button>Technology</button>
+  </div>
+</div>
+
+<div class="arena">
+  <div class="ring" role="list" aria-label="Businesses"></div>
+  <div class="plinth"></div>
+</div>
+
+<div class="spotlight" aria-live="polite">
+  <small>In the spotlight</small>
+  <h2></h2>
+  <p class="hint">Drag to explore · Select to open Showcase</p>
+</div>
+
+<div class="showcase">
+  <div class="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title">
+    <button class="close" aria-label="Close showcase">×</button>
+    <div class="panel-content">
+      <div class="sector-line"></div>
+      <h2 id="panel-title"></h2>
+      <p></p>
+    </div>
+  </div>
+</div>
+
+<div class="notice">
+  <article role="dialog" aria-modal="true" aria-labelledby="notice-title">
+    <div class="kicker">Blueprint Code · Rapid interaction proof</div>
+    <h1 id="notice-title">A working interpretation of WALL</h1>
+    <p>
+      Built from the written brief. The rotunda is a layered CSS stand-in for the
+      rendered environment — in production it becomes a single backdrop plate, with
+      this live ring turning inside it. Everything here is interactive: drag or use
+      the arrow keys to turn the WALL, select a panel to open its Showcase.
+    </p>
+    <button>Enter WALL</button>
+  </article>
+</div>
+
+<script>
+const businesses = [
+  { name:"AURELIS",   motto:"Driven further",     sector:"Automotive",
+    description:"Mobility for a brighter tomorrow. Electric platforms designed around the way people actually move.",
+    art:"linear-gradient(160deg,#4a423a,#1d1a17 46%,#0a0908)" },
+  { name:"NORTHGATE", motto:"Places that belong", sector:"Real Estate",
+    description:"Developments shaped around landscape and community rather than yield alone.",
+    art:"linear-gradient(160deg,#6d6252,#2a251e 48%,#0b0a08)" },
+  { name:"VELLORA",   motto:"A more human stay",  sector:"Hospitality",
+    description:"Residences and retreats built on craft, quiet and a considered welcome.",
+    art:"linear-gradient(160deg,#8a6f52,#332821 48%,#0b0907)" },
+  { name:"KINTO",     motto:"A calmer you",       sector:"Wellness",
+    description:"Evidence-led wellbeing designed around a slower, more deliberate life.",
+    art:"linear-gradient(160deg,#6f6a5e,#2b2823 48%,#0a0a09)" },
+  { name:"ATELIER",   motto:"Ideas in form",      sector:"Design",
+    description:"A multidisciplinary studio shaping interiors, objects and experiences.",
+    art:"linear-gradient(160deg,#5d5850,#242220 48%,#0a0a0a)" },
+  { name:"HARVEST",   motto:"A richer table",     sector:"Food & Beverage",
+    description:"Provenance-first produce and preparation, from growers to the plate.",
+    art:"linear-gradient(160deg,#7a6248,#2d251d 48%,#0b0908)" },
+  { name:"NOVARA",    motto:"Human progress",     sector:"Technology",
+    description:"Applied research turning frontier science into everyday infrastructure.",
+    art:"linear-gradient(160deg,#4f4c48,#20201f 48%,#09090a)" }
+];
+
+const TAU = Math.PI * 2;
+const FAN_MAX = 3;
+const reduce = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+const arena = document.querySelector(".arena");
+const ring = document.querySelector(".ring");
+const plinth = document.querySelector(".plinth");
+const spotlight = document.querySelector(".spotlight");
+const hint = document.querySelector(".hint");
+const search = document.querySelector(".search");
+const showcase = document.querySelector(".showcase");
+
+let visible = [...businesses];
+let rotation = 0, velocity = 0, dragging = false;
+let previousX = 0, dragDistance = 0, selected = 0;
+let running = false, snapTo = null, lastFocus = null;
+
+const isFan = () => visible.length <= FAN_MAX;
+
+function radius() {
+  // wide enough that the front panel clears its neighbours at any count
+  return Math.min(innerWidth * 0.34, 560);
+}
+
+function build() {
+  ring.innerHTML = visible.map((b,i) => `
+    <button class="card" type="button" role="listitem" data-index="${i}"
+      aria-label="${b.name}, ${b.sector}. ${b.motto}. Open showcase."
+      style="--art:${b.art}">
+      <span class="face"></span>
+      <span class="copy"><span class="name">${b.name}</span><span class="motto">${b.motto}</span></span>
+      <span class="sector">${b.sector}</span>
+    </button>
+  `).join("");
+
+  ring.querySelectorAll(".card").forEach(card => {
+    const i = +card.dataset.index;
+    card.addEventListener("click",() => {
+      if (dragDistance > 6) return;
+      if (i !== selected && !isFan()) { goTo(i); return; }
+      openShowcase(visible[i]);
+    });
+    card.addEventListener("focus",() => { if (!isFan() && i !== selected) goTo(i); });
+  });
+
+  hint.textContent = visible.length
+    ? (isFan() ? "Select to open Showcase" : "Drag or use arrow keys · Select to open Showcase")
+    : "Try a different category or search term";
+
+  plinth.style.opacity = visible.length ? 1 : 0;
+  layout();
+  start();
+}
+
+/* Panels sit ON the ring — rotateY then push out along Z — so they turn
+   tangentially as the ring moves, instead of always facing the camera. */
+function layout() {
+  const cards = [...ring.children];
+  const count = cards.length;
+  if (!count) { spotlight.querySelector("h2").textContent = "No results"; return; }
+
+  const R = radius();
+  const fan = isFan();
+  let nearest = { d:Infinity, i:0 };
+
+  if (fan) {
+    ring.style.transform = "none";
+    const spread = count === 1 ? 0 : Math.min(0.46, 0.95 / (count - 1));
+    cards.forEach((card,i) => {
+      const a = (i - (count - 1) / 2) * spread;
+      card.style.transform =
+        `translate3d(${Math.sin(a) * R * 0.78}px,0,${-Math.abs(a) * 120}px) rotateY(${-a * 34}deg)`;
+      card.style.opacity = 1;
+      card.style.filter = "brightness(1)";
+      card.style.zIndex = 50 - Math.round(Math.abs(a) * 40);
+      if (Math.abs(a) < nearest.d) nearest = { d:Math.abs(a), i };
+    });
+  } else {
+    ring.style.transform = `translateZ(${-R}px) rotateY(${rotation * 180 / Math.PI}deg)`;
+    cards.forEach((card,i) => {
+      const step = i / count * TAU;
+      card.style.transform = `rotateY(${step * 180 / Math.PI}deg) translateZ(${R}px)`;
+      const a = step + rotation;
+      const depth = Math.cos(a);
+      card.style.opacity = .18 + (depth + 1) * .40;
+      card.style.filter = `brightness(${.42 + (depth + 1) * .32})`;
+      const d = Math.abs(Math.atan2(Math.sin(a),Math.cos(a)));
+      if (d < nearest.d) nearest = { d, i };
+    });
+  }
+
+  selected = nearest.i;
+  cards.forEach((card,i) => card.classList.toggle("focus",i === selected));
+  spotlight.querySelector("h2").textContent = visible[selected]?.name || "No results";
+}
+
+function start() { if (!running && !isFan()) { running = true; requestAnimationFrame(tick); } }
+
+function tick() {
+  if (dragging) { layout(); requestAnimationFrame(tick); return; }
+
+  rotation += velocity;
+  velocity *= .94;
+
+  if (Math.abs(velocity) < .0025) {
+    velocity = 0;
+    const step = TAU / Math.max(visible.length,1);
+    const target = snapTo !== null ? snapTo : Math.round(rotation / step) * step;
+    const delta = target - rotation;
+    if (Math.abs(delta) < .0015) {
+      rotation = target; snapTo = null; layout(); running = false; return;
+    }
+    rotation += delta * (reduce ? 1 : .16);
+  }
+
+  layout();
+  requestAnimationFrame(tick);
+}
+
+function goTo(i) {
+  const step = TAU / Math.max(visible.length,1);
+  let target = -i * step;
+  while (target - rotation >  Math.PI) target -= TAU;
+  while (target - rotation < -Math.PI) target += TAU;
+  snapTo = target; velocity = 0; start();
+}
+
+arena.addEventListener("pointerdown",e => {
+  if (isFan()) return;
+  dragging = true; dragDistance = 0; previousX = e.clientX;
+  velocity = 0; snapTo = null;
+  arena.classList.add("is-dragging");
+  arena.setPointerCapture(e.pointerId);
+  start();
+});
+arena.addEventListener("pointermove",e => {
+  if (!dragging) return;
+  const m = e.clientX - previousX; previousX = e.clientX;
+  dragDistance += Math.abs(m);
+  rotation += m * .005;
+  velocity = m * .0016;
+});
+function endDrag(){ if(!dragging) return; dragging=false; arena.classList.remove("is-dragging"); start(); }
+arena.addEventListener("pointerup",endDrag);
+arena.addEventListener("pointercancel",endDrag);
+arena.addEventListener("wheel",e => {
+  if (isFan()) return;
+  snapTo = null; velocity += e.deltaY * .0001; start();
+},{ passive:true });
+arena.addEventListener("keydown",e => {
+  if (isFan()) return;
+  const n = visible.length;
+  if (e.key === "ArrowRight") { goTo((selected + 1) % n); e.preventDefault(); }
+  if (e.key === "ArrowLeft")  { goTo((selected - 1 + n) % n); e.preventDefault(); }
+});
+
+function filterBusinesses() {
+  const category = document.querySelector(".categories .active").textContent.trim();
+  const term = search.value.toLowerCase();
+  visible = businesses.filter(b =>
+    (category === "All" || b.sector === category) &&
+    `${b.name} ${b.sector} ${b.motto}`.toLowerCase().includes(term));
+  rotation = 0; velocity = 0; snapTo = null;
+  build();
+}
+
+document.querySelector(".categories").addEventListener("click",e => {
+  if (e.target.tagName !== "BUTTON") return;
+  document.querySelectorAll(".categories button").forEach(b => {
+    b.classList.remove("active"); b.removeAttribute("aria-pressed");
+  });
+  e.target.classList.add("active");
+  e.target.setAttribute("aria-pressed","true");
+  filterBusinesses();
+});
+search.addEventListener("input",filterBusinesses);
+
+function openShowcase(b) {
+  if (!b) return;
+  const panel = showcase.querySelector(".panel");
+  lastFocus = document.activeElement;
+  panel.style.setProperty("--art",b.art);
+  panel.querySelector(".sector-line").textContent = `${b.sector} · ${b.motto}`;
+  panel.querySelector("h2").textContent = b.name;
+  panel.querySelector("p").textContent = b.description;
+  showcase.classList.add("open");
+  showcase.querySelector(".close").focus();
+}
+function closeShowcase() {
+  if (!showcase.classList.contains("open")) return;
+  showcase.classList.remove("open");
+  if (lastFocus && lastFocus.isConnected) lastFocus.focus();
+}
+showcase.querySelector(".close").addEventListener("click",closeShowcase);
+showcase.addEventListener("click",e => { if (e.target === showcase) closeShowcase(); });
+document.addEventListener("keydown",e => {
+  if (e.key === "Escape") closeShowcase();
+  if (e.key === "Tab" && showcase.classList.contains("open")) {
+    e.preventDefault(); showcase.querySelector(".close").focus();
+  }
+});
+
+const notice = document.querySelector(".notice");
+const noticeButton = notice.querySelector("button");
+noticeButton.focus();
+noticeButton.addEventListener("click",() => { notice.remove(); search.focus(); });
+
+addEventListener("resize",() => { layout(); start(); });
+
+build();
+</script>
+</body>
+</html>
