@@ -46,7 +46,7 @@ export default function DemoPlayground() {
               <div className="vp" key={it.ref}>
                 <div className="media">
                   <i /><i /><i /><i />
-                  <DemoTrigger className="see" item={it}>See media</DemoTrigger>
+                  <DemoTrigger className="see" item={it}>View assets</DemoTrigger>
                 </div>
                 <h3>{it.title}</h3>
                 <p>{it.blurb}</p>

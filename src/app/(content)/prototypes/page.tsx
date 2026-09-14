@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './styles.css';
+import { DemoViewerProvider, DemoTrigger } from '../../_demo-viewer/DemoViewer';
 
 export const metadata: Metadata = {
   title: 'Prototype register — Blueprint Code',
@@ -17,6 +18,7 @@ export const metadata: Metadata = {
 
 export default function PrototypesPage() {
   return (
+    <DemoViewerProvider>
     <main id="main">
       <div className="sheet title-block">
         <dl className="stamp">
@@ -56,10 +58,13 @@ export default function PrototypesPage() {
           <p className="entry-intro">A made-to-order garment is sold on its finish, and a flat preview is the one thing that cannot show finish. The customer is asked to pay a premium for a difference nobody has let them see.</p>
 
           <div className="entry">
-            <a className="viewport" href="/premium-muay-thai-customiser">
-              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEWPORT PROTO-01<br />OPEN THE LIVE BUILD</span></div>
+            <DemoTrigger
+              className="viewport"
+              item={{ title: 'Made-to-order fight shorts', ref: 'BPC · PROTO-01', iframeSrc: '/premium-muay-thai-customiser' }}
+            >
+              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEW ASSETS</span></div>
               <div className="vp-caption"><span>PRE-RENDERED CGI</span><span>SINGLE FILE</span></div>
-            </a>
+            </DemoTrigger>
             <div className="entry-copy">
               <h3>What it proves</h3>
               <p>That premium product presentation does not need a real-time engine — only the right frames, and a configurator built around them.</p>
@@ -89,10 +94,13 @@ export default function PrototypesPage() {
           <p className="entry-intro">A customisable piece has more combinations than a catalogue can photograph. The customer is asked to imagine the thing they&apos;re paying for, which is exactly when they close the tab.</p>
 
           <div className="entry flip">
-            <a className="viewport" href="/bracelet-configurator-baked">
-              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEWPORT PROTO-02<br />OPEN THE LIVE BUILD</span></div>
+            <DemoTrigger
+              className="viewport"
+              item={{ title: 'Charm bracelet builder', ref: 'BPC · PROTO-02', iframeSrc: '/bracelet-configurator-baked' }}
+            >
+              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEW ASSETS</span></div>
               <div className="vp-caption"><span>DRAG &amp; DROP</span><span>SINGLE FILE</span></div>
-            </a>
+            </DemoTrigger>
             <div className="entry-copy">
               <h3>What it proves</h3>
               <p>That a personalised product can be assembled by hand, on a phone, and still load instantly.</p>
@@ -122,10 +130,13 @@ export default function PrototypesPage() {
           <p className="entry-intro">The data a small ecommerce team needs already exists. It just arrives as exports, one question at a time, long after the moment the answer was useful.</p>
 
           <div className="entry">
-            <a className="viewport" href="/maison-cacao-demo-suite">
-              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEWPORT PROTO-03<br />OPEN THE THREE CONSOLES</span></div>
+            <DemoTrigger
+              className="viewport"
+              item={{ title: 'Commerce operations suite', ref: 'BPC · PROTO-03', iframeSrc: '/maison-cacao-demo-suite' }}
+            >
+              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEW ASSETS</span></div>
               <div className="vp-caption"><span>THREE CONNECTED TOOLS</span><span>NO 3D REQUIRED</span></div>
-            </a>
+            </DemoTrigger>
             <div className="entry-copy">
               <h3>What it proves</h3>
               <p>That a team can be using a working internal tool inside a sprint, before anyone commits to an integration.</p>
@@ -155,10 +166,13 @@ export default function PrototypesPage() {
           <p className="entry-intro">Ten engine families, sixty-three purchasable configurations, and every one of them competing with the others for the same search result. The buyer only ever wanted to know which engine fits their boat.</p>
 
           <div className="entry flip">
-            <a className="viewport" href="/demos/Marine-Engine-Fit-Architecture-Demo.html">
-              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEWPORT PROTO-04<br />OPEN THE WORKING MODEL</span></div>
+            <DemoTrigger
+              className="viewport"
+              item={{ title: 'Engine fit architecture', ref: 'BPC · PROTO-04', iframeSrc: '/demos/Marine-Engine-Fit-Architecture-Demo.html' }}
+            >
+              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEW ASSETS</span></div>
               <div className="vp-caption"><span>CATALOGUE ARCHITECTURE</span><span>NO 3D REQUIRED</span></div>
-            </a>
+            </DemoTrigger>
             <div className="entry-copy">
               <h3>What it proves</h3>
               <p>That the catalogue structure decision can be settled before the store is built, by making it clickable instead of arguing it on a call.</p>
@@ -231,5 +245,6 @@ export default function PrototypesPage() {
         </div>
       </section>
     </main>
+    </DemoViewerProvider>
   );
 }

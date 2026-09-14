@@ -16,6 +16,7 @@ const staticDemos = [
   "maison-cacao-order-operations",
   "maison-cacao-customer-segmentation",
   "premium-muay-thai-customiser",
+  "max-kpi-japan",
 ];
 
 const nextConfig: NextConfig = {

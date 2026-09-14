@@ -37,6 +37,29 @@ export function initBlueprintRoll(): () => void {
 
   var current = 0, busy = false, timer = null, inView = true, book = null;
 
+  /* --------------------------------------------------------------- sound */
+  /* Page-turn sound on each sheet change. Shares the site-wide mute
+     preference with the demo viewer ('bpc-viewer-sound', default on) and
+     stays silent for reduced-motion visitors (they get the calm crossfade). */
+  var soundOn = true;
+  try { soundOn = localStorage.getItem('bpc-viewer-sound') !== 'off'; } catch (e) {}
+  var turnSound = null;
+  try {
+    turnSound = new Audio('/media/page-turn-open.mp3');
+    turnSound.preload = 'auto';
+    turnSound.volume = 0.5;
+  } catch (e) { turnSound = null; }
+
+  function playTurn() {
+    if (reduced || !soundOn || !turnSound) return;
+    try {
+      turnSound.pause();
+      turnSound.currentTime = 0;
+      var p = turnSound.play();
+      if (p && p.catch) p.catch(function () {});
+    } catch (e) {}
+  }
+
   /* ---------------------------------------------------------------- state */
 
   progressEl.setAttribute('aria-live', 'polite');
@@ -78,6 +101,7 @@ export function initBlueprintRoll(): () => void {
 
     busy = true;
     stopTimer();
+    playTurn();
     var from = current;
 
     function done() {

@@ -8,6 +8,12 @@
    selectors are namespaced under .head / footer for the same reason.
    ============================================================================= */
 
+/* Embedded (inside an iframe): drop the site chrome entirely so the framed
+   page shows only its content. Flag is set by the inline script in layout.tsx. */
+.is-embedded .head,
+.is-embedded footer,
+.is-embedded .skip { display: none !important; }
+
 .head,
 footer,
 .skip {

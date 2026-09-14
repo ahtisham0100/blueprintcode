@@ -93,10 +93,10 @@ export default function Home() {
         {/* ============ 02 PROTOTYPE SPRINT (inverted) ============ */}
         <div className="invert" id="sprint">
           <div className="sheet">
-            <p className="section-no">02 / PROTOTYPE SPRINT</p>
+            <p className="section-no">STEP 00 — START HERE</p>
             <div className="sprint-head">
-              <h2>Proof before promises.</h2>
-              <p>Before anyone commits to a full build, we make a working prototype of your product in three to five weeks. Something real in a browser, not a slide deck. The fee is credited in full against the build if you proceed within 90 days.</p>
+              <h2 className="sprint-title">Prototype Sprint — £625 to £3,000 + VAT</h2>
+              <p>Before anyone commits to a £7,500+ build, we build a working prototype of your product in one to four weeks. Something real in a browser, not a slide deck. The fee is credited in full against any configurator tier below if you proceed within 90 days.</p>
             </div>
             <div className="sprint-cols">
               <div className="sprint-col">
@@ -105,20 +105,23 @@ export default function Home() {
                   <li>One real product, configurable and interactive</li>
                   <li>A single core option path — the one that matters most to your sale</li>
                   <li>Real materials and finishes, not placeholders</li>
+                  <li>Runs in the browser on desktop and mobile</li>
                   <li>Technical feasibility notes and recommended architecture</li>
                   <li>Fixed quote for the full build</li>
                 </ul>
               </div>
               <div className="sprint-col">
-                <h4>PRICE</h4>
+                <h4>WHICH PRICE</h4>
                 <ul>
-                  <li>£1,500 — 2D or image-based configuration, options and pricing logic</li>
-                  <li>£3,000 — real-time 3D with material and finish switching</li>
+                  <li>£625 — one week</li>
+                  <li>£1,125 — two weeks</li>
+                  <li>£2,000 — three weeks</li>
+                  <li>£3,000 — four weeks</li>
                 </ul>
-                <span className="strip">CREDITED IN FULL AGAINST THE BUILD</span>
+                <p className="sprint-note">Plus VAT. We recommend the band on a free consultation, and show you screenshots of the approach before you commit to anything.</p>
+                <span className="strip">DE-RISKS THE DECISION FOR YOU AND THE SCOPE FOR US</span>
               </div>
             </div>
-            <div className="hero-actions"><a className="button" href="#contact">Book a sprint</a></div>
           </div>
         </div>
 

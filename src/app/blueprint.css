@@ -176,6 +176,11 @@
 .brc .strip { display: inline-block; margin-top: 30px; background: var(--ground); color: var(--ink); font-family: var(--data); font-size: 12px; letter-spacing: .08em; padding: 12px 20px; }
 .brc .invert .button { border-color: var(--ground); color: var(--ground); }
 .brc .invert .button:hover { background: var(--ground); color: var(--ink); }
+/* Prototype Sprint head: stacked eyebrow / compact bold heading / paragraph. */
+.brc .invert .sprint-head { display: block; margin-bottom: 44px; }
+.brc .invert h2.sprint-title { font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif; font-size: 19px; font-weight: 600; letter-spacing: 0; line-height: 1.35; margin: 6px 0 16px; max-width: 42ch; }
+.brc .invert .sprint-head p { max-width: 62ch; }
+.brc .invert .sprint-note { font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif; font-size: 13px; color: rgba(11, 26, 46, .6); line-height: 1.55; margin-top: 16px; max-width: 52ch; }
 
 /* prototype index */
 .brc .project-index { border-top: 1px solid var(--line); margin-top: 8px; }

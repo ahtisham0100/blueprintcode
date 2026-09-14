@@ -28,6 +28,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <head>
+        {/* When rendered inside an iframe (e.g. embedded in the demo viewer),
+            flag the document so the global header/footer are hidden — the embed
+            shows only the page, not chrome the visitor could navigate away with.
+            Runs before paint to avoid a flash of chrome. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html:
+              "(function(){try{if(window.top!==window.self)document.documentElement.classList.add('is-embedded')}catch(e){document.documentElement.classList.add('is-embedded')}})()",
+          }}
+        />
         <link rel="preconnect" href="https://fonts.googleapis.com" />
         <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
         <link
