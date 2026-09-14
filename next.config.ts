@@ -1,16 +1,10 @@
 import type { NextConfig } from "next";
 
-// Static HTML pages that live in public/<name>/<name>.html.
-// Each is served at /<name> and also at /<name>.html so the
-// existing relative links inside the pages keep working.
-const staticPages = [
-  "about",
-  "configurators",
-  "insights",
-  "ppav-case-study",
-  "pricing",
-  "prototypes",
-];
+// The former "content pages" (about, configurators, insights, ppav-case-study,
+// pricing, prototypes) are now native Next.js routes under src/app, so they are
+// no longer rewritten to the static HTML in public/<name>/<name>.html. Those
+// files remain on disk for reference but are not served at /<name> anymore.
+const staticPages: string[] = [];
 
 // Static demo folders that live in public/<name>/index.html.
 const staticDemos = [

@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
-import './globals.css';
+import './chrome.css';
+import Header from './_chrome/Header';
+import Footer from './_chrome/Footer';
 
 export const metadata: Metadata = {
   title: 'Blueprint Code — Services & Pricing 2026',
@@ -33,7 +35,12 @@ export default function RootLayout({
           rel="stylesheet"
         />
       </head>
-      <body>{children}</body>
+      <body>
+        <a className="skip" href="#main">Skip to content</a>
+        <Header />
+        {children}
+        <Footer />
+      </body>
     </html>
   );
 }

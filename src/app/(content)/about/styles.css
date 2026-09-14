@@ -1,0 +1,59 @@
+/* About — page-specific styles (ported from the source page's inline <style>).
+   Loads after site.css. Chrome/nav rules from the source were dropped; the
+   header/footer are the global chrome. */
+h1 { font-size: clamp(44px, 7.4vw, 94px); margin-bottom: 28px; max-width: 16ch; }
+h2 { font-size: clamp(32px, 4.8vw, 58px); margin-bottom: 20px; max-width: 19ch; }
+h3 { font-size: 23px; margin-bottom: 8px; }
+p { max-width: 66ch; margin-bottom: 18px; }
+p:last-child { margin-bottom: 0; }
+
+/* fact strip */
+.facts { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); margin-top: 44px; }
+.facts div { padding: 21px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.facts b { display: block; color: var(--ink); font-family: var(--display); font-size: 27px; font-weight: 400; margin-top: 5px; }
+
+/* team */
+.team { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); margin-top: 8px; }
+.member { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 30px 26px; display: flex; flex-direction: column; }
+.member h3 { margin: 14px 0 4px; }
+.member .role { font-family: var(--data); font-size: 12px; letter-spacing: .06em; color: var(--ink-3); margin-bottom: 18px; }
+.member p { font-size: 14px; color: var(--ink-2); margin: 0; }
+.owns { margin-top: auto; padding-top: 20px; border-top: 1px solid var(--line-soft); font-family: var(--data); font-size: 11px; letter-spacing: .1em; color: var(--ink-3); line-height: 1.7; }
+.owns b { display: block; color: var(--ink-2); font-weight: 500; margin-top: 4px; }
+.support { border: 1px solid var(--line); border-top: 0; background: var(--ground-2); padding: 30px 26px; display: grid; grid-template-columns: .55fr 1fr; gap: 40px; align-items: start; }
+.support p { font-size: 14.5px; margin: 0; }
+
+/* disciplines */
+.disc { display: grid; grid-template-columns: repeat(3, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); margin-top: 8px; }
+.disc > div { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 28px 26px; }
+.disc .step { font-family: var(--data); font-size: 12px; letter-spacing: .1em; color: var(--ink-3); }
+.disc h3 { margin: 26px 0 10px; }
+.disc p { font-size: 14px; color: var(--ink-3); margin: 0; }
+.disc-note { font-family: var(--data); font-size: 12.5px; letter-spacing: .04em; color: var(--ink-3); margin-top: 22px; max-width: 70ch; line-height: 1.8; }
+
+/* working */
+.work-grid { display: grid; grid-template-columns: 1fr 1fr; border-top: 1px solid var(--line); border-left: 1px solid var(--line); margin-top: 8px; }
+.work-grid > div { border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); padding: 28px 26px; }
+
+/* principles */
+.principles { border-top: 1px solid var(--ink); margin-top: 8px; }
+.principle { display: grid; grid-template-columns: 80px .55fr 1fr; gap: 28px; align-items: baseline; border-bottom: 1px solid var(--line); padding: 26px 0; }
+.principle .n { font-family: var(--display); font-size: 30px; color: var(--ink-3); line-height: 1; }
+.principle h3 { margin: 0; }
+.principle p { font-size: 14.5px; color: var(--ink-3); margin: 0; max-width: none; }
+
+/* start small band */
+.band { border: 1px solid var(--line); background: var(--ground-2); padding: 32px; display: grid; grid-template-columns: 1fr auto; gap: 32px; align-items: center; margin-top: 52px; }
+.band h3 { font-size: 27px; margin-bottom: 8px; }
+.band p { font-size: 14.5px; margin: 0; }
+
+@media (max-width: 900px) {
+  .two, .team, .disc, .work-grid, .support, .band { grid-template-columns: 1fr; }
+  .facts { grid-template-columns: 1fr 1fr; }
+  .principle { grid-template-columns: 48px 1fr; gap: 16px; }
+  .principle p { grid-column: 2; }
+}
+@media (max-width: 560px) {
+  section, .close { padding: 60px 0; }
+  .facts { grid-template-columns: 1fr; }
+}

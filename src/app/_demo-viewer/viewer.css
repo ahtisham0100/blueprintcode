@@ -1,0 +1,85 @@
+/* Demo viewer — self-contained styles for the sheet-curl modal. All selectors
+   are namespaced under .dv-root and tokens are scoped locally, so the component
+   drops into any page (the homepage world or the content-page world) without
+   colliding with either. */
+.dv-root {
+  --dv-ground: #0B1A2E;
+  --dv-ground-2: #0E2136;
+  --dv-line: #2C4A6E;
+  --dv-ink: #EAF1F8;
+  --dv-ink-2: #8FA9C6;
+  --dv-ink-3: #5F7C9E;
+  --dv-display: 'Bebas Neue', Impact, sans-serif;
+  --dv-data: 'DM Mono', ui-monospace, Menlo, monospace;
+
+  position: fixed;
+  inset: 0;
+  z-index: 70;
+  display: grid;
+  place-items: center;
+  padding: 28px;
+}
+.dv-root[hidden] { display: none; }
+body.dv-viewing { overflow: hidden; }
+
+.dv-scrim { position: absolute; inset: 0; background: rgba(4, 11, 20, .86); }
+
+.dv-frame {
+  position: relative;
+  width: min(1420px, 96vw);
+  height: min(880px, 92vh);
+  background: var(--dv-ground);
+  border: 1px solid var(--dv-line);
+  display: flex;
+  flex-direction: column;
+}
+.dv-frame > i { position: absolute; width: 16px; height: 16px; border: 1px solid var(--dv-ink); font-style: normal; pointer-events: none; z-index: 3; }
+.dv-frame > i:nth-of-type(1) { top: -1px; left: -1px; border-right: 0; border-bottom: 0; }
+.dv-frame > i:nth-of-type(2) { top: -1px; right: -1px; border-left: 0; border-bottom: 0; }
+.dv-frame > i:nth-of-type(3) { bottom: -1px; left: -1px; border-right: 0; border-top: 0; }
+.dv-frame > i:nth-of-type(4) { bottom: -1px; right: -1px; border-left: 0; border-top: 0; }
+
+.dv-bar { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 18px; padding: 13px 18px; border-bottom: 1px solid var(--dv-line); }
+.dv-ref { font-family: var(--dv-data); font-size: 11px; letter-spacing: .16em; color: var(--dv-ink-3); display: block; }
+.dv-title { display: block; font-family: var(--dv-display); font-size: 22px; font-weight: 400; color: var(--dv-ink); letter-spacing: .025em; margin-top: 4px; }
+
+.dv-controls { display: flex; align-items: center; gap: 8px; }
+
+/* segmented video / iframe toggle */
+.dv-toggle { display: inline-flex; border: 1px solid var(--dv-line); }
+.dv-toggle button {
+  background: 0; border: 0; color: var(--dv-ink-3);
+  font-family: var(--dv-data); font-size: 10px; letter-spacing: .12em; text-transform: uppercase;
+  padding: 11px 14px; cursor: pointer;
+}
+.dv-toggle button + button { border-left: 1px solid var(--dv-line); }
+.dv-toggle button:hover { color: var(--dv-ink); }
+.dv-toggle button[aria-pressed="true"] { background: var(--dv-ink); color: var(--dv-ground); }
+.dv-toggle button:disabled { opacity: .4; cursor: not-allowed; }
+
+.dv-sound { background: 0; border: 1px solid var(--dv-line); color: var(--dv-ink-2); font-family: var(--dv-data); font-size: 10px; letter-spacing: .10em; padding: 11px 13px; cursor: pointer; text-transform: uppercase; }
+.dv-sound:hover, .dv-sound[aria-pressed="true"] { border-color: var(--dv-ink-2); color: var(--dv-ink); }
+
+.dv-close { background: 0; border: 1px solid var(--dv-line); color: var(--dv-ink); font-family: var(--dv-data); font-size: 11px; letter-spacing: .12em; padding: 11px 18px; cursor: pointer; text-transform: uppercase; }
+.dv-close:hover { background: var(--dv-ink); color: var(--dv-ground); }
+
+.dv-stage { flex: 1; position: relative; background: var(--dv-ground-2); overflow: hidden; }
+.dv-media { position: absolute; inset: 0; }
+.dv-media iframe, .dv-media video { position: absolute; inset: 0; width: 100%; height: 100%; border: 0; display: block; }
+.dv-media video { object-fit: contain; background: #000; }
+
+/* the curl canvas host (engine appends its <canvas> here), and the flat fallback */
+.dv-curl-host { position: absolute; inset: 0; z-index: 2; pointer-events: none; }
+.dv-curl-canvas { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; }
+.dv-curl-canvas.is-on { opacity: 1; }
+.dv-flat { position: absolute; inset: 0; z-index: 2; background: var(--dv-ground); display: none; }
+.dv-flat.is-on { display: block; }
+
+.dv-status { flex: none; display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 10px 18px; border-top: 1px solid var(--dv-line); font-family: var(--dv-data); font-size: 10px; letter-spacing: .13em; color: var(--dv-ink-3); text-transform: uppercase; }
+
+@media (max-width: 700px) {
+  .dv-root { padding: 10px; }
+  .dv-frame { width: 100%; height: 94vh; }
+  .dv-title { font-size: 18px; }
+  .dv-status span:first-child { display: none; }
+}

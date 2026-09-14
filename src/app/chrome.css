@@ -1,0 +1,141 @@
+/* =============================================================================
+   Global site chrome — shared header + footer for EVERY route (homepage and the
+   content pages alike). Extracted from the content-page pattern in site.css.
+
+   The blueprint design tokens are scoped to the chrome elements (.head, footer,
+   .skip) rather than :root, so they never collide with the homepage's own,
+   differently-valued tokens in globals.css (e.g. --ink). The rest of the chrome
+   selectors are namespaced under .head / footer for the same reason.
+   ============================================================================= */
+
+.head,
+footer,
+.skip {
+  --ground: #0B1A2E;
+  --ink: #EAF1F8;
+  --ink-3: #5F7C9E;
+  --line: #2C4A6E;
+  --line-soft: #1D3552;
+  --max: 1240px;
+  --gut: 32px;
+  --display: 'Bebas Neue', Impact, sans-serif;
+  --data: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+}
+
+/* skip link ----------------------------------------------------------------- */
+.skip {
+  position: absolute;
+  left: -9999px;
+  top: 8px;
+  background: var(--ink);
+  color: var(--ground);
+  padding: 10px 16px;
+  z-index: 99;
+  font-family: var(--data);
+  font-size: 12px;
+  text-decoration: none;
+}
+.skip:focus { left: 16px; }
+
+/* header -------------------------------------------------------------------- */
+.head {
+  height: 72px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  background: var(--ground);
+  border-bottom: 1px solid var(--line);
+}
+.head .sheet {
+  width: min(var(--max), calc(100% - var(--gut) * 2));
+  margin: auto;
+  position: relative;
+  z-index: 1;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+}
+.head .mark { display: flex; align-items: baseline; gap: 9px; text-decoration: none; }
+.head .mark b { font-family: var(--display); font-size: 25px; font-weight: 400; color: var(--ink); letter-spacing: .02em; }
+.head .mark span { font-family: var(--data); font-size: 10px; letter-spacing: .14em; color: var(--ink-3); }
+
+.head nav { display: flex; align-items: center; gap: 25px; }
+.head nav a { font-family: var(--data); font-size: 11px; letter-spacing: .1em; color: var(--ink-3); text-decoration: none; }
+.head nav a:hover { color: var(--ink); }
+.head nav a[aria-current] { color: var(--ink); }
+
+.head .button {
+  display: inline-block;
+  border: 1px solid var(--ink);
+  padding: 12px 20px;
+  color: var(--ink);
+  font-family: var(--data);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  text-decoration: none;
+}
+.head .button:hover { background: var(--ink); color: var(--ground); }
+
+.head .burger {
+  display: none;
+  background: 0;
+  border: 1px solid var(--line);
+  color: var(--ink);
+  font-family: var(--data);
+  font-size: 11px;
+  letter-spacing: .11em;
+  padding: 11px 16px;
+  cursor: pointer;
+  text-transform: uppercase;
+}
+.head .burger:hover { border-color: var(--ink); }
+
+/* footer -------------------------------------------------------------------- */
+footer { border-top: 2px solid var(--ink); padding: 24px 0 44px; }
+footer .sheet {
+  width: min(var(--max), calc(100% - var(--gut) * 2));
+  margin: auto;
+  position: relative;
+  z-index: 1;
+}
+.tb {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  font-family: var(--data);
+  font-size: 11px;
+  letter-spacing: .12em;
+  color: var(--ink-3);
+}
+.tb div { padding: 14px 18px 14px 0; border-right: 1px solid var(--line-soft); }
+.tb div:last-child { border-right: 0; }
+.tb b { display: block; color: var(--ink); font-weight: 400; margin-top: 5px; letter-spacing: .08em; }
+.tb a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+.tb a:hover { border-bottom-color: var(--ink); }
+
+/* mobile -------------------------------------------------------------------- */
+@media (max-width: 900px) {
+  .tb { grid-template-columns: repeat(2, 1fr); }
+  .head .burger { display: block; }
+  .head nav {
+    position: fixed;
+    inset: 72px 0 auto 0;
+    z-index: 19;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+    background: var(--ground);
+    border-bottom: 1px solid var(--line);
+    padding: 0 var(--gut) 24px;
+    display: none;
+  }
+  body.nav-open .head nav { display: flex; }
+  .head nav a { font-size: 14px; letter-spacing: .12em; padding: 18px 0; border-bottom: 1px solid var(--line-soft); }
+  .head nav a.button { margin-top: 20px; text-align: center; border-bottom: 1px solid var(--ink); }
+}
+@media (max-width: 560px) {
+  .head, footer { --gut: 20px; }
+}

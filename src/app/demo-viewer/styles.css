@@ -1,0 +1,41 @@
+/* Standalone verification page for the DemoViewer component. Self-contained
+   blueprint styling (own tokens) so it doesn't depend on site.css. */
+.dvx {
+  --dvx-ground: #0B1A2E;
+  --dvx-ground-2: #0E2136;
+  --dvx-line: #2C4A6E;
+  --dvx-line-soft: #1D3552;
+  --dvx-ink: #EAF1F8;
+  --dvx-ink-2: #8FA9C6;
+  --dvx-ink-3: #5F7C9E;
+  --dvx-display: 'Bebas Neue', Impact, sans-serif;
+  --dvx-data: 'DM Mono', ui-monospace, Menlo, monospace;
+  --dvx-prose: 'IBM Plex Sans', system-ui, sans-serif;
+
+  background: var(--dvx-ground);
+  color: var(--dvx-ink-2);
+  font-family: var(--dvx-prose);
+  min-height: 70vh;
+  padding: 72px 0;
+}
+.dvx .sheet { width: min(1240px, calc(100% - 64px)); margin: auto; }
+.dvx .sheet-no { font-family: var(--dvx-data); font-size: 12px; letter-spacing: .18em; color: var(--dvx-ink-3); display: flex; align-items: center; gap: 14px; margin-bottom: 18px; }
+.dvx .sheet-no::after { content: ''; flex: 1; height: 1px; background: var(--dvx-line-soft); }
+.dvx h2 { font-family: var(--dvx-display); font-weight: 400; color: var(--dvx-ink); letter-spacing: .025em; line-height: 1; font-size: clamp(32px, 4.6vw, 54px); margin-bottom: 16px; max-width: 18ch; }
+.dvx p.lead { max-width: 62ch; margin-bottom: 8px; }
+
+.dvx .viewports { display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px; margin-top: 34px; }
+.dvx .vp { border: 1px solid var(--dvx-line); padding: 14px; }
+.dvx .media { position: relative; border: 1px dashed var(--dvx-line); background: var(--dvx-ground-2); aspect-ratio: 16/10; display: grid; place-items: center; }
+.dvx .media i { position: absolute; width: 10px; height: 10px; border: 1px solid var(--dvx-ink-3); font-style: normal; }
+.dvx .media i:nth-of-type(1) { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+.dvx .media i:nth-of-type(2) { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
+.dvx .media i:nth-of-type(3) { bottom: 8px; left: 8px; border-right: 0; border-top: 0; }
+.dvx .media i:nth-of-type(4) { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+.dvx .see { background: 0; border: 1px solid var(--dvx-ink); color: var(--dvx-ink); font-family: var(--dvx-data); font-size: 11px; letter-spacing: .14em; padding: 12px 22px; cursor: pointer; text-transform: uppercase; }
+.dvx .see:hover { background: var(--dvx-ink); color: var(--dvx-ground); }
+.dvx .vp h3 { font-family: var(--dvx-display); font-weight: 400; color: var(--dvx-ink); letter-spacing: .025em; font-size: 20px; margin: 16px 0 6px; }
+.dvx .vp p { font-size: 13px; color: var(--dvx-ink-3); margin: 0; }
+.dvx .tag { display: inline-block; font-family: var(--dvx-data); font-size: 10px; letter-spacing: .12em; color: var(--dvx-ink-3); border: 1px solid var(--dvx-line); padding: 3px 8px; margin-top: 10px; text-transform: uppercase; }
+
+@media (max-width: 820px) { .dvx .viewports { grid-template-columns: 1fr; } }

@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import Home from './Home';
+import './globals.css';
 import './home.css';
 import './blueprint.css';
 

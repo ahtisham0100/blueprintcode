@@ -1,0 +1,110 @@
+/* Pricing — page-specific styles (ported from the source page's inline <style>).
+   Loads after site.css. Chrome/nav rules from the source were dropped; the
+   header/footer are the global chrome. */
+:root{
+  --ground:#0B1A2E;
+  --ground-2:#0E2136;
+  --line:#2C4A6E;
+  --line-soft:#1D3552;
+  --ink:#EAF1F8;
+  --ink-2:#8FA9C6;
+  --ink-3:#5F7C9E;
+  --max:1240px;
+  --gut:32px;
+  --display:'Bebas Neue',Impact,sans-serif;
+  --data:'DM Mono',ui-monospace,Menlo,Consolas,monospace;
+  --prose:'IBM Plex Sans',system-ui,-apple-system,sans-serif;
+}
+/* critical: keeps a page readable if site.css hasn't loaded yet */
+body{background:var(--ground);color:var(--ink-2);font-family:var(--prose)}
+a:hover{border-bottom-color:var(--ink)}
+p{max-width:66ch}
+/* ---------- title block ---------- */
+  .title-block{padding:76px 0 0}
+h1{font-size:clamp(46px,8vw,100px);margin-bottom:28px;max-width:15ch}
+/* ---------- sections ---------- */
+  section{padding:92px 0;border-top:1px solid var(--line-soft)}
+.sec-head{margin-bottom:40px}
+h2{font-size:clamp(30px,4.4vw,52px);margin-bottom:16px;max-width:20ch}
+/* ---------- group band ---------- */
+  .band{
+    display:flex;align-items:baseline;justify-content:space-between;gap:20px;flex-wrap:wrap;
+    border-bottom:1px solid var(--ink);padding-bottom:10px;margin:52px 0 0;
+  }
+.band h3{font-size:27px}
+.band .range{font-family:var(--data);font-size:13px;letter-spacing:.1em;color:var(--ink-2)}
+/* ---------- schedule blocks ---------- */
+  .row2{display:grid;grid-template-columns:1fr 1fr;border-left:1px solid var(--line)}
+.row3{display:grid;grid-template-columns:repeat(3,1fr);border-left:1px solid var(--line);border-top:1px solid var(--line)}
+.item{
+    border-right:1px solid var(--line);border-bottom:1px solid var(--line);
+    padding:28px 26px;display:flex;flex-direction:column;
+  }
+.item-top{display:flex;align-items:baseline;justify-content:space-between;gap:16px;margin-bottom:12px}
+.item h4{font-family:var(--display);font-size:25px;color:var(--ink);font-weight:400;letter-spacing:.01em}
+.rate{font-size:34px;white-space:nowrap}
+.rate .from{font-family:var(--data);font-size:12px;color:var(--ink-3);letter-spacing:.08em;margin-right:5px}
+.item > p{font-size:14.5px;color:var(--ink-3);margin-bottom:16px}
+ul li{font-size:14px;color:var(--ink-2);padding:8px 0 8px 24px;position:relative;border-bottom:1px solid var(--line-soft)}
+ul li:last-child{border-bottom:0}
+ul li::before{content:'';position:absolute;left:0;top:17px;width:11px;height:1px;background:var(--ink-3)}
+.note{
+    margin-top:auto;padding-top:16px;border-top:1px solid var(--line-soft);
+    font-family:var(--data);font-size:12px;letter-spacing:.04em;color:var(--ink-3);line-height:1.6;
+  }
+.note b{color:var(--ink-2);font-weight:500}
+/* ---------- inverted feature block ---------- */
+  .invert{background:var(--ink);color:var(--ground);padding:56px var(--gut);margin-top:36px}
+.invert .sheet{padding:0}
+.invert .lbl{color:rgba(11,26,46,.55)}
+.invert-cols{display:grid;grid-template-columns:1fr 1fr;gap:36px 56px;margin-top:34px}
+.invert-cols h4{font-family:var(--data);font-size:11px;letter-spacing:.16em;color:rgba(11,26,46,.55);font-weight:400;margin-bottom:12px}
+.invert-cols li{color:rgba(11,26,46,.85);border-bottom-color:rgba(11,26,46,.16)}
+.invert-cols li::before{background:rgba(11,26,46,.45)}
+.invert .band-strip{
+    display:inline-block;margin-top:30px;background:var(--ground);color:var(--ink);
+    font-family:var(--data);font-size:12.5px;letter-spacing:.08em;padding:12px 20px;
+  }
+/* ---------- schedule table ---------- */
+  .sched{width:100%;border-collapse:collapse;border-top:1px solid var(--ink);margin-top:26px}
+.sched caption{text-align:left;font-family:var(--data);font-size:12px;letter-spacing:.08em;color:var(--ink-3);padding-bottom:14px}
+.sched th{
+    font-family:var(--data);font-size:11px;letter-spacing:.16em;color:var(--ink-3);font-weight:400;
+    text-align:left;padding:12px 0;border-bottom:1px solid var(--line);
+  }
+.sched th:last-child,.sched td:last-child{text-align:right}
+.sched td{padding:13px 0;border-bottom:1px solid var(--line-soft);font-size:14.5px;color:var(--ink-2)}
+.sched td:first-child{color:var(--ink)}
+.sched td:last-child{font-family:var(--data);font-size:14px;color:var(--ink);white-space:nowrap;letter-spacing:.02em}
+.sched tr:hover td{background:rgba(234,241,248,.035)}
+/* ---------- capability list ---------- */
+  .caps{border-top:1px solid var(--line);margin-top:26px}
+.cap{display:grid;grid-template-columns:230px 1fr;gap:32px;padding:24px 0;border-bottom:1px solid var(--line)}
+.cap h3{font-size:23px;margin-bottom:4px}
+.cap .lbl{margin-bottom:8px}
+.cap-items{display:grid;grid-template-columns:1fr 1fr;gap:2px 32px}
+.cap-items div{padding:7px 0 7px 24px;position:relative;font-size:14px;color:var(--ink-2)}
+.cap-items div::before{content:'';position:absolute;left:0;top:16px;width:11px;height:1px;background:var(--ink-3)}
+.cap-items b{color:var(--ink);font-weight:450;display:block;font-size:14px}
+.cap-items span{color:var(--ink-3);font-size:13px;line-height:1.5;display:block}
+/* ---------- close ---------- */
+  .close{padding:88px 0;border-top:1px solid var(--line-soft)}
+.ctas{display:flex;gap:16px;flex-wrap:wrap;margin-top:32px}
+.btn{border:1px solid var(--ink);color:var(--ink);padding:14px 26px;font-family:var(--data);font-size:12px;letter-spacing:.12em}
+.btn:hover{background:var(--ink);color:var(--ground)}
+.btn.solid{background:var(--ink);color:var(--ground)}
+.btn.solid:hover{background:transparent;color:var(--ink)}
+.terms{font-family:var(--data);font-size:12px;color:var(--ink-3);line-height:1.7;margin-top:26px;max-width:70ch}
+@media (max-width:980px){
+  .row2,.row3,.invert-cols,.cap-items{grid-template-columns:1fr}
+  .cap{grid-template-columns:1fr;gap:14px}
+}
+@media (max-width:640px){
+  section,.close{padding:60px 0}
+  .item-top{flex-direction:column;gap:6px}
+}
+@media print{
+  body::before{display:none}
+  .item,.cap,.sched{break-inside:avoid}
+}
+  .band-note{margin:14px 0 0;font-size:13px;line-height:1.55;opacity:.72}

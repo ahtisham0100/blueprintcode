@@ -13,33 +13,8 @@ export default function Home() {
 
   return (
     <div className="bp-root">
-      <a className="bp-skip" href="#main">Skip to content</a>
-
-      {/* ============ NAV (global) ============ */}
-      <header className="bp-nav" role="banner">
-        <div className="bp-nav-inner">
-          <a className="bp-brand" href="/" aria-label="Blueprint Code home">
-            <svg className="bp-mark" viewBox="0 0 96 96" aria-hidden="true" focusable="false">
-              <rect width="96" height="96" rx="22" fill="#0B1F3A" />
-              <g transform="translate(12 12) scale(0.86)">
-                <rect x="6" y="6" width="12" height="72" rx="3" fill="#FFFFFF" />
-                <rect x="24" y="6" width="42" height="32" rx="12" fill="none" stroke="#FFFFFF" strokeWidth="12" />
-                <rect x="24" y="46" width="54" height="32" rx="12" fill="none" stroke="#4F8BFF" strokeWidth="12" />
-              </g>
-            </svg>
-            <span className="bp-brand-name">Blueprint Code</span>
-          </a>
-          <nav className="bp-navlinks" aria-label="Primary">
-            <a href="/configurators">Configurators</a>
-            <a href="/prototypes">Prototypes</a>
-            <a href="/ppav-case-study">Case study</a>
-            <a href="/pricing">Pricing</a>
-            <a href="/insights">Insights</a>
-            <a href="/about">About</a>
-            <a className="bp-nav-cta" href="#contact">Start a project</a>
-          </nav>
-        </div>
-      </header>
+      {/* Header and footer are the global site chrome (src/app/_chrome), rendered
+          by the root layout. The homepage keeps only its blueprint-roll body. */}
 
       {/* ============ BLUEPRINT-ROLL HOMEPAGE CONTENT ============ */}
       <main id="main" className="brc">
@@ -293,16 +268,6 @@ export default function Home() {
           </div>
         </section>
       </main>
-
-      {/* ============ FOOTER (global — from the reference homepage) ============ */}
-      <footer className="bp-roll-footer" role="contentinfo">
-        <div className="footer-grid">
-          <div>COMPANY<b>BLUEPRINT CODE</b></div>
-          <div>SPECIALISM<b>INTERACTIVE COMMERCE</b></div>
-          <div>CONTACT<b><a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a></b></div>
-          <div>REFERENCE<b>BPC / 2026</b></div>
-        </div>
-      </footer>
     </div>
   );
 }
