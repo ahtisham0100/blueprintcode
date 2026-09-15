@@ -23,6 +23,8 @@ export function initBlueprintRoll(): () => void {
   var progressEl = document.getElementById('roll-progress');
   var prevBtn    = document.getElementById('roll-prev');
   var nextBtn    = document.getElementById('roll-next');
+  var pauseBtn   = document.getElementById('roll-pause');
+  var hintEl     = document.getElementById('roll-hint');
   var bar        = track.querySelector('.roll-timer');
   if (!stage || !progressEl || !prevBtn || !nextBtn || sheets.length < 2) return function () {};
 
@@ -36,6 +38,17 @@ export function initBlueprintRoll(): () => void {
   var narrow  = window.matchMedia && window.matchMedia('(max-width: 860px)').matches;
 
   var current = 0, busy = false, timer = null, inView = true, book = null;
+
+  /* Auto-advance control.
+     - autoEnabled: the master switch. Auto turns only happen while it is true.
+       It is switched off the moment the visitor takes manual control (an arrow,
+       a key, or the pause button), because moving the sheet under someone who
+       has started reading is just fighting them. The pause button can switch it
+       back on if they want the rotation again.
+     - hoverPaused: a soft, temporary hold while the pointer is over the board or
+       focus is inside it, so it stops while someone is actually reading. It does
+       not change autoEnabled and clears itself when they leave. */
+  var autoEnabled = true, hoverPaused = false;
 
   /* --------------------------------------------------------------- sound */
   /* Page-turn sound on each sheet change. Shares the site-wide mute
@@ -82,9 +95,10 @@ export function initBlueprintRoll(): () => void {
 
   function startTimer() {
     stopTimer();
+    if (!autoEnabled || hoverPaused) return;
     if (!inView || document.hidden) return;
     if (bar) { bar.classList.remove('run'); void bar.offsetWidth; bar.classList.add('run'); }
-    timer = window.setTimeout(function () { go(1); }, AUTO_MS);
+    timer = window.setTimeout(function () { go(1, false); }, AUTO_MS);
   }
 
   function stopTimer() {
@@ -94,10 +108,14 @@ export function initBlueprintRoll(): () => void {
 
   /* Single entry point for every turn. Guarded so a rapid second click, or
      the auto timer firing mid-turn, is dropped rather than queued. */
-  function go(dir) {
+  function go(dir, manual) {
     if (busy) return;
     var next = (current + dir + sheets.length) % sheets.length;
     if (next === current) return;
+
+    // First manual turn takes control: stop auto-advancing for good (until the
+    // visitor explicitly presses play).
+    if (manual && autoEnabled) { autoEnabled = false; updatePauseUI(); }
 
     busy = true;
     stopTimer();
@@ -131,19 +149,59 @@ export function initBlueprintRoll(): () => void {
 
   /* ------------------------------------------------------------- controls */
 
-  function onPrev() { go(-1); }
-  function onNext() { go(1); }
+  /* Reflect the auto-advance state on the pause button and the hint label. */
+  function updatePauseUI() {
+    var paused = !autoEnabled;
+    if (pauseBtn) {
+      pauseBtn.setAttribute('aria-pressed', paused ? 'true' : 'false');
+      pauseBtn.setAttribute('aria-label', paused ? 'Resume automatic turning' : 'Pause automatic turning');
+    }
+    if (hintEl) hintEl.textContent = paused ? 'AUTO TURN / OFF' : 'AUTO TURN / 10 SECONDS';
+  }
+
+  function setAuto(on) {
+    autoEnabled = on;
+    updatePauseUI();
+    if (on) startTimer(); else stopTimer();
+  }
+
+  function onPrev() { go(-1, true); }
+  function onNext() { go(1, true); }
+  function onPause() { setAuto(!autoEnabled); }
   function onKey(e) {
-    if (e.key === 'ArrowLeft')  { e.preventDefault(); go(-1); }
-    if (e.key === 'ArrowRight') { e.preventDefault(); go(1); }
+    if (e.key === 'ArrowLeft')  { e.preventDefault(); go(-1, true); }
+    if (e.key === 'ArrowRight') { e.preventDefault(); go(1, true); }
   }
   prevBtn.addEventListener('click', onPrev);
   nextBtn.addEventListener('click', onNext);
+  if (pauseBtn) pauseBtn.addEventListener('click', onPause);
   track.addEventListener('keydown', onKey);
   disposers.push(function () {
     prevBtn.removeEventListener('click', onPrev);
     nextBtn.removeEventListener('click', onNext);
+    if (pauseBtn) pauseBtn.removeEventListener('click', onPause);
     track.removeEventListener('keydown', onKey);
+  });
+
+  /* Pause on hover and on keyboard focus — a soft hold while the visitor is
+     actually reading, so they do not need to have noticed the button first. It
+     leaves autoEnabled untouched and lifts as soon as they move away. */
+  function onHoldEnter() { hoverPaused = true; stopTimer(); }
+  function onHoldLeave(e) {
+    // focusout carries the element focus moved to; ignore moves that stay inside.
+    if (e && e.relatedTarget && track.contains(e.relatedTarget)) return;
+    hoverPaused = false;
+    if (!busy) startTimer();
+  }
+  track.addEventListener('mouseenter', onHoldEnter);
+  track.addEventListener('mouseleave', onHoldLeave);
+  track.addEventListener('focusin', onHoldEnter);
+  track.addEventListener('focusout', onHoldLeave);
+  disposers.push(function () {
+    track.removeEventListener('mouseenter', onHoldEnter);
+    track.removeEventListener('mouseleave', onHoldLeave);
+    track.removeEventListener('focusin', onHoldEnter);
+    track.removeEventListener('focusout', onHoldLeave);
   });
 
   /* Stop all work when the board is off-screen or the tab is hidden. */
@@ -771,6 +829,7 @@ export function initBlueprintRoll(): () => void {
     track.classList.add('js-ready');
     if (!book) track.classList.add('mode-fade');
     paint(0);
+    updatePauseUI();
     startTimer();
   }
 

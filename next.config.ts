@@ -1,42 +1,19 @@
 import type { NextConfig } from "next";
 
-// The former "content pages" (about, configurators, insights, ppav-case-study,
-// pricing, prototypes) are now native Next.js routes under src/app, so they are
-// no longer rewritten to the static HTML in public/<name>/<name>.html. Those
-// files remain on disk for reference but are not served at /<name> anymore.
-const staticPages: string[] = [];
-
-// Static demo folders that live in public/<name>/index.html.
-const staticDemos = [
-  "aura-mirror-demo",
-  "antera-elevator-configurator-concept",
-  "bracelet-configurator-baked",
-  "maison-cacao-demo-suite",
-  "maison-cacao-dashboard-demo",
-  "maison-cacao-order-operations",
-  "maison-cacao-customer-segmentation",
-  "premium-muay-thai-customiser",
-  "max-kpi-japan",
-  "signet-ring-configurator-demo",
-  "signet-ring-configurator",
-  "card-carousel-demo",
-];
-
 const nextConfig: NextConfig = {
   async rewrites() {
     return {
-      // The home page is now the React route src/app/page.tsx, so the "/"
-      // rewrite to public/index/index.html has been removed. The old static
-      // file still lives at public/index/index.html for reference.
+      // Static demos live at public/<slug>/index.html and are served at /<slug>.
+      // This single wildcard replaces the old per-demo list: any /<slug> that
+      // isn't a real route or file falls through to its index.html, so adding a
+      // demo needs NO config change — just add public/<slug>/index.html (e.g.
+      // via the /admin uploader) and it goes live on the next deploy.
+      //
+      // Real routes (/, /about, /prototypes, /api/*, …) and real public files
+      // (/robots.txt, /site.css, …) are matched before these afterFiles rewrites,
+      // so they always win; only leftover single-segment paths reach this rule.
       afterFiles: [
-        ...staticPages.flatMap((name) => [
-          { source: `/${name}`, destination: `/${name}/${name}.html` },
-          { source: `/${name}.html`, destination: `/${name}/${name}.html` },
-        ]),
-        ...staticDemos.map((name) => ({
-          source: `/${name}`,
-          destination: `/${name}/index.html`,
-        })),
+        { source: "/:slug", destination: "/:slug/index.html" },
       ],
     };
   },

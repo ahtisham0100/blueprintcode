@@ -1,6 +1,8 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import './styles.css';
-import Reader from './Reader';
+import { NOTES } from './notes';
+import HashRedirect from './HashRedirect';
 
 export const metadata: Metadata = {
   title: 'Field notes — Blueprint Code',
@@ -21,53 +23,22 @@ const blogSchema = {
   '@type': 'Blog',
   name: 'Blueprint Code — Field Notes',
   url: 'https://blueprintcode.ai/insights',
-  blogPost: [
-    {
-      '@type': 'BlogPosting',
-      headline: 'What does a product configurator cost in 2026?',
-      description:
-        'Realistic price bands, the variables that move them, and how to avoid paying production money before the difficult idea is proven.',
-      wordCount: 729,
-      author: { '@type': 'Organization', name: 'Blueprint Code' },
-      publisher: { '@type': 'Organization', name: 'Blueprint Code' },
-      mainEntityOfPage: 'https://blueprintcode.ai/insights#configurator-cost',
-    },
-    {
-      '@type': 'BlogPosting',
-      headline: '2D vs 3D product configurators',
-      description:
-        'When images and rules are enough, when real-time 3D earns its cost, and how to choose without buying technology for its own sake.',
-      wordCount: 680,
-      author: { '@type': 'Organization', name: 'Blueprint Code' },
-      publisher: { '@type': 'Organization', name: 'Blueprint Code' },
-      mainEntityOfPage: 'https://blueprintcode.ai/insights#2d-vs-3d',
-    },
-    {
-      '@type': 'BlogPosting',
-      headline: 'Why complex products need a digital showroom',
-      description:
-        'A product page displays information. A digital showroom turns uncertainty into a guided, commercially useful buying journey.',
-      wordCount: 698,
-      author: { '@type': 'Organization', name: 'Blueprint Code' },
-      publisher: { '@type': 'Organization', name: 'Blueprint Code' },
-      mainEntityOfPage: 'https://blueprintcode.ai/insights#digital-showroom',
-    },
-    {
-      '@type': 'BlogPosting',
-      headline: 'From an eBay account to a multi-market retailer',
-      description:
-        'Six lessons from growing PP-AV into an international commerce operation with five connected sales tools.',
-      wordCount: 778,
-      author: { '@type': 'Organization', name: 'Blueprint Code' },
-      publisher: { '@type': 'Organization', name: 'Blueprint Code' },
-      mainEntityOfPage: 'https://blueprintcode.ai/insights#ppav-growth',
-    },
-  ],
+  blogPost: NOTES.map((n) => ({
+    '@type': 'BlogPosting',
+    headline: n.title,
+    description: n.desc,
+    wordCount: n.wordCount,
+    author: { '@type': 'Organization', name: 'Blueprint Code' },
+    publisher: { '@type': 'Organization', name: 'Blueprint Code' },
+    url: `https://blueprintcode.ai/insights/${n.slug}`,
+    mainEntityOfPage: `https://blueprintcode.ai/insights/${n.slug}`,
+  })),
 };
 
 export default function InsightsPage() {
   return (
     <main id="main">
+      <HashRedirect />
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
@@ -85,7 +56,23 @@ export default function InsightsPage() {
         <p className="standfirst">Practical thinking from building product configurators, connected ecommerce systems and an international retail operation of our own. Select an entry to read it.</p>
       </div>
 
-      <Reader />
+      <section id="index">
+        <div className="sheet">
+          <p className="sheet-no">INDEX — 4 ENTRIES</p>
+          <div className="insights-index">
+            {NOTES.map((n) => (
+              <Link key={n.slug} className="entry" href={`/insights/${n.slug}`}>
+                <span className="ref">{n.ref}<b>{n.refB}</b></span>
+                <span>
+                  <h3>{n.title}</h3>
+                  <p>{n.desc}</p>
+                </span>
+                <span className="go">{n.read} →</span>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
 
       <section className="close" id="contact">
         <div className="sheet">

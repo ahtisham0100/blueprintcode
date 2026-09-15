@@ -12,7 +12,7 @@ export const metadata: Metadata = {
   openGraph: {
     title: 'Blueprint Code — Product configurators, commerce & AI systems',
     description:
-      'Product configurators, commerce and AI systems. Every build starts with a Prototype Sprint, £1,500–£3,000, credited against the build.',
+      'Product configurators, commerce and AI systems. Every build starts with a Prototype Sprint, £625–£3,000, credited against the build.',
     type: 'website',
     url: 'https://blueprintcode.ai/',
   },

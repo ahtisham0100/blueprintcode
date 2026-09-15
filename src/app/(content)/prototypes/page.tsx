@@ -62,7 +62,7 @@ export default function PrototypesPage() {
               className="viewport"
               item={{ title: 'Made-to-order fight shorts', ref: 'BPC · PROTO-01', iframeSrc: '/premium-muay-thai-customiser' }}
             >
-              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEW ASSETS</span></div>
+              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>OPEN PROTOTYPE →</span></div>
               <div className="vp-caption"><span>PRE-RENDERED CGI</span><span>SINGLE FILE</span></div>
             </DemoTrigger>
             <div className="entry-copy">
@@ -98,7 +98,7 @@ export default function PrototypesPage() {
               className="viewport"
               item={{ title: 'Charm bracelet builder', ref: 'BPC · PROTO-02', iframeSrc: '/bracelet-configurator-baked' }}
             >
-              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEW ASSETS</span></div>
+              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>OPEN PROTOTYPE →</span></div>
               <div className="vp-caption"><span>DRAG &amp; DROP</span><span>SINGLE FILE</span></div>
             </DemoTrigger>
             <div className="entry-copy">
@@ -134,7 +134,7 @@ export default function PrototypesPage() {
               className="viewport"
               item={{ title: 'Commerce operations suite', ref: 'BPC · PROTO-03', iframeSrc: '/maison-cacao-demo-suite' }}
             >
-              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEW ASSETS</span></div>
+              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>OPEN PROTOTYPE →</span></div>
               <div className="vp-caption"><span>THREE CONNECTED TOOLS</span><span>NO 3D REQUIRED</span></div>
             </DemoTrigger>
             <div className="entry-copy">
@@ -170,7 +170,7 @@ export default function PrototypesPage() {
               className="viewport"
               item={{ title: 'Engine fit architecture', ref: 'BPC · PROTO-04', iframeSrc: '/demos/Marine-Engine-Fit-Architecture-Demo.html' }}
             >
-              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>VIEW ASSETS</span></div>
+              <div className="vp-frame"><i></i><i></i><i></i><i></i><span>OPEN PROTOTYPE →</span></div>
               <div className="vp-caption"><span>CATALOGUE ARCHITECTURE</span><span>NO 3D REQUIRED</span></div>
             </DemoTrigger>
             <div className="entry-copy">

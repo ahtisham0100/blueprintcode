@@ -1,41 +1,40 @@
-'use client';
-
-import { useCallback, useEffect, useRef, useState } from 'react';
 import type { ReactNode } from 'react';
 
-/* Field-notes index + slide-in reading panel. Ports the original inline reader
-   script to React: clicking an index entry opens its article in a fixed panel,
-   the URL hash tracks the open note (back/forward and deep links work), and
-   Escape or the scrim closes it. */
+/* Shared data for the field notes. Each note is its own page at
+   /insights/<slug>; the /insights index lists them. `content` is the full
+   article body (a .panel-head heading block, the prose, and a .panel-foot
+   actions row) and is rendered inside a .prose column on the article page. */
 
-interface Note {
+export interface Note {
   slug: string;
   ref: string; // shown in the index (e.g. "INS-001")
   refB: string; // second line in the index (e.g. "COST & SCOPE")
-  bar: string; // panel bar label (e.g. "INS-001 / COST & SCOPE")
+  read: string; // read-time label (e.g. "3 MIN READ")
   title: string;
   desc: string;
-  content: ReactNode; // the .panel-head + article body + .panel-foot
+  wordCount: number;
+  content: ReactNode;
 }
 
-const NOTES: Note[] = [
+export const NOTES: Note[] = [
   {
     slug: 'configurator-cost',
     ref: 'INS-001',
     refB: 'COST & SCOPE',
-    bar: 'INS-001 / COST & SCOPE',
+    read: '3 MIN READ',
     title: 'What does a product configurator cost in 2026?',
     desc: 'Realistic price bands, the variables that move them, and how to avoid paying production money before the difficult idea is proven.',
+    wordCount: 729,
     content: (
       <>
         <div className="panel-head">
           <span className="lbl">INS-001 · COST &amp; SCOPE · 3 MIN READ</span>
-          <h2>What does a product configurator cost in 2026?</h2>
+          <h1>What does a product configurator cost in 2026?</h1>
         </div>
-        <p className="intro">In 2026, a credible custom product configurator can begin at around <strong>£7,500</strong>, while a professional commercial system commonly sits between <strong>£15,000 and £30,000</strong>. A multi-tool digital showroom can start from <strong>£35,000</strong> and rise substantially when it includes complex 3D, enterprise integrations, dealer portals or custom commerce infrastructure.</p>
+        <p className="intro">In 2026, a credible custom product configurator can begin at around <strong>£2,500</strong>, while a professional commercial system commonly sits between <strong>£15,000 and £30,000</strong>. A multi-tool digital showroom can start from <strong>£35,000</strong> and rise substantially when it includes complex 3D, enterprise integrations, dealer portals or custom commerce infrastructure.</p>
         <p>Those bands are more useful than a suspiciously precise quotation made before anyone has mapped the product rules. Two configurators that look similar in a screenshot can require completely different amounts of work underneath.</p>
         <h2>The four practical price levels</h2>
-        <div className="table-wrap"><table><thead><tr><th>Level</th><th>Typical scope</th><th>Indicative price</th></tr></thead><tbody><tr><td>Prototype Sprint</td><td>One difficult interaction or product idea, working in a browser</td><td>£625–£3,000</td></tr><tr><td>Foundation Configurator</td><td>Focused options, rules, live preview and lead capture</td><td>From £7,500</td></tr><tr><td>Professional Suite</td><td>Advanced logic, pricing, ecommerce and business integrations</td><td>£15,000–£30,000</td></tr><tr><td>Enterprise Digital Showroom</td><td>Multiple connected tools, 3D, accounts, data and guided commerce</td><td>From £35,000</td></tr></tbody></table></div>
+        <div className="table-wrap"><table><thead><tr><th>Level</th><th>Typical scope</th><th>Indicative price</th></tr></thead><tbody><tr><td>Prototype Sprint</td><td>One difficult interaction or product idea, working in a browser</td><td>£625–£3,000</td></tr><tr><td>Foundation Configurator</td><td>Focused options, rules, live preview and lead capture</td><td>From £2,500</td></tr><tr><td>Professional Suite</td><td>Advanced logic, pricing, ecommerce and business integrations</td><td>£15,000–£30,000</td></tr><tr><td>Enterprise Digital Showroom</td><td>Multiple connected tools, 3D, accounts, data and guided commerce</td><td>From £35,000</td></tr></tbody></table></div>
         <p>These are custom-development ranges rather than plugin licence prices. An off-the-shelf app may be enough for simple colour, text or image choices. Custom development becomes valuable when the product has genuine dependencies, unusual visuals, quoting requirements or a sales process that standard software cannot express.</p>
         <h2>What actually changes the price?</h2>
         <h3>1. product logic</h3>
@@ -62,7 +61,7 @@ const NOTES: Note[] = [
         <p>Expect a written definition of the customer journey, product rules, visual method, integrations, deliverables, exclusions, testing responsibility, deployment and support. A range is appropriate during discovery; a fixed figure only becomes meaningful when the boundaries are understood.</p>
         <div className="note"><span className="data">Planning note</span>Prepare a representative product set, existing pricing logic, a list of known exceptions and examples of the final output your sales team needs. That will improve any estimate more than a longer feature wish list.</div>
         <h2>The short answer</h2>
-        <p>Budget <strong>from £7,500</strong> for a focused custom configurator, <strong>£15,000–£30,000</strong> for a professional commercial suite and <strong>£35,000+</strong> for a connected digital showroom. Prove the difficult part first, and do not choose 3D unless it materially improves the customer’s decision.</p>
+        <p>Budget <strong>from £2,500</strong> for a focused custom configurator, <strong>£15,000–£30,000</strong> for a professional commercial suite and <strong>£35,000+</strong> for a connected digital showroom. Prove the difficult part first, and do not choose 3D unless it materially improves the customer’s decision.</p>
         <div className="panel-foot">
           <a className="button" href="/pricing">See the rates</a>
           <a className="button" href="/prototypes">See the prototypes</a>
@@ -74,14 +73,15 @@ const NOTES: Note[] = [
     slug: '2d-vs-3d',
     ref: 'INS-002',
     refB: 'VISUAL METHOD',
-    bar: 'INS-002 / VISUAL METHOD',
+    read: '3 MIN READ',
     title: '2D vs 3D product configurators',
     desc: 'When images and rules are enough, when real-time 3D earns its cost, and how to choose without buying technology for its own sake.',
+    wordCount: 680,
     content: (
       <>
         <div className="panel-head">
           <span className="lbl">INS-002 · VISUAL METHOD · 3 MIN READ</span>
-          <h2>2D vs 3D product configurators</h2>
+          <h1>2D vs 3D product configurators</h1>
         </div>
         <p className="intro">Use 2D or layered imagery when customers need to compare colours, finishes, text or components from a controlled viewpoint. Use real-time 3D when they need to understand shape, proportion, spatial arrangement or the product from multiple angles.</p>
         <p>The decision should follow the buying problem. Starting with technology often creates an expensive experience that looks impressive but does not improve the sale.</p>
@@ -122,14 +122,15 @@ const NOTES: Note[] = [
     slug: 'digital-showroom',
     ref: 'INS-003',
     refB: 'STRATEGY',
-    bar: 'INS-003 / STRATEGY',
+    read: '3 MIN READ',
     title: 'Why complex products need a digital showroom',
     desc: 'A product page displays information. A digital showroom turns uncertainty into a guided, commercially useful buying journey.',
+    wordCount: 698,
     content: (
       <>
         <div className="panel-head">
           <span className="lbl">INS-003 · STRATEGY · 3 MIN READ</span>
-          <h2>Why complex products need a digital showroom</h2>
+          <h1>Why complex products need a digital showroom</h1>
         </div>
         <p className="intro">A product page presents a product. A digital showroom helps a customer work out what they need, what works together and what they should do next.</p>
         <p>That difference matters when the catalogue contains technical dependencies, configurable dimensions, unfamiliar terminology or several products that must form one working system.</p>
@@ -178,14 +179,15 @@ const NOTES: Note[] = [
     slug: 'ppav-growth',
     ref: 'INS-004',
     refB: 'OPERATOR NOTE',
-    bar: 'INS-004 / OPERATOR NOTE',
+    read: '3 MIN READ',
     title: 'From an eBay account to a multi-market retailer',
     desc: 'Six lessons from growing PP-AV into an international commerce operation with five connected sales tools.',
+    wordCount: 778,
     content: (
       <>
         <div className="panel-head">
           <span className="lbl">INS-004 · OPERATOR NOTE · 3 MIN READ</span>
-          <h2>From an eBay account to a multi-market retailer</h2>
+          <h1>From an eBay account to a multi-market retailer</h1>
         </div>
         <p className="intro">PP-AV is Blueprint Code’s in-house commerce venture—not a client commission or a portfolio demonstration. That distinction matters because we experience the operational consequences of the systems we design.</p>
         <p>The business began with approximately £3,000 of working capital and an established eBay account. Over six years it developed into a multi-market specialist retailer operating through its own ecommerce platform, eight Amazon marketplaces and eBay Global, with approximately £50,000 in stock and five connected planning and configuration tools.</p>
@@ -229,113 +231,6 @@ const NOTES: Note[] = [
   },
 ];
 
-export default function Reader() {
-  const [openSlug, setOpenSlug] = useState<string | null>(null);
-  const lastEntry = useRef<HTMLButtonElement | null>(null);
-  const closeBtn = useRef<HTMLButtonElement | null>(null);
-  const bodyRef = useRef<HTMLDivElement | null>(null);
-
-  const active = NOTES.find((n) => n.slug === openSlug) ?? null;
-
-  const open = useCallback((slug: string, push: boolean) => {
-    if (!NOTES.some((n) => n.slug === slug)) return;
-    setOpenSlug(slug);
-    if (push) history.pushState({ slug }, '', '#' + slug);
-  }, []);
-
-  const close = useCallback((push: boolean) => {
-    setOpenSlug(null);
-    if (push) history.pushState({}, '', location.pathname);
-    lastEntry.current?.focus();
-  }, []);
-
-  // Reflect open state on <body>, move focus into/out of the panel, reset scroll.
-  useEffect(() => {
-    document.body.classList.toggle('reading', openSlug !== null);
-    if (openSlug !== null) {
-      if (bodyRef.current) bodyRef.current.scrollTop = 0;
-      closeBtn.current?.focus();
-    }
-    return () => {
-      document.body.classList.remove('reading');
-    };
-  }, [openSlug]);
-
-  // Escape to close, hash-driven navigation (back/forward + deep link on load).
-  useEffect(() => {
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape' && document.body.classList.contains('reading')) close(true);
-    };
-    const onPop = () => {
-      const s = location.hash.replace('#', '');
-      if (s) open(s, false);
-      else close(false);
-    };
-    document.addEventListener('keydown', onKey);
-    window.addEventListener('popstate', onPop);
-    if (location.hash) open(location.hash.replace('#', ''), false);
-    return () => {
-      document.removeEventListener('keydown', onKey);
-      window.removeEventListener('popstate', onPop);
-    };
-  }, [open, close]);
-
-  return (
-    <>
-      <section id="index">
-        <div className="sheet">
-          <p className="sheet-no">INDEX — 4 ENTRIES</p>
-          <div className="insights-index">
-            {NOTES.map((n) => (
-              <button
-                key={n.slug}
-                className="entry"
-                data-slug={n.slug}
-                onClick={(e) => {
-                  lastEntry.current = e.currentTarget;
-                  open(n.slug, true);
-                }}
-              >
-                <span className="ref">{n.ref}<b>{n.refB}</b></span>
-                <span>
-                  <h3>{n.title}</h3>
-                  <p>{n.desc}</p>
-                </span>
-                <span className="go">3 MIN READ →</span>
-              </button>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <div
-        className="scrim"
-        onClick={() => close(true)}
-        aria-hidden="true"
-      />
-      <div
-        className="panel"
-        id="reader"
-        role="dialog"
-        aria-modal="true"
-        aria-label={active?.title}
-        {...(active ? { 'data-open': '' } : {})}
-      >
-        <div className="panel-bar">
-          <span id="reader-ref">{active ? active.bar : 'FIELD NOTE'}</span>
-          <button
-            className="panel-close"
-            type="button"
-            ref={closeBtn}
-            onClick={() => close(true)}
-          >
-            Close
-          </button>
-        </div>
-        <div className="panel-body" ref={bodyRef}>
-          {active && <div className="inner">{active.content}</div>}
-        </div>
-      </div>
-    </>
-  );
+export function noteBySlug(slug: string): Note | undefined {
+  return NOTES.find((n) => n.slug === slug);
 }

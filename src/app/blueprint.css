@@ -115,10 +115,19 @@
 .brc .roll-copy p { font-size: 15px; line-height: 1.55; max-width: 31ch; }
 .brc .roll-link { margin-top: auto; color: var(--accent); font-weight: 600; font-size: 14px; }
 .brc .chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 10px; }
-.brc .chip { border: 1px solid var(--line); border-radius: 99px; padding: 4px 10px; font-family: var(--data); font-size: 10px; letter-spacing: .06em; color: var(--ink-3); }
+/* Fully specified so the unrelated global `.chip` icon-badge rule in globals.css
+   (a 44x44 grid square with a gradient fill) cannot leak width/height/display/
+   background into these pill tags. */
+.brc .chip { display: inline-flex; align-items: center; width: auto; height: auto; border: 1px solid var(--line); border-radius: 99px; padding: 4px 10px; font-family: var(--data); font-size: 10px; font-weight: 400; letter-spacing: .06em; color: var(--ink-3); background: transparent; white-space: nowrap; flex: none; }
 .brc .roll-demo { padding: 34px 30px; min-width: 0; display: flex; flex-direction: column; gap: 22px; }
 .brc .demo-head { display: flex; justify-content: space-between; gap: 24px; font-family: var(--data); font-size: 11px; letter-spacing: .14em; color: var(--ink-3); }
 .brc .demo-ui { flex: 1; border: 1px solid var(--line); border-radius: 9px; background: #0a1425; padding: 22px; min-height: 0; position: relative; overflow: hidden; }
+/* Example-tools list — the demo panel content for each tool-group sheet. Built
+   from divs, borders and text (no SVG/images) so the page-turn painter, which
+   redraws each sheet from the live DOM, captures it during the curl. */
+.brc .tool-list { list-style: none; columns: 2; column-gap: 26px; }
+.brc .tool-list li { position: relative; break-inside: avoid; padding: 6px 0 6px 16px; font-size: 12.5px; line-height: 1.3; color: var(--ink-2); border-bottom: 1px solid var(--line-soft); }
+.brc .tool-list li::before { content: ''; position: absolute; left: 0; top: .72em; width: 9px; height: 1px; background: var(--accent); }
 .brc .cabinet-scene { height: 100%; background: linear-gradient(#09111e 0 42%, #13223c 42%); display: grid; place-items: center; }
 .brc .cabinet { width: 34%; height: 35%; background: #15191f; position: relative; box-shadow: 12px 12px 22px rgba(0, 0, 0, .4); }
 .brc .cabinet::before { content: ''; position: absolute; left: -5%; right: -5%; top: -15%; height: 18%; background: #202630; transform: skewX(-28deg); }
@@ -156,6 +165,16 @@
 .brc .roll-arrow { width: 48px; height: 40px; border: 1px solid #6f94bc; background: #0b1a2e; color: var(--ink); font-family: var(--data); font-size: 18px; cursor: pointer; }
 .brc .roll-arrow:hover { background: var(--ink); color: var(--ground); }
 .brc .roll-arrow:focus-visible { outline: 2px solid white; }
+/* Pause / play toggle between the arrows. Two bars while auto-turning; a play
+   triangle once paused. Drawn from boxes so it renders in any font, and it
+   inherits currentColor, which flips to the ground colour on hover. */
+.brc .roll-pause { display: inline-flex; align-items: center; justify-content: center; }
+.brc .roll-pause-glyph { position: relative; display: inline-block; width: 10px; height: 12px; }
+.brc .roll-pause-glyph::before, .brc .roll-pause-glyph::after { content: ''; position: absolute; top: 0; bottom: 0; width: 3px; background: currentColor; }
+.brc .roll-pause-glyph::before { left: 1px; }
+.brc .roll-pause-glyph::after { right: 1px; }
+.brc .roll-pause[aria-pressed="true"] .roll-pause-glyph { width: 0; height: 0; border-style: solid; border-width: 6px 0 6px 11px; border-color: transparent transparent transparent currentColor; }
+.brc .roll-pause[aria-pressed="true"] .roll-pause-glyph::before, .brc .roll-pause[aria-pressed="true"] .roll-pause-glyph::after { display: none; }
 .brc .roll-progress { font-family: var(--data); font-size: 10px; letter-spacing: .13em; color: #91abc6; text-align: center; }
 .brc .roll-hint { font-family: var(--data); font-size: 10px; letter-spacing: .1em; color: #91abc6; justify-self: end; }
 
@@ -243,6 +262,7 @@
   .brc .roll-copy { border-right: 0; border-bottom: 1px solid var(--line); }
   .brc .roll-link { margin-top: 28px; }
   .brc .roll-demo { min-height: 330px; }
+  .brc .tool-list { columns: 1; }
   .brc .roll-controls { grid-template-columns: auto 1fr; }
   .brc .roll-hint { display: none; }
   .brc .roll-progress { text-align: right; }

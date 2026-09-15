@@ -184,7 +184,7 @@ export default function ConfiguratorsPage() {
               <span className="num">01 / CFG</span>
               <h3>Foundation configurator</h3>
               <p>One product family. Options, rules, live preview, dynamic pricing and lead capture.</p>
-              <span className="from">FROM £7,500</span>
+              <span className="from">FROM £2,500</span>
             </div>
             <div className="level">
               <span className="num">02 / PRO</span>

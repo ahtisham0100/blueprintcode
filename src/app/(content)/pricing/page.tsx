@@ -172,7 +172,7 @@ export default function PricingPage() {
         <div className="sheet">
           <span className="lbl">STEP 00 — START HERE</span>
           <h3>Prototype Sprint — £625 to £3,000 + VAT</h3>
-          <p>Before anyone commits to a £7,500+ build, we build a working prototype of your product in one to four weeks. Something real in a browser, not a slide deck. The fee is credited in full against any configurator tier below if you proceed within 90 days.</p>
+          <p>Before anyone commits to a full configurator build, we build a working prototype of your product in one to four weeks. Something real in a browser, not a slide deck. The fee is credited in full against any configurator tier below if you proceed within 90 days.</p>
           <div className="invert-cols">
             <div>
               <h4>WHAT YOU GET</h4>
@@ -204,7 +204,7 @@ export default function PricingPage() {
         <div className="band"><h3>Configurator tiers</h3><span className="range">EVERY BUILD STARTS FROM THE SPRINT ABOVE</span></div>
         <div className="row3">
           <div className="item">
-            <div className="item-top"><h4>Foundation</h4><span className="rate"><span className="from">from</span>£7,500</span></div>
+            <div className="item-top"><h4>Foundation</h4><span className="rate"><span className="from">from</span>£2,500</span></div>
             <p>For premium product brands replacing static ecommerce with an immersive buying experience.</p>
             <ul>
               <li>Bespoke interactive configurator</li>
