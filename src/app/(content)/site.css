@@ -117,11 +117,12 @@ ul{list-style:none}
 .strip{display:inline-block;margin-top:30px;background:var(--ground);color:var(--ink);font-family:var(--data);font-size:12px;letter-spacing:.08em;padding:12px 20px}
 /* Sprint schedule table (Sprint / Price / intended production project), used in
    the inverted sprint sections — dark ink on the light .invert background. */
-.sprint-table{width:100%;border-collapse:collapse;margin:0 0 40px;border-top:1px solid rgba(11,26,46,.4);font-size:15px}
+.sprint-table{width:100%;border-collapse:collapse;margin:0 0 40px;border-top:1px solid rgba(11,26,46,.4)}
 .sprint-table th{font-family:var(--data);font-size:11px;font-weight:400;letter-spacing:.14em;text-transform:uppercase;color:rgba(11,26,46,.55);text-align:left;padding:13px 20px 13px 0;border-bottom:1px solid rgba(11,26,46,.32)}
-.sprint-table td{padding:13px 20px 13px 0;border-bottom:1px solid rgba(11,26,46,.18);color:rgba(11,26,46,.85);vertical-align:top}
-.sprint-table td:first-child{color:var(--ground);font-weight:500}
-.sprint-table .price{font-family:var(--data);white-space:nowrap}
+.sprint-table td{padding:12px 20px 12px 0;border-bottom:1px solid rgba(11,26,46,.18);font-size:14px;font-weight:400;line-height:1.5;color:rgba(11,26,46,.8);vertical-align:top}
+.sprint-table td:first-child{color:rgba(11,26,46,.95)}
+/* explicit size/weight so the global display `.price` (30px/800) can't leak in */
+.sprint-table td.price{font-family:var(--data);font-size:13px;font-weight:400;color:rgba(11,26,46,.85);white-space:nowrap}
 .invert .button{border-color:var(--ground);color:var(--ground)}
 .invert .button:hover{background:var(--ground);color:var(--ink)}
 
