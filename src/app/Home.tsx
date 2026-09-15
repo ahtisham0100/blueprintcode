@@ -41,9 +41,9 @@ export default function Home() {
               </aside>
             </div>
             <div className="datum">
-              <div><span className="lbl">LEAD CAPABILITY</span><b>CONFIGURATORS</b></div>
-              <div><span className="lbl">LIVE SYSTEM</span><b>5 CONNECTED TOOLS</b></div>
-              <div><span className="lbl">COMMERCE REACH</span><b>8 AMAZON MARKETS</b></div>
+              <div><span className="lbl">CORE SPECIALISM</span><b>CONFIGURATORS</b></div>
+              <div><span className="lbl">CONNECTED SYSTEMS</span><b>ECOMMERCE + CRM</b></div>
+              <div><span className="lbl">BUILD APPROACH</span><b>PROTOTYPE FIRST</b></div>
               <div><span className="lbl">DELIVERY</span><b>UK + GLOBAL</b></div>
             </div>
           </div>
@@ -94,11 +94,20 @@ export default function Home() {
         {/* ============ 02 PROTOTYPE SPRINT (inverted) ============ */}
         <div className="invert" id="sprint">
           <div className="sheet">
-            <p className="section-no">STEP 00 — START HERE</p>
+            <p className="section-no">STEP 02 — START HERE</p>
             <div className="sprint-head">
-              <h2 className="sprint-title">Prototype Sprint — £625 to £3,000 + VAT</h2>
-              <p>Before anyone commits to a full configurator build, we build a working prototype of your product in one to four weeks. Something real in a browser, not a slide deck. The fee is credited in full against any configurator tier below if you proceed within 90 days.</p>
+              <h2 className="sprint-title">Prototype Sprint — prove it before we build it.</h2>
+              <p>Before committing to a full build, we create a working prototype of your product in one to four weeks—something real in a browser, not a slide deck.</p>
             </div>
+            <table className="sprint-table">
+              <thead><tr><th>Sprint</th><th>Price</th><th>Intended production project</th></tr></thead>
+              <tbody>
+                <tr><td>One-week Focus Sprint</td><td className="price">£625</td><td>Typically £2,500–£4,000</td></tr>
+                <tr><td>Two-week Prototype Sprint</td><td className="price">£1,125</td><td>Typically £4,000–£7,500</td></tr>
+                <tr><td>Three-week System Sprint</td><td className="price">£2,000</td><td>Typically £7,500–£15,000</td></tr>
+                <tr><td>Four-week Advanced Sprint</td><td className="price">£3,000</td><td>Typically £15,000+</td></tr>
+              </tbody>
+            </table>
             <div className="sprint-cols">
               <div className="sprint-col">
                 <h4>WHAT YOU GET</h4>
@@ -112,15 +121,10 @@ export default function Home() {
                 </ul>
               </div>
               <div className="sprint-col">
-                <h4>WHICH PRICE</h4>
-                <ul>
-                  <li>£625 — one week</li>
-                  <li>£1,125 — two weeks</li>
-                  <li>£2,000 — three weeks</li>
-                  <li>£3,000 — four weeks</li>
-                </ul>
-                <p className="sprint-note">Plus VAT. We recommend the band on a free consultation, and show you screenshots of the approach before you commit to anything.</p>
-                <span className="strip">DE-RISKS THE DECISION FOR YOU AND THE SCOPE FOR US</span>
+                <h4>HOW IT WORKS</h4>
+                <p>We recommend the appropriate Sprint based on the complexity of the intended production system. If you proceed within 90 days, your Sprint fee is credited in full against the agreed build price.</p>
+                <p className="sprint-note">Final build pricing depends on product logic, visual assets, integrations, commercial outputs and the level of production refinement required. Plus VAT.</p>
+                <span className="strip">PROVE IT BEFORE WE BUILD IT</span>
               </div>
             </div>
           </div>
@@ -263,8 +267,8 @@ export default function Home() {
         <section className="close" id="contact">
           <div className="sheet">
             <p className="section-no">07 / START A PROJECT</p>
-            <h2>What is your product making customers work too hard to understand?</h2>
-            <p>Send us the product, the current sales process and the decisions customers find difficult. We&apos;ll identify the right first build — usually a Prototype Sprint.</p>
+            <h2>What do customers or staff ask before they&apos;ll buy?</h2>
+            <p>Tell us that question, what you sell, and how the process works today. We&apos;ll tell you which tool answers it and what the first build would cost — usually a Prototype Sprint.</p>
             <div className="hero-actions">
               <a className="button solid" href="mailto:james@blueprintcode.ai?subject=Blueprint Code project">Discuss your project</a>
               <a className="button" href="/pricing">See the rates</a>

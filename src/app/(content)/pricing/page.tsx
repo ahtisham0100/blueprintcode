@@ -172,7 +172,16 @@ export default function PricingPage() {
         <div className="sheet">
           <span className="lbl">STEP 00 — START HERE</span>
           <h3>Prototype Sprint — £625 to £3,000 + VAT</h3>
-          <p>Before anyone commits to a full configurator build, we build a working prototype of your product in one to four weeks. Something real in a browser, not a slide deck. The fee is credited in full against any configurator tier below if you proceed within 90 days.</p>
+          <p>Before committing to a full build, we create a working prototype of your product in one to four weeks—something real in a browser, not a slide deck.</p>
+          <table className="sprint-table">
+            <thead><tr><th>Sprint</th><th>Price</th><th>Intended production project</th></tr></thead>
+            <tbody>
+              <tr><td>One-week Focus Sprint</td><td className="price">£625</td><td>Typically £2,500–£4,000</td></tr>
+              <tr><td>Two-week Prototype Sprint</td><td className="price">£1,125</td><td>Typically £4,000–£7,500</td></tr>
+              <tr><td>Three-week System Sprint</td><td className="price">£2,000</td><td>Typically £7,500–£15,000</td></tr>
+              <tr><td>Four-week Advanced Sprint</td><td className="price">£3,000</td><td>Typically £15,000+</td></tr>
+            </tbody>
+          </table>
           <div className="invert-cols">
             <div>
               <h4>WHAT YOU GET</h4>
@@ -186,15 +195,10 @@ export default function PricingPage() {
               </ul>
             </div>
             <div>
-              <h4>WHICH PRICE</h4>
-              <ul>
-                <li>£625 — one week</li>
-                <li>£1,125 — two weeks</li>
-                <li>£2,000 — three weeks</li>
-                <li>£3,000 — four weeks</li>
-              </ul>
-              <p className="band-note">Plus VAT. We recommend the band on a free consultation, and show you screenshots of the approach before you commit to anything.</p>
-              <span className="band-strip">DE-RISKS THE DECISION FOR YOU AND THE SCOPE FOR US</span>
+              <h4>HOW IT WORKS</h4>
+              <p>We recommend the appropriate Sprint based on the complexity of the intended production system. If you proceed within 90 days, your Sprint fee is credited in full against the agreed build price.</p>
+              <p className="band-note">Final build pricing depends on product logic, visual assets, integrations, commercial outputs and the level of production refinement required. Plus VAT.</p>
+              <span className="strip">PROVE IT BEFORE WE BUILD IT</span>
             </div>
           </div>
         </div>

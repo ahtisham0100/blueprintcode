@@ -254,6 +254,13 @@
 .brc .sprint-col li:last-child { border-bottom: 0; }
 .brc .sprint-col li::before { content: ''; position: absolute; left: 0; top: 20px; width: 12px; height: 1px; background: rgba(11, 26, 46, .45); }
 .brc .strip { display: inline-block; margin-top: 30px; background: var(--ground); color: var(--ink); font-family: var(--data); font-size: 12px; letter-spacing: .08em; padding: 12px 20px; }
+/* Sprint schedule table (Sprint / Price / intended production project) — dark
+   ink on the light .invert background of the homepage sprint section. */
+.brc .sprint-table { width: 100%; border-collapse: collapse; margin: 0 0 40px; border-top: 1px solid rgba(11, 26, 46, .4); font-size: 15px; }
+.brc .sprint-table th { font-family: var(--data); font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: rgba(11, 26, 46, .55); text-align: left; padding: 13px 20px 13px 0; border-bottom: 1px solid rgba(11, 26, 46, .32); }
+.brc .sprint-table td { padding: 13px 20px 13px 0; border-bottom: 1px solid rgba(11, 26, 46, .18); color: rgba(11, 26, 46, .85); vertical-align: top; }
+.brc .sprint-table td:first-child { color: var(--ground); font-weight: 500; }
+.brc .sprint-table .price { font-family: var(--data); white-space: nowrap; }
 .brc .invert .button { border-color: var(--ground); color: var(--ground); }
 .brc .invert .button:hover { background: var(--ground); color: var(--ink); }
 /* Prototype Sprint head: stacked eyebrow / compact bold heading / paragraph. */
