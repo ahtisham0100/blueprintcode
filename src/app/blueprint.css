@@ -90,7 +90,7 @@
 .brc .roll-track { position: relative; padding: 38px 38px 0; background-color: #102844; background-image: linear-gradient(rgba(111, 158, 205, .17) 1px, transparent 1px), linear-gradient(90deg, rgba(111, 158, 205, .17) 1px, transparent 1px), linear-gradient(rgba(111, 158, 205, .09) 1px, transparent 1px), linear-gradient(90deg, rgba(111, 158, 205, .09) 1px, transparent 1px); background-size: 96px 96px, 96px 96px, 24px 24px, 24px 24px; border: 1px solid var(--line); box-shadow: inset 0 0 0 10px rgba(9, 24, 42, .28); }
 .brc .roll-stage { height: 650px; min-height: 610px; position: relative; overflow: hidden; }
 .brc .roll-stage::before { content: ''; position: absolute; z-index: 16; left: 0; top: 8px; bottom: 8px; width: 7px; background: linear-gradient(90deg, #06101d, #56799c 48%, #071423); box-shadow: 5px 0 11px rgba(0, 0, 0, .58); pointer-events: none; }
-.brc .roll-sheet { --accent: #69aef5; position: absolute; inset: 0; width: 100%; height: 100%; border: 1px solid var(--line); border-radius: 4px 12px 12px 4px; background: linear-gradient(105deg, color-mix(in srgb, var(--accent) 7%, var(--ground-2)) 0 36%, var(--ground-2) 36% 100%); box-shadow: 10px 12px 0 rgba(6, 18, 32, .58); display: grid; grid-template-columns: 36% 64%; overflow: hidden; transform-origin: left center; opacity: 0; visibility: hidden; pointer-events: none; z-index: 0; }
+.brc .roll-sheet { container-type: size; position: absolute; inset: 0; width: 100%; height: 100%; border: 1px solid var(--line); border-radius: 4px 12px 12px 4px; background: var(--ground); box-shadow: 10px 12px 0 rgba(6, 18, 32, .58); display: grid; grid-template-columns: .92fr 1.08fr; overflow: hidden; transform-origin: left center; opacity: 0; visibility: hidden; pointer-events: none; z-index: 0; }
 .brc .roll-sheet:first-child { opacity: 1; visibility: visible; pointer-events: auto; z-index: 2; }
 .brc .roll-track.js-ready .roll-sheet { opacity: 0; visibility: hidden; pointer-events: none; z-index: 0; transition: opacity .26s linear, visibility 0s linear .26s; }
 .brc .roll-track.js-ready .roll-sheet.is-under { opacity: 1; visibility: visible; pointer-events: none; z-index: 1; transition: opacity .26s linear, visibility 0s; }
@@ -128,6 +128,67 @@
 .brc .tool-list { list-style: none; columns: 2; column-gap: 26px; }
 .brc .tool-list li { position: relative; break-inside: avoid; padding: 6px 0 6px 16px; font-size: 12.5px; line-height: 1.3; color: var(--ink-2); border-bottom: 1px solid var(--line-soft); }
 .brc .tool-list li::before { content: ''; position: absolute; left: 0; top: .72em; width: 9px; height: 1px; background: var(--accent); }
+
+/* ---------- roll slides: tool-group cards (ported from the source sheets) ----
+   Scoped under .roll-sheet and sized in container units (cq*) so the cards keep
+   their proportions inside the fixed-height roll stage. The inline SVG art is
+   rasterised into the curl fold by blueprintRoll.ts. */
+.brc .roll-sheet::before {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  --sq: clamp(44px, 7.2cqh, 86px);
+  background-image:
+    linear-gradient(var(--line-soft) 1px, transparent 1px),
+    linear-gradient(90deg, var(--line-soft) 1px, transparent 1px),
+    linear-gradient(rgba(44, 74, 110, .30) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(44, 74, 110, .30) 1px, transparent 1px);
+  background-size:
+    var(--sq) var(--sq), var(--sq) var(--sq),
+    calc(var(--sq) / 4) calc(var(--sq) / 4), calc(var(--sq) / 4) calc(var(--sq) / 4);
+  opacity: .62;
+}
+.brc .roll-sheet::after {
+  content: ""; position: absolute; inset: 0; z-index: 0; pointer-events: none;
+  background: radial-gradient(86% 76% at 50% 50%, var(--ground) 8%, transparent 78%);
+  opacity: .72;
+}
+.brc .roll-sheet .art-cell,
+.brc .roll-sheet .copy,
+.brc .roll-sheet .strip { position: relative; z-index: 1; }
+
+.brc .roll-sheet .art-cell { border-right: 1px solid var(--line); background: rgba(14, 33, 54, .72); padding: clamp(14px, 2.4cqh, 26px); display: flex; flex-direction: column; min-height: 0; }
+.brc .roll-sheet .art { flex: 1; min-height: 0; position: relative; display: grid; place-items: center; border: 1px dashed var(--line); background: rgba(11, 26, 46, .42); padding: clamp(16px, 3cqh, 40px); overflow: hidden; }
+.brc .roll-sheet .art-svg { width: 100%; height: 100%; min-height: 0; display: grid; place-items: center; }
+.brc .roll-sheet .art svg { position: relative; width: 100%; height: 100%; max-height: 100%; display: block; }
+.brc .roll-sheet .art i { position: absolute; width: 10px; height: 10px; border: 1px solid var(--ink-3); font-style: normal; }
+.brc .roll-sheet .art i:nth-of-type(1) { top: 8px; left: 8px; border-right: 0; border-bottom: 0; }
+.brc .roll-sheet .art i:nth-of-type(2) { top: 8px; right: 8px; border-left: 0; border-bottom: 0; }
+.brc .roll-sheet .art i:nth-of-type(3) { bottom: 8px; left: 8px; border-right: 0; border-top: 0; }
+.brc .roll-sheet .art i:nth-of-type(4) { bottom: 8px; right: 8px; border-left: 0; border-top: 0; }
+.brc .roll-sheet .art-caption { margin-top: clamp(8px, 1.4cqh, 14px); display: flex; justify-content: space-between; gap: 12px; font-family: var(--data); font-size: clamp(8.5px, 1.05cqh, 11px); letter-spacing: .14em; color: var(--ink-3); text-transform: uppercase; }
+
+.brc .roll-sheet .copy { padding: clamp(20px, 3.4cqh, 40px) clamp(20px, 2.6cqw, 42px) clamp(46px, 6.6cqh, 72px); display: flex; flex-direction: column; min-height: 0; }
+.brc .roll-sheet .ref { font-family: var(--data); font-size: clamp(9px, 1.12cqh, 12px); letter-spacing: .2em; color: var(--ink-3); display: flex; align-items: center; gap: 14px; }
+.brc .roll-sheet .ref::after { content: ""; flex: 1; height: 1px; background: var(--line-soft); }
+.brc .roll-sheet .copy h3 { font-family: var(--display); font-weight: 400; color: var(--ink); letter-spacing: .025em; margin: clamp(10px, 1.9cqh, 20px) 0 0; font-size: clamp(24px, 4.2cqh, 50px); line-height: .98; max-width: 20ch; text-wrap: balance; }
+.brc .roll-sheet .intro { margin-top: clamp(9px, 1.6cqh, 18px); padding-bottom: clamp(10px, 1.8cqh, 20px); border-bottom: 1px solid var(--line-soft); font-size: clamp(11.5px, 1.62cqh, 15.5px); line-height: 1.6; max-width: 54ch; color: var(--ink-2); }
+.brc .roll-sheet .sched-head { margin: clamp(9px, 1.6cqh, 18px) 0 clamp(4px, .7cqh, 8px); display: flex; justify-content: space-between; font-family: var(--data); font-size: clamp(8.5px, 1.05cqh, 11px); letter-spacing: .2em; color: var(--ink-3); text-transform: uppercase; }
+.brc .roll-sheet .items { list-style: none; border-top: 1px solid var(--line); padding-top: clamp(2px, .5cqh, 6px); columns: 2; column-gap: clamp(16px, 2cqw, 34px); column-rule: 1px solid var(--line-soft); }
+.brc .roll-sheet .items li { position: relative; break-inside: avoid; padding: clamp(3px, .6cqh, 7px) 0 clamp(3px, .6cqh, 7px) 17px; font-size: clamp(9.5px, 1.36cqh, 13px); line-height: 1.34; color: var(--ink-2); }
+.brc .roll-sheet .items li::before { content: ""; position: absolute; left: 0; top: .7em; width: 9px; height: 1px; background: var(--ink-3); }
+.brc .roll-sheet .strip { position: absolute; left: 0; right: 0; bottom: 0; z-index: 3; display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 9px clamp(16px, 2.2cqw, 32px); border-top: 1px solid var(--line); background: #0B1A2Ed9; font-family: var(--data); font-size: clamp(8.5px, 1.05cqh, 11px); letter-spacing: .16em; color: var(--ink-3); text-transform: uppercase; }
+.brc .roll-sheet .strip b { color: var(--ink-2); font-weight: 400; }
+
+@media (max-width: 860px) {
+  .brc .roll-sheet { grid-template-columns: 1fr; border-radius: 0; }
+  .brc .roll-sheet .art-cell { border-right: 0; border-bottom: 1px solid var(--line); }
+  .brc .roll-sheet .art { min-height: 210px; }
+  .brc .roll-sheet .copy { padding: 26px 22px 78px; }
+  .brc .roll-sheet .copy h3 { font-size: clamp(26px, 7.2cqw, 40px); max-width: none; }
+  .brc .roll-sheet .intro { font-size: 14.5px; max-width: none; }
+  .brc .roll-sheet .items { columns: 1; column-rule: 0; }
+  .brc .roll-sheet .items li { font-size: 14px; padding: 7px 0 7px 18px; border-bottom: 1px solid var(--line-soft); }
+  .brc .roll-sheet .items li:last-child { border-bottom: 0; }
+}
 .brc .cabinet-scene { height: 100%; background: linear-gradient(#09111e 0 42%, #13223c 42%); display: grid; place-items: center; }
 .brc .cabinet { width: 34%; height: 35%; background: #15191f; position: relative; box-shadow: 12px 12px 22px rgba(0, 0, 0, .4); }
 .brc .cabinet::before { content: ''; position: absolute; left: -5%; right: -5%; top: -15%; height: 18%; background: #202630; transform: skewX(-28deg); }

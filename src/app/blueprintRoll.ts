@@ -30,6 +30,41 @@ export function initBlueprintRoll(): () => void {
 
   var disposers = [];
 
+  /* The 2D snapshot painter can't draw inline SVG shapes, so each sheet's SVG
+     is rasterised once to a bitmap — with the blueprint palette vars resolved
+     into the standalone document — and drawn into the fold texture by
+     paintElement. Ready bitmaps invalidate the texture cache so the fold shows
+     the art. */
+  var svgBitmaps = new WeakMap();
+  function rasteriseSVGs(onDone) {
+    var list = [];
+    for (var si = 0; si < sheets.length; si++) {
+      var found = sheets[si].querySelectorAll('svg');
+      for (var fj = 0; fj < found.length; fj++) list.push(found[fj]);
+    }
+    if (!list.length) { if (onDone) onDone(); return; }
+    var probe = getComputedStyle(sheets[0]);
+    var names = ['--ground', '--ground-2', '--line', '--line-soft', '--ink', '--ink-2', '--ink-3'];
+    var vars = names.map(function (n) { return n + ':' + probe.getPropertyValue(n).trim(); }).join(';');
+    var pending = list.length;
+    function tick() { if (--pending <= 0 && onDone) onDone(); }
+    list.forEach(function (svg) {
+      var clone = svg.cloneNode(true);
+      clone.setAttribute('xmlns', 'http://www.w3.org/2000/svg');
+      var own = clone.getAttribute('style') || '';
+      clone.setAttribute('style', vars + (own ? ';' + own : ''));
+      var vb = (svg.getAttribute('viewBox') || '0 0 520 400').split(/[\s,]+/);
+      clone.setAttribute('width', vb[2] || '520');
+      clone.setAttribute('height', vb[3] || '400');
+      var xml = new XMLSerializer().serializeToString(clone);
+      var img = new Image();
+      img.onload = tick;
+      img.onerror = tick;
+      svgBitmaps.set(svg, img);
+      img.src = 'data:image/svg+xml;charset=utf-8,' + encodeURIComponent(xml);
+    });
+  }
+
   var AUTO_MS    = 10000;   // dwell on each sheet
   var TURN_MS    = 1400;    // curl duration
   var HANDOFF_MS = 140;     // live sheet <-> mesh crossfade
@@ -438,6 +473,19 @@ export function initBlueprintRoll(): () => void {
     var r = el.getBoundingClientRect();
     var box = { x: r.left - o.left, y: r.top - o.top, w: r.width, h: r.height };
     if (box.w <= 0 || box.h <= 0) return;
+
+    // Inline SVG art: draw its pre-rasterised bitmap (contain-fit, matching the
+    // live element's preserveAspectRatio) and don't recurse into svg children.
+    if (el.tagName === 'svg') {
+      var bmp = svgBitmaps.get(el);
+      if (bmp && bmp.complete && bmp.naturalWidth) {
+        var sc = Math.min(box.w / bmp.naturalWidth, box.h / bmp.naturalHeight);
+        var dw = bmp.naturalWidth * sc, dh = bmp.naturalHeight * sc;
+        g.drawImage(bmp, box.x + (box.w - dw) / 2, box.y + (box.h - dh) / 2, dw, dh);
+      }
+      return;
+    }
+
     var rad = radii(cs);
 
     var alpha = parseFloat(cs.opacity);
@@ -810,6 +858,7 @@ export function initBlueprintRoll(): () => void {
     }
 
     measure();
+    rasteriseSVGs(clearCache);   // bake the SVG art into the fold once loaded
 
     disposers.push(function () {
       if (raf) window.cancelAnimationFrame(raf);

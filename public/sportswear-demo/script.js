@@ -1,0 +1,4 @@
+document.querySelectorAll('.accordion button').forEach(button=>button.addEventListener('click',()=>{const item=button.parentElement;const open=item.classList.toggle('open');button.setAttribute('aria-expanded',String(open));button.querySelector('span').textContent=open?'−':'+'}));
+document.querySelectorAll('[data-add]').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('[data-add]').forEach(b=>{b.textContent='Added to bag ✓';b.style.background='#7d151a'});document.querySelectorAll('[aria-label="Shopping bag"]').forEach(b=>b.textContent='Bag (1)')}));
+document.querySelectorAll('.size').forEach(button=>button.addEventListener('click',()=>{document.querySelectorAll('.size').forEach(b=>b.classList.remove('active'));button.classList.add('active')}));
+document.querySelectorAll('form').forEach(form=>form.addEventListener('submit',event=>{event.preventDefault();const button=form.querySelector('button');button.textContent='✓'}));

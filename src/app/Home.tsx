@@ -1,11 +1,8 @@
 'use client';
 
 import { useEffect } from 'react';
-import type { CSSProperties } from 'react';
 import { initBlueprintRoll } from './blueprintRoll';
-
-/** Inline CSS custom property (typed for JSX style props). */
-const accent = (c: string): CSSProperties => ({ ['--accent']: c } as CSSProperties);
+import { ROLL_CARDS } from './rollCards';
 
 export default function Home() {
   // Drive the blueprint-roll page-turn once the section is in the DOM.
@@ -62,26 +59,30 @@ export default function Home() {
             </div>
             <div className="roll-track" id="blueprint-roll">
               <div className="roll-stage">
-                <article className="roll-sheet" style={accent('#69aef5')}>
-                  <div className="roll-copy"><span className="lbl">GROUP 01 / 05</span><h3>Configure &amp; visualise.</h3><p>Turn complex products into interactive experiences customers can explore, personalise and understand before they buy — with responsive 2D and 3D configurators.</p><a className="roll-link" href="#work">See a live build →</a><div className="chips"><span className="chip">2D + 3D</span><span className="chip">Real-time</span></div></div>
-                  <div className="roll-demo"><div className="demo-head"><span>EXAMPLE TOOLS</span><b>10 IN THIS GROUP</b></div><div className="demo-ui"><ul className="tool-list"><li>2D product configurators</li><li>Interactive 3D configurators</li><li>Product customisers</li><li>Room and environment visualisers</li><li>Material and colour selectors</li><li>Modular product builders</li><li>Drag-and-drop designers</li><li>AR product previews</li><li>Interactive product demonstrations</li><li>Made-to-order product builders</li></ul></div></div>
-                </article>
-                <article className="roll-sheet" style={accent('#58d8b2')}>
-                  <div className="roll-copy"><span className="lbl">GROUP 02 / 05</span><h3>Select &amp; recommend.</h3><p>Help every customer find the right product without needing to understand every technical detail — guided tools that apply your compatibility rules.</p><a className="roll-link" href="#work">See a live build →</a><div className="chips"><span className="chip">Guided</span><span className="chip">Rule-bound</span></div></div>
-                  <div className="roll-demo"><div className="demo-head"><span>EXAMPLE TOOLS</span><b>10 IN THIS GROUP</b></div><div className="demo-ui"><ul className="tool-list"><li>Product selectors</li><li>Product finders</li><li>Guided-selling tools</li><li>Recommendation engines</li><li>AI buying assistants</li><li>Compatibility checkers</li><li>Product comparison tools</li><li>Needs-assessment questionnaires</li><li>Specification selectors</li><li>Upgrade and accessory recommenders</li></ul></div></div>
-                </article>
-                <article className="roll-sheet" style={accent('#d99a39')}>
-                  <div className="roll-copy"><span className="lbl">GROUP 03 / 05</span><h3>Plan &amp; calculate.</h3><p>Transform measurements, requirements and technical decisions into practical plans — planners, system designers and specialist calculators.</p><a className="roll-link" href="#work">See a live build →</a><div className="chips"><span className="chip">Planners</span><span className="chip">Calculators</span></div></div>
-                  <div className="roll-demo"><div className="demo-head"><span>EXAMPLE TOOLS</span><b>12 IN THIS GROUP</b></div><div className="demo-ui"><ul className="tool-list"><li>Room planners</li><li>System designers</li><li>Project estimators</li><li>Cost calculators</li><li>Size and capacity calculators</li><li>Coverage calculators</li><li>Layout planners</li><li>Technical specification tools</li><li>Performance calculators</li><li>Measurement and conversion tools</li><li>Return-on-investment calculators</li><li>Savings calculators</li></ul></div></div>
-                </article>
-                <article className="roll-sheet" style={accent('#b898ff')}>
-                  <div className="roll-copy"><span className="lbl">GROUP 04 / 05</span><h3>Quote &amp; convert.</h3><p>Take customers from configuration to commercial action without breaking the journey — live pricing, proposals, checkout or a structured sales enquiry.</p><a className="roll-link" href="#work">See a live build →</a><div className="chips"><span className="chip">Pricing</span><span className="chip">Checkout</span></div></div>
-                  <div className="roll-demo"><div className="demo-head"><span>EXAMPLE TOOLS</span><b>12 IN THIS GROUP</b></div><div className="demo-ui"><ul className="tool-list"><li>Dynamic pricing engines</li><li>Instant quote builders</li><li>Proposal generators</li><li>Specification summaries</li><li>PDF quotation tools</li><li>Configured-product checkout</li><li>Bundle and discount calculators</li><li>Lead-capture journeys</li><li>Request-a-quote systems</li><li>Ecommerce cart integrations</li><li>Finance and payment calculators</li><li>Sales handover tools</li></ul></div></div>
-                </article>
-                <article className="roll-sheet" style={accent('#ff91c5')}>
-                  <div className="roll-copy"><span className="lbl">GROUP 05 / 05</span><h3>Connect &amp; automate.</h3><p>Connect customer-facing experiences with the systems that run the business — dashboards, portals and automated workflows across teams and platforms.</p><a className="roll-link" href="#work">See a live build →</a><div className="chips"><span className="chip">Dashboards</span><span className="chip">Automation</span></div></div>
-                  <div className="roll-demo"><div className="demo-head"><span>EXAMPLE TOOLS</span><b>14 IN THIS GROUP</b></div><div className="demo-ui"><ul className="tool-list"><li>KPI dashboards</li><li>Customer portals</li><li>Dealer and trade portals</li><li>CRM workflows</li><li>Ecommerce integrations</li><li>API integrations</li><li>Order-management tools</li><li>Supplier portals</li><li>Pricing-management systems</li><li>Inventory and availability tools</li><li>Automated document generation</li><li>Reporting and analytics tools</li><li>Internal operations dashboards</li><li>AI-assisted business workflows</li></ul></div></div>
-                </article>
+                {ROLL_CARDS.map((card) => (
+                  <article className="roll-sheet" key={card.stripIndex}>
+                    <div className="art-cell">
+                      <div className="art">
+                        <i /><i /><i /><i />
+                        <div className="art-svg" dangerouslySetInnerHTML={{ __html: card.svg }} />
+                      </div>
+                      <p className="art-caption"><span>{card.artCaption[0]}</span><span>{card.artCaption[1]}</span></p>
+                    </div>
+                    <div className="copy">
+                      <p className="ref">{card.ref}</p>
+                      <h3>{card.title}</h3>
+                      <p className="intro">{card.intro}</p>
+                      <p className="sched-head"><span>Example tools</span><span>{card.count}</span></p>
+                      <ul className="items">
+                        {card.items.map((it, j) => <li key={j}>{it}</li>)}
+                      </ul>
+                    </div>
+                    <div className="strip">
+                      <span>Blueprint Code · <b>Tool groups</b></span>
+                      <span>{card.stripName} · <b>{card.stripIndex}</b></span>
+                    </div>
+                  </article>
+                ))}
               </div>
               <div className="roll-controls"><div className="roll-arrows"><button className="roll-arrow" id="roll-prev" type="button" aria-label="Previous blueprint sheet">←</button><button className="roll-arrow roll-pause" id="roll-pause" type="button" aria-label="Pause automatic turning" aria-pressed="false"><span className="roll-pause-glyph" aria-hidden="true" /></button><button className="roll-arrow" id="roll-next" type="button" aria-label="Next blueprint sheet">→</button></div><span className="roll-progress" id="roll-progress">SHEET 01 / 05</span><span className="roll-hint" id="roll-hint">AUTO TURN / 10 SECONDS</span></div>
               <div className="roll-timer" aria-hidden="true" />
