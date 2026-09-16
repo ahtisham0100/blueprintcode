@@ -25,7 +25,7 @@ export default function Footer() {
         <div>
           CONTACT
           <b>
-            <a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a>
+            <a href="mailto:hello@blueprintcode.ai">HELLO@BLUEPRINTCODE.AI</a>
           </b>
         </div>
       </div>
