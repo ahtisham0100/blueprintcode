@@ -87,7 +87,7 @@ export default function Home() {
               <div className="roll-controls"><div className="roll-arrows"><button className="roll-arrow" id="roll-prev" type="button" aria-label="Previous blueprint sheet">←</button><button className="roll-arrow roll-pause" id="roll-pause" type="button" aria-label="Pause automatic turning" aria-pressed="false"><span className="roll-pause-glyph" aria-hidden="true" /></button><button className="roll-arrow" id="roll-next" type="button" aria-label="Next blueprint sheet">→</button></div><span className="roll-progress" id="roll-progress">SHEET 01 / 05</span><span className="roll-hint" id="roll-hint">AUTO TURN / 10 SECONDS</span></div>
               <div className="roll-timer" aria-hidden="true" />
             </div>
-            <a className="button" href="#contact">Discuss a configurator</a>
+            <a className="button" href="/contact">Discuss a configurator</a>
           </div>
         </section>
 
@@ -270,7 +270,7 @@ export default function Home() {
             <h2>What do customers or staff ask before they&apos;ll buy?</h2>
             <p>Tell us that question, what you sell, and how the process works today. We&apos;ll tell you which tool answers it and what the first build would cost — usually a Prototype Sprint.</p>
             <div className="hero-actions">
-              <a className="button solid" href="mailto:james@blueprintcode.ai?subject=Blueprint Code project">Discuss your project</a>
+              <a className="button solid" href="/contact">Discuss your project</a>
               <a className="button" href="/pricing">See the rates</a>
             </div>
           </div>

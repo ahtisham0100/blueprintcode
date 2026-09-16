@@ -46,7 +46,7 @@ export default function Header() {
               {item.label}
             </a>
           ))}
-          <a className="button" href="#contact">
+          <a className="button" href="/contact">
             Start a project
           </a>
         </nav>

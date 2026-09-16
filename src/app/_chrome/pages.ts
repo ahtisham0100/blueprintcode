@@ -36,6 +36,12 @@ const PAGES: Record<string, ChromeMeta> = {
     metaVal: 'UK — MONMOUTHSHIRE',
     current: 'about',
   },
+  '/contact': {
+    label: 'START A PROJECT',
+    doc: 'PROJECT ENQUIRY',
+    metaKey: 'REF',
+    metaVal: 'BPC-ENQ',
+  },
   '/configurators': {
     label: 'CONFIGURATORS',
     doc: 'CONFIGURATORS & COMMERCE TOOLS',

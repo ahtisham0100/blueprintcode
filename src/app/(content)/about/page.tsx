@@ -219,7 +219,7 @@ export default function AboutPage() {
           <h2>Talk to the people who&apos;d build it.</h2>
           <p>Half an hour, no pitch deck. Bring the product and the sales problem, and we&apos;ll tell you honestly whether this is something we&apos;re the right team for.</p>
           <div className="actions">
-            <a className="button solid" href="mailto:james@blueprintcode.ai?subject=Introduction call">Arrange a call</a>
+            <a className="button solid" href="/contact">Arrange a call</a>
             <a className="button" href="/ppav-case-study">Read the case study first</a>
           </div>
         </div>

@@ -228,7 +228,7 @@ export default function PpavCaseStudyPage() {
         <h2>Could your sales journey work like this?</h2>
         <p>Every build starts with a Prototype Sprint — one to four weeks, £625 to £3,000 + VAT, credited in full against the build.</p>
         <div className="ctas">
-          <a className="btn solid" href="mailto:james@blueprintcode.ai?subject=Configurator project">Discuss your project</a>
+          <a className="btn solid" href="/contact">Discuss your project</a>
           <a className="btn" href="/prototypes">See three prototypes</a>
         </div>
       </section>

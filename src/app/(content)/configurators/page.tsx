@@ -240,7 +240,7 @@ export default function ConfiguratorsPage() {
           </div>
           <div className="actions">
             <a className="button" href="/prototypes">See three we&apos;ve built</a>
-            <a className="button" href="#contact">Book a sprint</a>
+            <a className="button" href="/contact">Book a sprint</a>
           </div>
         </div>
       </div>
@@ -252,7 +252,7 @@ export default function ConfiguratorsPage() {
           <h2>What question does your sales team answer most often?</h2>
           <p>That question is usually the tool. Send it to us, along with the product and how you currently sell it, and we&apos;ll tell you which of the six shapes above fits — and whether you need one or three.</p>
           <div className="actions">
-            <a className="button solid" href="mailto:james@blueprintcode.ai?subject=Configurator enquiry">Discuss a configurator</a>
+            <a className="button solid" href="/contact">Discuss a configurator</a>
             <a className="button" href="/ppav-case-study">Read the PP-AV case study</a>
           </div>
         </div>

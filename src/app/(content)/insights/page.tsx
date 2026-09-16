@@ -80,7 +80,7 @@ export default function InsightsPage() {
           <h2>What is your product making customers work too hard to understand?</h2>
           <p>Prove the difficult part first, in a focused Prototype Sprint — £625 to £3,000 + VAT, credited in full against the build.</p>
           <div className="actions">
-            <a className="button solid" href="mailto:james@blueprintcode.ai?subject=Prototype Sprint enquiry">Discuss your project</a>
+            <a className="button solid" href="/contact">Discuss your project</a>
             <a className="button" href="/configurators">What we build</a>
           </div>
         </div>

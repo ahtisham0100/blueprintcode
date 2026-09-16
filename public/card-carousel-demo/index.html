@@ -275,9 +275,29 @@ header {
   .categories button { padding:7px 13px; font-size:11px }
 }
 </style>
+<!--BPC:ASSETS:START-->
+<link rel="stylesheet" href="/partials/site-chrome.css">
+<!--BPC:ASSETS:END-->
 </head>
 
 <body>
+<!--BPC:HEADER:START-->
+<div class="bpc-chrome bpc-head" role="banner">
+  <div class="bpc-sheet">
+    <a class="bpc-mark" href="/"><b>BLUEPRINT CODE</b><span>CARD CAROUSEL DEMO</span></a>
+    <button class="bpc-burger" type="button" aria-expanded="false" aria-label="Menu">Menu</button>
+    <div class="bpc-nav" role="navigation" aria-label="Primary">
+      <a href="/configurators">Configurators</a>
+      <a href="/prototypes">Prototypes</a>
+      <a href="/ppav-case-study">Case study</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/insights">Insights</a>
+      <a href="/about">About</a>
+      <a class="bpc-button" href="/contact">Start a project</a>
+    </div>
+  </div>
+</div>
+<!--BPC:HEADER:END-->
 
 <div class="room" aria-hidden="true">
   <div class="horizon"></div>
@@ -585,5 +605,18 @@ addEventListener("resize",() => { layout(); start(); });
 
 build();
 </script>
+<!--BPC:FOOTER:START-->
+<div class="bpc-chrome bpc-footer" role="contentinfo">
+  <div class="bpc-sheet bpc-tb">
+    <div>DOCUMENT<b>CARD CAROUSEL DEMO</b></div>
+    <div>STUDIO<b>BLUEPRINT CODE</b></div>
+    <div>FORMAT<b>LIVE DEMO</b></div>
+    <div>CONTACT<b><a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a></b></div>
+  </div>
+</div>
+<!--BPC:FOOTER:END-->
+<!--BPC:SCRIPT:START-->
+<script defer src="/partials/site-chrome.js"></script>
+<!--BPC:SCRIPT:END-->
 </body>
 </html>

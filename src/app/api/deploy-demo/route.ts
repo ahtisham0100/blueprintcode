@@ -15,7 +15,7 @@ export const runtime = 'nodejs';
 
 // Single-segment paths that must not be shadowed by an uploaded demo.
 const RESERVED = new Set([
-  '', 'about', 'configurators', 'insights', 'ppav-case-study', 'pricing',
+  '', 'about', 'configurators', 'contact', 'insights', 'ppav-case-study', 'pricing',
   'prototypes', 'demo-viewer', 'admin', 'api', 'partials', 'capabilities',
   'media', 'assets', 'demos', 'index', 'favicon.ico', 'robots.txt',
   'sitemap.xml', 'site.webmanifest', 'site.css',

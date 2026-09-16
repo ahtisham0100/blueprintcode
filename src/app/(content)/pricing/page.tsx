@@ -495,7 +495,7 @@ export default function PricingPage() {
         <h2>Size it, then prove it.</h2>
         <p>Most projects start with a Prototype Sprint. One to four weeks, £625 to £3,000 + VAT, credited in full against the build.</p>
         <div className="ctas">
-          <a className="btn solid" href="mailto:james@blueprintcode.ai?subject=Project enquiry">Start a project</a>
+          <a className="btn solid" href="/contact">Start a project</a>
           <a className="btn" href="#configurators">Read the sprint detail</a>
         </div>
         <p className="terms">All prices are standard 2026 rates in GBP and exclude VAT. Ranges reflect project complexity; a fixed scope and fixed quote are confirmed at kick-off. Retainers are monthly and can be changed with 30 days&apos; notice.</p>

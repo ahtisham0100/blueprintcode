@@ -18,8 +18,28 @@
 .stone{left:0!important;top:0!important;width:100%!important;height:100%!important;border-radius:0!important;transform:none!important;clip-path:none!important;box-shadow:none!important;-webkit-mask-image:var(--stone-mask);mask-image:var(--stone-mask);-webkit-mask-size:100% 100%;mask-size:100% 100%;-webkit-mask-repeat:no-repeat;mask-repeat:no-repeat}
 .engraving{left:var(--face-left)!important;top:var(--face-top)!important;width:var(--face-width)!important;height:var(--face-height)!important;transform:rotate(var(--face-rotate))!important}
 </style>
+<!--BPC:ASSETS:START-->
+<link rel="stylesheet" href="/partials/site-chrome.css">
+<!--BPC:ASSETS:END-->
 </head>
 <body>
+<!--BPC:HEADER:START-->
+<div class="bpc-chrome bpc-head" role="banner">
+  <div class="bpc-sheet">
+    <a class="bpc-mark" href="/"><b>BLUEPRINT CODE</b><span>SIGNET RING CONFIGURATOR DEMO 3</span></a>
+    <button class="bpc-burger" type="button" aria-expanded="false" aria-label="Menu">Menu</button>
+    <div class="bpc-nav" role="navigation" aria-label="Primary">
+      <a href="/configurators">Configurators</a>
+      <a href="/prototypes">Prototypes</a>
+      <a href="/ppav-case-study">Case study</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/insights">Insights</a>
+      <a href="/about">About</a>
+      <a class="bpc-button" href="/contact">Start a project</a>
+    </div>
+  </div>
+</div>
+<!--BPC:HEADER:END-->
 <div class="shell">
   <header class="top"><div class="brand">SIGNET / ATELIER</div><div class="top-note">Private commission configurator</div></header>
   <main class="main">
@@ -104,5 +124,18 @@ appointment.onclick=()=>{render();drawer.hidden=false};close.onclick=scrim.oncli
 const introDrawer=document.getElementById('introDrawer');
 document.getElementById('enterDemo').onclick=()=>{introDrawer.hidden=true};
 </script>
+<!--BPC:FOOTER:START-->
+<div class="bpc-chrome bpc-footer" role="contentinfo">
+  <div class="bpc-sheet bpc-tb">
+    <div>DOCUMENT<b>SIGNET RING CONFIGURATOR DEMO 3</b></div>
+    <div>STUDIO<b>BLUEPRINT CODE</b></div>
+    <div>FORMAT<b>LIVE DEMO</b></div>
+    <div>CONTACT<b><a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a></b></div>
+  </div>
+</div>
+<!--BPC:FOOTER:END-->
+<!--BPC:SCRIPT:START-->
+<script defer src="/partials/site-chrome.js"></script>
+<!--BPC:SCRIPT:END-->
 </body>
 </html>

@@ -230,7 +230,7 @@ export default function PrototypesPage() {
             </div>
           </div>
           <div className="actions">
-            <a className="button" href="#contact">Book a sprint</a>
+            <a className="button" href="/contact">Book a sprint</a>
             <a className="button" href="/pricing">See the full rates</a>
           </div>
         </div>
@@ -243,7 +243,7 @@ export default function PrototypesPage() {
           <h2>Which part of your product is hardest to explain?</h2>
           <p>That&apos;s the part worth prototyping first. Send us the product, the current sales process and the questions customers keep asking, and we&apos;ll tell you what the sprint should cover.</p>
           <div className="actions">
-            <a className="button solid" href="mailto:james@blueprintcode.ai?subject=Prototype Sprint enquiry">Discuss a prototype</a>
+            <a className="button solid" href="/contact">Discuss a prototype</a>
             <a className="button" href="/ppav-case-study">See a prototype that became a platform</a>
           </div>
         </div>

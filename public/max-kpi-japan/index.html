@@ -13,8 +13,28 @@
     @media(max-width:760px){.app{display:block}.sidebar{transform:translateX(-100%);transition:.25s;z-index:12}.sidebar.open{transform:none}.main{padding:0 18px 34px}.topbar{height:68px;margin:0 -18px 22px;padding:0 18px}.menu{display:inline-flex}.heading{align-items:start;gap:14px}.heading h1{font-size:24px}.metrics{grid-template-columns:1fr 1fr}.form-grid{grid-template-columns:1fr}.field.full{grid-column:auto}.smart{grid-template-columns:1fr 1fr}.kpi-row{grid-template-columns:1fr 75px}.kpi-row .status{display:none}.top-actions .ghost{display:none}}
     @media(max-width:480px){.metrics{grid-template-columns:1fr}.smart{grid-template-columns:1fr}.heading{flex-direction:column}.card{padding:17px}}
   </style>
+<!--BPC:ASSETS:START-->
+<link rel="stylesheet" href="/partials/site-chrome.css">
+<!--BPC:ASSETS:END-->
 </head>
 <body>
+<!--BPC:HEADER:START-->
+<div class="bpc-chrome bpc-head" role="banner">
+  <div class="bpc-sheet">
+    <a class="bpc-mark" href="/"><b>BLUEPRINT CODE</b><span>MAX KPI JAPAN</span></a>
+    <button class="bpc-burger" type="button" aria-expanded="false" aria-label="Menu">Menu</button>
+    <div class="bpc-nav" role="navigation" aria-label="Primary">
+      <a href="/configurators">Configurators</a>
+      <a href="/prototypes">Prototypes</a>
+      <a href="/ppav-case-study">Case study</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/insights">Insights</a>
+      <a href="/about">About</a>
+      <a class="bpc-button" href="/contact">Start a project</a>
+    </div>
+  </div>
+</div>
+<!--BPC:HEADER:END-->
 <div class="app">
   <aside class="sidebar" id="sidebar">
     <div class="logo"><span class="mark">M</span> MaxKPI</div>
@@ -64,4 +84,17 @@
   document.getElementById('submitKpi').onclick=()=>{const t=document.getElementById('toast');t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2600)};
   let ja=false;document.getElementById('language').onclick=()=>{ja=!ja;document.querySelectorAll('[data-en]').forEach(el=>el.textContent=ja?el.dataset.ja:el.dataset.en);document.getElementById('language').textContent=ja?'English':'日本語';document.documentElement.lang=ja?'ja':'en'};
 </script>
+<!--BPC:FOOTER:START-->
+<div class="bpc-chrome bpc-footer" role="contentinfo">
+  <div class="bpc-sheet bpc-tb">
+    <div>DOCUMENT<b>MAX KPI JAPAN</b></div>
+    <div>STUDIO<b>BLUEPRINT CODE</b></div>
+    <div>FORMAT<b>LIVE DEMO</b></div>
+    <div>CONTACT<b><a href="mailto:james@blueprintcode.ai">JAMES@BLUEPRINTCODE.AI</a></b></div>
+  </div>
+</div>
+<!--BPC:FOOTER:END-->
+<!--BPC:SCRIPT:START-->
+<script defer src="/partials/site-chrome.js"></script>
+<!--BPC:SCRIPT:END-->
 </body></html>
