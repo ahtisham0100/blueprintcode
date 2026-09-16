@@ -230,6 +230,7 @@ export default function PpavCaseStudyPage() {
         <div className="ctas">
           <a className="btn solid" href="/contact">Discuss your project</a>
           <a className="btn" href="/prototypes">See three prototypes</a>
+          <a className="btn" href="/standards-and-credentials">Standards &amp; credentials</a>
         </div>
       </section>
 

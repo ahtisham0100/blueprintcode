@@ -1,0 +1,124 @@
+/* Standards & Credentials — page-specific styles. Loads after site.css and
+   reuses the shared drafting tokens/classes (.sheet, .two, .sheet-no, .ticks,
+   .stamp, .button). Content comes from data.json. */
+h1 { font-size: clamp(44px, 7.4vw, 94px); margin-bottom: 28px; max-width: 15ch; }
+h2 { font-size: clamp(32px, 4.8vw, 58px); margin-bottom: 20px; max-width: 19ch; }
+h3 { font-size: 20px; margin-bottom: 8px; }
+p { max-width: 66ch; margin-bottom: 18px; }
+p:last-child { margin-bottom: 0; }
+
+/* empty state (no completed credentials / no programmes listed yet) */
+.empty {
+  border: 1px dashed var(--line);
+  background: var(--ground-2);
+  padding: 26px;
+  margin-top: 8px;
+  font-size: 14.5px;
+  color: var(--ink-2);
+  max-width: none;
+}
+
+/* credential cards */
+.cred-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  margin-top: 8px;
+}
+.cred {
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+}
+.cred h3 { margin: 0 0 4px; }
+.cred-issuer { font-family: var(--data); font-size: 12px; letter-spacing: .06em; color: var(--ink-3); margin: 0 0 18px; }
+.cred-meta { display: grid; gap: 0; margin: 0 0 18px; font-family: var(--data); font-size: 11px; letter-spacing: .08em; }
+.cred-meta > div { display: flex; justify-content: space-between; gap: 16px; padding: 9px 0; border-top: 1px solid var(--line-soft); }
+.cred-meta dt { color: var(--ink-3); }
+.cred-meta dd { color: var(--ink-2); text-align: right; }
+.cred-verify {
+  margin-top: auto;
+  align-self: flex-start;
+  font-family: var(--data);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--ink);
+  border-bottom: 1px solid var(--line);
+  padding-bottom: 3px;
+}
+.cred-verify:hover { border-bottom-color: var(--ink); }
+
+/* point grids (accessibility / security) */
+.pt-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  border-top: 1px solid var(--line);
+  border-left: 1px solid var(--line);
+  margin-top: 8px;
+}
+.pt {
+  border-right: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+  padding: 24px 26px;
+}
+.pt h3 { margin: 0 0 6px; }
+.pt p { font-size: 14px; color: var(--ink-3); margin: 0; max-width: 54ch; }
+
+/* currently progressing */
+.prog { border-top: 1px solid var(--ink); margin-top: 8px; }
+.prog-row {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 28px;
+  align-items: center;
+  border-bottom: 1px solid var(--line);
+  padding: 22px 0;
+}
+.prog-status {
+  align-self: start;
+  font-family: var(--data);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--ground);
+  background: var(--ink-3);
+  padding: 5px 10px;
+  white-space: nowrap;
+}
+.prog-body h3 { margin: 0 0 4px; }
+.prog-body-meta { font-family: var(--data); font-size: 12px; letter-spacing: .06em; color: var(--ink-3); margin: 0; }
+.prog-eta { text-align: right; font-family: var(--data); font-size: 11px; letter-spacing: .1em; color: var(--ink-3); }
+.prog-eta .lbl { display: block; }
+.prog-eta b { display: block; color: var(--ink-2); font-weight: 500; margin-top: 4px; }
+
+/* benefits */
+.benefits { max-width: none; }
+
+/* disclaimer strip */
+.disclaimer {
+  margin-top: 40px;
+  padding-top: 22px;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--data);
+  font-size: 12.5px;
+  letter-spacing: .04em;
+  line-height: 1.8;
+  color: var(--ink-3);
+  max-width: 78ch;
+}
+
+@media (max-width: 900px) {
+  .two, .pt-grid { grid-template-columns: 1fr; }
+  .prog-row { grid-template-columns: auto 1fr; }
+  .prog-eta { grid-column: 2; text-align: left; }
+}
+@media (max-width: 560px) {
+  section, .close { padding: 60px 0; }
+  .cred-grid { grid-template-columns: 1fr; }
+}

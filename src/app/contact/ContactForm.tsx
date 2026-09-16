@@ -11,11 +11,13 @@ import { useEffect, useRef, useState } from 'react';
 
 /* ---------- Config: set before go-live ---------- */
 const CONFIG = {
-  endpoint: '', // multipart POST target (e.g. Formspree/Worker). Empty = demo mode, nothing is sent.
+  endpoint: '/api/contact', // stores the lead (Neon) + emails admin (Resend). Empty = demo mode, nothing is sent.
   email: 'hello@blueprintcode.ai', // confirm this mailbox exists
   callUrl: '', // booking link (Cal.com / Calendly). Empty = falls back to an email request.
   caseStudyUrl: '/ppav-case-study',
-  maxFileMB: 10,
+  // Kept under Vercel's ~4.5 MB serverless request-body limit; larger files are
+  // declined client-side with a prompt to email them instead (see validation).
+  maxFileMB: 4,
 };
 
 type GroupType = 'radio' | 'checkbox';

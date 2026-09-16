@@ -150,6 +150,22 @@
 }
 .bpc-tb a:hover { border-bottom-color: var(--bpc-ink); color: var(--bpc-ink); }
 
+/* trust / company links row, below the drafting strip */
+.bpc-foot-links {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--bpc-line-soft);
+  font-family: var(--bpc-data);
+  font-size: 11px;
+  letter-spacing: .12em;
+}
+.bpc-foot-links-key { color: var(--bpc-ink-3); }
+.bpc-foot-links a { color: var(--bpc-ink); border-bottom: 1px solid var(--bpc-line); text-decoration: none; }
+.bpc-foot-links a:hover { border-bottom-color: var(--bpc-ink); }
+
 /* ---------- responsive / mobile menu ---------- */
 @media (max-width: 850px) {
   .bpc-nav a:not(.bpc-button) { display: none; }

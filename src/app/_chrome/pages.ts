@@ -77,6 +77,12 @@ const PAGES: Record<string, ChromeMeta> = {
     metaVal: 'INTERACTIVE COMMERCE',
     current: 'prototypes',
   },
+  '/standards-and-credentials': {
+    label: 'STANDARDS & CREDENTIALS',
+    doc: 'STANDARDS & CREDENTIALS',
+    metaKey: 'SCOPE',
+    metaVal: 'COMPANY & INDIVIDUAL',
+  },
 };
 
 const FALLBACK: ChromeMeta = PAGES['/'];

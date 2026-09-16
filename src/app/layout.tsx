@@ -2,11 +2,28 @@ import type { Metadata } from 'next';
 import './chrome.css';
 import Header from './_chrome/Header';
 import Footer from './_chrome/Footer';
+import {
+  SITE_URL,
+  SITE_NAME,
+  TAGLINE,
+  SPECIALITIES,
+  organizationJsonLd,
+  webSiteJsonLd,
+} from '@/lib/seo';
 
 export const metadata: Metadata = {
+  metadataBase: new URL(SITE_URL),
+  applicationName: SITE_NAME,
   title: 'Blueprint Code — Services & Pricing 2026',
-  description:
-    'Blueprint Code: web development, e-commerce infrastructure, bespoke 3D product configurators, and AI automation for UK, US and European businesses.',
+  description: TAGLINE,
+  keywords: [...SPECIALITIES],
+  openGraph: {
+    siteName: SITE_NAME,
+    title: 'Blueprint Code — Services & Pricing 2026',
+    description: TAGLINE,
+    type: 'website',
+    url: `${SITE_URL}/`,
+  },
   icons: {
     icon: [
       { url: '/favicon-32x32.png', sizes: '32x32', type: 'image/png' },
@@ -46,6 +63,17 @@ export default function RootLayout({
         />
       </head>
       <body>
+        {/* Organization + WebSite structured data, emitted site-wide so search
+            and AI answer engines can match our specialities to a buyer's query
+            and attribute them to Blueprint Code as an entity. */}
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}
+        />
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(webSiteJsonLd()) }}
+        />
         <a className="skip" href="#main">Skip to content</a>
         <Header />
         {children}

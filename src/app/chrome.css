@@ -122,6 +122,22 @@ footer .sheet {
 .tb a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
 .tb a:hover { border-bottom-color: var(--ink); }
 
+/* trust / company links row, below the drafting strip */
+.foot-links {
+  display: flex;
+  align-items: baseline;
+  gap: 18px;
+  margin-top: 18px;
+  padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--data);
+  font-size: 11px;
+  letter-spacing: .12em;
+}
+.foot-links-key { color: var(--ink-3); }
+.foot-links a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+.foot-links a:hover { border-bottom-color: var(--ink); }
+
 /* mobile -------------------------------------------------------------------- */
 @media (max-width: 900px) {
   .tb { grid-template-columns: repeat(2, 1fr); }

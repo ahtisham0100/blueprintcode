@@ -1,4 +1,17 @@
 /* Admin demo-uploader — self-contained blueprint styling. */
+
+/* Shared admin sub-nav (Deploy demo ↔ Leads). */
+.adm-nav {
+  display: flex; align-items: center; gap: 22px;
+  background: #0B1A2E; border-bottom: 1px solid #1D3552;
+  padding: 14px 20px;
+  font-family: 'DM Mono', ui-monospace, Menlo, monospace;
+  font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+}
+.adm-nav-brand { color: #5F7C9E; letter-spacing: .16em; margin-right: 4px; }
+.adm-nav a { color: #8FA9C6; text-decoration: none; }
+.adm-nav a:hover { color: #EAF1F8; }
+
 .adm {
   --a-ground: #0B1A2E;
   --a-ground-2: #0E2136;

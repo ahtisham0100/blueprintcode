@@ -29,6 +29,10 @@ export default function Footer() {
           </b>
         </div>
       </div>
+      <div className="sheet foot-links">
+        <span className="foot-links-key">TRUST</span>
+        <a href="/standards-and-credentials">Standards &amp; Credentials</a>
+      </div>
     </footer>
   );
 }

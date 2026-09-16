@@ -1,0 +1,96 @@
+{
+  "meta": {
+    "title": "Standards & Credentials — Blueprint Code",
+    "description": "Blueprint Code's qualifications, standards and working practices — accessibility, security and technical delivery — with clear distinctions between company and individual credentials.",
+    "canonical": "https://blueprintcode.ai/standards-and-credentials"
+  },
+  "stamp": [
+    { "key": "DOCUMENT", "value": "STANDARDS & CREDENTIALS" },
+    { "key": "SCOPE", "value": "COMPANY & INDIVIDUAL" },
+    { "key": "DIRECTION", "value": "UK — MONMOUTHSHIRE" },
+    { "key": "ISSUE", "value": "2026" }
+  ],
+  "opening": {
+    "heading": "Built creatively. Delivered responsibly.",
+    "body": "Blueprint Code combines commercial thinking, considered design and disciplined technical delivery. Our qualifications, standards and working practices help ensure the systems we build are accessible, secure, reliable and ready for real-world use."
+  },
+  "credentials": {
+    "sheetNo": "SHEET 01 — CURRENT CREDENTIALS",
+    "heading": "Verifiable qualifications, held by name.",
+    "intro": "Each credential below states plainly who holds it — an individual or the company — so there is no ambiguity about what has been formally assessed.",
+    "emptyState": "No credentials have completed formal assessment yet. Programmes currently underway are listed under Currently progressing below — we don't display a qualification here until it has been awarded and can be independently verified.",
+    "items": []
+  },
+  "accessibility": {
+    "sheetNo": "SHEET 02 — ACCESSIBILITY",
+    "heading": "Making the complex simple — for everyone.",
+    "intro": "Configurators and commerce tools ask a lot of a visitor. We design and build so that the difficult part stays usable regardless of how someone reads, points, taps or types. Our approach is informed by the WCAG guidelines and applied throughout, not bolted on at the end.",
+    "points": [
+      { "title": "WCAG-informed design and development", "detail": "Interfaces are built against the Web Content Accessibility Guidelines as a working standard, not a checkbox." },
+      { "title": "Keyboard navigation", "detail": "Every interactive control can be reached and operated without a mouse, in a logical order." },
+      { "title": "Screen-reader structure", "detail": "Semantic HTML, landmarks and labels so assistive technology can describe the page accurately." },
+      { "title": "Colour contrast", "detail": "Text and essential UI meet contrast ratios that stay legible in real lighting, not just in a design file." },
+      { "title": "Focus management", "detail": "Visible focus states and deliberate focus moves through steps, dialogs and error summaries." },
+      { "title": "Reduced-motion preferences", "detail": "Animation respects the visitor's system setting, so movement never becomes a barrier." },
+      { "title": "Accessible forms and error handling", "detail": "Clear labels, described fields and errors announced in text — never colour alone." },
+      { "title": "Mobile and touch accessibility", "detail": "Targets sized for fingers, layouts that reflow, and interactions that work on touch as well as pointer." },
+      { "title": "Plain-language instructions", "detail": "Guidance written to be understood first time, without jargon standing in the way." },
+      { "title": "Manual and automated testing", "detail": "Automated checks catch regressions; manual testing with keyboard and screen readers catches what tools miss." }
+    ]
+  },
+  "security": {
+    "sheetNo": "SHEET 03 — SECURITY & TECHNICAL STANDARDS",
+    "heading": "Secure by construction, not by afterthought.",
+    "intro": "The practices below describe how we build. Where a formal certification underpins an area, it is listed under Current credentials once awarded; until then these are our disciplined working standards.",
+    "points": [
+      { "title": "Secure development practices", "detail": "Input validation, dependency hygiene and least-privilege defaults built into how we write code." },
+      { "title": "Application and API security", "detail": "Server-authoritative logic — pricing and rules never trusted to the browser — with protected, rate-aware endpoints." },
+      { "title": "Data handling and privacy", "detail": "Only the data a task needs, stored and transmitted with care, and never repurposed for unrelated marketing." },
+      { "title": "Authentication and permissions", "detail": "Clear boundaries around who can do what, with sensible session and access controls." },
+      { "title": "Ecommerce platform standards", "detail": "Integrations that respect each platform's rules for checkout, data and payments handling." },
+      { "title": "Performance and reliability", "detail": "Fast, resilient builds that stay working after launch, under real traffic." },
+      { "title": "Testing and release procedures", "detail": "Documented testing and controlled releases so changes ship predictably." }
+    ]
+  },
+  "inProgress": {
+    "sheetNo": "SHEET 04 — CURRENTLY PROGRESSING",
+    "heading": "Professional development in progress",
+    "intro": "We show development honestly. The programmes below are underway and clearly marked as in progress — nothing here should be read as a completed qualification.",
+    "emptyState": "Details of current professional development will be published here as programmes are confirmed.",
+    "items": []
+  },
+  "clientBenefits": {
+    "sheetNo": "SHEET 05 — WHAT CLIENTS RECEIVE",
+    "heading": "Standards, turned into outcomes.",
+    "intro": "Credentials and practices only matter for what they change in the delivered work. In practice, that means:",
+    "points": [
+      "More inclusive customer experiences",
+      "Reduced accessibility and compliance risk",
+      "Better structured and maintainable systems",
+      "Secure handling of customer and commercial data",
+      "Documented testing before release",
+      "Clear accountability for technical quality"
+    ]
+  },
+  "evidence": {
+    "sheetNo": "SHEET 06 — EVIDENCE WITHIN CASE STUDIES",
+    "heading": "The proof sits inside the work.",
+    "intro": "Standards are easiest to trust when you can see them applied. Each project case study links back to this page and records its own:",
+    "points": [
+      "Accessibility measures",
+      "Performance results",
+      "Security considerations",
+      "Browser and device testing",
+      "Standards applied"
+    ],
+    "link": { "label": "Read the PP-AV case study", "href": "/ppav-case-study" }
+  },
+  "disclaimer": "We use official accreditation logos only where the issuing body permits, and we never describe work as “certified”, “compliant” or “accredited” before the relevant assessment is complete.",
+  "close": {
+    "eyebrow": "STANDARDS IN PRACTICE",
+    "heading": "Want the detail behind a specific standard?",
+    "body": "Ask us how accessibility, security or testing would apply to your build. We'll show you what we do, not just what we claim.",
+    "cta": { "label": "Start a conversation", "href": "/contact" },
+    "secondary": { "label": "Read the case study", "href": "/ppav-case-study" }
+  }
+}
