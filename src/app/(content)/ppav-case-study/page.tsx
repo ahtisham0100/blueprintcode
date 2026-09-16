@@ -222,6 +222,26 @@ export default function PpavCaseStudyPage() {
         </div>
       </div>
 
+      {/* ============ METHOD TRANSFERS ============ */}
+      <section id="transfers">
+        <div className="sheet">
+          <p className="sheet-no">THE METHOD TRANSFERS</p>
+          <h2>The industry changes. The method transfers.</h2>
+          <p className="standfirst">Look at PP-AV and substitute your own industry. The same repeatable approach sits underneath — which is what makes this a method, not one lucky design.</p>
+
+          <div className="transfer" role="list" aria-label="How the PP-AV method maps onto other industries">
+            <div className="transfer-row" role="listitem"><span className="from">Home cinema</span><span className="arrow" aria-hidden="true">→</span><span className="to">Fitted furniture</span></div>
+            <div className="transfer-row" role="listitem"><span className="from">Audio compatibility</span><span className="arrow" aria-hidden="true">→</span><span className="to">Industrial component compatibility</span></div>
+            <div className="transfer-row" role="listitem"><span className="from">Projector selection</span><span className="arrow" aria-hidden="true">→</span><span className="to">Equipment selection</span></div>
+            <div className="transfer-row" role="listitem"><span className="from">Screen configuration</span><span className="arrow" aria-hidden="true">→</span><span className="to">Made-to-order pricing</span></div>
+            <div className="transfer-row" role="listitem"><span className="from">The complete cinema package</span><span className="arrow" aria-hidden="true">→</span><span className="to">Any multi-product solution</span></div>
+          </div>
+
+          <p className="pull">Whether the product is a cinema system, piece of furniture, sports kit, technical installation or made-to-order product, the challenge is often the same: help customers understand their options, make compatible choices and move confidently towards purchase.</p>
+          <p className="transfer-note">That is where PP-AV stops being merely a home-cinema case study and becomes evidence that Blueprint Code&apos;s approach can be repeated commercially.</p>
+        </div>
+      </section>
+
       {/* ============ CLOSE ============ */}
       <section className="close sheet" id="contact">
         <p className="sheet-no">YOUR PRODUCT</p>
