@@ -181,7 +181,7 @@ export default function Home() {
                   <li>Enterprise Commerce Core</li>
                   <li>Direct PP-AV ecommerce</li>
                   <li><a href={'https://www.amazon.co.uk/stores/PhoenixScreens%E2%80%94byPP-AV/page/6E75E02A-C32F-448E-8B42-7F9A9F8BF683?lp_asin=B0HDTZS2LM&ref_=ast_bln'} target="_blank" rel="noopener">Eight Amazon marketplaces</a></li>
-                  <li>eBay Global</li>
+                  <li><a href="https://www.ebay.co.uk/str/phoenixprojectorsav" target="_blank" rel="noopener">eBay Global</a></li>
                 </ul>
                 <a className="button" href="/ppav-case-study">View full case study</a>
               </div>
