@@ -54,8 +54,8 @@ export function organizationJsonLd() {
     name: SITE_NAME,
     url: `${SITE_URL}/`,
     description: TAGLINE,
-    logo: `${SITE_URL}/blueprintcode-transparent.png`,
-    image: `${SITE_URL}/blueprintcode-transparent.png`,
+    logo: `${SITE_URL}/blueprintcode-ai.png`,
+    image: `${SITE_URL}/blueprintcode-ai.png`,
     slogan: TAGLINE,
     knowsAbout: [...SPECIALITIES],
     makesOffer: SPECIALITIES.map((s) => ({

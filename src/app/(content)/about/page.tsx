@@ -78,6 +78,7 @@ export default function AboutPage() {
           </div>
           <div className="team">
             <div className="member">
+              <img className="headshot" src="/james.jpeg" alt="James Michaelson" width={640} height={640} loading="lazy" />
               <span className="lbl">01</span>
               <h3>James Michaelson</h3>
               <p className="role">Founder &amp; Solutions Architect</p>
@@ -85,6 +86,7 @@ export default function AboutPage() {
               <span className="owns">OWNS<b>Scope, product logic, commercial rules, client relationship</b></span>
             </div>
             <div className="member">
+              <img className="headshot" src="/muhammad-ahtisham.jpeg" alt="Muhammad Ahtisham Arif" width={640} height={640} loading="lazy" />
               <span className="lbl">02</span>
               <h3>Muhammad Ahtisham Arif</h3>
               <p className="role">Engineering &amp; platform</p>
@@ -92,6 +94,7 @@ export default function AboutPage() {
               <span className="owns">OWNS<b>Architecture, integrations, performance, deployment</b></span>
             </div>
             <div className="member">
+              <div className="headshot headshot--empty" aria-hidden="true" />
               <span className="lbl">03</span>
               <h3>Parv</h3>
               <p className="role">Design</p>

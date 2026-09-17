@@ -5,14 +5,14 @@ import type { Metadata } from 'next';
 // bare-file view always paints its own white/dark backdrop behind a raw PNG).
 //
 // Do NOT use this URL as a logo/<img>/favicon/OG source — those need the raw
-// image file at /blueprintcode-transparent.png, which is already transparent.
+// image file at /blueprintcode-ai.png, which is already transparent.
 export const metadata: Metadata = {
   title: 'Logo preview — Blueprint Code',
   description: 'Preview of the transparent Blueprint Code logo on light, dark and checkerboard backgrounds.',
   robots: { index: false, follow: false },
 };
 
-const LOGO = '/blueprintcode-transparent.png';
+const LOGO = '/blueprintcode-ai.png';
 
 const swatches: { label: string; style: React.CSSProperties }[] = [
   { label: 'Light', style: { background: '#ffffff' } },
