@@ -66,7 +66,7 @@ export default function AdminForm() {
   return (
     <main id="main" className="adm">
       <div className="adm-card">
-        <p className="adm-eyebrow">BLUEPRINT CODE — ADMIN</p>
+        <p className="adm-eyebrow">BLUEPRINT CODE AI — ADMIN</p>
         <h1>Deploy a demo</h1>
         <p className="adm-lead">
           Upload an HTML file and give it a URL slug. It&apos;s committed to the site
@@ -83,7 +83,7 @@ export default function AdminForm() {
               onChange={(e) => {
                 const f = e.target.files?.[0] ?? null;
                 setFile(f);
-                if (f && !slug) setSlug(f.name.replace(/\.html?$/i, ''));
+                if (f && !slug) setSlug(f.name.replace(/\.html?$/i, '').toLowerCase());
               }}
             />
           </label>
@@ -94,10 +94,11 @@ export default function AdminForm() {
               type="text"
               value={slug}
               placeholder="my-new-demo"
-              onChange={(e) => setSlug(e.target.value)}
+              onChange={(e) => setSlug(e.target.value.toLowerCase())}
               autoCapitalize="off"
               autoCorrect="off"
               spellCheck={false}
+              style={{ textTransform: 'lowercase' }}
             />
             {cleanSlug && (
               <small className="adm-preview">
