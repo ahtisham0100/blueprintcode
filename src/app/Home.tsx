@@ -100,12 +100,12 @@ export default function Home() {
               <p>Before committing to a full build, we create a working prototype of your product in one to four weeks—something real in a browser, not a slide deck.</p>
             </div>
             <table className="sprint-table">
-              <thead><tr><th>Sprint</th><th>Price</th><th>Intended production project</th></tr></thead>
+              <thead><tr><th>Sprint</th><th>Price</th><th>What this level of work would normally cost</th></tr></thead>
               <tbody>
-                <tr><td>One-week Focus Sprint</td><td className="price">£625</td><td>Typically £2,500–£4,000</td></tr>
-                <tr><td>Two-week Prototype Sprint</td><td className="price">£1,125</td><td>Typically £4,000–£7,500</td></tr>
-                <tr><td>Three-week System Sprint</td><td className="price">£2,000</td><td>Typically £7,500–£15,000</td></tr>
-                <tr><td>Four-week Advanced Sprint</td><td className="price">£3,000</td><td>Typically £15,000+</td></tr>
+                <tr><td>One-week Focus Sprint</td><td className="price">£625</td><td>Standard value: £2,500–£4,000</td></tr>
+                <tr><td>Two-week Prototype Sprint</td><td className="price">£1,125</td><td>Standard value: £4,000–£7,500</td></tr>
+                <tr><td>Three-week System Sprint</td><td className="price">£2,000</td><td>Standard value: £7,500–£15,000</td></tr>
+                <tr><td>Four-week Advanced Sprint</td><td className="price">£3,000</td><td>Standard value: £15,000+</td></tr>
               </tbody>
             </table>
             <div className="sprint-cols">
@@ -213,13 +213,13 @@ export default function Home() {
                 <span className="num">01 / CFG</span>
                 <h3>Foundation configurator</h3>
                 <p>Focused options, rules, live preview and lead capture.</p>
-                <span className="from">FROM £2,500</span>
+                <span className="from">£2,500 — £7,500</span>
               </div>
               <div className="level">
                 <span className="num">02 / PRO</span>
                 <h3>Professional configurator suite</h3>
                 <p>Advanced logic, dynamic pricing, integrations and ecommerce.</p>
-                <span className="from">£15,000 — £30,000</span>
+                <span className="from">£7,500 — £30,000</span>
               </div>
               <div className="level">
                 <span className="num">03 / DXS</span>
