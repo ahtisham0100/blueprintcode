@@ -28,7 +28,7 @@ export const metadata: Metadata = {
 const FAQS: { q: string; a: string }[] = [
   {
     q: 'How much does a 3D product configurator cost?',
-    a: 'A focused real-time 3D configurator for one product family typically starts around £7,500, while a professional build with pricing, rules and ecommerce integration commonly sits between £15,000 and £30,000. Connected multi-tool showrooms start from £35,000. Every build begins with a fixed-price Prototype Sprint (£625–£3,000) that proves the hardest part first and is credited against the full build.',
+    a: 'A focused real-time 3D configurator for one product family typically sits in the advanced band, £7,500 to £15,000. A professional build with pricing, rules and ecommerce integration commonly sits between £15,000 and £30,000, and connected multi-tool showrooms start from £35,000. Every build begins with a fixed-price Prototype Sprint (£625–£3,000) that proves the hardest part first and is credited against the full build.',
   },
   {
     q: 'Should my product be 2D or 3D?',

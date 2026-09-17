@@ -206,25 +206,31 @@ export default function Home() {
             <p className="section-no">05 / BUILD LEVELS</p>
             <div className="section-grid">
               <h2>The right scale for the commercial job.</h2>
-              <p className="section-copy">Three configurator levels, each a step up in logic and integration. Scope and price are fixed against a written technical specification at kick-off.</p>
+              <p className="section-copy">Four configurator levels, each a step up in logic and integration. Scope and price are fixed against a written technical specification at kick-off.</p>
             </div>
             <div className="levels">
               <div className="level">
                 <span className="num">01 / CFG</span>
                 <h3>Foundation configurator</h3>
-                <p>Focused options, rules, live preview and lead capture.</p>
+                <p>One product family, focused option logic and live preview.</p>
                 <span className="from">£2,500 — £7,500</span>
               </div>
               <div className="level">
-                <span className="num">02 / PRO</span>
-                <h3>Professional configurator suite</h3>
-                <p>Advanced logic, dynamic pricing, integrations and ecommerce.</p>
-                <span className="from">£7,500 — £30,000</span>
+                <span className="num">02 / ADV</span>
+                <h3>Advanced configurator</h3>
+                <p>More rules, pricing, quotations or one integration.</p>
+                <span className="from">£7,500 — £15,000</span>
               </div>
               <div className="level">
-                <span className="num">03 / DXS</span>
+                <span className="num">03 / PRO</span>
+                <h3>Professional configurator suite</h3>
+                <p>Multiple connected tools and commerce integration.</p>
+                <span className="from">£15,000 — £30,000</span>
+              </div>
+              <div className="level">
+                <span className="num">04 / DXS</span>
                 <h3>Enterprise digital showroom</h3>
-                <p>Multiple tools, 3D, guided commerce and intelligent assistance.</p>
+                <p>Shared data, several tools, portals, AI or enterprise integration.</p>
                 <span className="from">FROM £35,000</span>
               </div>
               <div className="level other">

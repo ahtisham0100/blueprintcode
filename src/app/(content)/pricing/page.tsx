@@ -206,10 +206,10 @@ export default function PricingPage() {
 
       <section className="sheet" style={{ borderTop: 0, paddingTop: '72px' }}>
         <div className="band"><h3>Configurator tiers</h3><span className="range">EVERY BUILD STARTS FROM THE SPRINT ABOVE</span></div>
-        <div className="row3">
+        <div className="row3 cfg-row4">
           <div className="item">
             <div className="item-top"><h4>Foundation</h4><span className="rate"><span className="from">from</span>£2,500</span></div>
-            <p>For premium product brands replacing static ecommerce with an immersive buying experience.</p>
+            <p>One product family with focused option logic and live preview — a credible immersive buying experience.</p>
             <ul>
               <li>Bespoke interactive configurator</li>
               <li>Premium responsive UI / UX</li>
@@ -220,6 +220,19 @@ export default function PricingPage() {
               <li>Lead capture &amp; SEO-friendly architecture</li>
             </ul>
             <p className="note"><b>Ideal for:</b> AV furniture, laser TV cabinets, premium screens, designer furniture.</p>
+          </div>
+          <div className="item">
+            <div className="item-top"><h4>Advanced</h4><span className="rate">£7.5–15k</span></div>
+            <p>More configuration depth for a single product family — added rules, pricing and quoting, or one system integration.</p>
+            <ul>
+              <li>Everything in Foundation</li>
+              <li>Advanced option &amp; conditional logic</li>
+              <li>Dynamic pricing &amp; quotation output</li>
+              <li>Save &amp; share configurations</li>
+              <li>PDF quote generation</li>
+              <li>One CRM or ecommerce integration</li>
+            </ul>
+            <p className="note"><b>Ideal for:</b> a single configurator that needs real quoting, rules or one integration.</p>
           </div>
           <div className="item">
             <div className="item-top"><h4>Professional</h4><span className="rate">£15–30k</span></div>

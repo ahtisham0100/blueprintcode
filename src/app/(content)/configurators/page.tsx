@@ -178,26 +178,32 @@ export default function ConfiguratorsPage() {
         <div className="sheet">
           <p className="sheet-no">SHEET 04 — BUILD LEVELS</p>
           <div className="two">
-            <h2>Three levels, priced in public.</h2>
+            <h2>Four levels, priced in public.</h2>
             <p>Scope and price are fixed against a written technical specification at kick-off. Full rates, add-ons and retainers sit on the schedule.</p>
           </div>
           <div className="levels">
             <div className="level">
               <span className="num">01 / CFG</span>
               <h3>Foundation configurator</h3>
-              <p>One product family. Options, rules, live preview, dynamic pricing and lead capture.</p>
+              <p>One product family. Focused option logic, live preview and lead capture.</p>
               <span className="from">£2,500 — £7,500</span>
             </div>
             <div className="level">
-              <span className="num">02 / PRO</span>
-              <h3>Professional suite</h3>
-              <p>Multiple tools, conditional logic, quotes and PDFs, CRM and ecommerce integration, trade pricing.</p>
-              <span className="from">£7,500 — £30,000</span>
+              <span className="num">02 / ADV</span>
+              <h3>Advanced configurator</h3>
+              <p>More rules, dynamic pricing and quotations, or one system integration.</p>
+              <span className="from">£7,500 — £15,000</span>
             </div>
             <div className="level">
-              <span className="num">03 / DXS</span>
+              <span className="num">03 / PRO</span>
+              <h3>Professional suite</h3>
+              <p>Multiple connected tools, commerce integration, PDFs, CRM and trade pricing.</p>
+              <span className="from">£15,000 — £30,000</span>
+            </div>
+            <div className="level">
+              <span className="num">04 / DXS</span>
               <h3>Enterprise digital showroom</h3>
-              <p>Connected tools, shared profile, CPQ, ERP and API integration, AR, multi-brand and multi-language.</p>
+              <p>Shared data, several tools, portals, CPQ, AR, AI or enterprise integration.</p>
               <span className="from">FROM £35,000</span>
             </div>
           </div>

@@ -294,7 +294,7 @@
 .brc .case-stat b { display: block; font-family: var(--display); font-size: 38px; font-weight: 400; color: var(--ink); }
 
 /* build levels */
-.brc .levels { display: grid; grid-template-columns: repeat(4, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
+.brc .levels { display: grid; grid-template-columns: repeat(5, 1fr); border-top: 1px solid var(--line); border-left: 1px solid var(--line); }
 .brc .level { min-height: 290px; padding: 28px 24px; border-right: 1px solid var(--line); border-bottom: 1px solid var(--line); display: flex; flex-direction: column; }
 .brc .level .num { font-family: var(--data); font-size: 12px; letter-spacing: .1em; color: var(--ink-3); }
 .brc .level h3 { font-size: 29px; margin: 32px 0 14px; }

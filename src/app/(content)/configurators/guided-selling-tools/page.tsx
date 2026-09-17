@@ -44,7 +44,7 @@ const FAQS: { q: string; a: string }[] = [
   },
   {
     q: 'How much does a guided selling tool cost and how long does it take?',
-    a: 'A focused guided selector typically starts around £2,500, with professional multi-tool builds from £7,500 to £30,000 depending on rules, integrations and quoting. Every build starts with a fixed-price Prototype Sprint (£625–£3,000, one to four weeks) that is credited against the full build.',
+    a: 'A focused guided selector typically starts around £2,500 as a foundation build. An advanced single tool with added rules, pricing and quoting or one integration runs £7,500 to £15,000, and a professional multi-tool suite £15,000 to £30,000 depending on integrations and quoting. Every build starts with a fixed-price Prototype Sprint (£625–£3,000, one to four weeks) that is credited against the full build.',
   },
 ];
 
