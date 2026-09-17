@@ -79,14 +79,14 @@ export default function AboutPage() {
           <div className="team">
             <div className="member">
               <span className="lbl">01</span>
-              <h3>James</h3>
-              <p className="role">Commercial &amp; product direction</p>
+              <h3>James Michaelson</h3>
+              <p className="role">Founder &amp; Solutions Architect</p>
               <p>Founder of Phoenix Projectors AV and of Blueprint Code. Sets the product logic, pricing rules and the commercial argument each tool has to win.</p>
               <span className="owns">OWNS<b>Scope, product logic, commercial rules, client relationship</b></span>
             </div>
             <div className="member">
               <span className="lbl">02</span>
-              <h3>Muhammad</h3>
+              <h3>Muhammad Ahtisham Arif</h3>
               <p className="role">Engineering &amp; platform</p>
               <p>Architecture, integrations and the parts that have to keep working after launch — pricing authority, data hand-off, deployment.</p>
               <span className="owns">OWNS<b>Architecture, integrations, performance, deployment</b></span>
