@@ -77,7 +77,7 @@ export default function AboutPage() {
             <p>Three people own this work. You will speak to the person doing it, not to a layer of account management placed between you and the build.</p>
           </div>
           <div className="team">
-            <div className="member">
+            <div className="member" id="james-michaelson">
               <img className="headshot" src="/james.jpeg" alt="James Michaelson" width={640} height={640} loading="lazy" />
               <span className="lbl">01</span>
               <h3>James Michaelson</h3>
@@ -85,7 +85,7 @@ export default function AboutPage() {
               <p>Founder of Phoenix Projectors AV and of Blueprint Code. Sets the product logic, pricing rules and the commercial argument each tool has to win.</p>
               <span className="owns">OWNS<b>Scope, product logic, commercial rules, client relationship</b></span>
             </div>
-            <div className="member">
+            <div className="member" id="muhammad-ahtisham-arif">
               <img className="headshot" src="/muhammad-ahtisham.jpeg" alt="Muhammad Ahtisham Arif" width={640} height={640} loading="lazy" />
               <span className="lbl">02</span>
               <h3>Muhammad Ahtisham Arif</h3>

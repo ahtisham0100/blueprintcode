@@ -2,11 +2,23 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import '../styles.css';
-import { NOTES, noteBySlug } from '../notes';
+import { NOTES, noteBySlug, authorPerson } from '../notes';
 
 /* Individual field-note pages at /insights/<slug>. Prerendered from NOTES; any
    slug not in that list 404s. Each page carries its own metadata and a
    BlogPosting schema, and renders the article body in a .prose reading column. */
+
+const MONTHS = [
+  'January', 'February', 'March', 'April', 'May', 'June',
+  'July', 'August', 'September', 'October', 'November', 'December',
+];
+
+/** Format an ISO date (yyyy-mm-dd) as e.g. "12 September 2026", parsed from the
+ *  string parts so it never shifts by a day across server time zones. */
+function humanDate(iso: string): string {
+  const [y, m, d] = iso.split('-').map(Number);
+  return `${d} ${MONTHS[m - 1]} ${y}`;
+}
 
 export const dynamicParams = false;
 
@@ -57,7 +69,9 @@ export default async function NotePage({
     headline: note.title,
     description: note.desc,
     wordCount: note.wordCount,
-    author: { '@type': 'Organization', name: 'Blueprint Code' },
+    datePublished: note.datePublished,
+    dateModified: note.dateModified,
+    author: authorPerson(note.author),
     publisher: { '@type': 'Organization', name: 'Blueprint Code' },
     mainEntityOfPage: url,
     url,
@@ -68,18 +82,43 @@ export default async function NotePage({
     },
   };
 
+  // Breadcrumb trail: Home › Field notes › this article — rendered visibly and
+  // as BreadcrumbList structured data so search engines show the hierarchy.
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://blueprintcode.ai/' },
+      { '@type': 'ListItem', position: 2, name: 'Field notes', item: 'https://blueprintcode.ai/insights' },
+      { '@type': 'ListItem', position: 3, name: note.title, item: url },
+    ],
+  };
+
   return (
     <main id="main">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(postSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
       <article className="prose">
         <div className="inner">
-          <Link className="note-back" href="/insights">
-            ← Field notes
-          </Link>
+          <nav className="crumbs" aria-label="Breadcrumb">
+            <Link href="/">Home</Link>
+            <span className="crumbs-sep" aria-hidden="true">/</span>
+            <Link href="/insights">Field notes</Link>
+            <span className="crumbs-sep" aria-hidden="true">/</span>
+            <span aria-current="page">{note.title}</span>
+          </nav>
+          <p className="note-byline">
+            By {note.author} · Published {humanDate(note.datePublished)}
+            {note.dateModified !== note.datePublished &&
+              ` · Updated ${humanDate(note.dateModified)}`}
+          </p>
           {note.content}
         </div>
       </article>

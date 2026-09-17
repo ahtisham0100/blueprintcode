@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import './styles.css';
-import { NOTES } from './notes';
+import { NOTES, authorPerson } from './notes';
 import HashRedirect from './HashRedirect';
 
 export const metadata: Metadata = {
@@ -28,11 +28,22 @@ const blogSchema = {
     headline: n.title,
     description: n.desc,
     wordCount: n.wordCount,
-    author: { '@type': 'Organization', name: 'Blueprint Code' },
+    datePublished: n.datePublished,
+    dateModified: n.dateModified,
+    author: authorPerson(n.author),
     publisher: { '@type': 'Organization', name: 'Blueprint Code' },
     url: `https://blueprintcode.ai/insights/${n.slug}`,
     mainEntityOfPage: `https://blueprintcode.ai/insights/${n.slug}`,
   })),
+};
+
+const breadcrumbSchema = {
+  '@context': 'https://schema.org',
+  '@type': 'BreadcrumbList',
+  itemListElement: [
+    { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://blueprintcode.ai/' },
+    { '@type': 'ListItem', position: 2, name: 'Field notes', item: 'https://blueprintcode.ai/insights' },
+  ],
 };
 
 export default function InsightsPage() {
@@ -43,8 +54,17 @@ export default function InsightsPage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blogSchema) }}
       />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(breadcrumbSchema) }}
+      />
 
       <div className="sheet title-block">
+        <nav className="crumbs" aria-label="Breadcrumb">
+          <Link href="/">Home</Link>
+          <span className="crumbs-sep" aria-hidden="true">/</span>
+          <span aria-current="page">Field notes</span>
+        </nav>
         <dl className="stamp">
           <div className="row"><dt>SERIES</dt><dd>Field notes — insights from the build</dd></div>
           <div className="row"><dt>DISCIPLINE</dt><dd>Interactive commerce</dd></div>

@@ -65,11 +65,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: r.priority,
   }));
 
-  // Field-note articles, derived from the same NOTES the pages render from.
-  const noteSources = ['(content)/insights/notes.tsx', '(content)/insights/[slug]/page.tsx'];
+  // Field-note articles, derived from the same NOTES the pages render from, so
+  // a new note can't be orphaned. lastmod is the note's own dateModified — the
+  // real editorial date, which also matches the BlogPosting schema.
   const noteEntries = NOTES.map((note) => ({
     url: `${SITE_URL}/insights/${note.slug}`,
-    lastModified: lastModified(...noteSources),
+    lastModified: new Date(note.dateModified),
     changeFrequency: 'yearly' as const,
     priority: 0.6,
   }));

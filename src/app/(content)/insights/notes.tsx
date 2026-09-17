@@ -13,6 +13,9 @@ export interface Note {
   title: string;
   desc: string;
   wordCount: number;
+  author: string;
+  datePublished: string; // ISO date, e.g. '2026-08-19'
+  dateModified: string; // ISO date; equals datePublished when unrevised
   content: ReactNode;
 }
 
@@ -25,6 +28,9 @@ export const NOTES: Note[] = [
     title: 'What does a product configurator cost in 2026?',
     desc: 'Realistic price bands, the variables that move them, and how to avoid paying production money before the difficult idea is proven.',
     wordCount: 729,
+    author: 'James Michaelson',
+    datePublished: '2026-08-19',
+    dateModified: '2026-09-12',
     content: (
       <>
         <div className="panel-head">
@@ -77,6 +83,9 @@ export const NOTES: Note[] = [
     title: '2D vs 3D product configurators',
     desc: 'When images and rules are enough, when real-time 3D earns its cost, and how to choose without buying technology for its own sake.',
     wordCount: 680,
+    author: 'Muhammad Ahtisham Arif',
+    datePublished: '2026-08-27',
+    dateModified: '2026-08-27',
     content: (
       <>
         <div className="panel-head">
@@ -126,6 +135,9 @@ export const NOTES: Note[] = [
     title: 'Why complex products need a digital showroom',
     desc: 'A product page displays information. A digital showroom turns uncertainty into a guided, commercially useful buying journey.',
     wordCount: 698,
+    author: 'Muhammad Ahtisham Arif',
+    datePublished: '2026-09-03',
+    dateModified: '2026-09-15',
     content: (
       <>
         <div className="panel-head">
@@ -183,6 +195,9 @@ export const NOTES: Note[] = [
     title: 'From an eBay account to a multi-market retailer',
     desc: 'Six lessons from growing PP-AV into an international commerce operation with five connected sales tools.',
     wordCount: 778,
+    author: 'James Michaelson',
+    datePublished: '2026-09-10',
+    dateModified: '2026-09-10',
     content: (
       <>
         <div className="panel-head">
@@ -233,4 +248,49 @@ export const NOTES: Note[] = [
 
 export function noteBySlug(slug: string): Note | undefined {
   return NOTES.find((n) => n.slug === slug);
+}
+
+/* Author profiles. Used to build the BlogPosting `author` as a linked Person
+   entity — a name plus url (their /about anchor), image and jobTitle — rather
+   than a bare name. That is what helps search and answer engines resolve who
+   wrote each note. Add `sameAs` (LinkedIn / personal site) once the exact
+   public profile URLs are confirmed; the builder emits it only when present. */
+interface Author {
+  name: string;
+  jobTitle: string;
+  url: string;
+  image: string;
+  sameAs?: string[];
+}
+
+export const AUTHORS: Record<string, Author> = {
+  'James Michaelson': {
+    name: 'James Michaelson',
+    jobTitle: 'Founder & Solutions Architect',
+    url: 'https://blueprintcode.ai/about#james-michaelson',
+    image: 'https://blueprintcode.ai/james.jpeg',
+    sameAs: ['https://www.linkedin.com/in/james-michaelson-phoenix-projectors-av/'],
+  },
+  'Muhammad Ahtisham Arif': {
+    name: 'Muhammad Ahtisham Arif',
+    jobTitle: 'Engineering & platform',
+    url: 'https://blueprintcode.ai/about#muhammad-ahtisham-arif',
+    image: 'https://blueprintcode.ai/muhammad-ahtisham.jpeg',
+    sameAs: ['https://www.linkedin.com/in/muhammad-ahtisham0100/'],
+  },
+};
+
+/** schema.org Person for a note's author; falls back to a bare Person for any
+ *  name not in AUTHORS, and includes sameAs only when profile URLs are set. */
+export function authorPerson(name: string) {
+  const a = AUTHORS[name];
+  if (!a) return { '@type': 'Person', name };
+  return {
+    '@type': 'Person',
+    name: a.name,
+    jobTitle: a.jobTitle,
+    url: a.url,
+    image: a.image,
+    ...(a.sameAs && a.sameAs.length ? { sameAs: a.sameAs } : {}),
+  };
 }
