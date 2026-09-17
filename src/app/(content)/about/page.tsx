@@ -96,8 +96,8 @@ export default function AboutPage() {
             <div className="member">
               <div className="headshot headshot--empty" aria-hidden="true" />
               <span className="lbl">03</span>
-              <h3>Parv</h3>
-              <p className="role">Design</p>
+              <h3>Parv Jain</h3>
+              <p className="role">Lead Designer</p>
               <p>Interface, interaction and the visual system. Makes a complicated decision feel like a short one without hiding what the customer is choosing.</p>
               <span className="owns">OWNS<b>Interface, interaction, design system, accessibility</b></span>
             </div>
