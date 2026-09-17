@@ -48,6 +48,8 @@ const STATIC_ROUTES: {
 }[] = [
   { path: '', sources: ['page.tsx', 'Home.tsx'], changeFrequency: 'monthly', priority: 1 },
   { path: 'configurators', sources: ['(content)/configurators/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },
+  { path: 'configurators/3d-product-configurator-development', sources: ['(content)/configurators/3d-product-configurator-development/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },
+  { path: 'configurators/guided-selling-tools', sources: ['(content)/configurators/guided-selling-tools/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },
   { path: 'prototypes', sources: ['(content)/prototypes/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },
   { path: 'ppav-case-study', sources: ['(content)/ppav-case-study/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },
   { path: 'pricing', sources: ['(content)/pricing/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },

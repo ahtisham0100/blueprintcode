@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import './styles.css';
 
 export const metadata: Metadata = {
-  title: 'Configurators & commerce tools — Blueprint Code',
+  title: 'Configurators & commerce tools — Blueprint Code AI',
   description:
     'Guided selectors, specification builders, real-time 3D configurators and quote engines — built as commercial tools, not visual novelties. Worked examples from a live retail business.',
   alternates: { canonical: 'https://blueprintcode.ai/configurators' },
   openGraph: {
-    title: 'Configurators & commerce tools — Blueprint Code',
+    title: 'Configurators & commerce tools — Blueprint Code AI',
     description:
       'Product logic wearing an interface. Six tool types, one connected system, proven on a trading business.',
     type: 'website',
@@ -95,6 +95,8 @@ export default function ConfiguratorsPage() {
               <span className="eg">LIVE EXAMPLE<b>Audio Designer — a dedicated &quot;guide me&quot; path</b></span>
             </div>
           </div>
+
+          <p className="levels-note">Two of these have a dedicated guide: <a href="/configurators/3d-product-configurator-development">3D product configurator development</a> and <a href="/configurators/guided-selling-tools">guided selling &amp; product recommendation tools</a>.</p>
         </div>
       </section>
 

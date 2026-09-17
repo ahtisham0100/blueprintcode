@@ -75,3 +75,9 @@ p:last-child{margin-bottom:0}
   .schematic{padding:24px}
 }
 .band-note{margin:14px 0 0;font-size:13px;line-height:1.55;opacity:.72}
+/* breadcrumb trail (shared by the child service pages) */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-family:var(--data);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px}
+.crumbs a{color:var(--ink-3);text-decoration:none}
+.crumbs a:hover{color:var(--ink)}
+.crumbs [aria-current="page"]{color:var(--ink)}
+.crumbs-sep{color:var(--line)}
