@@ -126,24 +126,19 @@ ul{list-style:none}
 .invert .button{border-color:var(--ground);color:var(--ground)}
 .invert .button:hover{background:var(--ground);color:var(--ink)}
 
-/* close + footer -------------------------------------------------------- */
+/* close ----------------------------------------------------------------- */
 .close{padding:100px 0}
 .close h2{max-width:22ch}
 .close p{max-width:64ch;margin:24px 0 0;font-size:17px}
-footer{border-top:2px solid var(--ink);padding:24px 0 44px}
-.tb{display:grid;grid-template-columns:repeat(4,1fr);font-family:var(--data);font-size:11px;letter-spacing:.12em;color:var(--ink-3)}
-.tb div{padding:14px 18px 14px 0;border-right:1px solid var(--line-soft)}
-.tb div:last-child{border-right:0}
-.tb b{display:block;color:var(--ink);font-weight:400;margin-top:5px;letter-spacing:.08em}
-.tb a{border-bottom:1px solid var(--line)}
-.tb a:hover{border-bottom-color:var(--ink)}
+/* The global footer + .tb title block now live solely in chrome.css (loaded by
+   the root layout for every route). The old copies were removed from here so
+   the content pages and the homepage can't drift out of sync. */
 
 .burger{display:none;background:0;border:1px solid var(--line);color:var(--ink);font-family:var(--data);font-size:11px;letter-spacing:.11em;padding:11px 16px;cursor:pointer;text-transform:uppercase}
 .burger:hover{border-color:var(--ink)}
 
 @media(max-width:900px){
   .two,.sprint-head,.sprint-cols{grid-template-columns:1fr}
-  .tb{grid-template-columns:repeat(2,1fr)}
   .burger{display:block}
   nav{
     position:fixed;inset:72px 0 auto 0;z-index:19;flex-direction:column;align-items:stretch;gap:0;

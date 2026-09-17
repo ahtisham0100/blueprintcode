@@ -48,6 +48,9 @@
 .panel-head h1 { font-family: var(--display); font-weight: 400; color: var(--ink); letter-spacing: .025em; line-height: 1; font-size: clamp(30px, 4.4vw, 46px); margin: 14px 0 0; max-width: 22ch; }
 .panel-foot { border-top: 1px solid var(--line); margin-top: 44px; padding-top: 26px; display: flex; gap: 12px; flex-wrap: wrap; align-items: center; }
 
+/* related-notes block below each article (cross-linking) */
+.related-notes { padding-bottom: 96px; }
+
 @media (max-width: 700px) {
   .entry { grid-template-columns: 1fr; gap: 12px; }
   .entry .go { justify-self: start; }

@@ -116,31 +116,44 @@ footer .sheet {
   letter-spacing: .12em;
   color: var(--ink-3);
 }
-.tb div { padding: 14px 18px 14px 0; border-right: 1px solid var(--line-soft); }
-.tb div:last-child { border-right: 0; }
+.tb div { padding: 14px 18px; border-right: 1px solid var(--line-soft); }
+.tb div:first-child { padding-left: 0; }
+.tb div:last-child { border-right: 0; padding-right: 0; }
 .tb b { display: block; color: var(--ink); font-weight: 400; margin-top: 5px; letter-spacing: .08em; }
 .tb a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
 .tb a:hover { border-bottom-color: var(--ink); }
 
-/* trust / company links row, below the drafting strip */
-.foot-links {
-  display: flex;
-  align-items: baseline;
-  gap: 18px;
-  margin-top: 18px;
-  padding-top: 16px;
-  border-top: 1px solid var(--line-soft);
+/* footer reference grid — the field-notes + trust links, drawn as labelled
+   columns in the same drafting-strip grid pattern as the .tb title block above.
+   Each column is a section: a label (FIELD NOTES / TRUST) with its links stacked
+   in a single column below. The centre rule lines up with the .tb centre rule. */
+.foot-index {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
   font-family: var(--data);
   font-size: 11px;
   letter-spacing: .12em;
 }
-.foot-links-key { color: var(--ink-3); }
-.foot-links a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
-.foot-links a:hover { border-bottom-color: var(--ink); }
+.foot-col {
+  display: flex;
+  flex-direction: column;
+  align-items: start;
+  gap: 12px;
+  padding: 16px 18px 18px 18px;
+  border-top: 1px solid var(--line-soft);
+  border-right: 1px solid var(--line-soft);
+}
+.foot-col:first-child { padding-left: 0; }
+.foot-col:last-child { border-right: 0; padding-right: 0; }
+.foot-col-key { color: var(--ink-3); }
+.foot-col a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
+.foot-col a:hover { border-bottom-color: var(--ink); }
 
 /* mobile -------------------------------------------------------------------- */
 @media (max-width: 900px) {
   .tb { grid-template-columns: repeat(2, 1fr); }
+  .foot-index { grid-template-columns: 1fr; }
+  .foot-col { border-right: 0; padding-left: 0; padding-right: 0; }
   .head .burger { display: block; }
   .head nav {
     position: fixed;

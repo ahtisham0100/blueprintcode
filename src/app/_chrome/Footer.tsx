@@ -29,9 +29,19 @@ export default function Footer() {
           </b>
         </div>
       </div>
-      <div className="sheet foot-links">
-        <span className="foot-links-key">TRUST</span>
-        <a href="/standards-and-credentials">Standards &amp; Credentials</a>
+      <div className="sheet foot-index">
+        <div className="foot-col">
+          <span className="foot-col-key">FIELD NOTES</span>
+          <a href="/insights/configurator-cost">What a configurator costs</a>
+          <a href="/insights/2d-vs-3d">2D vs 3D configurators</a>
+          <a href="/insights/digital-showroom">Digital showrooms</a>
+          <a href="/insights/ppav-growth">eBay to multi-market retailer</a>
+          <a href="/insights">All entries →</a>
+        </div>
+        <div className="foot-col">
+          <span className="foot-col-key">TRUST</span>
+          <a href="/standards-and-credentials">Standards &amp; Credentials</a>
+        </div>
       </div>
     </footer>
   );

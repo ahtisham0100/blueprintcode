@@ -47,6 +47,9 @@ export default async function NotePage({
   const note = noteBySlug(slug);
   if (!note) notFound();
 
+  // Sibling notes, for the cross-linking block below the article.
+  const related = NOTES.filter((n) => n.slug !== note.slug);
+
   const url = `https://blueprintcode.ai/insights/${note.slug}`;
   const postSchema = {
     '@context': 'https://schema.org',
@@ -80,6 +83,26 @@ export default async function NotePage({
           {note.content}
         </div>
       </article>
+
+      {related.length > 0 && (
+        <section className="related-notes" aria-label="Related field notes">
+          <div className="sheet">
+            <p className="sheet-no">RELATED FIELD NOTES</p>
+            <div className="insights-index">
+              {related.map((n) => (
+                <Link key={n.slug} className="entry" href={`/insights/${n.slug}`}>
+                  <span className="ref">{n.ref}<b>{n.refB}</b></span>
+                  <span>
+                    <h3>{n.title}</h3>
+                    <p>{n.desc}</p>
+                  </span>
+                  <span className="go">{n.read} →</span>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
     </main>
   );
 }

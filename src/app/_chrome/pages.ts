@@ -27,13 +27,13 @@ const PAGES: Record<string, ChromeMeta> = {
     label: 'BUILD SYSTEMS / 2026',
     doc: 'BLUEPRINT CODE',
     metaKey: 'DIRECTION',
-    metaVal: 'UK — MONMOUTHSHIRE',
+    metaVal: 'UK & GLOBAL',
   },
   '/about': {
     label: 'ABOUT',
     doc: 'ABOUT',
     metaKey: 'DIRECTION',
-    metaVal: 'UK — MONMOUTHSHIRE',
+    metaVal: 'UK & GLOBAL',
     current: 'about',
   },
   '/contact': {
