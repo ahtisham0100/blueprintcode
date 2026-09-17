@@ -24,7 +24,7 @@ export default function Header() {
     <header className="head">
       <div className="sheet">
         <a className="mark" href="/">
-          <b>BLUEPRINT CODE</b>
+          <b>BLUEPRINT CODE AI</b>
           <span>{meta.label}</span>
         </a>
         <button

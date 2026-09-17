@@ -25,7 +25,7 @@ export interface ChromeMeta {
 const PAGES: Record<string, ChromeMeta> = {
   '/': {
     label: 'BUILD SYSTEMS / 2026',
-    doc: 'BLUEPRINT CODE',
+    doc: 'BLUEPRINT CODE AI',
     metaKey: 'DIRECTION',
     metaVal: 'UK & GLOBAL',
   },

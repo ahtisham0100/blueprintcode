@@ -3,12 +3,12 @@ import './styles.css';
 import { DemoViewerProvider, DemoTrigger } from '../../_demo-viewer/DemoViewer';
 
 export const metadata: Metadata = {
-  title: 'Prototype register — Blueprint Code',
+  title: 'Prototype register — Blueprint Code AI',
   description:
-    'Four working prototypes from Blueprint Code: a made-to-order fight shorts builder, a charm bracelet builder, a commerce operations suite and an engine fit architecture. Each built as a Prototype Sprint before a full production build.',
+    'Four working prototypes from Blueprint Code AI: a made-to-order fight shorts builder, a charm bracelet builder, a commerce operations suite and an engine fit architecture. Each built as a Prototype Sprint before a full production build.',
   alternates: { canonical: 'https://blueprintcode.ai/prototypes' },
   openGraph: {
-    title: 'Prototype register — Blueprint Code',
+    title: 'Prototype register — Blueprint Code AI',
     description:
       'Working prototypes you can try. Each one solved the hardest part of a brief before anything else was built.',
     type: 'website',

@@ -76,7 +76,7 @@ export default function LeadsView() {
   return (
     <main id="main" className="adm">
       <div className="adm-card lead-card">
-        <p className="adm-eyebrow">BLUEPRINT CODE — ADMIN</p>
+        <p className="adm-eyebrow">BLUEPRINT CODE AI — ADMIN</p>
         <h1>Leads</h1>
         <p className="adm-lead">Contact-form enquiries, newest first. Enter the admin password to load them.</p>
 

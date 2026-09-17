@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import './styles.css';
 
 export const metadata: Metadata = {
-  title: 'About — Blueprint Code',
+  title: 'About — Blueprint Code AI',
   description:
-    'Blueprint Code builds the sales tools its founder needed. Born inside a real home-cinema retail business, not invented as a service category.',
+    'Blueprint Code AI builds the sales tools its founder needed. Born inside a real home-cinema retail business, not invented as a service category.',
   alternates: { canonical: 'https://blueprintcode.ai/about' },
   openGraph: {
-    title: 'About — Blueprint Code',
+    title: 'About — Blueprint Code AI',
     description:
       'We approached this as a business owner who needed better sales tools, not as an agency inventing a service category from theory.',
     type: 'website',
@@ -27,20 +27,20 @@ export default function AboutPage() {
         </dl>
 
         <h1>We built these tools because we needed them first.</h1>
-        <p className="standfirst">Blueprint Code didn&apos;t start as an agency looking for a niche. It started with a retailer who couldn&apos;t sell his own products properly using a normal website, and had to build something better.</p>
+        <p className="standfirst">Blueprint Code AI didn&apos;t start as an agency looking for a niche. It started with a retailer who couldn&apos;t sell his own products properly using a normal website, and had to build something better.</p>
       </div>
 
       {/* ============ 01 ============ */}
       <section id="why">
         <div className="sheet">
-          <p className="sheet-no">SHEET 01 — WHY BLUEPRINT CODE EXISTS</p>
+          <p className="sheet-no">SHEET 01 — WHY BLUEPRINT CODE AI EXISTS</p>
           <div className="two">
             <h2>A problem we had before it was a service we sold.</h2>
             <div>
               <p>In 2020 our founder started Phoenix Projectors AV from nothing — home cinema, which is about as far from a simple product page as retail gets. A projector is not a decision anyone makes from a photograph and a spec table.</p>
               <p>Customers arrived with the same questions every time. Will this screen suit my room? Will this amplifier drive my speakers? Will that projector throw far enough at four metres? Every one of those was a phone call, a hand-written quote, an evening spent measuring someone else&apos;s living room by proxy. The sales that were lost were the ones nobody had time to answer.</p>
               <p>Agencies quoted for websites. Good websites, in fairness. None of them would build the thing that actually answered the questions, because that thing isn&apos;t a website — it&apos;s product logic wearing an interface.</p>
-              <p>So we built it ourselves. Then we built the next one. Blueprint Code is that capability offered to other businesses with the same wound.</p>
+              <p>So we built it ourselves. Then we built the next one. Blueprint Code AI is that capability offered to other businesses with the same wound.</p>
               <p className="pull">We came at this as a business owner who needed better sales tools, not as an agency inventing a service category from theory.</p>
             </div>
           </div>
@@ -82,7 +82,7 @@ export default function AboutPage() {
               <span className="lbl">01</span>
               <h3>James Michaelson</h3>
               <p className="role">Founder &amp; Solutions Architect</p>
-              <p>Founder of Phoenix Projectors AV and of Blueprint Code. Sets the product logic, pricing rules and the commercial argument each tool has to win.</p>
+              <p>Founder of Phoenix Projectors AV and of Blueprint Code AI. Sets the product logic, pricing rules and the commercial argument each tool has to win.</p>
               <span className="owns">OWNS<b>Scope, product logic, commercial rules, client relationship</b></span>
             </div>
             <div className="member" id="muhammad-ahtisham-arif">
@@ -94,7 +94,7 @@ export default function AboutPage() {
               <span className="owns">OWNS<b>Architecture, integrations, performance, deployment</b></span>
             </div>
             <div className="member">
-              <div className="headshot headshot--empty" aria-hidden="true" />
+              <img className="headshot" src="/Parv-jain.png" alt="Parv Jain" width={640} height={640} loading="lazy" />
               <span className="lbl">03</span>
               <h3>Parv Jain</h3>
               <p className="role">Lead Designer</p>

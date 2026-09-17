@@ -59,7 +59,7 @@ export const NOTES: Note[] = [
         <blockquote>The expensive part is not drawing a configurator screen. It is making the answer commercially correct every time.</blockquote>
         <h2>Why start with a paid prototype?</h2>
         <p>A prototype should prove the part carrying the most uncertainty: perhaps a mirrored 3D surface, a modular placement system, an unusual pricing rule or the interaction between many product choices.</p>
-        <p>Blueprint Code’s Prototype Sprint is priced by its length rather than by technique: <strong><a href="/pricing">£625 for one week</a></strong>, £1,125 for two, £2,000 for three and <strong>£3,000 for four</strong>, plus VAT. It runs for one to four weeks and is credited in full against the main configurator build when the project proceeds within the agreed period.</p>
+        <p>Blueprint Code AI’s Prototype Sprint is priced by its length rather than by technique: <strong><a href="/pricing">£625 for one week</a></strong>, £1,125 for two, £2,000 for three and <strong>£3,000 for four</strong>, plus VAT. It runs for one to four weeks and is credited in full against the main configurator build when the project proceeds within the agreed period.</p>
         <p>This gives both sides evidence before a larger commitment. It also produces something useful for internal approval, investment discussions or testing with customers.</p>
         <h2>Common costing mistakes</h2>
         <ul><li><strong>Pricing from screens alone:</strong> the visible steps reveal little about the logic underneath.</li><li><strong>Treating every option as independent:</strong> compatibility rules are often where the real project sits.</li><li><strong>Leaving product data until development:</strong> unresolved data questions become expensive technical interruptions.</li><li><strong>Assuming the prototype is production code:</strong> a proof can validate direction without yet covering security, analytics, accessibility or every edge case.</li><li><strong>Ignoring operation after launch:</strong> products, prices and integrations change.</li></ul>
@@ -117,7 +117,7 @@ export const NOTES: Note[] = [
         <p>A beautiful model with unreliable commercial output is a visual demo, not a production sales system.</p>
         <h2>How to decide with minimal risk</h2>
         <ol><li>Write down the specific uncertainty preventing the purchase.</li><li>Identify the minimum visual method capable of resolving it.</li><li>Test the hardest interaction with representative product data.</li><li>Review it on the actual devices customers use.</li><li>Only then scope the production integrations and full catalogue.</li></ol>
-        <div className="note"><span className="data">Prototype bands</span>A Blueprint Code <a href="/configurators">Prototype Sprint</a> is priced by its length, not by whether it is 2D or 3D: £625 for one week, £1,125 for two, £2,000 for three and £3,000 for four, plus VAT. All are credited against the main build when it proceeds within the agreed period.</div>
+        <div className="note"><span className="data">Prototype bands</span>A Blueprint Code AI <a href="/configurators">Prototype Sprint</a> is priced by its length, not by whether it is 2D or 3D: £625 for one week, £1,125 for two, £2,000 for three and £3,000 for four, plus VAT. All are credited against the main build when it proceeds within the agreed period.</div>
         <h2>The short answer</h2>
         <p>Use 2D when the buying decision is mostly about options, information and controlled visual comparison. Use 3D when customers must understand changing form, space or material behaviour. When uncertain, prototype the same critical decision in the simplest credible form before commissioning the larger system.</p>
         <div className="panel-foot">
@@ -204,7 +204,7 @@ export const NOTES: Note[] = [
           <span className="lbl">INS-004 · OPERATOR NOTE · 3 MIN READ</span>
           <h1>From an eBay account to a multi-market retailer</h1>
         </div>
-        <p className="intro">PP-AV is Blueprint Code’s in-house commerce venture—not a client commission or a portfolio demonstration. That distinction matters because we experience the operational consequences of the systems we design.</p>
+        <p className="intro">PP-AV is Blueprint Code AI’s in-house commerce venture—not a client commission or a portfolio demonstration. That distinction matters because we experience the operational consequences of the systems we design.</p>
         <p>The business began with approximately £3,000 of working capital and an established eBay account. Over six years it developed into a multi-market specialist retailer operating through its own ecommerce platform, eight Amazon marketplaces and eBay Global, with approximately £50,000 in stock and five connected planning and configuration tools.</p>
         <p>The result is useful evidence, but the lessons behind it are more valuable.</p>
         <h2>1. capital efficiency shapes better systems</h2>
@@ -229,7 +229,7 @@ export const NOTES: Note[] = [
         <div className="note"><span className="data">System lesson</span>Do not combine every decision into one enormous interface. Preserve one source of shared project data while allowing specialist tools to remain focused.</div>
         <h2>6. operating after launch changes how you build</h2>
         <p>Products change. Supplier feeds are imperfect. Prices move. Marketplaces introduce new restrictions. Customers use tools in ways the designer did not predict.</p>
-        <p>Owning PP-AV means Blueprint Code cannot regard deployment as the finish line. We have to maintain product logic, diagnose failures, improve mobile journeys and consider what staff need to operate the system over time.</p>
+        <p>Owning PP-AV means Blueprint Code AI cannot regard deployment as the finish line. We have to maintain product logic, diagnose failures, improve mobile journeys and consider what staff need to operate the system over time.</p>
         <p>That experience affects our client work. We ask earlier questions about administration, error states, data ownership, pricing authority and support because we have lived with the alternative.</p>
         <h2>What the numbers do—and do not—prove</h2>
         <div className="table-wrap"><table><thead><tr><th>Starting point</th><th>Current operation</th></tr></thead><tbody><tr><td>Approximately £3,000 working capital</td><td>Approximately £50,000 in stock</td></tr><tr><td>Established eBay account</td><td>Own platform, eight Amazon marketplaces and eBay Global</td></tr><tr><td>Marketplace-led selling</td><td>Connected digital showroom</td></tr><tr><td>Conventional product discovery</td><td>Five customer-facing planning and configuration tools</td></tr></tbody></table></div>

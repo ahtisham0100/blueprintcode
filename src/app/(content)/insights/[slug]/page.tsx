@@ -36,7 +36,7 @@ export async function generateMetadata({
   if (!note) return {};
 
   const url = `https://blueprintcode.ai/insights/${note.slug}`;
-  const title = `${note.title} — Blueprint Code`;
+  const title = `${note.title} — Blueprint Code AI`;
   return {
     title,
     description: note.desc,
@@ -72,12 +72,12 @@ export default async function NotePage({
     datePublished: note.datePublished,
     dateModified: note.dateModified,
     author: authorPerson(note.author),
-    publisher: { '@type': 'Organization', name: 'Blueprint Code' },
+    publisher: { '@type': 'Organization', name: 'Blueprint Code AI' },
     mainEntityOfPage: url,
     url,
     isPartOf: {
       '@type': 'Blog',
-      name: 'Blueprint Code — Field Notes',
+      name: 'Blueprint Code AI — Field Notes',
       url: 'https://blueprintcode.ai/insights',
     },
   };

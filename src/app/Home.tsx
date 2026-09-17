@@ -29,7 +29,7 @@ export default function Home() {
               <div>
                 <span className="lbl">CONFIGURATORS / COMMERCE / AI</span>
                 <h1>We make complex products easier to buy.</h1>
-                <p className="lead">Blueprint Code builds product configurators, recommendation engines and connected ecommerce systems for businesses whose products can&apos;t be explained by a standard product page.</p>
+                <p className="lead">Blueprint Code AI builds product configurators, recommendation engines and connected ecommerce systems for businesses whose products can&apos;t be explained by a standard product page.</p>
                 <div className="hero-actions">
                   <a className="button solid" href="#sprint">Start with a prototype</a>
                   <a className="button" href="#work">View our work</a>
@@ -78,7 +78,7 @@ export default function Home() {
                       </ul>
                     </div>
                     <div className="strip">
-                      <span>Blueprint Code · <b>Tool groups</b></span>
+                      <span>Blueprint Code AI · <b>Tool groups</b></span>
                       <span>{card.stripName} · <b>{card.stripIndex}</b></span>
                     </div>
                   </article>
@@ -241,10 +241,10 @@ export default function Home() {
         {/* ============ 06 ABOUT ============ */}
         <section id="about">
           <div className="sheet">
-            <p className="section-no">06 / BLUEPRINT CODE</p>
+            <p className="section-no">06 / BLUEPRINT CODE AI</p>
             <div className="section-grid">
               <h2>Built by people who understand the sale.</h2>
-              <p className="section-copy">Blueprint Code brings together commercial product thinking, software engineering, UX design and specialist 3D capability. We work from the buying problem outward, not from a fashionable technology inward.</p>
+              <p className="section-copy">Blueprint Code AI brings together commercial product thinking, software engineering, UX design and specialist 3D capability. We work from the buying problem outward, not from a fashionable technology inward.</p>
             </div>
             <div className="principles">
               <div className="principle">

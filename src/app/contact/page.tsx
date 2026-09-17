@@ -3,12 +3,12 @@ import ContactForm from './ContactForm';
 import './contact.css';
 
 export const metadata: Metadata = {
-  title: 'Start a project — Blueprint Code',
+  title: 'Start a project — Blueprint Code AI',
   description:
     'Tell us what you’re building, where you are in the process and what success looks like. We’ll review it personally and recommend the most sensible next step.',
   alternates: { canonical: 'https://blueprintcode.ai/contact' },
   openGraph: {
-    title: 'Start a project — Blueprint Code',
+    title: 'Start a project — Blueprint Code AI',
     description:
       'Tell us what you’re building and what success looks like. We review every enquiry personally and normally reply within one working day.',
     type: 'website',

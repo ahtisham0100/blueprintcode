@@ -3,15 +3,15 @@
 // Central home for the one-line positioning statement and the list of
 // specialities we want traditional search engines *and* AI answer engines
 // (ChatGPT, Perplexity, Google AI Overviews, etc.) to associate with
-// Blueprint Code. Keeping these in one place means the same wording feeds
+// Blueprint Code AI. Keeping these in one place means the same wording feeds
 // page metadata, keywords, and the JSON-LD an LLM crawler reads.
 
 export const SITE_URL = 'https://blueprintcode.ai';
-export const SITE_NAME = 'Blueprint Code';
+export const SITE_NAME = 'Blueprint Code AI';
 
 /** One-line positioning statement, reused as a metadata + schema description. */
 export const TAGLINE =
-  'Blueprint Code creates interactive sales and operational tools that simplify complex decisions for customers and staff.';
+  'Blueprint Code AI creates interactive sales and operational tools that simplify complex decisions for customers and staff.';
 
 /**
  * What we want to be recommended for. Feeds `keywords` and the JSON-LD

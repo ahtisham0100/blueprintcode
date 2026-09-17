@@ -126,7 +126,7 @@ function paintCover(W: number, H: number, dpr: number, ref: string, title: strin
   x.fillText(title.toUpperCase(), W / 2, H / 2 + 16);
   x.fillStyle = '#5F7C9E';
   x.font = '11px "DM Mono",monospace';
-  x.fillText('BLUEPRINT CODE — TURN TO VIEW', W / 2, H - 46);
+  x.fillText('BLUEPRINT CODE AI — TURN TO VIEW', W / 2, H - 46);
   return c;
 }
 

@@ -16,7 +16,7 @@ export default function Footer() {
           DOCUMENT<b>{meta.doc}</b>
         </div>
         <div>
-          STUDIO<b>BLUEPRINT CODE</b>
+          STUDIO<b>BLUEPRINT CODE AI</b>
         </div>
         <div>
           {meta.metaKey}

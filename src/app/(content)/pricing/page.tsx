@@ -2,12 +2,12 @@ import type { Metadata } from 'next';
 import './styles.css';
 
 export const metadata: Metadata = {
-  title: 'Schedule of rates 2026 — Blueprint Code',
+  title: 'Schedule of rates 2026 — Blueprint Code AI',
   description:
     'Published 2026 rates for websites, commerce infrastructure, product configurators, AI automation and support retainers. GBP, excluding VAT.',
   alternates: { canonical: 'https://blueprintcode.ai/pricing' },
   openGraph: {
-    title: 'Schedule of rates 2026 — Blueprint Code',
+    title: 'Schedule of rates 2026 — Blueprint Code AI',
     description:
       'Published rates, so you can size a project before you speak to anyone. £1,000 to £120,000+.',
     type: 'website',

@@ -14,12 +14,12 @@ import {
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
   applicationName: SITE_NAME,
-  title: 'Blueprint Code — Services & Pricing 2026',
+  title: 'Blueprint Code AI — Services & Pricing 2026',
   description: TAGLINE,
   keywords: [...SPECIALITIES],
   openGraph: {
     siteName: SITE_NAME,
-    title: 'Blueprint Code — Services & Pricing 2026',
+    title: 'Blueprint Code AI — Services & Pricing 2026',
     description: TAGLINE,
     type: 'website',
     url: `${SITE_URL}/`,
@@ -65,7 +65,7 @@ export default function RootLayout({
       <body>
         {/* Organization + WebSite structured data, emitted site-wide so search
             and AI answer engines can match our specialities to a buyer's query
-            and attribute them to Blueprint Code as an entity. */}
+            and attribute them to Blueprint Code AI as an entity. */}
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(organizationJsonLd()) }}

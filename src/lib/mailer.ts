@@ -5,7 +5,7 @@
      RESEND_API_KEY    Resend API key. If unset, email is skipped (no-op).
      LEADS_FROM        From address. Default: onboarding@resend.dev (works before
                        you verify a domain). After verifying send.blueprintcode.ai
-                       in Resend, set e.g. "Blueprint Code <hello@send.blueprintcode.ai>".
+                       in Resend, set e.g. "Blueprint Code AI <hello@send.blueprintcode.ai>".
      LEADS_NOTIFY_TO   Recipient. Default: hello@blueprintcode.ai
 */
 
@@ -50,7 +50,7 @@ export async function sendLeadNotification(d: LeadEmailData): Promise<string> {
   const apiKey = process.env.RESEND_API_KEY;
   if (!apiKey) return 'skipped';
 
-  const from = process.env.LEADS_FROM || 'Blueprint Code <onboarding@resend.dev>';
+  const from = process.env.LEADS_FROM || 'Blueprint Code AI <onboarding@resend.dev>';
   const to = process.env.LEADS_NOTIFY_TO || 'hello@blueprintcode.ai';
 
   const build = [...d.groups, ...d.also].filter(Boolean);

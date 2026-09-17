@@ -3,12 +3,12 @@ import './styles.css';
 import MediaLauncher from '../../_chrome/MediaLauncher';
 
 export const metadata: Metadata = {
-  title: 'PP-AV digital showroom — Blueprint Code case study',
+  title: 'PP-AV digital showroom — Blueprint Code AI case study',
   description:
     'How a specialist AV retailer was rebuilt as a digital showroom: five connected sales tools, real-time 3D configuration and international multi-channel commerce.',
   alternates: { canonical: 'https://blueprintcode.ai/ppav-case-study' },
   openGraph: {
-    title: 'PP-AV digital showroom — Blueprint Code case study',
+    title: 'PP-AV digital showroom — Blueprint Code AI case study',
     description:
       'A specialist retailer, rebuilt as a digital showroom. Five connected tools, eight Amazon marketplaces, eBay Global.',
     type: 'website',
@@ -186,7 +186,7 @@ export default function PpavCaseStudyPage() {
 
         <div className="levels">
           <div className="lvl">
-            <span className="tag">BLUEPRINT CODE SERVICE</span>
+            <span className="tag">BLUEPRINT CODE AI SERVICE</span>
             <h3>Professional Configurator Suite</h3>
             <p>Shown through five advanced customer-facing planning, selection and configuration tools.</p>
             <ul>
@@ -198,7 +198,7 @@ export default function PpavCaseStudyPage() {
             <div className="band">TYPICAL PROJECT RANGE £15,000–£30,000</div>
           </div>
           <div className="lvl">
-            <span className="tag">BLUEPRINT CODE SERVICE</span>
+            <span className="tag">BLUEPRINT CODE AI SERVICE</span>
             <h3>Enterprise Commerce Core</h3>
             <p>Shown by the complete system connecting guided selling, direct ecommerce and international marketplace operations.</p>
             <ul>
@@ -218,7 +218,7 @@ export default function PpavCaseStudyPage() {
           <p className="sheet-no">THE OUTCOME</p>
           <h2>A digital retailer that behaves like a knowledgeable showroom.</h2>
           <p>A scalable commercial platform that helps customers explore confidently before they ever speak to a salesperson — and gives PP-AV an experience marketplaces cannot reproduce.</p>
-          <p className="pull">PP-AV is not a concept showing what Blueprint Code could build. It is a live commerce business demonstrating what we have already built.</p>
+          <p className="pull">PP-AV is not a concept showing what Blueprint Code AI could build. It is a live commerce business demonstrating what we have already built.</p>
         </div>
       </div>
 
@@ -238,7 +238,7 @@ export default function PpavCaseStudyPage() {
           </div>
 
           <p className="pull">Whether the product is a cinema system, piece of furniture, sports kit, technical installation or made-to-order product, the challenge is often the same: help customers understand their options, make compatible choices and move confidently towards purchase.</p>
-          <p className="transfer-note">That is where PP-AV stops being merely a home-cinema case study and becomes evidence that Blueprint Code&apos;s approach can be repeated commercially.</p>
+          <p className="transfer-note">That is where PP-AV stops being merely a home-cinema case study and becomes evidence that Blueprint Code AI&apos;s approach can be repeated commercially.</p>
         </div>
       </section>
 

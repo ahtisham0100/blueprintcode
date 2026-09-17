@@ -5,12 +5,12 @@ import { NOTES, authorPerson } from './notes';
 import HashRedirect from './HashRedirect';
 
 export const metadata: Metadata = {
-  title: 'Field notes — Blueprint Code',
+  title: 'Field notes — Blueprint Code AI',
   description:
     'Practical field notes on product configurators, digital showrooms, ecommerce systems and commercial prototyping, from a studio that runs its own retail operation.',
   alternates: { canonical: 'https://blueprintcode.ai/insights' },
   openGraph: {
-    title: 'Field notes — Blueprint Code',
+    title: 'Field notes — Blueprint Code AI',
     description:
       'Configurator costs, 2D versus 3D, digital showrooms, and lessons from running a multi-market retailer.',
     type: 'website',
@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 const blogSchema = {
   '@context': 'https://schema.org',
   '@type': 'Blog',
-  name: 'Blueprint Code — Field Notes',
+  name: 'Blueprint Code AI — Field Notes',
   url: 'https://blueprintcode.ai/insights',
   blogPost: NOTES.map((n) => ({
     '@type': 'BlogPosting',
@@ -31,7 +31,7 @@ const blogSchema = {
     datePublished: n.datePublished,
     dateModified: n.dateModified,
     author: authorPerson(n.author),
-    publisher: { '@type': 'Organization', name: 'Blueprint Code' },
+    publisher: { '@type': 'Organization', name: 'Blueprint Code AI' },
     url: `https://blueprintcode.ai/insights/${n.slug}`,
     mainEntityOfPage: `https://blueprintcode.ai/insights/${n.slug}`,
   })),

@@ -7,8 +7,8 @@ import type { Metadata } from 'next';
 // Do NOT use this URL as a logo/<img>/favicon/OG source — those need the raw
 // image file at /blueprintcode-ai.png, which is already transparent.
 export const metadata: Metadata = {
-  title: 'Logo preview — Blueprint Code',
-  description: 'Preview of the transparent Blueprint Code logo on light, dark and checkerboard backgrounds.',
+  title: 'Logo preview — Blueprint Code AI',
+  description: 'Preview of the transparent Blueprint Code AI logo on light, dark and checkerboard backgrounds.',
   robots: { index: false, follow: false },
 };
 
@@ -70,7 +70,7 @@ export default function LogoPreviewPage() {
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={LOGO} alt="Blueprint Code logo" style={{ maxWidth: '100%', height: 'auto' }} />
+              <img src={LOGO} alt="Blueprint Code AI logo" style={{ maxWidth: '100%', height: 'auto' }} />
             </div>
             <figcaption style={{ fontSize: 13, color: '#667', marginTop: 8 }}>
               {s.label}
