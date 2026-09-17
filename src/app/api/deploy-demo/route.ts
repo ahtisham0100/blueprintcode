@@ -26,6 +26,26 @@ function validSlug(slug: string): boolean {
   return /^[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$/.test(slug) && !RESERVED.has(slug);
 }
 
+// Shared demo watermark: uploaded demos must carry the same company-logo
+// watermark as the committed demo pages, so it appears on /<slug> too.
+const WATERMARK_TAG = '<script src="/partials/watermark.js" defer></script>';
+
+/** Insert the watermark <script> into an uploaded HTML document if it isn't
+ *  already present. Non-HTML uploads (or already-watermarked ones) pass through
+ *  unchanged. */
+function injectWatermark(html: string): string {
+  if (html.includes('/partials/watermark.js')) return html; // already present
+  const lower = html.toLowerCase();
+  const isHtml =
+    lower.includes('</head>') || lower.includes('</body>') || lower.includes('<html');
+  if (!isHtml) return html; // don't touch binary / non-HTML uploads
+  const headIdx = lower.indexOf('</head>');
+  if (headIdx !== -1) return html.slice(0, headIdx) + WATERMARK_TAG + html.slice(headIdx);
+  const bodyIdx = lower.indexOf('</body>');
+  if (bodyIdx !== -1) return html.slice(0, bodyIdx) + WATERMARK_TAG + html.slice(bodyIdx);
+  return html + WATERMARK_TAG;
+}
+
 function timingSafeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
   let out = 0;
@@ -74,6 +94,19 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'File too large (max 5 MB).' }, { status: 413 });
   }
 
+  // Stamp the shared watermark into the uploaded HTML before committing, so an
+  // admin-uploaded demo carries it too. Binary/non-HTML uploads are left as-is.
+  let contentToCommit = contentBase64;
+  try {
+    const decoded = Buffer.from(contentBase64, 'base64').toString('utf8');
+    const injected = injectWatermark(decoded);
+    if (injected !== decoded) {
+      contentToCommit = Buffer.from(injected, 'utf8').toString('base64');
+    }
+  } catch {
+    // Decode/inject failed — commit the original bytes unchanged.
+  }
+
   const path = `public/${slug}/index.html`;
   const apiUrl = `https://api.github.com/repos/${REPO}/contents/${path}`;
   const ghHeaders = {
@@ -106,7 +139,7 @@ export async function POST(req: Request) {
     headers: { ...ghHeaders, 'Content-Type': 'application/json' },
     body: JSON.stringify({
       message: `${sha ? 'Update' : 'Add'} demo: ${slug}`,
-      content: contentBase64,
+      content: contentToCommit,
       branch: BRANCH,
       ...(sha ? { sha } : {}),
     }),
