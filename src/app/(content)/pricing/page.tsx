@@ -174,7 +174,7 @@ export default function PricingPage() {
           <h3>Prototype Sprint — £625 to £3,000 + VAT</h3>
           <p>Before committing to a full build, we create a working prototype of your product in one to four weeks—something real in a browser, not a slide deck.</p>
           <table className="sprint-table">
-            <thead><tr><th>Sprint</th><th>Price</th><th>What this level of work would normally cost</th></tr></thead>
+            <thead><tr><th>Sprint</th><th>Price</th><th>What a full version would normally cost</th></tr></thead>
             <tbody>
               <tr><td>One-week Focus Sprint</td><td className="price">£625</td><td>Standard value: £2,500–£4,000</td></tr>
               <tr><td>Two-week Prototype Sprint</td><td className="price">£1,125</td><td>Standard value: £4,000–£7,500</td></tr>
