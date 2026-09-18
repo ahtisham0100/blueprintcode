@@ -87,7 +87,7 @@
     // chrome always paints over the field, but above ordinary demo content.
     style.textContent =
       '.bpc-watermark{position:absolute;left:0;overflow:hidden;' +
-        'pointer-events:none;opacity:.1;z-index:1900;}' +
+        'pointer-events:none;opacity:.05;z-index:1900;}' +
       '.bpc-watermark__mark{position:absolute;width:' + SIZE + 'px;height:auto;' +
         'transform:rotate(-45deg);transform-origin:center;}';
     document.head.appendChild(style);
