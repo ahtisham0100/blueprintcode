@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "build:chrome": "node scripts/inject-chrome.mjs",
-    "prebuild": "node scripts/inject-chrome.mjs"
+    "build:noindex": "node scripts/inject-noindex.mjs",
+    "prebuild": "node scripts/inject-chrome.mjs && node scripts/inject-noindex.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
