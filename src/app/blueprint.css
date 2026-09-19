@@ -276,10 +276,20 @@
 .brc .strip { display: inline-block; margin-top: 30px; background: var(--ground); color: var(--ink); font-family: var(--data); font-size: 12px; letter-spacing: .08em; padding: 12px 20px; }
 /* Sprint schedule table (Sprint / Price / intended production project) — dark
    ink on the light .invert background of the homepage sprint section. */
-.brc .sprint-table { width: 100%; border-collapse: collapse; margin: 0 0 40px; border-top: 1px solid rgba(11, 26, 46, .4); }
-.brc .sprint-table th { font-family: var(--data); font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; color: rgba(11, 26, 46, .55); text-align: left; padding: 13px 20px 13px 0; border-bottom: 1px solid rgba(11, 26, 46, .32); }
-.brc .sprint-table td { padding: 12px 20px 12px 0; border-bottom: 1px solid rgba(11, 26, 46, .18); font-size: 14px; font-weight: 400; line-height: 1.5; color: rgba(11, 26, 46, .8); vertical-align: top; }
+.brc .sprint-table { width: 100%; border-collapse: collapse; margin: 0 0 40px; }
+/* Header bar. The background is set here rather than inherited: the generic
+   `thead th` rule in globals.css — which the homepage loads — paints a dark
+   panel, leaving dark label text on a dark bar. Own the bar and put white on it. */
+.brc .sprint-table thead th { background: var(--ground); color: var(--ink); font-family: var(--data); font-size: 11px; font-weight: 400; letter-spacing: .14em; text-transform: uppercase; text-align: left; padding: 13px 16px; }
+.brc .sprint-table td { padding: 12px 16px; border-bottom: 1px solid rgba(11, 26, 46, .18); font-size: 14px; font-weight: 400; line-height: 1.5; color: rgba(11, 26, 46, .8); vertical-align: top; }
 .brc .sprint-table td:first-child { color: rgba(11, 26, 46, .95); }
+/* Sprint and price read as one pair: both columns shrink to their content and
+   sit a short gap apart, divided by a firmer rule, with the comparison column
+   taking the rest of the width. */
+.brc .sprint-table th:first-child, .brc .sprint-table td:first-child { width: 1px; white-space: nowrap; padding-left: 14px; padding-right: 14px; }
+.brc .sprint-table th:nth-child(2), .brc .sprint-table td.price { width: 1px; padding-left: 14px; border-left: 2px solid rgba(11, 26, 46, .45); }
+.brc .sprint-table thead th:nth-child(2) { border-left-color: rgba(234, 241, 248, .3); }
+.brc .sprint-table th:last-child, .brc .sprint-table td:last-child { padding-left: 26px; }
 /* explicit size/weight so the global display `.price` (30px/800) can't leak in */
 .brc .sprint-table td.price { font-family: var(--data); font-size: 13px; font-weight: 400; color: rgba(11, 26, 46, .85); white-space: nowrap; }
 .brc .invert .button { border-color: var(--ground); color: var(--ground); }
@@ -361,6 +371,12 @@
   .brc .roll-progress { text-align: right; }
 }
 @media (max-width: 520px) {
+  /* Too narrow to hold the sprint name on one line and still leave the
+     comparison column readable — let it wrap and tighten the gutters. */
+  .brc .sprint-table th:first-child, .brc .sprint-table td:first-child { white-space: normal; padding-left: 10px; padding-right: 10px; }
+  .brc .sprint-table th:nth-child(2), .brc .sprint-table td.price { padding-left: 10px; }
+  .brc .sprint-table th:last-child, .brc .sprint-table td:last-child { padding-left: 14px; padding-right: 10px; }
+  .brc .sprint-table thead th { padding-left: 10px; padding-right: 10px; }
   .brc .titlebar span:last-child { display: none; }
   .brc .datum, .brc .levels { grid-template-columns: 1fr; }
   .brc .project { grid-template-columns: 38px 1fr; }
