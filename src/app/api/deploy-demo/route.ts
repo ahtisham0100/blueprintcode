@@ -1,4 +1,5 @@
 import { NextResponse } from 'next/server';
+import { repoConfig, ghHeaders as githubHeaders } from '@/lib/github';
 
 /* Admin endpoint: commit an uploaded demo to public/<slug>/index.html in the
    GitHub repo, which triggers the normal Vercel deploy. Gated by a single shared
@@ -75,16 +76,15 @@ function timingSafeEqual(a: string, b: string): boolean {
 
 export async function POST(req: Request) {
   const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-  const GITHUB_TOKEN = process.env.GITHUB_TOKEN;
-  const REPO = process.env.GITHUB_REPO || 'ahtisham0100/blueprintcode';
-  const BRANCH = process.env.GITHUB_BRANCH || 'main';
+  const cfg = repoConfig();
 
-  if (!ADMIN_PASSWORD || !GITHUB_TOKEN) {
+  if (!ADMIN_PASSWORD || !cfg) {
     return NextResponse.json(
       { error: 'Server not configured — set ADMIN_PASSWORD and GITHUB_TOKEN.' },
       { status: 500 },
     );
   }
+  const { repo: REPO, branch: BRANCH } = cfg;
 
   let body: { password?: unknown; slug?: unknown; contentBase64?: unknown };
   try {
@@ -130,12 +130,7 @@ export async function POST(req: Request) {
 
   const path = `public/${slug}/index.html`;
   const apiUrl = `https://api.github.com/repos/${REPO}/contents/${path}`;
-  const ghHeaders = {
-    Authorization: `Bearer ${GITHUB_TOKEN}`,
-    Accept: 'application/vnd.github+json',
-    'X-GitHub-Api-Version': '2022-11-28',
-    'User-Agent': 'blueprintcode-admin',
-  };
+  const ghHeaders = githubHeaders(cfg.token);
 
   // Existing file? need its sha to update in place.
   let sha: string | undefined;

@@ -1,0 +1,52 @@
+/* /admin/demos — reuses the .adm blueprint tokens from admin.css. */
+
+.dem-card { margin-bottom: 8px; }
+.dem-auth { grid-template-columns: 1fr auto; align-items: end; gap: 16px; }
+.dem-auth .adm-btn { margin-top: 0; }
+
+.dem-list { width: min(760px, 100%); margin: 0 auto; padding: 0 20px 96px; display: grid; gap: 10px; }
+.dem-count {
+  font-family: 'DM Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .14em;
+  text-transform: uppercase; color: #5F7C9E; margin: 8px 2px 0;
+}
+
+.dem {
+  display: grid; grid-template-columns: 1fr auto; gap: 12px 18px; align-items: center;
+  border: 1px solid #2C4A6E; background: #0E2136; padding: 18px 20px;
+  font-family: 'IBM Plex Sans', system-ui, sans-serif;
+}
+.dem-armed { border-color: #7a2f3a; background: rgba(122, 47, 58, .12); }
+
+.dem-main { min-width: 0; }
+.dem-url {
+  display: inline-block; font-family: 'DM Mono', ui-monospace, monospace; font-size: 14px;
+  color: #EAF1F8; text-decoration: none; border-bottom: 1px solid #2C4A6E; padding-bottom: 2px;
+  overflow-wrap: anywhere;
+}
+.dem-url:hover { border-bottom-color: #8FA9C6; }
+.dem-meta {
+  margin: 8px 0 0; font-family: 'DM Mono', ui-monospace, monospace; font-size: 10.5px;
+  letter-spacing: .09em; text-transform: uppercase; color: #5F7C9E;
+}
+
+.dem-actions { display: flex; gap: 10px; }
+.dem-btn {
+  cursor: pointer; background: transparent; color: #8FA9C6; border: 1px solid #2C4A6E;
+  font-family: 'DM Mono', ui-monospace, monospace; font-size: 11px; letter-spacing: .11em;
+  text-transform: uppercase; padding: 9px 16px; white-space: nowrap;
+}
+.dem-btn:hover:not(:disabled) { color: #EAF1F8; border-color: #8FA9C6; }
+.dem-btn:disabled { opacity: .45; cursor: default; }
+.dem-btn-danger { background: #7a2f3a; border-color: #7a2f3a; color: #ffe6e6; }
+.dem-btn-danger:hover:not(:disabled) { background: transparent; color: #ffb4b4; border-color: #ffb4b4; }
+
+.dem-warn {
+  grid-column: 1 / -1; margin: 0; padding-top: 4px;
+  font-size: 13px; line-height: 1.6; color: #ffb4b4;
+}
+
+@media (max-width: 560px) {
+  .dem-auth { grid-template-columns: 1fr; }
+  .dem { grid-template-columns: 1fr; align-items: start; }
+  .dem-actions { justify-content: flex-start; }
+}
