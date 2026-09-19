@@ -15,8 +15,28 @@
     @media(max-width:1000px){.products{grid-template-columns:repeat(2,1fr)}.metrics{grid-template-columns:repeat(2,1fr)}.hero-grid,.split{grid-template-columns:1fr}}
     @media(max-width:720px){.app{display:block}.side{height:auto;position:relative;padding:16px}.brand{margin:0}.nav-label,.demo-note{display:none}.side{flex-direction:row;align-items:center;gap:10px}.nav{display:flex;margin-left:auto}.nav button{padding:10px}.nav button span:last-child{display:none}main{padding:20px 15px 90px}.topbar{align-items:flex-start}.user span{display:none}.products{grid-template-columns:1fr}.metrics{grid-template-columns:1fr 1fr}.order-drawer{width:100%}.welcome h2{font-size:27px}.fields{grid-template-columns:1fr}.full{grid-column:auto}}
   </style>
-<script src="/partials/watermark.js" defer></script></head>
+<script src="/partials/watermark.js" defer></script><!--BPC:ASSETS:START-->
+<link rel="stylesheet" href="/partials/site-chrome.css">
+<!--BPC:ASSETS:END-->
+</head>
 <body>
+<!--BPC:HEADER:START-->
+<div class="bpc-chrome bpc-head" role="banner">
+  <div class="bpc-sheet">
+    <a class="bpc-mark" href="/"><b>BLUEPRINT CODE</b><span>WORKWEAR ALLOWANCE PORTAL DEMO</span></a>
+    <button class="bpc-burger" type="button" aria-expanded="false" aria-label="Menu">Menu</button>
+    <div class="bpc-nav" role="navigation" aria-label="Primary">
+      <a href="/configurators">Configurators</a>
+      <a href="/prototypes">Prototypes</a>
+      <a href="/ppav-case-study">Case study</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/insights">Insights</a>
+      <a href="/about">About</a>
+      <a class="bpc-button" href="/contact">Start a project</a>
+    </div>
+  </div>
+</div>
+<!--BPC:HEADER:END-->
 <div class="app">
   <aside class="side">
     <div class="brand"><div class="mark">W</div><div><strong>WearFlow</strong><small>Workwear portal</small></div></div>
@@ -83,5 +103,22 @@
   document.querySelectorAll('.approve,.reject').forEach(b=>b.onclick=()=>{b.closest('.approval').remove();const n=document.querySelectorAll('.approval').length;document.getElementById('approvalCount').textContent=n;showToast(b.classList.contains('approve')?'Order approved':'Order rejected')});
   document.getElementById('addEmployee').onclick=()=>document.getElementById('modal').classList.add('open');document.getElementById('closeModal').onclick=()=>document.getElementById('modal').classList.remove('open');document.getElementById('saveEmployee').onclick=()=>{const name=document.getElementById('newName').value||'New employee',id=document.getElementById('newId').value;document.getElementById('employeeRows').insertAdjacentHTML('beforeend',`<tr><td><b>${name}</b><br><small>${id}</small></td><td>Bristol</td><td>£150</td><td>£0</td><td><div class="bar"><i style="width:100%"></i></div> £150</td><td><span class="status ok">Active</span></td></tr>`);document.getElementById('modal').classList.remove('open');showToast('Employee added')};
 </script>
+<!--BPC:FOOTER:START-->
+<div class="bpc-chrome bpc-footer" role="contentinfo">
+  <div class="bpc-sheet bpc-tb">
+    <div>DOCUMENT<b>WORKWEAR ALLOWANCE PORTAL DEMO</b></div>
+    <div>STUDIO<b>BLUEPRINT CODE</b></div>
+    <div>FORMAT<b>LIVE DEMO</b></div>
+    <div>CONTACT<b><a href="mailto:hello@blueprintcode.ai">HELLO@BLUEPRINTCODE.AI</a></b></div>
+  </div>
+  <div class="bpc-sheet bpc-foot-links">
+    <span class="bpc-foot-links-key">TRUST</span>
+    <a href="/standards-and-credentials">Standards &amp; Credentials</a>
+  </div>
+</div>
+<!--BPC:FOOTER:END-->
+<!--BPC:SCRIPT:START-->
+<script defer src="/partials/site-chrome.js"></script>
+<!--BPC:SCRIPT:END-->
 </body>
 </html>
