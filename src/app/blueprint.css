@@ -63,6 +63,24 @@
 .brc .hero-grid { display: grid; grid-template-columns: 1.25fr .55fr; gap: 80px; align-items: end; }
 .brc h1 { font-size: clamp(58px, 8.6vw, 120px); max-width: 15ch; margin: 15px 0 30px; }
 .brc .lead { font-size: 18px; line-height: 1.75; max-width: 66ch; }
+/* Right-hand column of the hero: the figure sits at the top, level with the
+   headline, and the standing note stays pinned to the bottom as it always has —
+   the space between them was the empty stretch beside the h1. */
+.brc .hero-right { align-self: stretch; display: flex; flex-direction: column; justify-content: space-between; gap: 40px; }
+.brc .hero-figure { margin: 0; }
+/* Drawing plate: same corner ticks as the blueprint-roll art cells. */
+.brc .hero-plate { position: relative; border: 1px solid var(--line); background: var(--ground-2); padding: 10px; }
+.brc .hero-plate img { display: block; width: 100%; height: auto; }
+.brc .hero-plate i { position: absolute; width: 10px; height: 10px; border: 1px solid var(--ink-3); font-style: normal; }
+.brc .hero-plate i:nth-of-type(1) { top: 6px; left: 6px; border-right: 0; border-bottom: 0; }
+.brc .hero-plate i:nth-of-type(2) { top: 6px; right: 6px; border-left: 0; border-bottom: 0; }
+.brc .hero-plate i:nth-of-type(3) { bottom: 6px; left: 6px; border-right: 0; border-top: 0; }
+.brc .hero-plate i:nth-of-type(4) { bottom: 6px; right: 6px; border-left: 0; border-top: 0; }
+.brc .hero-figure figcaption {
+  margin-top: 10px; display: flex; justify-content: space-between; gap: 12px;
+  font-family: var(--data); font-size: 10.5px; letter-spacing: .14em;
+  text-transform: uppercase; color: var(--ink-3);
+}
 .brc .hero-side { border-left: 1px solid var(--line); padding-left: 26px; }
 .brc .hero-side b { display: block; font-family: var(--data); font-size: 12px; font-weight: 500; letter-spacing: .09em; color: var(--ink); margin-bottom: 12px; }
 .brc .hero-side p { font-size: 14px; }
@@ -318,6 +336,10 @@
 @media (max-width: 850px) {
   .brc { --gut: 20px; }
   .brc .hero-grid, .brc .section-grid, .brc .case, .brc .sprint-head, .brc .sprint-cols, .brc .roll-intro { grid-template-columns: 1fr; }
+  /* Stacked: the figure is a full-width square, so cap it before it takes over
+     the fold, and let the note follow it rather than sitting a column away. */
+  .brc .hero-right { gap: 26px; }
+  .brc .hero-figure { max-width: 460px; }
   .brc .hero-side { margin-top: 10px; }
   .brc .datum, .brc .levels { grid-template-columns: 1fr 1fr; }
   .brc .case-drawing { border-left: 0; border-top: 1px solid var(--line); min-height: 370px; }

@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
+import Image from 'next/image';
 import { initBlueprintRoll } from './blueprintRoll';
 import { ROLL_CARDS } from './rollCards';
 import { AMAZON_STORE_URL } from '@/lib/links';
@@ -36,10 +37,27 @@ export default function Home() {
                   <a className="button" href="#work">View our work</a>
                 </div>
               </div>
-              <aside className="hero-side">
-                <b>DESIGNED FROM THE COMMERCIAL PROBLEM OUT.</b>
-                <p>We combine product logic, UX, real-time 3D, ecommerce and AI into tools customers can understand and businesses can operate.</p>
-              </aside>
+              <div className="hero-right">
+                <figure className="hero-figure">
+                  <div className="hero-plate">
+                    <i /><i /><i /><i />
+                    <Image
+                      src="/hero-old-road-blueprint-code-road.png"
+                      alt="Blueprint comparison: on the left, the old road — phone calls, email threads, spreadsheets and PDFs looping back and forth around a configured product. On the right, the Blueprint Code road — one configurator feeding a single line through specification, quote and fulfilment."
+                      width={1254}
+                      height={1254}
+                      sizes="(max-width: 980px) 92vw, 344px"
+                      loading="eager"
+                      fetchPriority="high"
+                    />
+                  </div>
+                  <figcaption><span>Fig. 00</span><span>Old road / Blueprint Code road</span></figcaption>
+                </figure>
+                <aside className="hero-side">
+                  <b>DESIGNED FROM THE COMMERCIAL PROBLEM OUT.</b>
+                  <p>We combine product logic, UX, real-time 3D, ecommerce and AI into tools customers can understand and businesses can operate.</p>
+                </aside>
+              </div>
             </div>
             <div className="datum">
               <div><span className="lbl">CORE SPECIALISM</span><b>CONFIGURATORS</b></div>
