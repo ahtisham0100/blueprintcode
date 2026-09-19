@@ -46,7 +46,7 @@ export default function Home() {
                       alt="Blueprint comparison: on the left, the old road — phone calls, email threads, spreadsheets and PDFs looping back and forth around a configured product. On the right, the Blueprint Code road — one configurator feeding a single line through specification, quote and fulfilment."
                       width={1254}
                       height={1254}
-                      sizes="(max-width: 980px) 92vw, 344px"
+                      sizes="(max-width: 850px) 92vw, (max-width: 1240px) 46vw, 560px"
                       loading="eager"
                       fetchPriority="high"
                     />

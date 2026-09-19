@@ -60,7 +60,9 @@
   padding: 12px 0; margin-bottom: 55px;
   font-family: var(--data); font-size: 11px; letter-spacing: .13em; color: var(--ink-3);
 }
-.brc .hero-grid { display: grid; grid-template-columns: 1.25fr .55fr; gap: 80px; align-items: end; }
+/* Near-even columns: the right-hand figure is square, so its height follows its
+   width — this is the widest the drawing goes before the h1 takes a fifth line. */
+.brc .hero-grid { display: grid; grid-template-columns: 1fr .95fr; gap: 64px; align-items: end; }
 .brc h1 { font-size: clamp(58px, 8.6vw, 120px); max-width: 15ch; margin: 15px 0 30px; }
 .brc .lead { font-size: 18px; line-height: 1.75; max-width: 66ch; }
 /* Right-hand column of the hero: the figure sits at the top, level with the
