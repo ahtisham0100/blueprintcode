@@ -14,6 +14,16 @@
 .is-embedded footer,
 .is-embedded .skip { display: none !important; }
 
+/* Page canvas. The dark background lives in the per-route stylesheets
+   (globals.css for the homepage, (content)/site.css for the content pages), so
+   a route that loads neither — /admin, /demo-viewer, /logo-preview — used to
+   fall back to the browser's white, which showed through the footer. chrome.css
+   is the one stylesheet every route loads, so the fallback belongs here. Routes
+   with their own body background paint straight over it and are unchanged.
+   The literal is --ground; the tokens below are deliberately not on :root
+   (see above), so they can't be used here. */
+html { background: #0B1A2E; }
+
 .head,
 footer,
 .skip {
@@ -101,6 +111,8 @@ footer,
 .head .burger:hover { border-color: var(--ink); }
 
 /* footer -------------------------------------------------------------------- */
+/* No background of its own: it sits on the page canvas, so each route's own
+   ground shows through. See the html rule above for routes that set none. */
 footer { border-top: 2px solid var(--ink); padding: 24px 0 44px; }
 footer .sheet {
   width: min(var(--max), calc(100% - var(--gut) * 2));
