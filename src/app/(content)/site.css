@@ -130,11 +130,18 @@ ul{list-style:none}
 .sprint-table th:first-child,.sprint-table td:first-child{width:1px;white-space:nowrap;padding-left:14px;padding-right:14px}
 .sprint-table th:nth-child(2),.sprint-table td.price{width:1px;padding-left:14px;border-left:2px solid rgba(11,26,46,.45)}
 .sprint-table thead th:nth-child(2){border-left-color:rgba(234,241,248,.3)}
-/* Wider gutter here than between sprint and price: the comparison figures are a
-   separate thought, and the pair to their left should stay the tighter one. */
-.sprint-table th:last-child,.sprint-table td:last-child{padding-left:54px}
+/* Wide gutter here, against the 28px between sprint and price: the comparison
+   figures are a separate thought, and the pair to their left stays the tight
+   one. It scales with the viewport so the column keeps room for its text —
+   fixed at this size it would crush that text on a narrow window. */
+.sprint-table th:last-child,.sprint-table td:last-child{padding-left:clamp(54px,22vw,264px)}
 /* explicit size/weight so the global display `.price` (30px/800) can't leak in */
 .sprint-table td.price{font-family:var(--data);font-size:13px;font-weight:400;color:rgba(11,26,46,.85);white-space:nowrap}
+/* Below this the wide gutter costs more than it buys: the comparison text
+   starts breaking across several lines instead of sitting on one. */
+@media(max-width:800px){
+  .sprint-table th:last-child,.sprint-table td:last-child{padding-left:32px}
+}
 .invert .button{border-color:var(--ground);color:var(--ground)}
 .invert .button:hover{background:var(--ground);color:var(--ink)}
 
