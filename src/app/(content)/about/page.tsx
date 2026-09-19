@@ -1,5 +1,6 @@
 import type { Metadata } from 'next';
 import './styles.css';
+import { AMAZON_STORE_URL } from '@/lib/links';
 
 export const metadata: Metadata = {
   title: 'About — Blueprint Code AI',
@@ -54,7 +55,7 @@ export default function AboutPage() {
           <div className="two">
             <h2>Six years of running the business we now build for.</h2>
             <div>
-              <p>Phoenix Projectors AV has traded since 2020. It sells direct, across eight Amazon marketplaces and on eBay&apos;s global network. It deals with factories, freight, returns, VAT, marketplace policy and customers who describe a room in terms no specification sheet uses.</p>
+              <p>Phoenix Projectors AV has traded since 2020. It sells direct, across <a href={AMAZON_STORE_URL} target="_blank" rel="noopener">eight Amazon marketplaces</a> and on eBay&apos;s global network. It deals with factories, freight, returns, VAT, marketplace policy and customers who describe a room in terms no specification sheet uses.</p>
               <p>That matters more than it sounds. Most configurator projects fail on commercial rules, not on rendering. Which options genuinely can&apos;t be combined. What happens to margin when a customer picks the expensive finish. How a configured item reaches a warehouse in a form somebody can actually pick and pack.</p>
               <p>We know because we&apos;ve got it wrong in our own business and paid for it. One of our tools exists specifically because a customer once received the wrong screen, and we wanted a structural fix rather than a promise to be more careful.</p>
             </div>
@@ -62,7 +63,7 @@ export default function AboutPage() {
           <div className="facts">
             <div><span className="lbl">TRADING SINCE</span><b>2020</b></div>
             <div><span className="lbl">CONNECTED TOOLS BUILT</span><b>5</b></div>
-            <div><span className="lbl">MARKETPLACES OPERATED</span><b>8</b></div>
+            <div><span className="lbl">MARKETPLACES OPERATED</span><b><a href={AMAZON_STORE_URL} target="_blank" rel="noopener">8</a></b></div>
             <div><span className="lbl">STATUS</span><b>STILL TRADING</b></div>
           </div>
         </div>

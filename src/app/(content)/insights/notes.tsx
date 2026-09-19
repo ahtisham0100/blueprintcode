@@ -1,4 +1,5 @@
 import type { ReactNode } from 'react';
+import { AMAZON_STORE_URL } from '@/lib/links';
 
 /* Shared data for the field notes. Each note is its own page at
    /insights/<slug>; the /insights index lists them. `content` is the full
@@ -205,14 +206,14 @@ export const NOTES: Note[] = [
           <h1>From an eBay account to a multi-market retailer</h1>
         </div>
         <p className="intro">PP-AV is Blueprint Code AI’s in-house commerce venture—not a client commission or a portfolio demonstration. That distinction matters because we experience the operational consequences of the systems we design.</p>
-        <p>The business began with approximately £3,000 of working capital and an established eBay account. Over six years it developed into a multi-market specialist retailer operating through its own ecommerce platform, eight Amazon marketplaces and eBay Global, with approximately £50,000 in stock and five connected planning and configuration tools.</p>
+        <p>The business began with approximately £3,000 of working capital and an established eBay account. Over six years it developed into a multi-market specialist retailer operating through its own ecommerce platform, <a href={AMAZON_STORE_URL} target="_blank" rel="noopener">eight Amazon marketplaces</a> and eBay Global, with approximately £50,000 in stock and five connected planning and configuration tools.</p>
         <p>The result is useful evidence, but the lessons behind it are more valuable.</p>
         <h2>1. capital efficiency shapes better systems</h2>
         <p>When capital is limited, the business cannot solve every problem by buying inventory or adding staff. It has to become selective about stock, suppliers, channels and automation.</p>
         <p>PP-AV increasingly uses direct supplier shipping where appropriate and avoids tying cash up in products without a clear route to sale. The technology follows the same discipline: build tools that remove an identifiable commercial constraint rather than adding features for appearance.</p>
         <blockquote>Limited capital is not an excuse for limited ambition. It forces the operating model and the software to justify themselves.</blockquote>
         <h2>2. marketplaces provide reach, but not differentiation</h2>
-        <p>eBay and Amazon can provide access to customers who would never discover a specialist independent website first. They also impose fees, listing structures, price visibility and platform rules that the seller does not control.</p>
+        <p>eBay and <a href={AMAZON_STORE_URL} target="_blank" rel="noopener">Amazon</a> can provide access to customers who would never discover a specialist independent website first. They also impose fees, listing structures, price visibility and platform rules that the seller does not control.</p>
         <p>The direct platform therefore needs to offer something marketplaces cannot reproduce. For PP-AV, that became specialist guidance, connected planning and configurable systems rather than another catalogue presenting the same products.</p>
         <p>The useful strategy is not “marketplace or own site.” Each channel performs a different commercial job.</p>
         <h2>3. complex products need guidance before persuasion</h2>
@@ -232,7 +233,7 @@ export const NOTES: Note[] = [
         <p>Owning PP-AV means Blueprint Code AI cannot regard deployment as the finish line. We have to maintain product logic, diagnose failures, improve mobile journeys and consider what staff need to operate the system over time.</p>
         <p>That experience affects our client work. We ask earlier questions about administration, error states, data ownership, pricing authority and support because we have lived with the alternative.</p>
         <h2>What the numbers do—and do not—prove</h2>
-        <div className="table-wrap"><table><thead><tr><th>Starting point</th><th>Current operation</th></tr></thead><tbody><tr><td>Approximately £3,000 working capital</td><td>Approximately £50,000 in stock</td></tr><tr><td>Established eBay account</td><td>Own platform, eight Amazon marketplaces and eBay Global</td></tr><tr><td>Marketplace-led selling</td><td>Connected digital showroom</td></tr><tr><td>Conventional product discovery</td><td>Five customer-facing planning and configuration tools</td></tr></tbody></table></div>
+        <div className="table-wrap"><table><thead><tr><th>Starting point</th><th>Current operation</th></tr></thead><tbody><tr><td>Approximately £3,000 working capital</td><td>Approximately £50,000 in stock</td></tr><tr><td>Established eBay account</td><td>Own platform, <a href={AMAZON_STORE_URL} target="_blank" rel="noopener">eight Amazon marketplaces</a> and eBay Global</td></tr><tr><td>Marketplace-led selling</td><td>Connected digital showroom</td></tr><tr><td>Conventional product discovery</td><td>Five customer-facing planning and configuration tools</td></tr></tbody></table></div>
         <p>The growth does not mean every decision was perfect, or that software alone created the business. It demonstrates something narrower and more useful: commercial experience, capital discipline and technical capability have been applied together in a live operation over six years.</p>
         <h2>The lesson we carry into blueprint code</h2>
         <p>We do not build ecommerce systems from the position of an outside observer. We understand product data, pricing, margins, customer acquisition, marketplace operations, integrations and the commercial consequences of technical decisions.</p>

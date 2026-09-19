@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './styles.css';
 import MediaLauncher from '../../_chrome/MediaLauncher';
+import { AMAZON_STORE_URL } from '@/lib/links';
 
 export const metadata: Metadata = {
   title: 'PP-AV digital showroom — Blueprint Code AI case study',
@@ -41,7 +42,7 @@ export default function PpavCaseStudyPage() {
         <div className="spec">
           <div><span className="fig">5</span><small>connected sales tools</small></div>
           <div><span className="fig">3D</span><small>real-time configuration</small></div>
-          <div><span className="fig">8</span><small>Amazon marketplaces</small></div>
+          <div><span className="fig">8</span><small><a href={AMAZON_STORE_URL} target="_blank" rel="noopener">Amazon marketplaces</a></small></div>
           <div><span className="fig">1</span><small>eBay global storefront</small></div>
         </div>
       </div>
@@ -119,7 +120,7 @@ export default function PpavCaseStudyPage() {
         <div className="sec-head">
           <p className="sheet-no">SHEET 03 — CONNECTED COMMERCE</p>
           <h2>Built beyond a single storefront.</h2>
-          <p>The platform supports PP-AV&apos;s direct specialist channel while extending the business across eight Amazon marketplaces and eBay&apos;s global network.</p>
+          <p>The platform supports PP-AV&apos;s direct specialist channel while extending the business across <a href={AMAZON_STORE_URL} target="_blank" rel="noopener">eight Amazon marketplaces</a> and eBay&apos;s global network.</p>
         </div>
 
         <div className="channels">
@@ -133,7 +134,7 @@ export default function PpavCaseStudyPage() {
             <span className="tag">EIGHT MARKETPLACES</span>
             <h3>Amazon International</h3>
             <p>A dedicated Phoenix Projectors AV presence operating across eight Amazon marketplaces.</p>
-            <a href="https://www.amazon.com/stores/PHOENIXPROJECTORSAV/">View Amazon store</a>
+            <a href={AMAZON_STORE_URL} target="_blank" rel="noopener">View Amazon store</a>
           </div>
           <div className="ch">
             <span className="tag">GLOBAL MARKETPLACE</span>
@@ -204,7 +205,7 @@ export default function PpavCaseStudyPage() {
             <ul>
               <li>Unified multi-tool customer journey</li>
               <li>Direct PP-AV commerce</li>
-              <li>Eight Amazon marketplaces and eBay Global</li>
+              <li><a href={AMAZON_STORE_URL} target="_blank" rel="noopener">Eight Amazon marketplaces</a> and eBay Global</li>
               <li>Multi-brand, trade and AI-ready architecture</li>
             </ul>
             <div className="band">PACKAGE FROM £45,000</div>
