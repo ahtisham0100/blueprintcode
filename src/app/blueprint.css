@@ -289,7 +289,9 @@
 .brc .sprint-table th:first-child, .brc .sprint-table td:first-child { width: 1px; white-space: nowrap; padding-left: 14px; padding-right: 14px; }
 .brc .sprint-table th:nth-child(2), .brc .sprint-table td.price { width: 1px; padding-left: 14px; border-left: 2px solid rgba(11, 26, 46, .45); }
 .brc .sprint-table thead th:nth-child(2) { border-left-color: rgba(234, 241, 248, .3); }
-.brc .sprint-table th:last-child, .brc .sprint-table td:last-child { padding-left: 26px; }
+/* Wider gutter here than between sprint and price: the comparison figures are a
+   separate thought, and the pair to their left should stay the tighter one. */
+.brc .sprint-table th:last-child, .brc .sprint-table td:last-child { padding-left: 54px; }
 /* explicit size/weight so the global display `.price` (30px/800) can't leak in */
 .brc .sprint-table td.price { font-family: var(--data); font-size: 13px; font-weight: 400; color: rgba(11, 26, 46, .85); white-space: nowrap; }
 .brc .invert .button { border-color: var(--ground); color: var(--ground); }
