@@ -67,6 +67,17 @@ function injectWatermark(html: string): string {
   return html + WATERMARK_TAG;
 }
 
+/** The anchors scripts/inject-chrome.mjs needs to place the shared header,
+ *  footer and stylesheet. A page missing any of them warns at build time, so a
+ *  fragment is refused here rather than committed and left to break the deploy. */
+function missingAnchors(html: string): string[] {
+  const missing: string[] = [];
+  if (!/<\/head>/i.test(html)) missing.push('</head>');
+  if (!/<body[^>]*>/i.test(html)) missing.push('<body>');
+  if (!/<\/body>/i.test(html)) missing.push('</body>');
+  return missing;
+}
+
 function timingSafeEqual(a: string, b: string): boolean {
   if (a.length !== b.length) return false;
   let out = 0;
@@ -114,19 +125,34 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: 'File too large (max 5 MB).' }, { status: 413 });
   }
 
+  let decoded: string;
+  try {
+    decoded = Buffer.from(contentBase64, 'base64').toString('utf8');
+  } catch {
+    return NextResponse.json({ error: 'Could not read the file.' }, { status: 400 });
+  }
+
+  // A demo has to be a whole page. The build stamps the shared header and footer
+  // into every HTML file under public/, and a fragment gives it nothing to stamp
+  // into — which used to surface as a failed deploy well after the upload.
+  const missing = missingAnchors(decoded);
+  if (missing.length) {
+    return NextResponse.json(
+      {
+        error:
+          `Not a complete HTML page — no ${missing.join(', ')}. A demo must be a full document ` +
+          `(<html><head>…</head><body>…</body></html>), not a fragment or a partial.`,
+      },
+      { status: 400 },
+    );
+  }
+
   // Stamp the shared watermark and a robots noindex into the uploaded HTML
   // before committing, so an admin-uploaded demo carries both — matching the
-  // committed demos. Binary/non-HTML uploads are left as-is.
-  let contentToCommit = contentBase64;
-  try {
-    const decoded = Buffer.from(contentBase64, 'base64').toString('utf8');
-    const injected = injectNoindex(injectWatermark(decoded));
-    if (injected !== decoded) {
-      contentToCommit = Buffer.from(injected, 'utf8').toString('base64');
-    }
-  } catch {
-    // Decode/inject failed — commit the original bytes unchanged.
-  }
+  // committed demos.
+  const injected = injectNoindex(injectWatermark(decoded));
+  const contentToCommit =
+    injected === decoded ? contentBase64 : Buffer.from(injected, 'utf8').toString('base64');
 
   const path = `public/${slug}/index.html`;
   const apiUrl = `https://api.github.com/repos/${REPO}/contents/${path}`;

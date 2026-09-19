@@ -203,9 +203,20 @@ for (const r of report) {
   console.log(`  [${pad(r.kind, 7)}] ${pad(r.rel, 46)} label="${r.label}"${warn}`);
 }
 const problems = report.filter((r) => r.warnings.length);
+// Only a content page missing its anchors is a real regression worth failing the
+// build over — those pages are ours. Demo pages arrive through the /admin
+// uploader, and one malformed upload must not be able to break every deploy; it
+// is reported and left without chrome instead. /api/deploy-demo refuses fragments
+// at upload time, so this is the backstop for demos committed another way.
+// (The seven content pages now live as Next routes, so nothing under public/ is
+// content today — this keeps the old strictness if one ever moves back.)
+const blocking = problems.filter((r) => r.kind === 'content');
 if (problems.length) {
   console.log(`\n${problems.length} page(s) had warnings — check the markers above.`);
+}
+if (blocking.length) {
+  console.log(`${blocking.length} of them are content page(s) — failing the build.`);
   process.exitCode = 1;
-} else {
+} else if (!problems.length) {
   console.log('\nAll pages processed cleanly.');
 }
