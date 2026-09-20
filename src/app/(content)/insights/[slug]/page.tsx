@@ -36,7 +36,12 @@ export async function generateMetadata({
   if (!note) return {};
 
   const url = `https://blueprintcode.ai/insights/${note.slug}`;
-  const title = `${note.title} — Blueprint Code AI`;
+  /* No " — Blueprint Code AI" suffix here. The brand costs 20 characters and
+     pushed three of the four note titles past Google's ~60-character limit, so
+     they truncated mid-headline. Google already derives and displays the site
+     name from the WebSite schema in the root layout, so the suffix bought
+     nothing it wasn't going to show anyway. */
+  const title = note.title;
   return {
     title,
     description: note.desc,

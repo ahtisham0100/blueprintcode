@@ -1,6 +1,35 @@
 import type { NextConfig } from "next";
 
+// Security response headers, applied to every route. A crawl flagged all four
+// as missing. None of them are ranking factors — this is ordinary hardening,
+// not SEO.
+//
+// X-Frame-Options is SAMEORIGIN rather than DENY on purpose: /prototypes and
+// the demo viewer embed the static demos at /<slug> in a same-origin iframe
+// (see src/app/_demo-viewer/ and the is-embedded script in layout.tsx), and
+// DENY would break them. If a client ever needs to embed a demo on THEIR
+// domain, drop this header for that route and use a CSP frame-ancestors
+// directive naming the permitted origins instead — don't loosen it globally.
+//
+// Content-Security-Policy is deliberately absent. A strict policy needs nonce
+// plumbing for the inline scripts in layout.tsx and white-screens the site if
+// it is wrong, so it belongs in its own change with its own testing.
+//
+// Strict-Transport-Security is already supplied by Vercel, so it isn't repeated
+// here.
+const securityHeaders = [
+  { key: "X-Content-Type-Options", value: "nosniff" },
+  { key: "X-Frame-Options", value: "SAMEORIGIN" },
+  { key: "Referrer-Policy", value: "strict-origin-when-cross-origin" },
+  { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
+];
+
 const nextConfig: NextConfig = {
+  async headers() {
+    // "/:path*" matches the root as well as every nested path.
+    return [{ source: "/:path*", headers: securityHeaders }];
+  },
+
   async rewrites() {
     return {
       // Static demos live at public/<slug>/index.html and are served at /<slug>.

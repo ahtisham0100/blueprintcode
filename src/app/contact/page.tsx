@@ -5,7 +5,7 @@ import './contact.css';
 export const metadata: Metadata = {
   title: 'Start a project — Blueprint Code AI',
   description:
-    'Tell us what you’re building, where you are in the process and what success looks like. We’ll review it personally and recommend the most sensible next step.',
+    'Tell us what you’re building, where you are and what success looks like. We’ll review it personally and recommend the next step.',
   alternates: { canonical: 'https://blueprintcode.ai/contact' },
   openGraph: {
     title: 'Start a project — Blueprint Code AI',

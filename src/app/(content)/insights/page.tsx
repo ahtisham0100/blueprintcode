@@ -7,7 +7,7 @@ import HashRedirect from './HashRedirect';
 export const metadata: Metadata = {
   title: 'Field notes — Blueprint Code AI',
   description:
-    'Practical field notes on product configurators, digital showrooms, ecommerce systems and commercial prototyping, from a studio that runs its own retail operation.',
+    'Practical field notes on product configurators, digital showrooms, ecommerce systems and commercial prototyping, from a working studio.',
   alternates: { canonical: 'https://blueprintcode.ai/insights' },
   openGraph: {
     title: 'Field notes — Blueprint Code AI',

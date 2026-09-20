@@ -5,12 +5,12 @@ import './home.css';
 import './blueprint.css';
 
 export const metadata: Metadata = {
-  title: 'Blueprint Code AI — Product configurators, commerce & AI systems',
+  title: 'Product configurator development — Blueprint Code AI',
   description:
-    "Blueprint Code AI builds product configurators, recommendation engines and connected ecommerce systems for businesses whose products can't be explained by a standard product page.",
+    "We build product configurators, guided selling tools and connected ecommerce systems for products too complex for a standard product page.",
   alternates: { canonical: 'https://blueprintcode.ai/' },
   openGraph: {
-    title: 'Blueprint Code AI — Product configurators, commerce & AI systems',
+    title: 'Product configurator development — Blueprint Code AI',
     description:
       'Product configurators, commerce and AI systems. Every build starts with a Prototype Sprint, £625–£3,000, credited against the build.',
     type: 'website',

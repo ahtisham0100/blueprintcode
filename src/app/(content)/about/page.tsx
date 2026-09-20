@@ -1,14 +1,15 @@
 import type { Metadata } from 'next';
+import Image from 'next/image';
 import './styles.css';
 import { AMAZON_STORE_URL } from '@/lib/links';
 
 export const metadata: Metadata = {
-  title: 'About — Blueprint Code AI',
+  title: 'About Blueprint Code AI — configurator developers, UK',
   description:
     'Blueprint Code AI builds the sales tools its founder needed. Born inside a real home-cinema retail business, not invented as a service category.',
   alternates: { canonical: 'https://blueprintcode.ai/about' },
   openGraph: {
-    title: 'About — Blueprint Code AI',
+    title: 'About Blueprint Code AI — configurator developers, UK',
     description:
       'We approached this as a business owner who needed better sales tools, not as an agency inventing a service category from theory.',
     type: 'website',
@@ -79,7 +80,14 @@ export default function AboutPage() {
           </div>
           <div className="team">
             <div className="member" id="james-michaelson">
-              <img className="headshot" src="/james.jpeg" alt="James Michaelson" width={640} height={640} loading="lazy" />
+              <Image
+                className="headshot"
+                src="/james.jpeg"
+                alt="James Michaelson"
+                width={640}
+                height={640}
+                sizes="(max-width: 900px) 100vw, 33vw"
+              />
               <span className="lbl">01</span>
               <h3>James Michaelson</h3>
               <p className="role">Founder &amp; Solutions Architect</p>
@@ -87,7 +95,14 @@ export default function AboutPage() {
               <span className="owns">OWNS<b>Scope, product logic, commercial rules, client relationship</b></span>
             </div>
             <div className="member" id="muhammad-ahtisham-arif">
-              <img className="headshot" src="/muhammad-ahtisham.jpeg" alt="Muhammad Ahtisham Arif" width={640} height={640} loading="lazy" />
+              <Image
+                className="headshot"
+                src="/muhammad-ahtisham.jpeg"
+                alt="Muhammad Ahtisham Arif"
+                width={640}
+                height={640}
+                sizes="(max-width: 900px) 100vw, 33vw"
+              />
               <span className="lbl">02</span>
               <h3>Muhammad Ahtisham Arif</h3>
               <p className="role">Engineering &amp; platform</p>
@@ -95,7 +110,14 @@ export default function AboutPage() {
               <span className="owns">OWNS<b>Architecture, integrations, performance, deployment</b></span>
             </div>
             <div className="member">
-              <img className="headshot" src="/Parv-jain.png" alt="Parv Jain" width={640} height={640} loading="lazy" />
+              <Image
+                className="headshot"
+                src="/Parv-jain.png"
+                alt="Parv Jain"
+                width={640}
+                height={640}
+                sizes="(max-width: 900px) 100vw, 33vw"
+              />
               <span className="lbl">03</span>
               <h3>Parv Jain</h3>
               <p className="role">Lead Designer</p>

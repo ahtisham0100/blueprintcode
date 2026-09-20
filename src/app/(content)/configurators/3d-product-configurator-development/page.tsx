@@ -12,9 +12,15 @@ const NAME = '3D product configurator development';
 const DESC =
   'We build real-time 3D product configurators for the web: live materials, geometry and server-authoritative pricing, connected straight to your checkout. Prototype-first, and proven on our own live retail business.';
 
+/* NAME and DESC feed the Service and BreadcrumbList schema below, where length
+   costs nothing. The title already fits Google's ~60-character limit, so only
+   the description needs a shorter SERP-facing variant. */
+const META_DESC =
+  'Real-time 3D product configurators for the web: live materials, geometry and server-authoritative pricing, connected to your checkout.';
+
 export const metadata: Metadata = {
   title: `${NAME} — Blueprint Code AI`,
-  description: DESC,
+  description: META_DESC,
   alternates: { canonical: URL },
   openGraph: {
     title: `${NAME} — Blueprint Code AI`,

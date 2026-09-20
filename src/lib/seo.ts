@@ -8,6 +8,28 @@
 
 export const SITE_URL = 'https://blueprintcode.ai';
 export const SITE_NAME = 'Blueprint Code AI';
+export const CONTACT_EMAIL = 'hello@blueprintcode.ai';
+
+/**
+ * Public profiles that corroborate Blueprint Code AI as a real organisation.
+ * Emitted as schema.org `sameAs`, which is how Google reconciles scattered
+ * mentions of a brand into a single entity. For a young domain that entity
+ * record is the main thing gating rankings on category terms rather than on
+ * the brand name alone, so this list is worth keeping current.
+ *
+ * Only add a URL that resolves and genuinely belongs to the company — a
+ * `sameAs` pointing at a 404 or at an unrelated profile weakens the signal
+ * rather than strengthening it, which is why this ships empty rather than
+ * guessed. Individual people's profiles belong on the author objects in
+ * src/app/(content)/insights/notes.tsx, not here.
+ *
+ * Worth adding, in rough order of value:
+ *   - LinkedIn company page
+ *   - Companies House record (authoritative for a UK entity)
+ *   - Crunchbase, GitHub organisation
+ *   - X / YouTube, if actively used
+ */
+export const ORG_PROFILES: readonly string[] = [];
 
 /** One-line positioning statement, reused as a metadata + schema description. */
 export const TAGLINE =
@@ -57,6 +79,10 @@ export function organizationJsonLd() {
     logo: `${SITE_URL}/blueprintcode-ai.png`,
     image: `${SITE_URL}/blueprintcode-ai.png`,
     slogan: TAGLINE,
+    email: CONTACT_EMAIL,
+    // Omitted entirely while ORG_PROFILES is empty — an empty `sameAs` array is
+    // noise in the graph, and a wrong URL in it is worse than no URL at all.
+    ...(ORG_PROFILES.length > 0 ? { sameAs: [...ORG_PROFILES] } : {}),
     knowsAbout: [...SPECIALITIES],
     makesOffer: SPECIALITIES.map((s) => ({
       '@type': 'Offer',

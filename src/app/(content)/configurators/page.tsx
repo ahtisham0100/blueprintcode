@@ -4,7 +4,7 @@ import './styles.css';
 export const metadata: Metadata = {
   title: 'Configurators & commerce tools — Blueprint Code AI',
   description:
-    'Guided selectors, specification builders, real-time 3D configurators and quote engines — built as commercial tools, not visual novelties. Worked examples from a live retail business.',
+    'Guided selectors, specification builders, real-time 3D configurators and quote engines — built as commercial tools, not visual novelties.',
   alternates: { canonical: 'https://blueprintcode.ai/configurators' },
   openGraph: {
     title: 'Configurators & commerce tools — Blueprint Code AI',

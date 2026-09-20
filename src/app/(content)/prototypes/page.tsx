@@ -5,7 +5,7 @@ import { DemoViewerProvider, DemoTrigger } from '../../_demo-viewer/DemoViewer';
 export const metadata: Metadata = {
   title: 'Prototype register — Blueprint Code AI',
   description:
-    'Four working prototypes from Blueprint Code AI: a made-to-order fight shorts builder, a charm bracelet builder, a commerce operations suite and an engine fit architecture. Each built as a Prototype Sprint before a full production build.',
+    'Four working prototypes: a made-to-order shorts builder, a charm bracelet builder, a commerce operations suite and an engine fit architecture.',
   alternates: { canonical: 'https://blueprintcode.ai/prototypes' },
   openGraph: {
     title: 'Prototype register — Blueprint Code AI',

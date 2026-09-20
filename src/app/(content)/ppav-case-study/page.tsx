@@ -6,7 +6,7 @@ import { AMAZON_STORE_URL } from '@/lib/links';
 export const metadata: Metadata = {
   title: 'PP-AV digital showroom — Blueprint Code AI case study',
   description:
-    'How a specialist AV retailer was rebuilt as a digital showroom: five connected sales tools, real-time 3D configuration and international multi-channel commerce.',
+    'How a specialist AV retailer became a digital showroom: five connected sales tools, real-time 3D configuration and multi-channel commerce.',
   alternates: { canonical: 'https://blueprintcode.ai/ppav-case-study' },
   openGraph: {
     title: 'PP-AV digital showroom — Blueprint Code AI case study',

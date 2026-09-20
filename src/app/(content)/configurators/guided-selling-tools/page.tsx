@@ -12,12 +12,20 @@ const NAME = 'Guided selling & product recommendation tools';
 const DESC =
   'Custom guided selling and product recommendation tools that turn a large, technical catalogue into a short, confident choice — and show the customer why each product was recommended. Connected to your store, proven on a live retail business.';
 
+/* NAME and DESC feed the Service and BreadcrumbList schema below, where length
+   costs nothing. TITLE and META_DESC are the SERP-facing pair, kept inside
+   Google's ~60-character title and ~155-character description limits so neither
+   gets truncated mid-phrase in a result snippet. */
+const TITLE = 'Guided selling tool development — Blueprint Code AI';
+const META_DESC =
+  'Guided selling and product recommendation tools that turn a large, technical catalogue into a short, confident choice — and show why.';
+
 export const metadata: Metadata = {
-  title: `${NAME} — Blueprint Code AI`,
-  description: DESC,
+  title: TITLE,
+  description: META_DESC,
   alternates: { canonical: URL },
   openGraph: {
-    title: `${NAME} — Blueprint Code AI`,
+    title: TITLE,
     description:
       'Guided selectors and recommendation engines that turn a big catalogue into a short, reasoned shortlist — and hand off to checkout.',
     type: 'website',
