@@ -73,8 +73,8 @@ export default function Home() {
           <div className="sheet">
             <p className="section-no">01 / PRIMARY EXPERTISE</p>
             <div className="roll-intro">
-              <h2>Five groups of tools for complex products.</h2>
-              <p>From configuration and guided selection to planning, quoting and back-office automation, each sheet is one group of tools we build. Turn the blueprint to see what sits inside each.</p>
+              <h2>Six groups of tools for complex products.</h2>
+              <p>From configuration and guided selection to planning, quoting, back-office automation and accessibility, each sheet is one group of tools we build. Turn the blueprint to see what sits inside each.</p>
             </div>
             <div className="roll-track" id="blueprint-roll">
               <div className="roll-stage">
@@ -91,7 +91,7 @@ export default function Home() {
                       <p className="ref">{card.ref}</p>
                       <h3>{card.title}</h3>
                       <p className="intro">{card.intro}</p>
-                      <p className="sched-head"><span>Example tools</span><span>{card.count}</span></p>
+                      <p className="sched-head"><span>{card.listLabel ?? "Example tools"}</span><span>{card.count}</span></p>
                       <ul className="items">
                         {card.items.map((it, j) => <li key={j}>{it}</li>)}
                       </ul>
@@ -103,7 +103,7 @@ export default function Home() {
                   </article>
                 ))}
               </div>
-              <div className="roll-controls"><div className="roll-arrows"><button className="roll-arrow" id="roll-prev" type="button" aria-label="Previous blueprint sheet">←</button><button className="roll-arrow roll-pause" id="roll-pause" type="button" aria-label="Pause automatic turning" aria-pressed="false"><span className="roll-pause-glyph" aria-hidden="true" /></button><button className="roll-arrow" id="roll-next" type="button" aria-label="Next blueprint sheet">→</button></div><span className="roll-progress" id="roll-progress">SHEET 01 / 05</span><span className="roll-hint" id="roll-hint">AUTO TURN / 10 SECONDS</span></div>
+              <div className="roll-controls"><div className="roll-arrows"><button className="roll-arrow" id="roll-prev" type="button" aria-label="Previous blueprint sheet">←</button><button className="roll-arrow roll-pause" id="roll-pause" type="button" aria-label="Pause automatic turning" aria-pressed="false"><span className="roll-pause-glyph" aria-hidden="true" /></button><button className="roll-arrow" id="roll-next" type="button" aria-label="Next blueprint sheet">→</button></div><span className="roll-progress" id="roll-progress">SHEET 01 / 06</span><span className="roll-hint" id="roll-hint">AUTO TURN / 10 SECONDS</span></div>
               <div className="roll-timer" aria-hidden="true" />
             </div>
             <a className="button" href="/contact">Discuss a configurator</a>
