@@ -67,7 +67,7 @@ const PAGES: Record<string, ChromeMeta> = {
     label: 'RATES 2026',
     doc: 'SCHEDULE OF RATES',
     metaKey: 'ISSUE',
-    metaVal: '2026 — SHEETS 01/06',
+    metaVal: '2026 — SHEETS 01/07',
     current: 'pricing',
   },
   '/prototypes': {

@@ -4,12 +4,12 @@ import './styles.css';
 export const metadata: Metadata = {
   title: 'Schedule of rates 2026 — Blueprint Code AI',
   description:
-    'Published 2026 rates for websites, commerce infrastructure, product configurators, AI automation and support retainers. GBP, excluding VAT.',
+    'Published 2026 rates for websites, commerce infrastructure, product configurators, AI automation, WCAG 2.2 accessibility audits and support retainers. GBP, excluding VAT.',
   alternates: { canonical: 'https://blueprintcode.ai/pricing' },
   openGraph: {
     title: 'Schedule of rates 2026 — Blueprint Code AI',
     description:
-      'Published rates, so you can size a project before you speak to anyone. £1,000 to £120,000+.',
+      'Published rates, so you can size a project before you speak to anyone. Free accessibility checks to £120,000+ builds.',
     type: 'website',
     url: 'https://blueprintcode.ai/pricing',
   },
@@ -24,12 +24,12 @@ export default function PricingPage() {
         <dl className="stamp">
           <div className="row"><dt>ISSUE</dt><dd>2026 — standard rates</dd></div>
           <div className="row"><dt>CURRENCY</dt><dd>GBP, excluding VAT</dd></div>
-          <div className="row"><dt>RANGE</dt><dd>£1,000 – £120,000+</dd></div>
+          <div className="row"><dt>RANGE</dt><dd>Free – £120,000+</dd></div>
           <div className="row"><dt>SPECIALISM</dt><dd>Interactive commerce &amp; product configurators</dd></div>
         </dl>
 
         <h1>Schedule of rates.</h1>
-        <p className="standfirst">Websites, commerce infrastructure, bespoke 3D product configurators and AI automation. Published prices, so you can size a project before you speak to anyone.</p>
+        <p className="standfirst">Websites, commerce infrastructure, bespoke 3D product configurators, AI automation and WCAG 2.2 accessibility work. Published prices, so you can size a project before you speak to anyone.</p>
       </div>
 
       {/* ============ 01 TIERS ============ */}
@@ -354,10 +354,190 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* ============ 04 CAPABILITY ============ */}
+      {/* ============ 04 ACCESSIBILITY ============ */}
+      <section id="accessibility" className="sheet">
+        <div className="sec-head">
+          <p className="sheet-no">SHEET 04 &mdash; ACCESSIBILITY &amp; COMPLIANCE</p>
+          <h2>Check, audit, fix, monitor.</h2>
+          <p>WCAG 2.2 AA work in four stages, priced separately so you only buy the stage you need. The automated check is free. The audit tells you what a scanner can&apos;t see. Remediation is the part most accessibility firms hand back to someone else &mdash; we do it ourselves.</p>
+        </div>
+      </section>
+
+      <div className="invert">
+        <div className="sheet">
+          <span className="lbl">STAGE 00 &mdash; START HERE</span>
+          <h3>Instant WCAG Check &mdash; free</h3>
+          <p>Enter a URL and get an automated WCAG 2.2 report back in about a minute: contrast failures, missing alternative text, unlabelled form fields, heading structure, landmarks and keyboard traps. No account, no sales call.</p>
+          <div className="invert-cols">
+            <div>
+              <h4>WHAT IT COVERS</h4>
+              <ul>
+                <li>Automated WCAG 2.2 level A and AA checks</li>
+                <li>Every issue listed with the element that fails</li>
+                <li>Mapped to the success criterion it breaches</li>
+                <li>Ordered by severity, so you know what matters</li>
+                <li>Free, with no obligation to buy anything</li>
+              </ul>
+            </div>
+            <div>
+              <h4>WHAT IT CAN&rsquo;T DO</h4>
+              <p>Automated testing reliably finds around a third of WCAG failures. It cannot tell you whether alternative text is useful, whether a keyboard journey makes sense, whether an error message can be understood, or whether a checkout can actually be completed with a screen reader.</p>
+              <p className="band-note">That judgement is what the paid stages buy. The scan tells you there is a problem. A person tells you what it costs you, and how to fix it.</p>
+              <span className="strip">FREE &mdash; RUN IT ON ANY URL</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <section className="sheet" style={{ borderTop: 0, paddingTop: '72px' }}>
+        <div className="band"><h3>Stage 01 &mdash; Check</h3><span className="range">FREE &ndash; £295</span></div>
+        <div className="row2">
+          <div className="item">
+            <div className="item-top"><h4>Instant WCAG Check</h4><span className="rate">Free</span></div>
+            <p>An automated scan of a page, on demand.</p>
+            <ul>
+              <li>Automated WCAG 2.2 A &amp; AA checks</li>
+              <li>Issues ranked by severity</li>
+              <li>Each mapped to its success criterion</li>
+              <li>Report on screen and by email</li>
+            </ul>
+            <p className="note"><b>Next:</b> the Health Check, when you want a person to read the results.</p>
+          </div>
+          <div className="item">
+            <div className="item-top"><h4>Accessibility Health Check</h4><span className="rate">£295</span></div>
+            <p>The automated results, interpreted by someone who does this work.</p>
+            <ul>
+              <li>Automated scan across up to 5 key pages</li>
+              <li>Manual review of the findings, false positives removed</li>
+              <li>Keyboard-only walkthrough of one core journey</li>
+              <li>Prioritised summary: what to fix first, and why</li>
+              <li>A 30-minute call to talk it through</li>
+            </ul>
+            <p className="note"><b>Credited:</b> the £295 comes off a full audit booked within 90 days.</p>
+          </div>
+        </div>
+
+        <div className="band"><h3>Stage 02 &mdash; Audit</h3><span className="range">FROM £995</span></div>
+        <div className="row2">
+          <div className="item">
+            <div className="item-top"><h4>WCAG 2.2 AA Audit</h4><span className="rate"><span className="from">from</span>£995</span></div>
+            <p>Manual and automated audit of a standard content or marketing site.</p>
+            <ul>
+              <li>Up to 15 representative page templates</li>
+              <li>Manual testing: keyboard, screen reader, zoom and reflow</li>
+              <li>Automated scanning across the same sample</li>
+              <li>Every issue mapped to its WCAG 2.2 success criterion</li>
+              <li>Severity, user impact and a recommended fix for each</li>
+              <li>Written report and a prioritised remediation plan</li>
+              <li>Walkthrough call with whoever will do the fixing</li>
+            </ul>
+            <p className="note"><b>Ideal for:</b> brochure sites, content sites, lead-generation sites.</p>
+          </div>
+          <div className="item">
+            <div className="item-top"><h4>Ecommerce / Complex Audit</h4><span className="rate"><span className="from">from</span>£1,750</span></div>
+            <p>The journeys a template-level audit never reaches.</p>
+            <ul>
+              <li>Everything in the WCAG 2.2 AA Audit</li>
+              <li>Basket, checkout and payment journeys</li>
+              <li>Account creation, sign-in and order history</li>
+              <li>Multi-step forms, validation and error recovery</li>
+              <li>Interactive components: modals, filters, carousels, date pickers</li>
+              <li>Configurators and other bespoke widgets</li>
+              <li>Screen-reader testing of each journey end to end</li>
+            </ul>
+            <p className="note"><b>Ideal for:</b> WooCommerce, Shopify, portals, booking systems, configurators.</p>
+          </div>
+        </div>
+
+        <div className="band"><h3>Stage 03 &mdash; Fix</h3><span className="range">FROM £2,500</span></div>
+        <div className="row2">
+          <div className="item">
+            <div className="item-top"><h4>Audit + Remediation</h4><span className="rate"><span className="from">from</span>£2,500</span></div>
+            <p>Find the issues, then actually fix them.</p>
+            <ul>
+              <li>Full WCAG 2.2 AA audit, as above</li>
+              <li>Code-level fixes applied to your site</li>
+              <li>Semantic HTML, ARIA, focus management and keyboard order</li>
+              <li>Contrast, text spacing, reflow and zoom corrections</li>
+              <li>Form labelling and error handling rebuilt where needed</li>
+              <li>Re-test against the original report</li>
+              <li>An accessibility statement you can publish</li>
+            </ul>
+            <p className="note"><b>The difference:</b> most audit firms scope the fix separately, or not at all.</p>
+          </div>
+          <div className="item">
+            <div className="item-top"><h4>Complex remediation</h4><span className="rate">£3.5–7.5k+</span></div>
+            <p>Larger estates and genuinely difficult interfaces.</p>
+            <ul>
+              <li>Everything in Audit + Remediation</li>
+              <li>Ecommerce checkouts and customer portals</li>
+              <li>Configurators and interactive product tools</li>
+              <li>Component library and design-system level fixes</li>
+              <li>Third-party and plugin failures worked around or replaced</li>
+              <li>Regression testing across every template</li>
+              <li>Handover: what changed, and how to keep it that way</li>
+            </ul>
+            <p className="note"><b>Scope:</b> quoted after the audit, so the number reflects the real work.</p>
+          </div>
+        </div>
+
+        <div className="band"><h3>Stage 04 &mdash; Monitor</h3><span className="range">£99 – £199 / MONTH</span></div>
+        <div className="row2">
+          <div className="item">
+            <div className="item-top"><h4>Monitoring Essentials</h4><span className="rate">£99</span></div>
+            <p>Per month. Accessibility doesn&apos;t stay fixed on its own.</p>
+            <ul>
+              <li>Monthly automated scan of your key templates</li>
+              <li>Regression alerts when a release breaks something</li>
+              <li>Running issue log with severity and history</li>
+              <li>Email support</li>
+            </ul>
+          </div>
+          <div className="item">
+            <div className="item-top"><h4>Monitoring Plus</h4><span className="rate">£199</span></div>
+            <p>Per month. Scanning, plus a person who reads it.</p>
+            <ul>
+              <li>Everything in Monitoring Essentials</li>
+              <li>Fortnightly scanning across the full estate</li>
+              <li>Human review of new issues, false positives removed</li>
+              <li>Quarterly keyboard and screen-reader spot check</li>
+              <li>Your accessibility statement kept current</li>
+              <li>Priority routing into remediation</li>
+            </ul>
+          </div>
+        </div>
+
+        <div className="band"><h3>How the testing is done</h3><span className="range">APPLIES TO EVERY PAID STAGE</span></div>
+        <div className="row2">
+          <div className="item">
+            <span className="lbl">METHOD</span>
+            <ul style={{ marginTop: '14px' }}>
+              <li>Keyboard-only operation of every journey</li>
+              <li>Screen readers: NVDA on Windows, VoiceOver on macOS and iOS</li>
+              <li>400% zoom and 320px reflow</li>
+              <li>Colour contrast, and state shown by more than colour</li>
+              <li>Automated scanning as a sweep, never as the verdict</li>
+            </ul>
+            <p className="note">Tools run first. Everything we report has been confirmed by a person.</p>
+          </div>
+          <div className="item">
+            <span className="lbl">WHAT YOU RECEIVE</span>
+            <ul style={{ marginTop: '14px' }}>
+              <li>A written report, issue by issue, with the failing element</li>
+              <li>The WCAG 2.2 success criterion and level for each</li>
+              <li>Severity, and the real-world impact on a user</li>
+              <li>A recommended fix a developer can act on</li>
+              <li>A prioritised plan: what to fix first, what can wait</li>
+            </ul>
+            <p className="note">Delivered against WCAG 2.2 AA, the level UK and EU accessibility requirements reference.</p>
+          </div>
+        </div>
+      </section>
+
+      {/* ============ 05 CAPABILITY ============ */}
       <section id="capability" className="sheet">
         <div className="sec-head">
-          <p className="sheet-no">SHEET 04 — CAPABILITY</p>
+          <p className="sheet-no">SHEET 05 &mdash; CAPABILITY</p>
           <h2>Standalone or combined.</h2>
           <p>Individual services that can be bought on their own or bundled into any tier above.</p>
         </div>
@@ -416,7 +596,7 @@ export default function PricingPage() {
           <div className="cap">
             <div><span className="lbl">GROUP F</span><h3>Compliance &amp; support</h3></div>
             <div className="cap-items">
-              <div><b>WCAG 2.2 / ADA audits</b><span>Full accessibility audits against WCAG 2.2 AA with prioritised remediation.</span></div>
+              <div><b>WCAG 2.2 / ADA audits</b><span>Full accessibility audits against WCAG 2.2 AA with prioritised remediation. Priced in <a href="#accessibility">sheet 04</a>.</span></div>
               <div><b>Remediation</b><span>Keyboard nav, screen-reader support, contrast, alt text and ARIA fixes.</span></div>
               <div><b>Maintenance</b><span>Updates, security patches, monitoring and content changes.</span></div>
               <div><b>Performance &amp; SEO</b><span>Core Web Vitals, technical SEO, image optimisation and caching.</span></div>
@@ -426,15 +606,15 @@ export default function PricingPage() {
         </div>
       </section>
 
-      {/* ============ 05 À LA CARTE ============ */}
+      {/* ============ 06 À LA CARTE ============ */}
       <section id="alacarte" className="sheet">
         <div className="sec-head">
-          <p className="sheet-no">SHEET 05 — À LA CARTE</p>
+          <p className="sheet-no">SHEET 06 &mdash; À LA CARTE</p>
           <h2>Individual services.</h2>
           <p>Standalone pricing for specific work outside the core tiers, ordered from foundational engineering to focused add-ons.</p>
         </div>
         <table className="sched">
-          <caption>Standard 2026 pricing. Ranges reflect scope; fixed quote confirmed at kick-off.</caption>
+          <caption>Standard 2026 pricing. Ranges reflect scope; fixed quote confirmed at kick-off. Accessibility audits, remediation and monitoring are priced in <a href="#accessibility">sheet 04</a>.</caption>
           <thead><tr><th scope="col">Service</th><th scope="col">Standard price</th></tr></thead>
           <tbody>
             <tr><td>Custom API development</td><td>£4,000 – £12,000</td></tr>
@@ -447,18 +627,16 @@ export default function PricingPage() {
             <tr><td>Multilingual auto-translation</td><td>£3,500</td></tr>
             <tr><td>Price monitoring dashboard</td><td>£3,500</td></tr>
             <tr><td>UX research &amp; audit</td><td>£3,500</td></tr>
-            <tr><td>Accessibility remediation</td><td>£3,000 – £8,000</td></tr>
             <tr><td>Inventory sync (multi-channel)</td><td>£3,000</td></tr>
             <tr><td>Review management automation</td><td>£2,500</td></tr>
-            <tr><td>WCAG 2.2 accessibility audit</td><td>£2,000</td></tr>
           </tbody>
         </table>
       </section>
 
-      {/* ============ 06 SUPPORT ============ */}
+      {/* ============ 07 SUPPORT ============ */}
       <section id="support" className="sheet">
         <div className="sec-head">
-          <p className="sheet-no">SHEET 06 — ONGOING SUPPORT</p>
+          <p className="sheet-no">SHEET 07 &mdash; ONGOING SUPPORT</p>
           <h2>Monthly retainers.</h2>
           <p>One ladder, whatever we built for you. Configurator clients add the <a href="#configurators">configurator uplift</a> on top.</p>
         </div>
@@ -506,12 +684,13 @@ export default function PricingPage() {
       <section className="close sheet" id="contact">
         <p className="sheet-no">NEXT STEP</p>
         <h2>Size it, then prove it.</h2>
-        <p>Most projects start with a Prototype Sprint. One to four weeks, £625 to £3,000 + VAT, credited in full against the build.</p>
+        <p>Most projects start with a Prototype Sprint. One to four weeks, £625 to £3,000 + VAT, credited in full against the build. Accessibility work starts with a free WCAG check &mdash; it costs nothing and commits you to nothing.</p>
         <div className="ctas">
           <a className="btn solid" href="/contact">Start a project</a>
+          <a className="btn" href="#accessibility">Free WCAG check</a>
           <a className="btn" href="#configurators">Read the sprint detail</a>
         </div>
-        <p className="terms">All prices are standard 2026 rates in GBP and exclude VAT. Ranges reflect project complexity; a fixed scope and fixed quote are confirmed at kick-off. Retainers are monthly and can be changed with 30 days&apos; notice.</p>
+        <p className="terms">All prices are standard 2026 rates in GBP and exclude VAT. Ranges reflect project complexity; a fixed scope and fixed quote are confirmed at kick-off. Retainers and accessibility monitoring are monthly and can be changed with 30 days&apos; notice. Accessibility audits are delivered against WCAG 2.2 AA; an audit reports conformance at a point in time and is not legal advice.</p>
       </section>
     </main>
   );
