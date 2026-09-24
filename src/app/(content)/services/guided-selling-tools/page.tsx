@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import { OG_DEFAULTS } from '@/lib/seo';
 import Link from 'next/link';
-import '../styles.css';
+import '../../configurators/styles.css';
 
 /* Service landing page targeting "guided selling tools" / "product
    recommendation engine development" and related commercial-intent queries.
-   Child of the /configurators hub. Carries Service, FAQPage and BreadcrumbList
+   Child of the /services hub (it moved from /configurators/; next.config.ts redirects the old URL). Carries Service, FAQPage and BreadcrumbList
    structured data. */
 
-const URL = 'https://blueprintcode.ai/configurators/guided-selling-tools';
+const URL = 'https://blueprintcode.ai/services/guided-selling-tools';
 const NAME = 'Guided selling & product recommendation tools';
 const DESC =
   'Custom guided selling and product recommendation tools that turn a large, technical catalogue into a short, confident choice — and show the customer why each product was recommended. Connected to your store, proven on a live retail business.';
@@ -89,7 +89,7 @@ export default function GuidedSellingPage() {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://blueprintcode.ai/' },
-      { '@type': 'ListItem', position: 2, name: 'Configurators', item: 'https://blueprintcode.ai/configurators' },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://blueprintcode.ai/services' },
       { '@type': 'ListItem', position: 3, name: NAME, item: URL },
     ],
   };
@@ -104,7 +104,7 @@ export default function GuidedSellingPage() {
         <nav className="crumbs" aria-label="Breadcrumb">
           <Link href="/">Home</Link>
           <span className="crumbs-sep" aria-hidden="true">/</span>
-          <Link href="/configurators">Configurators</Link>
+          <Link href="/services">Services</Link>
           <span className="crumbs-sep" aria-hidden="true">/</span>
           <span aria-current="page">Guided selling &amp; recommendations</span>
         </nav>
@@ -193,7 +193,7 @@ export default function GuidedSellingPage() {
               <p>Because the customer&rsquo;s answers are stored once in a shared profile, a needs finder, a selector and a compatibility check behave like one system that remembers them, rather than three tools asking the same questions. It&rsquo;s the same architecture behind the connected <Link href="/ppav-case-study">PP-AV showroom</Link>.</p>
             </div>
           </div>
-          <p className="levels-note">Build levels and pricing are on the <Link href="/configurators#levels">configurators overview</Link>; add-ons including an AI advisory layer sit on the <Link href="/pricing">schedule of rates</Link>. For products where finish and form drive the decision, see <Link href="/configurators/3d-product-configurator-development">3D product configurator development</Link>. To check an existing tool against WCAG 2.2 AA, see <Link href="/services/wcag-compliance-audit-pricing">WCAG compliance audit pricing</Link>.</p>
+          <p className="levels-note">Build levels and pricing are on the <Link href="/configurators#levels">configurators overview</Link>; add-ons including an AI advisory layer sit on the <Link href="/pricing">schedule of rates</Link>. For products where finish and form drive the decision, see <Link href="/services/3d-product-configurator-development">3D product configurator development</Link>. To check an existing tool against WCAG 2.2 AA, see <Link href="/services/wcag-compliance-audit-pricing">WCAG compliance audit pricing</Link>.</p>
         </div>
       </section>
 
@@ -223,7 +223,7 @@ export default function GuidedSellingPage() {
           <p>That question is usually the tool. Send it to us with your product and how you sell it today, and we&rsquo;ll tell you whether a selector, a recommendation engine or a compatibility check fits &mdash; and prove it in a fixed-price Prototype Sprint.</p>
           <div className="actions">
             <a className="button solid" href="/contact">Discuss guided selling</a>
-            <a className="button" href="/configurators/3d-product-configurator-development">3D configurator development</a>
+            <a className="button" href="/services/3d-product-configurator-development">3D configurator development</a>
           </div>
         </div>
       </section>

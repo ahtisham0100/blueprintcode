@@ -98,7 +98,7 @@ export default function ConfiguratorsPage() {
             </div>
           </div>
 
-          <p className="levels-note">Two of these have a dedicated guide: <a href="/configurators/3d-product-configurator-development">3D product configurator development</a> and <a href="/configurators/guided-selling-tools">guided selling &amp; product recommendation tools</a>.</p>
+          <p className="levels-note">Two of these have a dedicated guide: <a href="/services/3d-product-configurator-development">3D product configurator development</a> and <a href="/services/guided-selling-tools">guided selling &amp; product recommendation tools</a>.</p>
         </div>
       </section>
 

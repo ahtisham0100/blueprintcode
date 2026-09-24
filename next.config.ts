@@ -30,6 +30,23 @@ const nextConfig: NextConfig = {
     return [{ source: "/:path*", headers: securityHeaders }];
   },
 
+  async redirects() {
+    // Service pages moved from /configurators/* to /services/*. Permanent
+    // (308) so search engines transfer the old URLs' ranking to the new ones.
+    return [
+      {
+        source: "/configurators/3d-product-configurator-development",
+        destination: "/services/3d-product-configurator-development",
+        permanent: true,
+      },
+      {
+        source: "/configurators/guided-selling-tools",
+        destination: "/services/guided-selling-tools",
+        permanent: true,
+      },
+    ];
+  },
+
   async rewrites() {
     return {
       // Static demos live at public/<slug>/index.html and are served at /<slug>.

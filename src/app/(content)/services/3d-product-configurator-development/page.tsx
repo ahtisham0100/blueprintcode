@@ -1,14 +1,14 @@
 import type { Metadata } from 'next';
 import { OG_DEFAULTS } from '@/lib/seo';
 import Link from 'next/link';
-import '../styles.css';
+import '../../configurators/styles.css';
 
 /* Service landing page targeting "3D product configurator development" and
-   related commercial-intent queries. Child of the /configurators hub, so the
-   breadcrumb reads Home / Configurators / 3D product configurator development.
+   related commercial-intent queries. Child of the /services hub, so the
+   breadcrumb reads Home / Services / 3D product configurator development.
    Carries Service, FAQPage and BreadcrumbList structured data. */
 
-const URL = 'https://blueprintcode.ai/configurators/3d-product-configurator-development';
+const URL = 'https://blueprintcode.ai/services/3d-product-configurator-development';
 const NAME = '3D product configurator development';
 const DESC =
   'We build real-time 3D product configurators for the web: live materials, geometry and server-authoritative pricing, connected straight to your checkout. Prototype-first, and proven on our own live retail business.';
@@ -87,7 +87,7 @@ export default function ThreeDConfiguratorPage() {
     '@type': 'BreadcrumbList',
     itemListElement: [
       { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://blueprintcode.ai/' },
-      { '@type': 'ListItem', position: 2, name: 'Configurators', item: 'https://blueprintcode.ai/configurators' },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://blueprintcode.ai/services' },
       { '@type': 'ListItem', position: 3, name: NAME, item: URL },
     ],
   };
@@ -102,7 +102,7 @@ export default function ThreeDConfiguratorPage() {
         <nav className="crumbs" aria-label="Breadcrumb">
           <Link href="/">Home</Link>
           <span className="crumbs-sep" aria-hidden="true">/</span>
-          <Link href="/configurators">Configurators</Link>
+          <Link href="/services">Services</Link>
           <span className="crumbs-sep" aria-hidden="true">/</span>
           <span aria-current="page">3D configurator development</span>
         </nav>
@@ -209,7 +209,7 @@ export default function ThreeDConfiguratorPage() {
           <p>Tell us what you sell and the one thing customers can&rsquo;t picture before they buy. We&rsquo;ll tell you whether it needs real-time 3D, and prove the hardest part in a fixed-price Prototype Sprint before you commit.</p>
           <div className="actions">
             <a className="button solid" href="/contact">Discuss a 3D configurator</a>
-            <a className="button" href="/configurators/guided-selling-tools">Guided selling &amp; recommendations</a>
+            <a className="button" href="/services/guided-selling-tools">Guided selling &amp; recommendations</a>
           </div>
         </div>
       </section>

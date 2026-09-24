@@ -28,14 +28,14 @@ const SERVICES = [
     summary: 'WCAG 2.2 and 2.1 AA audits, code-level remediation and monitoring, mapped to the ADA, AODA, SEBI, the European Accessibility Act and UK law.',
   },
   {
-    href: '/configurators/3d-product-configurator-development',
+    href: '/services/3d-product-configurator-development',
     label: 'SIGNATURE SERVICE',
     name: '3D product configurators',
     rate: 'from £2,500',
     summary: 'Real-time 3D configurators that let a customer build, see and price a bespoke product before they buy.',
   },
   {
-    href: '/configurators/guided-selling-tools',
+    href: '/services/guided-selling-tools',
     label: 'COMMERCE TOOLS',
     name: 'Guided selling tools',
     rate: 'from £2,500',

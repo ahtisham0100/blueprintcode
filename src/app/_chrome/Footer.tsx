@@ -33,8 +33,8 @@ export default function Footer() {
         <div className="foot-col">
           <span className="foot-col-key">SERVICES</span>
           <a href="/services/wcag-compliance-audit-pricing">WCAG compliance audit pricing</a>
-          <a href="/configurators/3d-product-configurator-development">3D product configurators</a>
-          <a href="/configurators/guided-selling-tools">Guided selling tools</a>
+          <a href="/services/3d-product-configurator-development">3D product configurators</a>
+          <a href="/services/guided-selling-tools">Guided selling tools</a>
           <a href="/pricing">Schedule of rates →</a>
         </div>
         <div className="foot-col">
