@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_DEFAULTS } from '@/lib/seo';
 import Link from 'next/link';
 import '../styles.css';
 
@@ -23,6 +24,7 @@ export const metadata: Metadata = {
   description: META_DESC,
   alternates: { canonical: URL },
   openGraph: {
+    ...OG_DEFAULTS,
     title: `${NAME} — Blueprint Code AI`,
     description:
       'Real-time 3D configurators that sell: live materials and geometry, server-side pricing, checkout hand-off. Built browser-native, no plugins.',
@@ -177,7 +179,7 @@ export default function ThreeDConfiguratorPage() {
               <p>Every build opens with a <Link href="/configurators#sprint">Prototype Sprint</Link>: we prove the single hardest thing about your product &mdash; the reflection, the modular join, the awkward pricing rule &mdash; in a working browser scene before anyone commits to the full build.</p>
             </div>
           </div>
-          <p className="levels-note">Pricing follows the three build levels on the <Link href="/configurators#levels">configurators overview</Link>, and add-ons such as AR, cinematic rendering and an AI recommendation layer sit on the <Link href="/pricing">schedule of rates</Link>. See a real one in the <Link href="/ppav-case-study">PP-AV case study</Link>.</p>
+          <p className="levels-note">Pricing follows the three build levels on the <Link href="/configurators#levels">configurators overview</Link>, and add-ons such as AR, cinematic rendering and an AI recommendation layer sit on the <Link href="/pricing">schedule of rates</Link>. See a real one in the <Link href="/ppav-case-study">PP-AV case study</Link>. Configurators are among the hardest interfaces to make accessible &mdash; our <Link href="/services/wcag-compliance-audit-pricing">WCAG compliance audit</Link> covers them end to end.</p>
         </div>
       </section>
 

@@ -10,6 +10,7 @@ import {
   SPECIALITIES,
   organizationJsonLd,
   webSiteJsonLd,
+  OG_DEFAULTS,
 } from '@/lib/seo';
 
 export const metadata: Metadata = {
@@ -19,7 +20,7 @@ export const metadata: Metadata = {
   description: TAGLINE,
   keywords: [...SPECIALITIES],
   openGraph: {
-    siteName: SITE_NAME,
+    ...OG_DEFAULTS,
     title: 'Blueprint Code AI — Services & Pricing 2026',
     description: TAGLINE,
     type: 'website',
@@ -35,6 +36,9 @@ export const metadata: Metadata = {
       { url: '/apple-touch-icon.png', sizes: '180x180', type: 'image/png' },
     ],
   },
+  // Square icon as the share image, so the small card — not summary_large_image,
+  // which would stretch it. Revisit if a 1200x630 OG artwork is added.
+  twitter: { card: 'summary' },
   manifest: '/site.webmanifest',
 };
 
@@ -44,7 +48,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en">
+    <html lang="en-GB">
       <head>
         {/* When rendered inside an iframe (e.g. embedded in the demo viewer),
             flag the document so the global header/footer are hidden — the embed

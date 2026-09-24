@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_DEFAULTS } from '@/lib/seo';
 import './styles.css';
 import { DemoViewerProvider, DemoTrigger } from '../../_demo-viewer/DemoViewer';
 
@@ -8,6 +9,7 @@ export const metadata: Metadata = {
     'Four working prototypes: a made-to-order shorts builder, a charm bracelet builder, a commerce operations suite and an engine fit architecture.',
   alternates: { canonical: 'https://blueprintcode.ai/prototypes' },
   openGraph: {
+    ...OG_DEFAULTS,
     title: 'Prototype register — Blueprint Code AI',
     description:
       'Working prototypes you can try. Each one solved the hardest part of a brief before anything else was built.',

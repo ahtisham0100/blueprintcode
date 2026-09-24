@@ -259,7 +259,7 @@ export default function Home() {
                 <span className="from"><a href="/pricing">£5,000 — £120,000+ / SEE SCHEDULE</a></span>
               </div>
             </div>
-            <p className="ladder-note">Every configurator build starts with a Prototype Sprint. Full published rates, add-ons and retainers are on the <a href="/pricing">schedule of rates</a>.</p>
+            <p className="ladder-note">Every configurator build starts with a Prototype Sprint. Full published rates, add-ons and retainers are on the <a href="/pricing">schedule of rates</a>; accessibility audits have their own <a href="/services/wcag-compliance-audit-pricing">WCAG compliance audit pricing</a>.</p>
           </div>
         </section>
 

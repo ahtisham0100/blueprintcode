@@ -1,0 +1,157 @@
+/* WCAG compliance audit pricing — page-specific styles. Loads after site.css
+   and the pricing stylesheet (whose .band / .row2 / .item / .btn it reuses). */
+
+/* An accessibility page should pass its own audit: the house --ink-3 sits at
+   ~3.9:1 on the ground colour, under the 4.5:1 WCAG asks of small text. Nudge
+   it up to ~5.3:1 for everything inside this page's <main>. */
+main.wcag{--ink-3:#7391B3}
+
+/* breadcrumb trail — same look as the configurator child pages. Reset the bare
+   `nav` rules site.css applies to the header menu on narrow screens. */
+.crumbs{display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-family:var(--data);font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-3);margin-bottom:18px;position:static;padding:0;border:0;background:none;flex-direction:row}
+.crumbs a{color:var(--ink-3);font-size:11px;letter-spacing:.12em;padding:0;border:0}
+.crumbs a:hover{color:var(--ink)}
+.crumbs [aria-current="page"]{color:var(--ink)}
+.crumbs-sep{color:var(--line)}
+
+.wcag .title-block{padding-bottom:40px}
+
+/* ---------- document layout: sidebar + body ---------- */
+.doc{display:grid;grid-template-columns:232px minmax(0,1fr);gap:56px;align-items:start;border-top:1px solid var(--line-soft)}
+.doc-body{min-width:0}
+.doc-body > section{scroll-margin-top:88px}
+.doc-body > section:first-child{border-top:0;padding-top:56px}
+.doc-body h2{max-width:24ch}
+.doc-body p{margin-bottom:16px}
+.doc-body .item p.note,.doc-body .item > p{margin-bottom:16px}
+.doc-body .item p.note{margin-bottom:0}
+.inline{border-bottom:1px solid var(--line)}
+.inline:hover{border-bottom-color:var(--ink)}
+.doc-body p a:not(.btn){border-bottom:1px solid var(--line)}
+.doc-body p a:not(.btn):hover{border-bottom-color:var(--ink)}
+
+/* answer-first lead: the sentence a reader (or an answer engine) quotes */
+.answer{font-size:17.5px;line-height:1.7;color:var(--ink);border-left:2px solid var(--ink);padding-left:22px;max-width:70ch;margin:8px 0 26px}
+.answer b{font-weight:600}
+.fine{font-family:var(--data);font-size:12px;letter-spacing:.03em;line-height:1.7;color:var(--ink-3);margin-top:22px}
+.sub{font-size:27px;margin:48px 0 12px}
+
+/* ---------- sidebar ---------- */
+.toc{position:sticky;top:96px;padding:56px 0 24px;max-height:calc(100vh - 96px);overflow-y:auto}
+.toc-title{margin-bottom:14px}
+.toc-toggle{display:none}
+.toc-list{list-style:none;border-top:1px solid var(--line)}
+.toc-list li{padding:0;border-bottom:1px solid var(--line-soft);font-size:14px}
+.toc-list li::before{display:none}
+.toc-list a{display:flex;gap:12px;align-items:baseline;padding:9px 0 9px 12px;color:var(--ink-2);font-size:13.5px;line-height:1.4;border-left:2px solid transparent;margin-left:-2px}
+.toc-list a:hover{color:var(--ink)}
+.toc-list a[aria-current]{color:var(--ink);border-left-color:var(--ink)}
+.toc-no{font-family:var(--data);font-size:11px;letter-spacing:.08em;color:var(--ink-3);flex:none}
+.toc-list a[aria-current] .toc-no{color:var(--ink)}
+
+/* ---------- at a glance ---------- */
+.facts{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.facts div{padding:16px 20px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.facts dt{font-family:var(--data);font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--ink-3);margin-bottom:4px}
+.facts dd{color:var(--ink);font-size:14.5px;line-height:1.5}
+
+/* ---------- reference tables ---------- */
+.tscroll{overflow-x:auto;margin:26px 0 8px}
+.tscroll:focus-visible{outline-offset:4px}
+.mtable{width:100%;border-collapse:collapse;border-top:1px solid var(--ink);min-width:560px}
+.mtable caption{text-align:left;font-family:var(--data);font-size:12px;letter-spacing:.08em;color:var(--ink-3);padding-bottom:14px}
+.mtable thead th{font-family:var(--data);font-size:11px;letter-spacing:.14em;color:var(--ink-3);font-weight:400;text-align:left;padding:12px 16px 12px 0;border-bottom:1px solid var(--line);text-transform:uppercase;background:none}
+.mtable tbody th,.mtable td{padding:12px 16px 12px 0;border-bottom:1px solid var(--line-soft);font-size:14px;line-height:1.5;text-align:left;vertical-align:top}
+.mtable tbody th{color:var(--ink);font-weight:450;min-width:150px}
+.mtable td{color:var(--ink-2)}
+.mtable tr:hover td,.mtable tr:hover th{background:rgba(234,241,248,.035)}
+.checklist td:nth-child(2){font-family:var(--data);font-size:12.5px;color:var(--ink);white-space:nowrap}
+.checklist tr.grp th{font-family:var(--data);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--ink);padding-top:22px;border-bottom:1px solid var(--line)}
+
+/* ---------- framework cards, levels, POUR ---------- */
+.fw-grid,.pour{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line);border-left:1px solid var(--line);margin-top:30px}
+.fw,.pour > div{padding:26px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.fw h3,.pour h3{font-size:24px;margin:10px 0 10px}
+.fw p,.pour p{font-size:14.5px;color:var(--ink-2);margin:0}
+
+.lv-grid{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--line);border-left:1px solid var(--line)}
+.lv{padding:26px 24px;border-right:1px solid var(--line);border-bottom:1px solid var(--line)}
+.lv-tag{font-family:var(--display);font-size:54px;line-height:1;color:var(--ink);display:block}
+.lv h3{font-size:22px;margin:12px 0 10px}
+.lv p{font-size:14px;color:var(--ink-2);margin:0}
+.lv-key{background:var(--ink)}
+.lv-key .lv-tag,.lv-key h3{color:var(--ground)}
+.lv-key p{color:rgba(11,26,46,.85)}
+
+.ticks b{color:var(--ink);font-weight:500}
+
+/* ---------- process steps ---------- */
+.steps{list-style:none;counter-reset:step;border-top:1px solid var(--line)}
+.steps li{counter-increment:step;display:grid;grid-template-columns:56px 180px 1fr;gap:0 20px;padding:18px 0;border-bottom:1px solid var(--line-soft);font-size:14.5px}
+.steps li::before{content:counter(step,decimal-leading-zero);position:static;width:auto;height:auto;background:none;font-family:var(--data);font-size:12px;letter-spacing:.1em;color:var(--ink-3);padding-top:3px}
+.steps b{font-family:var(--display);font-size:22px;font-weight:400;color:var(--ink);letter-spacing:.02em;line-height:1.1}
+.steps span{color:var(--ink-2)}
+
+/* ---------- certification ---------- */
+.cert{border-top:1px solid var(--line);margin-top:8px}
+.cert .item > p{color:var(--ink-2)}
+
+/* ---------- FAQ ---------- */
+.faq-list{border-top:1px solid var(--line);margin-top:10px}
+.faq{padding:24px 0;border-bottom:1px solid var(--line-soft)}
+.faq h3{font-size:24px;margin-bottom:10px;max-width:40ch}
+.faq-a{font-size:15px;color:var(--ink-2);max-width:72ch;margin:0}
+
+/* ---------- byline ---------- */
+.byline{font-family:var(--data);font-size:12px;letter-spacing:.04em;line-height:1.8;color:var(--ink-3);margin-top:22px;max-width:none}
+.byline a{color:var(--ink-2);border-bottom:1px solid var(--line)}
+.byline a:hover{color:var(--ink);border-bottom-color:var(--ink)}
+
+/* links inside reference tables */
+.mtable th a,.mtable td a{border-bottom:1px solid var(--line)}
+.mtable th a:hover,.mtable td a:hover{border-bottom-color:var(--ink)}
+
+/* ---------- sources ---------- */
+.sources{list-style:none;counter-reset:src;border-top:1px solid var(--line);margin-top:10px}
+.sources li{counter-increment:src;display:grid;grid-template-columns:44px 1fr auto;gap:0 16px;align-items:baseline;padding:12px 0;border-bottom:1px solid var(--line-soft);font-size:14.5px}
+.sources li::before{content:counter(src,decimal-leading-zero);font-family:var(--data);font-size:11px;letter-spacing:.1em;color:var(--ink-3)}
+.sources a{color:var(--ink);border-bottom:1px solid var(--line);justify-self:start}
+.sources a:hover{border-bottom-color:var(--ink)}
+.sources span{font-family:var(--data);font-size:11.5px;letter-spacing:.04em;color:var(--ink-3);text-align:right}
+
+/* ---------- close ---------- */
+.doc-body .close{padding:88px 0}
+
+/* ---------- plan cards inside the narrower body column ---------- */
+.doc-body .rate{font-size:30px}
+.doc-body .item h4{font-size:23px}
+.wcag .item > p,.wcag .note{color:var(--ink-2)}
+
+/* ---------- responsive ---------- */
+@media (max-width:1180px){
+  .doc{grid-template-columns:200px minmax(0,1fr);gap:40px}
+  .doc-body .row2 .item-top{flex-direction:column;gap:6px}
+}
+@media (max-width:980px){
+  .doc{grid-template-columns:1fr;gap:0}
+  /* Sidebar becomes a sticky "On this page" bar under the site header. */
+  .toc{top:72px;z-index:10;background:var(--ground);padding:0;max-height:none;overflow:visible;border-bottom:1px solid var(--line);margin:0 calc(var(--gut) * -1);padding:0 var(--gut)}
+  .toc-title{display:none}
+  .toc-toggle{display:flex;justify-content:space-between;align-items:center;width:100%;background:none;border:0;color:var(--ink);font-family:var(--data);font-size:12px;letter-spacing:.14em;text-transform:uppercase;padding:14px 0;cursor:pointer}
+  .toc-list{display:none;max-height:60vh;overflow-y:auto;padding-bottom:12px}
+  .toc[data-open] .toc-list{display:block}
+  .doc-body > section{scroll-margin-top:130px}
+  .lv-grid{grid-template-columns:1fr}
+}
+@media (max-width:760px){
+  .facts,.fw-grid,.pour{grid-template-columns:1fr}
+  .steps li{grid-template-columns:44px 1fr}
+  .steps span{grid-column:2}
+  .sources li{grid-template-columns:36px 1fr}
+  .sources span{grid-column:2;text-align:left;margin-top:4px}
+  .answer{font-size:16.5px;padding-left:16px}
+}
+@media print{
+  .toc{display:none}
+  .doc{grid-template-columns:1fr}
+}

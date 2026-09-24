@@ -31,6 +31,27 @@ export const CONTACT_EMAIL = 'hello@blueprintcode.ai';
  */
 export const ORG_PROFILES: readonly string[] = [];
 
+/** Default share image: the 512px app icon (square, so it suits the `summary`
+ *  card). Swap for a 1200×630 artwork when one exists — only this line changes. */
+export const OG_IMAGE = {
+  url: `${SITE_URL}/android-chrome-512x512.png`,
+  width: 512,
+  height: 512,
+  alt: 'Blueprint Code AI',
+};
+
+/**
+ * Open Graph fields every page should carry. Next.js merges metadata
+ * shallowly: a page that sets its own `openGraph` object REPLACES the root
+ * layout's entirely, silently dropping siteName, locale and the share image.
+ * Spread this first in every page-level `openGraph` so they survive.
+ */
+export const OG_DEFAULTS = {
+  siteName: 'Blueprint Code AI',
+  locale: 'en_GB',
+  images: [OG_IMAGE],
+};
+
 /** One-line positioning statement, reused as a metadata + schema description. */
 export const TAGLINE =
   'Blueprint Code AI creates interactive sales and operational tools that simplify complex decisions for customers and staff.';

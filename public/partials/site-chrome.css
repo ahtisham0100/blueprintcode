@@ -154,7 +154,8 @@
 .bpc-foot-links {
   display: flex;
   align-items: baseline;
-  gap: 18px;
+  flex-wrap: wrap;
+  gap: 12px 18px;
   margin-top: 18px;
   padding-top: 16px;
   border-top: 1px solid var(--bpc-line-soft);

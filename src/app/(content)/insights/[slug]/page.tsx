@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_DEFAULTS } from '@/lib/seo';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import '../styles.css';
@@ -47,6 +48,7 @@ export async function generateMetadata({
     description: note.desc,
     alternates: { canonical: url },
     openGraph: {
+      ...OG_DEFAULTS,
       title,
       description: note.desc,
       type: 'article',

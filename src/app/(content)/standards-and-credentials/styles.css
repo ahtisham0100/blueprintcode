@@ -122,3 +122,8 @@ p:last-child { margin-bottom: 0; }
   section, .close { padding: 60px 0; }
   .cred-grid { grid-template-columns: 1fr; }
 }
+
+/* link out to the WCAG audit service, under the accessibility points */
+.pt-more { font-family: var(--data); font-size: 12.5px; letter-spacing: .04em; line-height: 1.8; color: var(--ink-3); margin-top: 22px; max-width: 70ch; }
+.pt-more a { color: var(--ink); border-bottom: 1px solid var(--line); }
+.pt-more a:hover { border-bottom-color: var(--ink); }

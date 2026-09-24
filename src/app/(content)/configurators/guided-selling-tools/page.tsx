@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_DEFAULTS } from '@/lib/seo';
 import Link from 'next/link';
 import '../styles.css';
 
@@ -25,6 +26,7 @@ export const metadata: Metadata = {
   description: META_DESC,
   alternates: { canonical: URL },
   openGraph: {
+    ...OG_DEFAULTS,
     title: TITLE,
     description:
       'Guided selectors and recommendation engines that turn a big catalogue into a short, reasoned shortlist — and hand off to checkout.',
@@ -191,7 +193,7 @@ export default function GuidedSellingPage() {
               <p>Because the customer&rsquo;s answers are stored once in a shared profile, a needs finder, a selector and a compatibility check behave like one system that remembers them, rather than three tools asking the same questions. It&rsquo;s the same architecture behind the connected <Link href="/ppav-case-study">PP-AV showroom</Link>.</p>
             </div>
           </div>
-          <p className="levels-note">Build levels and pricing are on the <Link href="/configurators#levels">configurators overview</Link>; add-ons including an AI advisory layer sit on the <Link href="/pricing">schedule of rates</Link>. For products where finish and form drive the decision, see <Link href="/configurators/3d-product-configurator-development">3D product configurator development</Link>.</p>
+          <p className="levels-note">Build levels and pricing are on the <Link href="/configurators#levels">configurators overview</Link>; add-ons including an AI advisory layer sit on the <Link href="/pricing">schedule of rates</Link>. For products where finish and form drive the decision, see <Link href="/configurators/3d-product-configurator-development">3D product configurator development</Link>. To check an existing tool against WCAG 2.2 AA, see <Link href="/services/wcag-compliance-audit-pricing">WCAG compliance audit pricing</Link>.</p>
         </div>
       </section>
 

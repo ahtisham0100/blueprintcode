@@ -137,11 +137,11 @@ footer .sheet {
 
 /* footer reference grid — the field-notes + trust links, drawn as labelled
    columns in the same drafting-strip grid pattern as the .tb title block above.
-   Each column is a section: a label (FIELD NOTES / TRUST) with its links stacked
+   Each column is a section: a label (SERVICES / FIELD NOTES / TRUST) with its links stacked
    in a single column below. The centre rule lines up with the .tb centre rule. */
 .foot-index {
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   font-family: var(--data);
   font-size: 11px;
   letter-spacing: .12em;

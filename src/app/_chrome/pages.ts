@@ -70,6 +70,19 @@ const PAGES: Record<string, ChromeMeta> = {
     metaVal: '2026 — SHEETS 01/07',
     current: 'pricing',
   },
+  '/services': {
+    label: 'SERVICES',
+    doc: 'SERVICES INDEX',
+    metaKey: 'ISSUE',
+    metaVal: '2026 — PUBLISHED RATES',
+  },
+  '/services/wcag-compliance-audit-pricing': {
+    label: 'WCAG AUDIT PRICING',
+    doc: 'WCAG COMPLIANCE AUDIT PRICING',
+    metaKey: 'STANDARD',
+    metaVal: 'WCAG 2.2 AA — ADA · AODA · SEBI',
+    current: 'pricing',
+  },
   '/prototypes': {
     label: 'PROTOTYPE REGISTER',
     doc: 'PROTOTYPE REGISTER',

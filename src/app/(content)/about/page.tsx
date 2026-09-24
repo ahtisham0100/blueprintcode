@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_DEFAULTS } from '@/lib/seo';
 import Image from 'next/image';
 import './styles.css';
 import { AMAZON_STORE_URL } from '@/lib/links';
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
     'Blueprint Code AI builds the sales tools its founder needed. Born inside a real home-cinema retail business, not invented as a service category.',
   alternates: { canonical: 'https://blueprintcode.ai/about' },
   openGraph: {
+    ...OG_DEFAULTS,
     title: 'About Blueprint Code AI — configurator developers, UK',
     description:
       'We approached this as a business owner who needed better sales tools, not as an agency inventing a service category from theory.',

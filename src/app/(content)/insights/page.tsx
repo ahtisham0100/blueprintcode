@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_DEFAULTS } from '@/lib/seo';
 import Link from 'next/link';
 import './styles.css';
 import { NOTES, authorPerson } from './notes';
@@ -10,6 +11,7 @@ export const metadata: Metadata = {
     'Practical field notes on product configurators, digital showrooms, ecommerce systems and commercial prototyping, from a working studio.',
   alternates: { canonical: 'https://blueprintcode.ai/insights' },
   openGraph: {
+    ...OG_DEFAULTS,
     title: 'Field notes — Blueprint Code AI',
     description:
       'Configurator costs, 2D versus 3D, digital showrooms, and lessons from running a multi-market retailer.',

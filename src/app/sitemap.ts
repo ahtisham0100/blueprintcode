@@ -53,6 +53,8 @@ const STATIC_ROUTES: {
   { path: 'prototypes', sources: ['(content)/prototypes/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },
   { path: 'ppav-case-study', sources: ['(content)/ppav-case-study/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },
   { path: 'pricing', sources: ['(content)/pricing/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },
+  { path: 'services', sources: ['(content)/services/page.tsx'], changeFrequency: 'monthly', priority: 0.7 },
+  { path: 'services/wcag-compliance-audit-pricing', sources: ['(content)/services/wcag-compliance-audit-pricing/page.tsx', '../lib/accessibilityPlans.ts'], changeFrequency: 'monthly', priority: 0.8 },
   { path: 'insights', sources: ['(content)/insights/page.tsx', '(content)/insights/notes.tsx'], changeFrequency: 'weekly', priority: 0.7 },
   { path: 'about', sources: ['(content)/about/page.tsx'], changeFrequency: 'yearly', priority: 0.6 },
   { path: 'contact', sources: ['contact/page.tsx'], changeFrequency: 'yearly', priority: 0.5 },

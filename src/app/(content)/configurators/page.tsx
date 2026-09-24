@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_DEFAULTS } from '@/lib/seo';
 import './styles.css';
 
 export const metadata: Metadata = {
@@ -7,6 +8,7 @@ export const metadata: Metadata = {
     'Guided selectors, specification builders, real-time 3D configurators and quote engines — built as commercial tools, not visual novelties.',
   alternates: { canonical: 'https://blueprintcode.ai/configurators' },
   openGraph: {
+    ...OG_DEFAULTS,
     title: 'Configurators & commerce tools — Blueprint Code AI',
     description:
       'Product logic wearing an interface. Six tool types, one connected system, proven on a trading business.',

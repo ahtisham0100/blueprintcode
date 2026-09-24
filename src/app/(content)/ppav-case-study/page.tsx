@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_DEFAULTS } from '@/lib/seo';
 import './styles.css';
 import MediaLauncher from '../../_chrome/MediaLauncher';
 import { AMAZON_STORE_URL } from '@/lib/links';
@@ -9,6 +10,7 @@ export const metadata: Metadata = {
     'How a specialist AV retailer became a digital showroom: five connected sales tools, real-time 3D configuration and multi-channel commerce.',
   alternates: { canonical: 'https://blueprintcode.ai/ppav-case-study' },
   openGraph: {
+    ...OG_DEFAULTS,
     title: 'PP-AV digital showroom — Blueprint Code AI case study',
     description:
       'A specialist retailer, rebuilt as a digital showroom. Five connected tools, eight Amazon marketplaces, eBay Global.',

@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { OG_DEFAULTS } from '@/lib/seo';
 import './styles.css';
 import rawData from './data.json';
 
@@ -47,6 +48,7 @@ export const metadata: Metadata = {
   description: data.meta.description,
   alternates: { canonical: data.meta.canonical },
   openGraph: {
+    ...OG_DEFAULTS,
     title: data.meta.title,
     description: data.meta.description,
     type: 'website',
@@ -119,6 +121,11 @@ export default function StandardsPage() {
               </div>
             ))}
           </div>
+          <p className="pt-more">
+            We also audit and fix other people&rsquo;s sites against WCAG 2.2 AA &mdash; see{' '}
+            <a href="/services/wcag-compliance-audit-pricing">WCAG compliance audit pricing</a>{' '}
+            for ADA, AODA, SEBI and EAA coverage.
+          </p>
         </div>
       </section>
 
