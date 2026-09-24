@@ -44,6 +44,27 @@ const nextConfig: NextConfig = {
         destination: "/services/guided-selling-tools",
         permanent: true,
       },
+      // The site used to be static HTML served at /<page>.html and
+      // /index.html. Google still has those URLs; 308 them to the clean routes
+      // instead of letting them 404.
+      { source: "/index.html", destination: "/", permanent: true },
+      { source: "/index", destination: "/", permanent: true },
+      {
+        source: "/:page(about|configurators|insights|ppav-case-study|pricing|prototypes|contact)\\.html",
+        destination: "/:page",
+        permanent: true,
+      },
+      // Renamed demos.
+      {
+        source: "/no1-premium-muay-thai-customiser",
+        destination: "/premium-muay-thai-customiser",
+        permanent: true,
+      },
+      {
+        source: "/signet-ring-configurator-demo-3",
+        destination: "/signet-ring-configurator",
+        permanent: true,
+      },
     ];
   },
 

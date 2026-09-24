@@ -2,12 +2,10 @@ User-agent: *
 Allow: /
 
 # Admin is private — not linked, not in the sitemap, and its pages send a
-# noindex robots meta. Disallowed here as an explicit extra signal.
+# noindex robots meta. Disallowed here as an explicit extra signal. Every other
+# page on the site, including the static demos at /<slug>, is meant to be
+# crawled and indexed.
 Disallow: /admin
-
-# Note: the static demos at /<slug> (public/<slug>/index.html) are intentionally
-# NOT disallowed here. They each carry a <meta name="robots" content="noindex">
-# (see scripts/inject-noindex.mjs), and a page must stay crawlable for that
-# noindex to be seen and honoured. Blocking them here would hide the noindex.
+Disallow: /api/
 
 Sitemap: https://blueprintcode.ai/sitemap.xml

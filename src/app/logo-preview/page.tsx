@@ -9,7 +9,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Logo preview — Blueprint Code AI',
   description: 'Preview of the transparent Blueprint Code AI logo on light, dark and checkerboard backgrounds.',
-  robots: { index: false, follow: false },
+  alternates: { canonical: 'https://blueprintcode.ai/logo-preview' },
 };
 
 const LOGO = '/blueprintcode-ai.png';

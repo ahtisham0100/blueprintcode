@@ -31,26 +31,6 @@ function validSlug(slug: string): boolean {
 // watermark as the committed demo pages, so it appears on /<slug> too.
 const WATERMARK_TAG = '<script src="/partials/watermark.js" defer></script>';
 
-// Robots noindex: demos are prototypes served at /<slug>, not marketing pages,
-// so they must stay out of search results. Mirrors scripts/inject-noindex.mjs,
-// which stamps the same tag into the committed demo pages at build time.
-const ROBOTS_TAG = '<meta name="robots" content="noindex, nofollow">';
-
-/** Insert the robots noindex meta into an uploaded HTML document if it has a
- *  <head> and no robots meta yet. Non-HTML uploads and pages that already carry
- *  a robots meta pass through unchanged. */
-function injectNoindex(html: string): string {
-  if (/<meta[^>]+name=["']robots["']/i.test(html)) return html; // already present
-  const headOpen = html.match(/<head\b[^>]*>/i);
-  if (headOpen) {
-    const at = headOpen.index! + headOpen[0].length;
-    return html.slice(0, at) + ROBOTS_TAG + html.slice(at);
-  }
-  const closeIdx = html.toLowerCase().indexOf('</head>');
-  if (closeIdx !== -1) return html.slice(0, closeIdx) + ROBOTS_TAG + html.slice(closeIdx);
-  return html; // no <head> — not a full page; leave it alone
-}
-
 /** Insert the watermark <script> into an uploaded HTML document if it isn't
  *  already present. Non-HTML uploads (or already-watermarked ones) pass through
  *  unchanged. */
@@ -147,10 +127,10 @@ export async function POST(req: Request) {
     );
   }
 
-  // Stamp the shared watermark and a robots noindex into the uploaded HTML
-  // before committing, so an admin-uploaded demo carries both — matching the
-  // committed demos.
-  const injected = injectNoindex(injectWatermark(decoded));
+  // Stamp the shared watermark into the uploaded HTML before committing, so an
+  // admin-uploaded demo carries it — matching the committed demos. Demos are
+  // deliberately left indexable (no robots noindex), like every public page.
+  const injected = injectWatermark(decoded);
   const contentToCommit =
     injected === decoded ? contentBase64 : Buffer.from(injected, 'utf8').toString('base64');
 

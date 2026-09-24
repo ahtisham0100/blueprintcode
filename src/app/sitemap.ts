@@ -1,5 +1,5 @@
 import type { MetadataRoute } from 'next';
-import { statSync } from 'node:fs';
+import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
 import { SITE_URL } from '@/lib/seo';
 import { NOTES } from './(content)/insights/notes';
@@ -14,9 +14,11 @@ import { NOTES } from './(content)/insights/notes';
  *   2. The /insights/<slug> article URLs are generated from NOTES, the same
  *      source the pages render from, so a new field note can never be left out
  *      of the sitemap.
+ *   3. The static demos in public/ are discovered from disk, so a demo added by
+ *      the /admin uploader is listed on the next deploy with no edit here.
  *
- * Utility routes that set robots noindex (/admin, /logo-preview, /demo-viewer)
- * are intentionally absent — a sitemap should list only indexable pages.
+ * Every public page is indexable. Only /admin (noindex, and disallowed in
+ * robots.txt) is intentionally absent.
  */
 
 // Next runs the build from the project root, so source files resolve under here.
@@ -59,7 +61,54 @@ const STATIC_ROUTES: {
   { path: 'about', sources: ['(content)/about/page.tsx'], changeFrequency: 'yearly', priority: 0.6 },
   { path: 'contact', sources: ['contact/page.tsx'], changeFrequency: 'yearly', priority: 0.5 },
   { path: 'standards-and-credentials', sources: ['(content)/standards-and-credentials/page.tsx', '(content)/standards-and-credentials/data.json'], changeFrequency: 'yearly', priority: 0.5 },
+  { path: 'demo-viewer', sources: ['demo-viewer/page.tsx', 'demo-viewer/DemoPlayground.tsx'], changeFrequency: 'yearly', priority: 0.3 },
+  { path: 'logo-preview', sources: ['logo-preview/page.tsx'], changeFrequency: 'yearly', priority: 0.2 },
 ];
+
+const PUBLIC_DIR = path.join(process.cwd(), 'public');
+
+/** Top-level public/ folders that hold no standalone pages: shared partials
+ *  (fragments, not documents), static assets, and a scratch upload that isn't
+ *  a real demo. */
+const NON_PAGE_DIRS = new Set(['partials', 'assets', 'media', 'bpc-capabilities-demo-test-delte']);
+
+/** Every standalone HTML page under public/, as sitemap entries.
+ *  public/<slug>/index.html is served at /<slug> (next.config.ts rewrites);
+ *  any other file is served at its own path. A page whose rel=canonical names
+ *  a different URL is a near-duplicate and is left for its canonical to cover —
+ *  listing it would contradict the canonical and trigger a GSC warning. */
+function staticDemoEntries(): MetadataRoute.Sitemap {
+  const entries: MetadataRoute.Sitemap = [];
+  const walk = (dir: string) => {
+    for (const entry of readdirSync(dir, { withFileTypes: true })) {
+      const full = path.join(dir, entry.name);
+      const rel = path.relative(PUBLIC_DIR, full).split(path.sep).join('/');
+      if (entry.isDirectory()) {
+        if (!NON_PAGE_DIRS.has(rel)) walk(full);
+        continue;
+      }
+      if (!entry.name.toLowerCase().endsWith('.html')) continue;
+
+      const url = /^[^/]+\/index\.html$/.test(rel)
+        ? `${SITE_URL}/${rel.slice(0, -'/index.html'.length)}`
+        : `${SITE_URL}/${rel.split('/').map(encodeURIComponent).join('/')}`;
+
+      const html = readFileSync(full, 'utf8');
+      const canonical = html.match(/<link[^>]+rel=["']canonical["'][^>]*href=["']([^"']+)["']/i)?.[1];
+      if (canonical && canonical.replace(/\/$/, '') !== url) continue;
+      if (/<meta[^>]+name=["']robots["'][^>]*noindex/i.test(html)) continue;
+
+      entries.push({
+        url,
+        lastModified: statSync(full).mtime,
+        changeFrequency: 'monthly',
+        priority: 0.4,
+      });
+    }
+  };
+  walk(PUBLIC_DIR);
+  return entries;
+}
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const staticEntries = STATIC_ROUTES.map((r) => ({
@@ -79,5 +128,5 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...noteEntries];
+  return [...staticEntries, ...noteEntries, ...staticDemoEntries()];
 }

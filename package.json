@@ -3,12 +3,11 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "next dev",
+    "dev": "next dev -p 5000",
     "build": "next build",
-    "start": "next start",
+    "start": "next start -p 5000",
     "build:chrome": "node scripts/inject-chrome.mjs",
-    "build:noindex": "node scripts/inject-noindex.mjs",
-    "prebuild": "node scripts/inject-chrome.mjs && node scripts/inject-noindex.mjs"
+    "prebuild": "node scripts/inject-chrome.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
