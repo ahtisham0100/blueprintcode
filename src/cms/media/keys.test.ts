@@ -70,6 +70,15 @@ describe('isValidObjectKey', () => {
     expect(isValidObjectKey(`${MEDIA_PREFIX}/muay-thai-hero-a1b2c3d4.png`)).toBe(true);
     expect(isValidObjectKey(`${MEDIA_PREFIX}/muay-thai-hero-a1b2c3d4-800x600.webp`)).toBe(true);
   });
+
+  it('accepts the per-document UUID folder that browser (client) uploads get', () => {
+    const uuid = '94cb048f-7380-41b5-9100-d0b06eecc4e4';
+    expect(isValidObjectKey(`${MEDIA_PREFIX}/${uuid}/hero-clean-5e6a733d.png`)).toBe(true);
+    expect(isValidObjectKey(`${MEDIA_PREFIX}/${uuid}/hero-clean-5e6a733d-400x240.webp`)).toBe(true);
+    // but not arbitrary folders
+    expect(isValidObjectKey(`${MEDIA_PREFIX}/anything/hero-clean-5e6a733d.png`)).toBe(false);
+    expect(isValidObjectKey(`${MEDIA_PREFIX}/${uuid}/${uuid}/x.png`)).toBe(false);
+  });
   it('rejects traversal, absolute paths, backslashes, control chars and empties', () => {
     for (const k of ['', '/', '../x.png', `${MEDIA_PREFIX}/../users`, `${MEDIA_PREFIX}/a\\b.png`, `${MEDIA_PREFIX}/a b.png`, `${MEDIA_PREFIX}/a\u0000.png`, 'other/a.png', `${MEDIA_PREFIX}/`, `${MEDIA_PREFIX}/no-extension`, `${MEDIA_PREFIX}/UPPER.PNG`])
       expect(isValidObjectKey(k), JSON.stringify(k)).toBe(false);

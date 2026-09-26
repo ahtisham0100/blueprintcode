@@ -64,9 +64,13 @@ export function buildStoredFilename(originalName: string, mime: string, rand: ()
   return `${slugifyBasename(originalName)}-${rand()}.${extensionFor(mime, originalName)}`;
 }
 
-/** Exactly the shape we write, nothing else: no traversal, no spaces, no
- *  uppercase, always under the media prefix, always with an extension. */
-const OBJECT_KEY = new RegExp(`^${MEDIA_PREFIX}/[a-z0-9]+(?:-[a-z0-9]+)*\\.[a-z0-9]{1,5}$`);
+/** Exactly the shapes we write, nothing else: no traversal, no spaces, no
+ *  uppercase, always under the media prefix, always with an extension.
+ *  Browser (client) uploads get a per-document UUID folder from Payload's
+ *  cloud-storage plugin (`media/<uuid>/<file>`); server-side uploads and
+ *  their size variants are flat (`media/<file>`). */
+const UUID = '[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}';
+const OBJECT_KEY = new RegExp(`^${MEDIA_PREFIX}/(?:${UUID}/)?[a-z0-9]+(?:-[a-z0-9]+)*\\.[a-z0-9]{1,5}$`);
 
 export function isValidObjectKey(key: string): boolean {
   return OBJECT_KEY.test(key);

@@ -1,5 +1,6 @@
 import * as migration_20260926_110249_init from './20260926_110249_init';
 import * as migration_20260926_111418_add_media from './20260926_111418_add_media';
+import * as migration_20260926_115836_media_storage_fields from './20260926_115836_media_storage_fields';
 
 export const migrations = [
   {
@@ -10,6 +11,11 @@ export const migrations = [
   {
     up: migration_20260926_111418_add_media.up,
     down: migration_20260926_111418_add_media.down,
-    name: '20260926_111418_add_media'
+    name: '20260926_111418_add_media',
+  },
+  {
+    up: migration_20260926_115836_media_storage_fields.up,
+    down: migration_20260926_115836_media_storage_fields.down,
+    name: '20260926_115836_media_storage_fields'
   },
 ];

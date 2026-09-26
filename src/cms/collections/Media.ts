@@ -1,8 +1,11 @@
 /* Media library: images, video, PDFs and 3D models, stored in R2 (see
    media/storage.ts) and served from MEDIA_PUBLIC_URL (media/urls.ts). */
 
-import type { Access, CollectionBeforeOperationHook, CollectionConfig } from 'payload';
-import { ALLOWED_MIME_TYPES, buildStoredFilename, maxBytesFor } from '../media/keys';
+import type { Access, CollectionConfig } from 'payload';
+import { createMoveClientUploadHook, renameUploadHook } from '../media/hooks';
+import { ALLOWED_MIME_TYPES, MEDIA_PREFIX } from '../media/keys';
+import { r2MoveObject } from '../media/storage';
+import { mediaFileUrl } from '../media/urls';
 import { isAdmin } from './Users';
 
 type CmsUser = { role?: string } | null;
@@ -13,19 +16,17 @@ export const canManageMedia: Access = ({ req }) => {
   return role === 'admin' || role === 'writer';
 };
 
-/** Give every upload its immutable stored name and enforce the size cap. */
-const renameUpload: CollectionBeforeOperationHook = ({ args, operation, req }) => {
-  if (operation === 'create' || operation === 'update') {
-    const file = req.file;
-    if (file?.name) {
-      if (file.size > maxBytesFor(file.mimetype)) {
-        throw new Error(`File is too large (limit ${Math.round(maxBytesFor(file.mimetype) / 1024 / 1024)} MB for ${file.mimetype}).`);
-      }
-      file.name = buildStoredFilename(file.name, file.mimetype);
-    }
-  }
-  return args;
-};
+type ThumbDoc = { filename?: string | null; mimeType?: string | null; sizes?: { thumb?: { filename?: string | null } | null } | null };
+
+/** Admin-panel thumbnail, built from the stored filenames rather than the
+ *  size URLs (which Payload has not populated yet when it asks). Payload's
+ *  default would point at its own /api/…/file route, which does not exist
+ *  for off-server storage. Non-images get no thumbnail (icon instead). */
+export function adminThumbnailUrl({ doc }: { doc: ThumbDoc }): string | null {
+  if (!doc.mimeType?.startsWith('image/')) return null;
+  const filename = doc.sizes?.thumb?.filename || doc.filename;
+  return filename ? mediaFileUrl(`${MEDIA_PREFIX}/${filename}`) : null;
+}
 
 export const Media: CollectionConfig = {
   slug: 'media',
@@ -49,12 +50,13 @@ export const Media: CollectionConfig = {
       { name: 'medium', width: 800, height: undefined, formatOptions: { format: 'webp', options: { quality: 82 } } },
       { name: 'large', width: 1600, height: undefined, formatOptions: { format: 'webp', options: { quality: 82 } } },
     ],
-    adminThumbnail: 'thumb',
+    adminThumbnail: adminThumbnailUrl,
     focalPoint: true,
     crop: true,
   },
   hooks: {
-    beforeOperation: [renameUpload],
+    beforeOperation: [renameUploadHook],
+    afterChange: [createMoveClientUploadHook(r2MoveObject)],
   },
   fields: [
     {
