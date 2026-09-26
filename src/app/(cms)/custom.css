@@ -177,3 +177,32 @@ h1 { font-size: 2.4rem; line-height: 1; }
 }
 ::-webkit-scrollbar-thumb { background: #EAF1F8 padding-box; border: 3px solid transparent; border-radius: 2px; min-height: 48px; }
 ::-webkit-scrollbar-thumb:hover { background-color: #FFFFFF; }
+
+/* Media gallery (components/MediaGallery.client.tsx) ------------------------ */
+.bpc-gallery { padding: 0 var(--gutter-h) 3rem; position: relative; }
+.bpc-gallery__head { display: flex; align-items: center; gap: 1rem; flex-wrap: wrap; padding: 1.5rem 0 1rem; }
+.bpc-gallery__head h1 { margin: 0; }
+.bpc-gallery__count { font-family: var(--bpc-data); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bpc-ink-3); }
+.bpc-gallery__search { flex: 1 1 240px; max-width: 420px; margin-left: auto; background: var(--bpc-ground-2); border: 1px solid var(--bpc-line-soft); color: var(--bpc-ink); padding: 0.55rem 0.8rem; border-radius: 2px; font-family: var(--bpc-body); }
+.bpc-gallery__search:focus { outline: none; border-color: var(--bpc-ink-3); }
+.bpc-gallery__uploads { list-style: none; margin: 0 0 1rem; padding: 0; font-family: var(--bpc-data); font-size: 12px; color: var(--bpc-ink-2); }
+.bpc-gallery__uploads li { padding: 0.35rem 0.6rem; border-left: 2px solid var(--bpc-line); margin-bottom: 0.25rem; }
+.bpc-gallery__uploads li.is-done { border-left-color: var(--bpc-blue); }
+.bpc-gallery__uploads li.is-error { border-left-color: #e5484d; }
+.bpc-gallery__empty { color: var(--bpc-ink-3); padding: 3rem 0; text-align: center; font-family: var(--bpc-data); font-size: 12px; letter-spacing: 0.08em; text-transform: uppercase; }
+.bpc-gallery__grid { list-style: none; margin: 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 14px; }
+.bpc-card { background: var(--bpc-ground-2); border: 1px solid var(--bpc-line-soft); border-radius: 2px; display: flex; flex-direction: column; min-width: 0; overflow: hidden; transition: border-color .15s ease, transform .15s ease, box-shadow .15s ease; }
+.bpc-card:hover { border-color: var(--bpc-ink-3); transform: translateY(-2px); box-shadow: 0 10px 30px -18px rgba(0,0,0,.8); }
+.bpc-card:hover .bpc-card__media img { transform: scale(1.04); }
+.bpc-card:hover .bpc-chip { border-color: var(--bpc-ink); color: var(--bpc-ink); }
+.bpc-card__media { display: block; aspect-ratio: 5 / 3; background: var(--bpc-ground-2); background-image: linear-gradient(to right, rgba(29,53,82,.5) 1px, transparent 1px), linear-gradient(to bottom, rgba(29,53,82,.5) 1px, transparent 1px); background-size: 24px 24px; overflow: hidden; }
+.bpc-card__media img { width: 100%; height: 100%; object-fit: contain; display: block; transition: transform .2s ease; }
+.bpc-card__type { display: grid; place-items: center; height: 100%; font-family: var(--bpc-display); font-size: 2rem; color: var(--bpc-ink-3); letter-spacing: 0.05em; }
+.bpc-card__body { padding: 0.7rem 0.8rem 0.8rem; display: grid; gap: 0.3rem; }
+.bpc-card__name { color: var(--bpc-ink); text-decoration: none; font-family: var(--bpc-body); font-size: 13px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.bpc-card__name:hover { text-decoration: underline; }
+.bpc-card__meta { font-family: var(--bpc-data); font-size: 11px; color: var(--bpc-ink-3); letter-spacing: 0.04em; }
+.bpc-chip { justify-self: start; margin-top: 0.2rem; font-family: var(--bpc-data); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bpc-ink-2); background: var(--bpc-ground-3); border: 1px solid var(--bpc-line); border-radius: 2px; padding: 0.3rem 0.55rem; cursor: pointer; }
+.bpc-chip:hover { border-color: var(--bpc-ink); color: var(--bpc-ink); }
+.bpc-gallery__pages { display: flex; align-items: center; gap: 1rem; justify-content: center; padding: 1.5rem 0; font-family: var(--bpc-data); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bpc-ink-3); }
+.bpc-gallery__drop { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: rgba(11, 26, 46, 0.85); border: 2px dashed var(--bpc-ink); font-family: var(--bpc-display); font-size: 3rem; color: var(--bpc-ink); letter-spacing: 0.05em; pointer-events: none; }

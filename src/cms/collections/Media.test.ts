@@ -16,6 +16,11 @@ describe('Media collection', () => {
     expect(upload.mimeTypes).toEqual(ALLOWED_MIME_TYPES);
   });
 
+  it('replaces the table list view with the gallery', () => {
+    const views = (Media.admin?.components as { views?: { list?: { Component?: string } } })?.views;
+    expect(views?.list?.Component).toBe('/cms/components/MediaGalleryView#MediaGalleryView');
+  });
+
   it('produces thumb / medium / large WebP variants and uses the thumb in the admin', () => {
     const sizes = upload.imageSizes as { name: string; width: number; formatOptions?: { format: string } }[];
     expect(sizes.map((s) => [s.name, s.width])).toEqual([

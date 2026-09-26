@@ -44,6 +44,10 @@ export const Media: CollectionConfig = {
     useAsTitle: 'alt',
     defaultColumns: ['filename', 'alt', 'mimeType', 'filesize', 'updatedAt'],
     description: 'Images, video, PDFs and 3D models. Copy a file’s URL to use it in demo HTML.',
+    components: {
+      // Gallery instead of the table (components/MediaGalleryView.tsx).
+      views: { list: { Component: '/cms/components/MediaGalleryView#MediaGalleryView' } },
+    },
   },
   access: {
     create: canManageMedia,
