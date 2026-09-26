@@ -20,8 +20,10 @@ const MIME_EXTENSIONS: Record<string, string> = {
   'video/mp4': 'mp4',
   'video/webm': 'webm',
   'application/pdf': 'pdf',
+  // GLB only: .gltf is plain JSON, which Payload's content sniffing cannot
+  // identify (it falls back to text/plain and rejects it). GLB is the
+  // recommended delivery format for 3D anyway.
   'model/gltf-binary': 'glb',
-  'model/gltf+json': 'gltf',
 };
 
 export const ALLOWED_MIME_TYPES: string[] = Object.keys(MIME_EXTENSIONS);
