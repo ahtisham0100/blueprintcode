@@ -7,5 +7,6 @@ Allow: /
 # crawled and indexed.
 Disallow: /admin
 Disallow: /api/
+Disallow: /cms
 
 Sitemap: https://blueprintcode.ai/sitemap.xml
