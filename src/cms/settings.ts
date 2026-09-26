@@ -13,5 +13,5 @@ export const CMS_DB_SCHEMA = 'cms';
 
 /** Origin of the admin host, from CMS_SERVER_URL, without a trailing slash. */
 export function cmsServerUrl(env: Record<string, string | undefined> = process.env): string {
-  return (env.CMS_SERVER_URL ?? 'http://admin.localhost:5000').replace(/\/$/, '');
+  return (env.CMS_SERVER_URL ?? 'http://localhost:5000').replace(/\/$/, '');
 }

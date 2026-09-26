@@ -22,6 +22,6 @@ describe('cms settings', () => {
 
   it('derives the admin origin from CMS_SERVER_URL with a local default', () => {
     expect(cmsServerUrl({ CMS_SERVER_URL: 'https://admin.blueprintcode.ai/' })).toBe('https://admin.blueprintcode.ai');
-    expect(cmsServerUrl({})).toBe('http://admin.localhost:5000');
+    expect(cmsServerUrl({})).toBe('http://localhost:5000');
   });
 });
