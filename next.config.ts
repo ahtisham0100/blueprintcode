@@ -1,4 +1,5 @@
 import type { NextConfig } from "next";
+import { withPayload } from "@payloadcms/next/withPayload";
 
 // Security response headers, applied to every route. A crawl flagged all four
 // as missing. None of them are ranking factors — this is ordinary hardening,
@@ -86,4 +87,6 @@ const nextConfig: NextConfig = {
   },
 };
 
-export default nextConfig;
+// withPayload adds the bundler settings the Payload admin at /cms needs; it
+// leaves the headers/redirects/rewrites above untouched.
+export default withPayload(nextConfig);

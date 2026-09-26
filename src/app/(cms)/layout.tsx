@@ -1,19 +1,33 @@
-import type { Metadata } from 'next';
+/* Root layout for everything under /cms: Payload's admin shell. Adapted from
+   Payload's generated (payload)/layout.tsx; only the import paths differ
+   because the admin lives at /cms instead of /admin. Served on the admin host
+   only (src/proxy.ts). */
+import config from '@payload-config';
+import '@payloadcms/next/css';
+import type { ServerFunctionClient } from 'payload';
+import { handleServerFunctions, RootLayout } from '@payloadcms/next/layouts';
+import React from 'react';
 
-/* Root layout for the CMS at /cms — served only on the admin host (see
-   src/proxy.ts). Deliberately minimal and separate from the public site's
-   root layout in (site)/: no header, footer, analytics or site JSON-LD, and
-   Payload will supply its own admin shell inside it. */
+import { importMap } from './cms/importMap.js';
+import './custom.css';
 
-export const metadata: Metadata = {
-  title: 'BPC CMS',
-  robots: { index: false, follow: false },
+type Args = {
+  children: React.ReactNode;
 };
 
-export default function CmsRootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <body>{children}</body>
-    </html>
-  );
-}
+const serverFunction: ServerFunctionClient = async function (args) {
+  'use server';
+  return handleServerFunctions({
+    ...args,
+    config,
+    importMap,
+  });
+};
+
+const Layout = ({ children }: Args) => (
+  <RootLayout config={config} importMap={importMap} serverFunction={serverFunction}>
+    {children}
+  </RootLayout>
+);
+
+export default Layout;

@@ -11,8 +11,10 @@
  * to GitHub) is deliberately untouched until the CMS replaces it.
  */
 
-export const CMS_PATH = '/cms';
-export const CMS_API_PATH = '/api/cms';
+import { CMS_ROUTES } from '@/cms/settings';
+
+export const CMS_PATH: string = CMS_ROUTES.admin;
+export const CMS_API_PATH: string = CMS_ROUTES.api;
 
 export type AdminDecision =
   | { kind: 'next' }
