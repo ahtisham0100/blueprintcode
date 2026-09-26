@@ -5,7 +5,9 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { buildConfig } from 'payload';
 import sharp from 'sharp';
 import { CMS_BRAND } from './cms/branding';
+import { Media } from './cms/collections/Media';
 import { Users } from './cms/collections/Users';
+import { mediaStoragePlugin } from './cms/media/storage';
 import { CMS_COOKIE_PREFIX, CMS_DB_SCHEMA, CMS_ROUTES, cmsServerUrl } from './cms/settings';
 
 /* Payload config. Mounted at /cms (+ /api/cms), which src/proxy.ts exposes on
@@ -44,16 +46,22 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users],
+  collections: [Users, Media],
+  plugins: [mediaStoragePlugin()],
+  // Multipart limit for uploads that do pass through the server (client
+  // uploads go straight to R2). Matches maxBytesFor() in media/keys.ts.
+  upload: { limits: { fileSize: 200 * 1024 * 1024 } },
   editor: lexicalEditor(),
   secret: process.env.PAYLOAD_SECRET ?? '',
   typescript: { outputFile: path.resolve(dirname, 'payload-types.ts') },
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL ?? '' },
     schemaName: CMS_DB_SCHEMA,
-    // Reviewed, ordered migration files (scripts/cms-db.ts). Dev uses
-    // Drizzle push against the Neon dev branch; production only ever runs
-    // these files, on deploy, and skips the ones already applied.
+    // One workflow everywhere: schema changes are reviewed migration files
+    // (npm run migrate:create <name>, then npm run migrate), applied on
+    // deploy by prebuild and skipped once recorded. Dev-mode push is off so
+    // the dev branch never drifts from what production will run.
+    push: false,
     migrationDir: path.resolve(dirname, 'cms/migrations'),
   }),
   sharp,

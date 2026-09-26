@@ -1,5 +1,6 @@
 import type { NextConfig } from "next";
 import { withPayload } from "@payloadcms/next/withPayload";
+import { mediaHostForRewrite } from "./src/cms/media/urls";
 
 // Security response headers, applied to every route. A crawl flagged all four
 // as missing. None of them are ranking factors — this is ordinary hardening,
@@ -70,7 +71,14 @@ const nextConfig: NextConfig = {
   },
 
   async rewrites() {
+    // media.<domain>/<key> → the /media route, for every path on that host.
+    // Host-matched so it never touches the main site; absent in local dev,
+    // where MEDIA_PUBLIC_URL points at localhost:5000/media directly.
+    const mediaHost = mediaHostForRewrite();
     return {
+      beforeFiles: mediaHost
+        ? [{ source: "/:path*", has: [{ type: "host", value: mediaHost }], destination: "/media/:path*" }]
+        : [],
       // Static demos live at public/<slug>/index.html and are served at /<slug>.
       // This single wildcard replaces the old per-demo list: any /<slug> that
       // isn't a real route or file falls through to its index.html, so adding a
