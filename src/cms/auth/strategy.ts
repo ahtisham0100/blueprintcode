@@ -4,7 +4,7 @@
    their cookie expires. */
 
 import type { AuthStrategy } from 'payload';
-import { readSessionCookie, verifySession } from './session';
+import { readSessionCookie, sessionSecret, verifySession } from './session';
 
 export const googleSessionStrategy: AuthStrategy = {
   name: 'google-session',
@@ -12,7 +12,8 @@ export const googleSessionStrategy: AuthStrategy = {
     const token = readSessionCookie(headers);
     if (!token) return { user: null };
 
-    const session = await verifySession(token, payload.secret);
+    // Not payload.secret — see sessionSecret().
+    const session = await verifySession(token, sessionSecret());
     if (!session) return { user: null };
 
     try {

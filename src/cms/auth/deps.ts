@@ -7,6 +7,7 @@ import { getPayload } from 'payload';
 import type { AllowlistedUser } from './authorize';
 import { exchangeCodeForIdToken, verifyGoogleIdToken } from './google';
 import type { OAuthDeps } from './handlers';
+import { sessionSecret } from './session';
 
 function required(name: string): string {
   const v = process.env[name];
@@ -21,7 +22,7 @@ export function oauthDeps(): OAuthDeps {
     clientSecret: required('GOOGLE_CLIENT_SECRET'),
     serverUrl,
     allowedDomain: process.env.CMS_ALLOWED_DOMAIN ?? 'blueprintcode.ai',
-    secret: required('PAYLOAD_SECRET'),
+    secret: sessionSecret(),
     secure: serverUrl.startsWith('https://'),
     exchangeCode: (args) => exchangeCodeForIdToken(args),
     verifyIdToken: (idToken, opts) => verifyGoogleIdToken(idToken, opts),

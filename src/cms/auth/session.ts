@@ -21,6 +21,16 @@ const AUDIENCE = 'bpc-cms-session';
 
 export type Session = { userId: string; email: string };
 
+/** The key both the OAuth callback (signing) and the auth strategy
+ *  (verifying) must use. Deliberately the raw env var, NOT `payload.secret`:
+ *  Payload derives that as a truncated sha256 of the same value, and using
+ *  one on each side silently rejects every session. */
+export function sessionSecret(env: Record<string, string | undefined> = process.env): string {
+  const s = env.PAYLOAD_SECRET;
+  if (!s) throw new Error('PAYLOAD_SECRET is not set');
+  return s;
+}
+
 function key(secret: string) {
   return new TextEncoder().encode(secret);
 }
