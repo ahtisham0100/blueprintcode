@@ -4,6 +4,7 @@ import { postgresAdapter } from '@payloadcms/db-postgres';
 import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { buildConfig } from 'payload';
 import sharp from 'sharp';
+import { CMS_BRAND } from './cms/branding';
 import { Users } from './cms/collections/Users';
 import { CMS_COOKIE_PREFIX, CMS_DB_SCHEMA, CMS_ROUTES, cmsServerUrl } from './cms/settings';
 
@@ -24,12 +25,23 @@ export default buildConfig({
   csrf: [serverURL],
   admin: {
     user: Users.slug,
+    // Blueprint Code look: dark-only, brand mark, site fonts + palette via
+    // the CSS variables in app/(cms)/custom.css.
+    theme: CMS_BRAND.theme,
+    meta: {
+      titleSuffix: CMS_BRAND.titleSuffix,
+      icons: [{ rel: 'icon', type: 'image/png', url: CMS_BRAND.iconSrc }],
+    },
     importMap: {
       baseDir: dirname,
       importMapFile: path.resolve(dirname, 'app/(cms)/cms/importMap.js'),
     },
     components: {
       beforeLogin: ['/cms/components/GoogleSignIn#GoogleSignIn'],
+      graphics: {
+        Logo: '/cms/components/Logo#Logo',
+        Icon: '/cms/components/Icon#Icon',
+      },
     },
   },
   collections: [Users],

@@ -66,4 +66,10 @@ describe('readSessionCookie', () => {
     expect(readSessionCookie(new Headers())).toBeNull();
     expect(readSessionCookie(new Headers({ cookie: 'foo=1' }))).toBeNull();
   });
+
+  it('skips a blank duplicate (same name, different path) and takes the real one', () => {
+    const h = new Headers({ cookie: `${SESSION_COOKIE}=; foo=1; ${SESSION_COOKIE}=abc.def.ghi` });
+    expect(readSessionCookie(h)).toBe('abc.def.ghi');
+    expect(readSessionCookie(new Headers({ cookie: `${SESSION_COOKIE}=` }))).toBeNull();
+  });
 });

@@ -1,8 +1,12 @@
+import { Icon as Icon_0a600d9af3dc55b21579d9d4738c4649 } from '../../../cms/components/Icon'
+import { Logo as Logo_eff45f4666ccfb98ed72245053f5e77e } from '../../../cms/components/Logo'
+import { GoogleSignIn as GoogleSignIn_1e2d2f05706344a16fa80078f60a14ca } from '../../../cms/components/GoogleSignIn'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
-import { GoogleSignIn as GoogleSignIn_a3f1e2d4c5b6978012345678abcdef01 } from '../../../cms/components/GoogleSignIn'
 
 /** @type import('payload').ImportMap */
 export const importMap = {
-  '@payloadcms/next/rsc#CollectionCards': CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1,
-  '/cms/components/GoogleSignIn#GoogleSignIn': GoogleSignIn_a3f1e2d4c5b6978012345678abcdef01,
+  "/cms/components/Icon#Icon": Icon_0a600d9af3dc55b21579d9d4738c4649,
+  "/cms/components/Logo#Logo": Logo_eff45f4666ccfb98ed72245053f5e77e,
+  "/cms/components/GoogleSignIn#GoogleSignIn": GoogleSignIn_1e2d2f05706344a16fa80078f60a14ca,
+  "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
 }

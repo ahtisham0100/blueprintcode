@@ -75,13 +75,18 @@ export function sessionCookie(token: string, opts: { secure: boolean; maxAge: nu
   return `${SESSION_COOKIE}=${token}; Path=/; HttpOnly; SameSite=Lax; Max-Age=${opts.maxAge}${opts.secure ? '; Secure' : ''}`;
 }
 
+/** First NON-EMPTY value for `name`. A browser can hold two cookies with the
+ *  same name on different paths (e.g. an expired/blank one on /cms next to
+ *  the real one on /) and sends both; a blank value is never a session. */
 export function readCookie(headers: Headers, name: string): string | null {
   const raw = headers.get('cookie');
   if (!raw) return null;
   for (const part of raw.split(';')) {
     const eq = part.indexOf('=');
     if (eq === -1) continue;
-    if (part.slice(0, eq).trim() === name) return part.slice(eq + 1).trim();
+    if (part.slice(0, eq).trim() !== name) continue;
+    const value = part.slice(eq + 1).trim();
+    if (value) return value;
   }
   return null;
 }

@@ -1,1 +1,176 @@
-/* Admin-panel overrides. Keep tiny; Payload's own styles do the work. */
+/* =============================================================================
+   Blueprint Code theme for the Payload admin.
+
+   Payload styles everything from CSS variables on html[data-theme], so the
+   whole panel is re-skinned here by remapping its palette, fonts and radii
+   to the public site's blueprint tokens (see (site)/chrome.css): navy ground,
+   ink text, drafting-grid lines, Bebas Neue display, DM Mono data, squared
+   corners. Class-level rules below are kept to a minimum and only touch
+   stable Payload classes (.nav, .app-header, .login, .btn, .card, .table).
+   The admin is dark-only (admin.theme in payload.config.ts).
+   ============================================================================= */
+
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;450;600&display=swap');
+
+:root,
+html[data-theme='dark'] {
+  /* Blueprint tokens */
+  --bpc-ground: #0B1A2E;
+  --bpc-ground-2: #102340;
+  --bpc-ground-3: #162D4F;
+  --bpc-line-soft: #1D3552;
+  --bpc-line: #2C4A6E;
+  --bpc-ink-3: #5F7C9E;
+  --bpc-ink-2: #A9BBD1;
+  --bpc-ink: #EAF1F8;
+  --bpc-cyan: #22d3ee;
+  --bpc-blue: #3b82f6;
+  --bpc-display: 'Bebas Neue', Impact, sans-serif;
+  --bpc-data: 'DM Mono', ui-monospace, Menlo, Consolas, monospace;
+  --bpc-body: 'IBM Plex Sans', 'Segoe UI', system-ui, sans-serif;
+
+  /* Payload's neutral scale, dark end = ground, light end = ink. The dark
+     theme maps elevation-0 -> base-900 … elevation-1000 -> base-0. */
+  --color-base-0: #FFFFFF;
+  --color-base-50: #F4F8FC;
+  --color-base-100: var(--bpc-ink);
+  --color-base-150: #D9E3EF;
+  --color-base-200: #C4D2E3;
+  --color-base-250: var(--bpc-ink-2);
+  --color-base-300: #8FA5C0;
+  --color-base-350: #7A92B0;
+  --color-base-400: #6B85A5;
+  --color-base-450: var(--bpc-ink-3);
+  --color-base-500: #4E6A8C;
+  --color-base-550: #3F5A7C;
+  --color-base-600: #35507A;
+  --color-base-650: var(--bpc-line);
+  --color-base-700: #24406A;
+  --color-base-750: var(--bpc-line-soft);
+  --color-base-800: var(--bpc-ground-3);
+  --color-base-850: var(--bpc-ground-2);
+  --color-base-900: var(--bpc-ground);
+  --color-base-950: #081426;
+  --color-base-1000: #050D1A;
+
+  /* Accent (links, focus, "success") = site blue/cyan instead of Payload teal. */
+  --color-success-500: var(--bpc-blue);
+  --color-success-550: #2f6fe0;
+  --color-success-600: #2a62c8;
+  --color-success-400: #5b9bf8;
+  --color-success-300: #8ab8fb;
+  --color-blue-500: var(--bpc-blue);
+  --color-blue-600: #2a62c8;
+
+  --font-body: var(--bpc-body);
+  --font-mono: var(--bpc-data);
+  --style-radius-s: 2px;
+  --style-radius-m: 2px;
+  --style-radius-l: 4px;
+}
+
+html[data-theme='dark'] {
+  --theme-bg: var(--bpc-ground);
+  --theme-input-bg: var(--bpc-ground-2);
+  --theme-text: var(--bpc-ink);
+  --theme-border-color: var(--bpc-line-soft);
+  --theme-overlay: rgba(4, 12, 24, 0.8);
+  color-scheme: dark;
+}
+
+/* Canvas: faint drafting grid, as on the site. */
+body {
+  background-color: var(--bpc-ground);
+  background-image:
+    linear-gradient(to right, rgba(29, 53, 82, 0.35) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(29, 53, 82, 0.35) 1px, transparent 1px);
+  background-size: 24px 24px;
+  font-family: var(--bpc-body);
+}
+
+/* Type: Bebas Neue for page titles, DM Mono tracking caps for labels. */
+h1, .doc-header__title, .collections__label, .list-header h1 {
+  font-family: var(--bpc-display) !important;
+  font-weight: 400 !important;
+  letter-spacing: 0.03em;
+}
+h1 { font-size: 2.4rem; line-height: 1; }
+.collections__label { font-size: 1.9rem; color: var(--bpc-ink); }
+.dashboard__label,
+.card__title,
+.nav-group__toggle,
+.field-label,
+.table thead th,
+.step-nav,
+.app-header__step-nav,
+.pill,
+.btn--style-pill,
+.btn--style-secondary {
+  font-family: var(--bpc-data) !important;
+  font-size: 11px !important;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.dashboard__label { color: var(--bpc-ink-3); }
+
+/* Nav + header: flat navy sheets with hairline rules, no drop shadows. */
+.nav, .app-header, .nav__wrap {
+  background: var(--bpc-ground);
+  box-shadow: none;
+}
+.nav { border-right: 1px solid var(--bpc-line-soft); }
+.app-header { border-bottom: 1px solid var(--bpc-line-soft); }
+.nav__link, .nav a {
+  font-family: var(--bpc-data);
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--bpc-ink-3);
+}
+.nav__link:hover, .nav a:hover, .nav__link--active, .nav a[aria-current] { color: var(--bpc-ink); }
+.bpc-icon { display: block; border-radius: 2px; }
+
+/* Brand mark (Logo component): same as the site header. */
+.bpc-logo { display: inline-flex; align-items: baseline; gap: 9px; }
+.bpc-logo b { font-family: var(--bpc-display); font-size: 32px; font-weight: 400; color: var(--bpc-ink); letter-spacing: 0.02em; }
+.bpc-logo span { font-family: var(--bpc-data); font-size: 11px; letter-spacing: 0.14em; color: var(--bpc-ink-3); }
+
+/* Cards, tables, inputs: squared, hairline, ground-2 surfaces. */
+.card, .table, .collection-list__wrap, .list-controls, .field-type input, .field-type textarea, .field-type select, .react-select__control {
+  border-radius: 2px !important;
+}
+.card { background: var(--bpc-ground-2); border: 1px solid var(--bpc-line-soft); box-shadow: none; }
+.card:hover { border-color: var(--bpc-line); }
+.table thead th { color: var(--bpc-ink-3); border-bottom: 1px solid var(--bpc-line); }
+.table td { border-bottom: 1px solid var(--bpc-line-soft); }
+
+/* Buttons: primary = ink plate on navy (site's .button), like the scrollbar thumb. */
+.btn { border-radius: 2px; font-family: var(--bpc-data); letter-spacing: 0.06em; }
+.btn--style-primary { background: var(--bpc-ink); color: var(--bpc-ground); border: 1px solid var(--bpc-ink); }
+.btn--style-primary:hover { background: #FFFFFF; color: var(--bpc-ground); }
+.btn--style-secondary { border-color: var(--bpc-line); color: var(--bpc-ink-2); }
+.btn--style-secondary:hover { border-color: var(--bpc-ink); color: var(--bpc-ink); }
+.btn--style-pill { background: var(--bpc-ground-3); border: 1px solid var(--bpc-line); color: var(--bpc-ink); }
+.btn--style-pill:hover { border-color: var(--bpc-ink); }
+.card__title { color: var(--bpc-ink); }
+
+/* Login: centred sheet with the brand mark above the Google button. */
+.login { background: var(--bpc-ground); }
+.login__brand { margin-bottom: 1.5rem; }
+.login .btn--style-primary { width: 100%; }
+
+/* Scrollbar, lifted from (site)/chrome.css. */
+@supports not selector(::-webkit-scrollbar) {
+  * { scrollbar-color: #EAF1F8 #0B1A2E; scrollbar-width: thin; }
+}
+::-webkit-scrollbar { width: 12px; height: 12px; }
+::-webkit-scrollbar-track {
+  background-color: #0B1A2E;
+  background-image: repeating-linear-gradient(to bottom, #1D3552 0 1px, transparent 1px 24px);
+  background-size: 4px 100%;
+  background-repeat: no-repeat;
+  background-position: right center;
+  box-shadow: inset 1px 0 0 #1D3552;
+}
+::-webkit-scrollbar-thumb { background: #EAF1F8 padding-box; border: 3px solid transparent; border-radius: 2px; min-height: 48px; }
+::-webkit-scrollbar-thumb:hover { background-color: #FFFFFF; }
