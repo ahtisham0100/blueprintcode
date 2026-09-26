@@ -51,6 +51,10 @@ export default buildConfig({
   db: postgresAdapter({
     pool: { connectionString: process.env.DATABASE_URL ?? '' },
     schemaName: CMS_DB_SCHEMA,
+    // Reviewed, ordered migration files (scripts/cms-db.ts). Dev uses
+    // Drizzle push against the Neon dev branch; production only ever runs
+    // these files, on deploy, and skips the ones already applied.
+    migrationDir: path.resolve(dirname, 'cms/migrations'),
   }),
   sharp,
 });
