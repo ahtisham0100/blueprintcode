@@ -40,6 +40,7 @@ export default buildConfig({
     },
     components: {
       beforeLogin: ['/cms/components/GoogleSignIn#GoogleSignIn'],
+      actions: ['/cms/components/LogoutAction#LogoutAction'],
       graphics: {
         Logo: '/cms/components/Logo#Logo',
         Icon: '/cms/components/Icon#Icon',
