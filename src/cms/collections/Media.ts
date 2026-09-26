@@ -16,16 +16,26 @@ export const canManageMedia: Access = ({ req }) => {
   return role === 'admin' || role === 'writer';
 };
 
-type ThumbDoc = { filename?: string | null; mimeType?: string | null; sizes?: { thumb?: { filename?: string | null } | null } | null };
+type ThumbDoc = {
+  filename?: string | null;
+  mimeType?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
+  sizes?: { thumb?: { filename?: string | null } | null } | null;
+};
 
 /** Admin-panel thumbnail, built from the stored filenames rather than the
  *  size URLs (which Payload has not populated yet when it asks). Payload's
  *  default would point at its own /api/…/file route, which does not exist
- *  for off-server storage. Non-images get no thumbnail (icon instead). */
+ *  for off-server storage. The folder is prefix + the per-document
+ *  _objectKey that browser uploads get (media/hooks.ts). Non-images get no
+ *  thumbnail (icon instead). */
 export function adminThumbnailUrl({ doc }: { doc: ThumbDoc }): string | null {
   if (!doc.mimeType?.startsWith('image/')) return null;
   const filename = doc.sizes?.thumb?.filename || doc.filename;
-  return filename ? mediaFileUrl(`${MEDIA_PREFIX}/${filename}`) : null;
+  if (!filename) return null;
+  const folder = [doc.prefix || MEDIA_PREFIX, doc._objectKey].filter(Boolean).join('/');
+  return mediaFileUrl(`${folder}/${filename}`);
 }
 
 export const Media: CollectionConfig = {

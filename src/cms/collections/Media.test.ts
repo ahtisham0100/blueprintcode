@@ -31,6 +31,11 @@ describe('Media collection', () => {
   it('builds admin thumbnails from our media URL, never Payload’s /file route', () => {
     const withThumb = { filename: 'hero-a1b2c3d4.png', mimeType: 'image/png', sizes: { thumb: { filename: 'hero-a1b2c3d4-400x267.webp' } } };
     expect(adminThumbnailUrl({ doc: withThumb })).toBe('http://localhost:5000/media/media/hero-a1b2c3d4-400x267.webp');
+    // Browser uploads live in a per-document folder: prefix/_objectKey/file.
+    const uuid = '94cb048f-7380-41b5-9100-d0b06eecc4e4';
+    expect(adminThumbnailUrl({ doc: { ...withThumb, prefix: 'media', _objectKey: uuid } })).toBe(
+      `http://localhost:5000/media/media/${uuid}/hero-a1b2c3d4-400x267.webp`,
+    );
     // A tiny image gets no resized variant: fall back to the original.
     expect(adminThumbnailUrl({ doc: { filename: 'icon-a1b2c3d4.png', mimeType: 'image/png', sizes: {} } })).toBe(
       'http://localhost:5000/media/media/icon-a1b2c3d4.png',
