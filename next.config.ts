@@ -80,8 +80,13 @@ const nextConfig: NextConfig = {
       // Real routes (/, /about, /prototypes, /api/*, …) and real public files
       // (/robots.txt, /site.css, …) are matched before these afterFiles rewrites,
       // so they always win; only leftover single-segment paths reach this rule.
+      //
+      // DYNAMIC routes are matched AFTER afterFiles, so /cms (Payload's
+      // [[...segments]] catch-all) must be excluded here or it becomes
+      // /cms/index.html and 404s. The site's own [...missing] catch-all is
+      // fine: it only wants what nothing else claimed.
       afterFiles: [
-        { source: "/:slug", destination: "/:slug/index.html" },
+        { source: "/:slug((?!cms$)[^/]+)", destination: "/:slug/index.html" },
       ],
     };
   },

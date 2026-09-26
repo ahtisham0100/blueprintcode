@@ -25,7 +25,8 @@ export const googleSessionStrategy: AuthStrategy = {
       })) as { active?: boolean } | null;
       if (!user || !user.active) return { user: null };
       return { user: { collection: 'users', ...user } as never };
-    } catch {
+    } catch (err) {
+      payload.logger.error({ err, msg: 'google-session: could not load user for a valid session' });
       return { user: null };
     }
   },

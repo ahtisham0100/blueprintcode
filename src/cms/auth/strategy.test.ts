@@ -13,6 +13,7 @@ function fakePayload(user: Record<string, unknown> | null) {
     // It must never be used for sessions; the tests below make it different
     // from PAYLOAD_SECRET so a regression fails loudly.
     secret: 'derived-and-different-0123456789abcdef',
+    logger: { error: vi.fn() },
     findByID: vi.fn(async () => {
       if (!user) throw new Error('NotFound');
       return user;
@@ -66,6 +67,9 @@ describe('googleSessionStrategy', () => {
     const token = await signSession({ userId: 'u1', email: 'a@blueprintcode.ai' }, SECRET);
     const h = new Headers({ cookie: `${SESSION_COOKIE}=${token}` });
     await expect(authed(h, fakePayload({ id: 'u1', active: false }))).resolves.toEqual({ user: null });
-    await expect(authed(h, fakePayload(null))).resolves.toEqual({ user: null });
+    const gone = fakePayload(null);
+    await expect(authed(h, gone)).resolves.toEqual({ user: null });
+    // A valid session for a vanished user is worth a log line, not silence.
+    expect(gone.logger.error).toHaveBeenCalledOnce();
   });
 });
