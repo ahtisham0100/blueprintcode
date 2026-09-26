@@ -27,6 +27,11 @@ const securityHeaders = [
 ];
 
 const nextConfig: NextConfig = {
+  images: {
+    // The homepage hero is served from the media library on the media host.
+    remotePatterns: [{ protocol: "https", hostname: "media.blueprintcode.ai", pathname: "/media/**" }],
+  },
+
   async headers() {
     // "/:path*" matches the root as well as every nested path.
     return [{ source: "/:path*", headers: securityHeaders }];

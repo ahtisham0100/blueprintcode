@@ -39,8 +39,28 @@
     @media(max-width:520px){.wrap{width:min(100% - 26px,1180px)}nav{height:68px}.brand span{font-size:.88rem;max-width:145px}h1{font-size:3.3rem}.hero{padding-top:40px}.hero-art{aspect-ratio:4/4.8}.art-note{left:0;bottom:24px;max-width:190px;font-size:.85rem}.actions{align-items:stretch;flex-direction:column}.button{width:100%}section,.mission{padding:72px 0}.card{padding:26px}.statement{padding:82px 0}.step{gap:12px}.step h3{font-size:1.6rem}}
     @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}.reveal{opacity:1;transform:none;transition:none}.button{transition:none}}
   </style>
-<script src="/partials/watermark.js" defer></script></head>
+<script src="/partials/watermark.js" defer></script><!--BPC:ASSETS:START-->
+<link rel="stylesheet" href="/partials/site-chrome.css">
+<!--BPC:ASSETS:END-->
+</head>
 <body>
+<!--BPC:HEADER:START-->
+<div class="bpc-chrome bpc-head" role="banner">
+  <div class="bpc-sheet">
+    <a class="bpc-mark" href="/"><b>BLUEPRINT CODE</b><span>WOODLAWN</span></a>
+    <button class="bpc-burger" type="button" aria-expanded="false" aria-label="Menu">Menu</button>
+    <div class="bpc-nav" role="navigation" aria-label="Primary">
+      <a href="/configurators">Configurators</a>
+      <a href="/prototypes">Prototypes</a>
+      <a href="/ppav-case-study">Case study</a>
+      <a href="/pricing">Pricing</a>
+      <a href="/insights">Insights</a>
+      <a href="/about">About</a>
+      <a class="bpc-button" href="/contact">Start a project</a>
+    </div>
+  </div>
+</div>
+<!--BPC:HEADER:END-->
   <a class="skip" href="#main">Skip to content</a>
   <header>
     <nav class="wrap" aria-label="Primary navigation">
@@ -141,5 +161,24 @@
     const observer=new IntersectionObserver(entries=>entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('on');observer.unobserve(e.target)}}),{threshold:.12});
     document.querySelectorAll('.reveal').forEach(el=>observer.observe(el));
   </script>
+<!--BPC:FOOTER:START-->
+<div class="bpc-chrome bpc-footer" role="contentinfo">
+  <div class="bpc-sheet bpc-tb">
+    <div>DOCUMENT<b>WOODLAWN</b></div>
+    <div>STUDIO<b>BLUEPRINT CODE</b></div>
+    <div>FORMAT<b>LIVE DEMO</b></div>
+    <div>CONTACT<b><a href="mailto:hello@blueprintcode.ai">HELLO@BLUEPRINTCODE.AI</a></b></div>
+  </div>
+  <div class="bpc-sheet bpc-foot-links">
+    <span class="bpc-foot-links-key">SERVICES</span>
+    <a href="/services/wcag-compliance-audit-pricing">WCAG compliance audit pricing</a>
+    <span class="bpc-foot-links-key">TRUST</span>
+    <a href="/standards-and-credentials">Standards &amp; Credentials</a>
+  </div>
+</div>
+<!--BPC:FOOTER:END-->
+<!--BPC:SCRIPT:START-->
+<script defer src="/partials/site-chrome.js"></script>
+<!--BPC:SCRIPT:END-->
 </body>
 </html>
