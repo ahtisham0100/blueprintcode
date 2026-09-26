@@ -9,15 +9,17 @@
     "start": "next start -p 5000",
     "build:chrome": "node scripts/inject-chrome.mjs",
     "indexnow": "node scripts/indexnow.mjs",
-    "prebuild": "node scripts/inject-chrome.mjs && payload migrate",
+    "prebuild": "node scripts/inject-chrome.mjs && node --env-file-if-exists=.env.local scripts/db-guard.mjs && payload migrate",
     "test": "vitest run",
     "test:watch": "vitest",
     "payload": "payload",
-    "migrate": "payload migrate",
+    "migrate": "node --env-file=.env.local scripts/db-guard.mjs && payload migrate",
     "migrate:create": "payload migrate:create",
     "migrate:status": "payload migrate:status",
     "generate:types": "payload generate:types",
-    "generate:importmap": "payload generate:importmap"
+    "generate:importmap": "payload generate:importmap",
+    "db:guard": "node --env-file=.env.local scripts/db-guard.mjs",
+    "seed:admins": "node --env-file=.env.local scripts/db-guard.mjs && node --env-file=.env.local scripts/seed-cms-admins.mjs"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",
