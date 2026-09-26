@@ -1,6 +1,21 @@
 import { describe, expect, it, vi } from 'vitest';
 import { NextRequest } from 'next/server';
-import { serveMedia, type ObjectStore } from './serve';
+import { mediaHostSpecialResponse, serveMedia, type ObjectStore } from './serve';
+
+describe('mediaHostSpecialResponse', () => {
+  it('lets crawlers index files on the media host', async () => {
+    const res = mediaHostSpecialResponse('robots.txt')!;
+    expect(res.status).toBe(200);
+    expect(await res.text()).toMatch(/Allow: \//);
+  });
+  it('answers the bare host root and favicon with a plain 404, never the site', () => {
+    expect(mediaHostSpecialResponse('')!.status).toBe(404);
+    expect(mediaHostSpecialResponse('favicon.ico')!.status).toBe(404);
+  });
+  it('leaves real keys to the store', () => {
+    expect(mediaHostSpecialResponse('media/hero-a1b2c3d4.png')).toBeNull();
+  });
+});
 
 const PNG = new Uint8Array([0x89, 0x50, 0x4e, 0x47, 1, 2, 3, 4, 5, 6]);
 

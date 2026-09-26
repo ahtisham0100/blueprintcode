@@ -2,7 +2,7 @@
    In production next.config rewrites media.<domain>/<key> here. */
 
 import type { NextRequest } from 'next/server';
-import { serveMedia } from '@/cms/media/serve';
+import { mediaHostSpecialResponse, serveMedia } from '@/cms/media/serve';
 import { r2ObjectStore } from '@/cms/media/storage';
 
 export const dynamic = 'force-dynamic';
@@ -15,8 +15,11 @@ const lazyStore = { get: (key: string, range?: string) => r2ObjectStore().get(ke
 
 export async function GET(req: NextRequest, { params }: Ctx) {
   const { key } = await params;
+  const joined = key.join('/');
+  const special = mediaHostSpecialResponse(joined);
+  if (special) return special;
   try {
-    return await serveMedia(req, key.join('/'), lazyStore);
+    return await serveMedia(req, joined, lazyStore);
   } catch (err) {
     if (err instanceof Error && /^R2_[A-Z_]+ is not set$/.test(err.message)) {
       return new Response('Media storage is not configured', { status: 503, headers: { 'cache-control': 'no-store' } });

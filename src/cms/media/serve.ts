@@ -24,6 +24,20 @@ export type ObjectStore = {
 
 const SVG_CSP = "sandbox; default-src 'none'; style-src 'unsafe-inline'";
 
+/** The media host is a file host only. Crawlers may index the files (image
+ *  search credit goes to our domain); everything else there is a 404. */
+export function mediaHostSpecialResponse(key: string): Response | null {
+  if (key === 'robots.txt') {
+    return new Response('User-agent: *\nAllow: /\n', {
+      headers: { 'content-type': 'text/plain; charset=utf-8', 'cache-control': 'public, max-age=3600' },
+    });
+  }
+  if (key === '' || key === 'favicon.ico') {
+    return new Response('Not found', { status: 404, headers: { 'cache-control': 'public, max-age=3600' } });
+  }
+  return null;
+}
+
 /** Only ever serve types we allow uploading; anything else is a download. */
 function safeContentType(recorded: string | undefined): string {
   return recorded && isAllowedMime(recorded) ? recorded : 'application/octet-stream';
