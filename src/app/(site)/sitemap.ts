@@ -22,7 +22,7 @@ import { NOTES } from './(content)/insights/notes';
  */
 
 // Next runs the build from the project root, so source files resolve under here.
-const APP_DIR = path.join(process.cwd(), 'src', 'app');
+const APP_DIR = path.join(process.cwd(), 'src', 'app', '(site)');
 
 /** Newest modification time among the given app-relative source files. */
 function lastModified(...files: string[]): Date {
