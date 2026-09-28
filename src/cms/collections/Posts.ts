@@ -26,6 +26,7 @@ import {
 import type { CollectionAfterChangeHook, CollectionAfterDeleteHook, CollectionBeforeChangeHook, CollectionConfig } from 'payload';
 import { sessionSecret } from '../auth/session';
 import { POST_BLOCKS } from '../blog/blocks';
+import { EXCERPT_MAX_LENGTH } from '../blog/limits';
 import { postPreviewPath, signPostPreviewToken } from '../blog/preview';
 import { readingTimeMinutes } from '../blog/readingTime';
 import { type PostLike, blogPathsToRevalidate, blogPathsToRevalidateOnDelete, blogUrlsToPing } from '../blog/revalidate';
@@ -37,7 +38,7 @@ import { publicSiteOrigin } from '../settings';
 import { submitIndexNow } from '../../../scripts/lib/indexnow.mjs';
 import { canWrite, isAdmin, readPublishedOrEditor } from './Users';
 
-export const EXCERPT_MAX = 200;
+export const EXCERPT_MAX = EXCERPT_MAX_LENGTH;
 
 /* ---- beforeChange -------------------------------------------------------- */
 
