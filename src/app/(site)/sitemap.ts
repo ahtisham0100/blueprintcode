@@ -131,7 +131,8 @@ async function cmsDemoEntries(staticSlugs: Set<string>): Promise<MetadataRoute.S
 }
 
 /** The blog (Phase 5): index pages, categories in use and published posts,
- *  once BLOG_PUBLIC is on. Until then /insights stays listed above. */
+ *  once BLOG_PUBLIC is on. The blog is a separate section: /insights (the
+ *  field notes above) stays as it is and keeps its own entries. */
 async function blogEntries(): Promise<MetadataRoute.Sitemap> {
   if (!isBlogPublic()) return [];
   try {

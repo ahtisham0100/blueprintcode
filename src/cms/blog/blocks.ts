@@ -1,6 +1,6 @@
 /* The custom blocks a writer can drop into a post body (BlocksFeature in the
    Posts editor). Each has a matching converter in blog/render.tsx, a plain-
-   text rule in blog/readingTime.ts and an import rule in blog/htmlToLexical.ts. */
+   text rule in blog/readingTime.ts and an HTML rule in blog/renderHtml.ts. */
 
 import { BoldFeature, InlineCodeFeature, ItalicFeature, LinkFeature, ParagraphFeature, UnderlineFeature, lexicalEditor } from '@payloadcms/richtext-lexical';
 import type { Block } from 'payload';

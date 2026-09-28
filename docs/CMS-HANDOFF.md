@@ -33,11 +33,11 @@ Locally (one dev server, port 5000): **`http://localhost:5000` is the ADMIN host
 | 2 | Payload + Google Workspace sign-in, roles, blueprint theme | done, prod |
 | 3 | Media library on R2 (gallery, immutable keys, `/media` route) | done, prod |
 | 4 | Demos (paste HTML → `/<slug>`, SEO, preview, redirects, dashboard, import script) | done, prod; **public exposure behind `CMS_PUBLIC` (off in prod)** |
-| 5 | Blog (Posts/Categories/Authors, `/blog` + categories + RSS + sitemap, previews, insights import) | done, prod; **public exposure behind `BLOG_PUBLIC` (unset in prod)** — launch is the user's call, see §8 |
+| 5 | Blog (Posts/Categories/Authors, `/blog` + categories + RSS + sitemap, previews) | done, prod; **public exposure behind `BLOG_PUBLIC` (unset in prod)** — launch is the user's call, see §8 |
 | **6** | Leads + replies inbox (Resend inbound on `reply.blueprintcode.ai`) | **next** |
 | 7 | Email campaigns (Resend Broadcasts) | later |
 | 8 | Ops: backups (pg_dump, R2→B2), Neon branch previews, audit log, rate limits | later |
-| — | Switch-over: import demos to prod, `CMS_PUBLIC=on`, 301 `/admin`, retire static files + old uploader; wire `/prototypes` to `gallery.show`; `/insights/<slug>` → `/blog/<slug>` redirects (`redirectsForSwitchOver`) and drop `/insights` from the sitemap | later, user decides |
+| — | Switch-over: import demos to prod, `CMS_PUBLIC=on`, 301 `/admin`, retire static files + old uploader; wire `/prototypes` to `gallery.show` | later, user decides |
 
 ## 3. Repo map (what matters)
 
@@ -59,8 +59,7 @@ src/cms/revalidate.ts               revalidateTargets(): revalidatePath wrapper 
 src/cms/icons.ts                    the admin icon set (blueprint line style) + collectionIconCss(); <Glyph> renders one, CollectionIcons (beforeNavLinks) styles nav/cards/list titles
 src/cms/blog/                       slug.ts (BLOG_RESERVED_SLUGS), blocks.ts (Callout, CTA, DemoEmbed, Code), readingTime.ts, revalidate.ts (planner),
                                     preview.ts (post token audience), previewRoute.ts, render.tsx (Lexical→React), renderHtml.ts (Lexical→HTML, feed),
-                                    metadata.ts (Next Metadata), rss.ts, sitemap.ts, paginate.ts, format.ts, load.ts (Payload local API),
-                                    htmlToLexical.ts + importInsights.ts (insights import), limits.ts
+                                    metadata.ts (Next Metadata), rss.ts, sitemap.ts, paginate.ts, format.ts, load.ts (Payload local API), limits.ts
 src/cms/media/                      keys.ts (allowlist, immutable names), serve.ts (/media response rules), storage.ts (R2 + move), hooks.ts, gallery.ts, urls.ts
 src/cms/demos/                      slug.ts (RESERVED_SLUGS), html.ts (validate + extract), render.ts (SEO head + chrome), preview.ts (signed tokens),
                                     revalidate.ts (paths to revalidate / ping), redirects.ts, sitemap.ts, import.ts, load.ts (Payload local API), partials.ts
@@ -74,13 +73,12 @@ scripts/lib/chrome.mjs              shared header/footer injection (used by scri
 scripts/lib/indexnow.mjs            shared IndexNow submit (used by scripts/indexnow.mjs and the Demos publish hook)
 scripts/db-guard.mjs                refuses DB-changing commands locally unless DATABASE_URL is the dev branch
 scripts/seed-cms-admins.mjs         first admins; scripts/import-static-demos.ts (payload run); scripts/r2-sync.mjs
-scripts/import-insights.ts          `npm run blog:import-insights` (IMPORT_DRY=1 to plan): /insights notes → draft posts + categories + authors
 docs/CMS-HANDOFF.md                 this file
 ```
 
 ## 4. Conventions (follow these exactly)
 
-- **Tests first.** Every pure module gets a `*.test.ts` beside it (Vitest, node env, `npm test`). Keep logic pure and inject I/O (see `serve.ts`, `handlers.ts`, `hooks.ts`). Current suite: 55 files / 316 tests, all green; keep it that way. Component tests render with `react-dom/server` in the node env (see `Dashboard.test.tsx`, `blog/render.test.tsx`).
+- **Tests first.** Every pure module gets a `*.test.ts` beside it (Vitest, node env, `npm test`). Keep logic pure and inject I/O (see `serve.ts`, `handlers.ts`, `hooks.ts`). Current suite: 54 files / 305 tests, all green; keep it that way. Component tests render with `react-dom/server` in the node env (see `Dashboard.test.tsx`, `blog/render.test.tsx`).
 - **Type-check** with `npx tsc --noEmit -p tsconfig.json` (ignore errors under `.next/` only if they are stale; a build regenerates them).
 - **Build** with `npm run build` before committing anything that touches routing/config. Prebuild runs chrome injection + db-guard + `payload migrate`.
 - **Schema changes = migrations.** `npm run migrate:create <name>` → review the file → `npm run migrate` (applies to the dev branch). Never rely on dev push (`push: false`). If Payload ever prompts about "dev mode … data loss", the dev DB was pushed: drop schema `cms`, `npm run migrate`, `npm run seed:admins`.
@@ -102,8 +100,8 @@ docs/CMS-HANDOFF.md                 this file
 `.env.example` documents each. Production values are in Vercel (`CMS_PUBLIC=off` there; `BLOG_PUBLIC` unset = off).
 
 Neon dev branch currently holds: 2 admin users (james@, hello@), ~22 media (incl. the two author portraits), 22 demos (21 imported static demos as drafts + one test demo),
-1 redirect (Phase 4 test), and the blog: 4 draft posts imported from /insights, 4 categories (Cost & scope, Visual method, Strategy, Operator note),
-2 authors (James Michaelson, Muhammad Ahtisham Arif). Production has the empty blog tables (migration `add_blog`) and no posts.
+1 redirect (Phase 4 test), and blog test content: 4 posts copied from the /insights notes during Phase 5 (3 drafts; "ppav-growth" was published
+there by someone testing), 4 categories, 2 authors (James Michaelson, Muhammad Ahtisham Arif). The copies are dev-only test data and can be deleted. Production has the empty blog tables (migration `add_blog`) and no posts.
 
 ## 6. Testing the admin without Google (local)
 
@@ -140,7 +138,6 @@ process.stdout.write(await new SignJWT({ email:'james@blueprintcode.ai' }).setPr
 - The blog pages are prerendered at build time, so flipping `BLOG_PUBLIC` needs a redeploy (as with any Vercel env change). Draft previews are not gated.
 - Hooks see relationship fields as ids at depth 0: the Posts revalidation hook looks the category slug up (`withCategorySlug`).
 - A published post keeps showing as "Draft (has published version)" in the list after an autosave; that is Payload's normal state, the live version is unchanged.
-- Payload's `convertHTMLToLexical` needs `jsdom` (not installed); the insights import uses its own small converter for the notes' markup.
 - Production sitemap baseline is 41 URLs (the old uploader added `james-catalogue-demo` after Phase 4).
 
 
@@ -165,14 +162,16 @@ process.stdout.write(await new SignJWT({ email:'james@blueprintcode.ai' }).setPr
 - `/blog/feed.xml` — RSS 2.0 with full HTML (`content:encoded`), absolute links.
 - Metadata: title, description, canonical, robots, OG article tags, Twitter card (large when there is a cover/SEO image);
   JSON-LD `BlogPosting` + `BreadcrumbList` on posts, `Blog` + `BreadcrumbList` on listings.
-- Sitemap: `/blog`, extra index pages, categories with posts, posts (only when `BLOG_PUBLIC` is on; `/insights` stays until switch-over).
+- Sitemap: `/blog`, extra index pages, categories with posts, posts (only when `BLOG_PUBLIC` is on; `/insights` keeps its own entries).
 - `/blog-preview/<id>?token=` — latest draft, `no-store` + `noindex`; bad/expired token → **403** (`forbidden.tsx`), missing post → 404.
 - All static + ISR (`revalidate = 86400` as a safety net); publish/rename/unpublish revalidate within seconds.
 
 **Admin:** dashboard leads with a Blog posts panel (published/drafts/scheduled + recent) and "New post"; demos panel and CMS_PUBLIC line are
 admin-only; site status shows BLOG_PUBLIC. The editor uses Plex with Bebas h2/h3.
 
-**Insights import:** `npm run blog:import-insights` has been run on the dev branch (4 drafts). It has **not** been run on production.
+**Blog and /insights are separate (user decision, 2026-09-28).** `/insights` (the field notes in `notes.tsx`) stays exactly as it is, with its
+own pages, sitemap entries and footer links; the blog is a separate section at `/blog` for new writing. The Phase 5 insights import
+(script, planner and converter) was removed so the notes cannot be duplicated into the blog; it is in git history (`fd973f4`) if ever needed.
 
 **Verified** locally against a production build (`next start`): draft not public → preview 200 (+403/404 cases) → publish → post 200 with the
 right head tags and JSON-LD → on `/blog`, category page, sitemap, feed → rename → old URL 308 → unpublish → custom 404 and gone from listings,
@@ -180,13 +179,10 @@ feed and sitemap; writer permissions via `/api/cms/access` and the admin UI; 128
 with `BLOG_PUBLIC` unset every blog URL is 404 and the rest of the site is unchanged.
 
 ### Launching the blog (the user decides; not done)
-1. In production, run the insights import once (`ALLOW_PROD_DB=1` with the production `DATABASE_URL`, deliberate one-off), or write posts in the admin.
-2. Decide how the imported posts relate to `/insights` before publishing them: either do the `/insights/<slug>` → `/blog/<slug>` redirects at the same
-   time (`redirectsForSwitchOver()` gives the rows; also remove the `/insights` entries from `sitemap.ts`), or keep `/insights` and leave the
-   imported copies unpublished — publishing both without a redirect or canonical is duplicate content.
-3. Publish the posts, set `BLOG_PUBLIC=on` in Vercel, redeploy, then check `/blog`, one post, the feed and the sitemap on production.
-4. Consider adding "Blog" to the site header (`src/app/(site)/_chrome/`, `public/partials/site-header.html`) and linking the feed
-   (`<link rel="alternate" type="application/rss+xml">`) in the root layout.
+1. Create the authors (and a few categories) in the production admin, then write and publish posts there. Previews work before launch.
+2. Set `BLOG_PUBLIC=on` in Vercel and redeploy, then check `/blog`, one post, the feed and the sitemap on production.
+3. Add "Blog" to the site header (`src/app/(site)/_chrome/pages.ts` nav list and `public/partials/site-header.html`) next to "Insights", and link
+   the feed (`<link rel="alternate" type="application/rss+xml">`) in the root layout.
 
 ## 9. Next: Phase 6 (leads + replies inbox)
 Not specified in detail yet. Scope from §2: Resend inbound on `reply.blueprintcode.ai`, leads from the contact form visible and answerable in the CMS
