@@ -9,9 +9,8 @@
  * The key file public/<KEY>.txt proves ownership; it must stay deployed.
  */
 
-const HOST = 'blueprintcode.ai';
+import { INDEXNOW_HOST as HOST, INDEXNOW_KEY as KEY, submitIndexNow } from './lib/indexnow.mjs';
 const SITE_URL = `https://${HOST}`;
-const KEY = 'cd7c8976e4324a2c930d37607d0f5c68';
 
 async function sitemapUrls() {
   const res = await fetch(`${SITE_URL}/sitemap.xml`);
@@ -37,20 +36,7 @@ if (!keyRes.ok || (await keyRes.text()).trim() !== KEY) {
   process.exit(1);
 }
 
-const res = await fetch('https://api.indexnow.org/indexnow', {
-  method: 'POST',
-  headers: { 'Content-Type': 'application/json; charset=utf-8' },
-  body: JSON.stringify({
-    host: HOST,
-    key: KEY,
-    keyLocation: `${SITE_URL}/${KEY}.txt`,
-    urlList: urlList.slice(0, 10000), // protocol limit per request
-  }),
-});
-
+const res = await submitIndexNow(urlList);
 // 200 = accepted, 202 = accepted, key validation pending. Anything else is an error.
-console.log(`IndexNow: HTTP ${res.status} for ${urlList.length} URL(s)`);
-if (res.status !== 200 && res.status !== 202) {
-  console.error(await res.text());
-  process.exit(1);
-}
+console.log(`IndexNow: HTTP ${res.status} for ${res.submitted} URL(s)`);
+if (!res.ok) process.exit(1);

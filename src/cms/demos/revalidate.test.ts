@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { pathsToRevalidate, pathsToRevalidateOnDelete } from './revalidate';
+import { pathsToRevalidate, pathsToRevalidateOnDelete, urlsToPing } from './revalidate';
 
 describe('pathsToRevalidate', () => {
   it('does nothing for draft-only edits', () => {
@@ -19,6 +19,16 @@ describe('pathsToRevalidate', () => {
   });
   it('refreshes on unpublish so the page disappears', () => {
     expect(pathsToRevalidate({ slug: 'a', _status: 'draft' }, { slug: 'a', _status: 'published', gallery: { show: true } })).toEqual(['/a', '/prototypes', '/sitemap.xml']);
+  });
+});
+
+describe('urlsToPing', () => {
+  it('pings the page URLs only, never the sitemap or gallery', () => {
+    expect(urlsToPing({ slug: 'b', _status: 'published', gallery: { show: true } }, { slug: 'a', _status: 'published' }, 'https://blueprintcode.ai')).toEqual([
+      'https://blueprintcode.ai/b',
+      'https://blueprintcode.ai/a',
+    ]);
+    expect(urlsToPing({ slug: 'a', _status: 'draft' }, { slug: 'a', _status: 'draft' }, 'https://blueprintcode.ai')).toEqual([]);
   });
 });
 

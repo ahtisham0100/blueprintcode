@@ -42,6 +42,7 @@ export const Media: CollectionConfig = {
   slug: 'media',
   admin: {
     useAsTitle: 'alt',
+    group: 'Assets',
     defaultColumns: ['filename', 'alt', 'mimeType', 'filesize', 'updatedAt'],
     description: 'Images, video, PDFs and 3D models. Copy a file’s URL to use it in demo HTML.',
     components: {

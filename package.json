@@ -19,7 +19,8 @@
     "generate:types": "payload generate:types",
     "generate:importmap": "payload generate:importmap",
     "db:guard": "node --env-file=.env.local scripts/db-guard.mjs",
-    "seed:admins": "node --env-file=.env.local scripts/db-guard.mjs && node --env-file=.env.local scripts/seed-cms-admins.mjs"
+    "seed:admins": "node --env-file=.env.local scripts/db-guard.mjs && node --env-file=.env.local scripts/seed-cms-admins.mjs",
+    "demos:import": "node --env-file=.env.local scripts/db-guard.mjs && payload run scripts/import-static-demos.ts"
   },
   "dependencies": {
     "@neondatabase/serverless": "^1.1.0",

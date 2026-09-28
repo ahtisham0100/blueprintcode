@@ -1,6 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
+import { isCmsPublic } from '@/lib/flags';
 import { SITE_URL } from '@/lib/seo';
 import { NOTES } from './(content)/insights/notes';
 
@@ -110,7 +111,26 @@ function staticDemoEntries(): MetadataRoute.Sitemap {
   return entries;
 }
 
-export default function sitemap(): MetadataRoute.Sitemap {
+/** Demos published from the CMS (Phase 4), once CMS_PUBLIC is on. A slug
+ *  that still has a static file is served statically and listed above, so
+ *  it is excluded here. */
+async function cmsDemoEntries(staticSlugs: Set<string>): Promise<MetadataRoute.Sitemap> {
+  if (!isCmsPublic()) return [];
+  try {
+    const [{ getPayload }, { default: config }, { demoSitemapEntries }] = await Promise.all([
+      import('payload'),
+      import('@payload-config'),
+      import('@/cms/demos/sitemap'),
+    ]);
+    const payload = await getPayload({ config });
+    const { docs } = await payload.find({ collection: 'demos', where: { _status: { equals: 'published' } }, limit: 500, depth: 0, overrideAccess: true });
+    return demoSitemapEntries(docs as Parameters<typeof demoSitemapEntries>[0], SITE_URL, staticSlugs);
+  } catch {
+    return [];
+  }
+}
+
+export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticEntries = STATIC_ROUTES.map((r) => ({
     url: r.path ? `${SITE_URL}/${r.path}` : `${SITE_URL}/`,
     lastModified: lastModified(...r.sources),
@@ -128,5 +148,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     priority: 0.6,
   }));
 
-  return [...staticEntries, ...noteEntries, ...staticDemoEntries()];
+  const staticDemos = staticDemoEntries();
+  const staticSlugs = new Set(staticDemos.map((e) => e.url.slice(SITE_URL.length + 1)));
+  return [...staticEntries, ...noteEntries, ...staticDemos, ...(await cmsDemoEntries(staticSlugs))];
 }

@@ -7,7 +7,8 @@ import { sessionSecret } from '../auth/session';
 import { validateDemoHtml } from '../demos/html';
 import { previewPath, signPreviewToken } from '../demos/preview';
 import { redirectForSlugChange } from '../demos/redirects';
-import { pathsToRevalidate, pathsToRevalidateOnDelete } from '../demos/revalidate';
+import { pathsToRevalidate, pathsToRevalidateOnDelete, urlsToPing } from '../demos/revalidate';
+import { submitIndexNow } from '../../../scripts/lib/indexnow.mjs';
 import { slugify, validateDemoSlug } from '../demos/slug';
 import { isAdmin } from './Users';
 
@@ -33,6 +34,21 @@ async function revalidate(paths: string[], logger: { warn: (o: unknown) => void 
 
 export const revalidateOnChange: CollectionAfterChangeHook = async ({ doc, previousDoc, req }) => {
   await revalidate(pathsToRevalidate(doc, previousDoc), req.payload.logger);
+  return doc;
+};
+
+/** Tell IndexNow (Bing & co.) about a published/renamed demo — production
+ *  only, since engines fetch the URL and the key file from the live site. */
+export const pingSearchEnginesOnPublish: CollectionAfterChangeHook = async ({ doc, previousDoc, req }) => {
+  if (process.env.VERCEL_ENV !== 'production') return doc;
+  const urls = urlsToPing(doc, previousDoc, 'https://blueprintcode.ai');
+  if (!urls.length) return doc;
+  try {
+    const r = await submitIndexNow(urls);
+    req.payload.logger.info({ msg: 'demos: IndexNow', urls, status: r.status });
+  } catch (err) {
+    req.payload.logger.warn({ msg: 'demos: IndexNow failed', urls, err: String(err) });
+  }
   return doc;
 };
 
@@ -78,7 +94,7 @@ export const Demos: CollectionConfig = {
   },
   access: { create: isAdmin, read: readPublishedOrAdmin, update: isAdmin, delete: isAdmin },
   versions: { drafts: { autosave: { interval: 1500 }, schedulePublish: true }, maxPerDoc: 25 },
-  hooks: { afterChange: [keepOldUrl, revalidateOnChange], afterDelete: [revalidateOnDelete] },
+  hooks: { afterChange: [keepOldUrl, revalidateOnChange, pingSearchEnginesOnPublish], afterDelete: [revalidateOnDelete] },
   fields: [
     {
       type: 'tabs',
@@ -112,6 +128,11 @@ export const Demos: CollectionConfig = {
         {
           label: 'SEO',
           fields: [
+            {
+              name: 'seoPreview',
+              type: 'ui',
+              admin: { components: { Field: '/cms/components/SeoPreview.client#SeoPreview' } },
+            },
             {
               name: 'seo',
               type: 'group',
