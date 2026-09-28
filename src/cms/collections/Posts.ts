@@ -34,6 +34,7 @@ import { slugify, validatePostSlug } from '../blog/slug';
 import { redirectForSlugChange } from '../demos/redirects';
 import { seoGroupField, seoPreviewField } from '../fields/seo';
 import { type Revalidator, nextRevalidator, revalidateTargets } from '../revalidate';
+import { isBlogPublic } from '../../lib/flags';
 import { publicSiteOrigin } from '../settings';
 import { submitIndexNow } from '../../../scripts/lib/indexnow.mjs';
 import { canWrite, isAdmin, readPublishedOrEditor } from './Users';
@@ -156,6 +157,14 @@ export const Posts: CollectionConfig = {
     defaultColumns: ['title', 'category', '_status', 'publishedAt'],
     group: 'Content',
     description: 'Blog posts, published at blueprintcode.ai/blog/<slug>.',
+    components: {
+      // "View live" next to Preview once the post has a published version.
+      edit: {
+        beforeDocumentControls: [
+          { path: '/cms/components/LiveLink.client#LiveLink', clientProps: { siteUrl: publicSiteOrigin(), pathPrefix: '/blog/', sectionPublic: isBlogPublic(), flagName: 'BLOG_PUBLIC' } },
+        ],
+      },
+    },
     // Preview opens the latest draft on the public host with a 30-minute token.
     preview: async (doc) => `${publicSiteOrigin()}${postPreviewPath(String(doc.id), await signPostPreviewToken(String(doc.id), sessionSecret()))}`,
   },

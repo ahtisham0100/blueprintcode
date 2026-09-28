@@ -11,6 +11,7 @@ import { pathsToRevalidate, pathsToRevalidateOnDelete, urlsToPing } from '../dem
 import { submitIndexNow } from '../../../scripts/lib/indexnow.mjs';
 import { slugify, validateDemoSlug } from '../demos/slug';
 import { seoGroupField, seoPreviewField } from '../fields/seo';
+import { isCmsPublic } from '../../lib/flags';
 import { publicSiteOrigin } from '../settings';
 import { hiddenFromWriters, isAdmin } from './Users';
 
@@ -82,6 +83,14 @@ export const Demos: CollectionConfig = {
     group: 'Content',
     description: 'Interactive demos published at blueprintcode.ai/<slug>.',
     hidden: hiddenFromWriters,
+    components: {
+      // "View live" next to Preview once the demo has a published version.
+      edit: {
+        beforeDocumentControls: [
+          { path: '/cms/components/LiveLink.client#LiveLink', clientProps: { siteUrl: publicSiteOrigin(), pathPrefix: '/', sectionPublic: isCmsPublic(), flagName: 'CMS_PUBLIC' } },
+        ],
+      },
+    },
     // Preview opens the latest draft on the public host with a 30-minute token.
     preview: async (doc) => `${publicSiteOrigin()}${previewPath(String(doc.id), await signPreviewToken(String(doc.id), sessionSecret()))}`,
   },
