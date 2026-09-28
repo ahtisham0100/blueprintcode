@@ -56,6 +56,7 @@ src/cms/collections/                Users (admin/writer, allowlist; canWrite, re
                                     Demos, Redirects, Posts (Lexical editor, blocks, hooks), Categories, Authors
 src/cms/fields/seo.ts               the SEO tab (seoPreviewField + seoGroupField) shared by Demos and Posts
 src/cms/revalidate.ts               revalidateTargets(): revalidatePath wrapper (route patterns, quiet outside Next)
+src/cms/icons.ts                    the admin icon set (blueprint line style) + collectionIconCss(); <Glyph> renders one, CollectionIcons (beforeNavLinks) styles nav/cards/list titles
 src/cms/blog/                       slug.ts (BLOG_RESERVED_SLUGS), blocks.ts (Callout, CTA, DemoEmbed, Code), readingTime.ts, revalidate.ts (planner),
                                     preview.ts (post token audience), previewRoute.ts, render.tsx (Lexical→React), renderHtml.ts (Lexical→HTML, feed),
                                     metadata.ts (Next Metadata), rss.ts, sitemap.ts, paginate.ts, format.ts, load.ts (Payload local API),
@@ -79,7 +80,7 @@ docs/CMS-HANDOFF.md                 this file
 
 ## 4. Conventions (follow these exactly)
 
-- **Tests first.** Every pure module gets a `*.test.ts` beside it (Vitest, node env, `npm test`). Keep logic pure and inject I/O (see `serve.ts`, `handlers.ts`, `hooks.ts`). Current suite: 54 files / 310 tests, all green; keep it that way. Component tests render with `react-dom/server` in the node env (see `Dashboard.test.tsx`, `blog/render.test.tsx`).
+- **Tests first.** Every pure module gets a `*.test.ts` beside it (Vitest, node env, `npm test`). Keep logic pure and inject I/O (see `serve.ts`, `handlers.ts`, `hooks.ts`). Current suite: 55 files / 316 tests, all green; keep it that way. Component tests render with `react-dom/server` in the node env (see `Dashboard.test.tsx`, `blog/render.test.tsx`).
 - **Type-check** with `npx tsc --noEmit -p tsconfig.json` (ignore errors under `.next/` only if they are stale; a build regenerates them).
 - **Build** with `npm run build` before committing anything that touches routing/config. Prebuild runs chrome injection + db-guard + `payload migrate`.
 - **Schema changes = migrations.** `npm run migrate:create <name>` → review the file → `npm run migrate` (applies to the dev branch). Never rely on dev push (`push: false`). If Payload ever prompts about "dev mode … data loss", the dev DB was pushed: drop schema `cms`, `npm run migrate`, `npm run seed:admins`.

@@ -8,6 +8,7 @@
 
 import { toast } from '@payloadcms/ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { Glyph } from './Glyph';
 import {
   altFromFilename,
   createRequestFields,
@@ -153,7 +154,10 @@ export function MediaGallery(p: Props) {
   return (
     <div className={`bpc-gallery${dragging ? ' bpc-gallery--dragging' : ''}`}>
       <header className="bpc-gallery__head">
-        <h1>Media</h1>
+        <h1 className="bpc-title-with-icon">
+          <Glyph name="media" size={26} />
+          Media
+        </h1>
         <span className="bpc-gallery__count">{total} file{total === 1 ? '' : 's'}</span>
         <input
           className="bpc-gallery__search"

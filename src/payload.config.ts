@@ -46,6 +46,8 @@ export default buildConfig({
     components: {
       beforeLogin: ['/cms/components/GoogleSignIn#GoogleSignIn'],
       beforeDashboard: ['/cms/components/Dashboard#Dashboard'],
+      // Collection icons for the sidebar, dashboard cards and list titles (cms/icons.ts).
+      beforeNavLinks: ['/cms/components/CollectionIcons#CollectionIcons'],
       actions: ['/cms/components/LogoutAction#LogoutAction'],
       graphics: {
         Logo: '/cms/components/Logo#Logo',
