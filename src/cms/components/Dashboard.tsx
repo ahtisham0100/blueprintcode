@@ -10,26 +10,29 @@ import type { IconName } from '../icons';
 import { CMS_ROUTES, publicSiteOrigin } from '../settings';
 import { Glyph } from './Glyph';
 
-type Demo = { id: number | string; title: string; slug: string; _status?: string | null; updatedAt: string };
-type Post = { id: number | string; title: string; slug: string; _status?: string | null; updatedAt: string; publishedAt?: string | null };
 type MediaDoc = { id: number | string; alt?: string | null; filename?: string | null; thumbnailURL?: string | null; mimeType?: string | null; updatedAt: string };
 
-function when(iso: string): string {
-  const d = new Date(iso);
-  return d.toLocaleString('en-GB', { day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit' });
-}
 
-function Stats({ items }: { items: [number, string][] }) {
+type Stat = { n: number; label: string; href: string };
+
+/** The numbers, each opening the list filtered to what it counts. */
+function Stats({ items }: { items: Stat[] }) {
   return (
     <div className="bpc-dash__stats">
-      {items.map(([n, label]) => (
-        <div key={label}>
-          <b>{n}</b>
-          <span>{label}</span>
-        </div>
+      {items.map((s) => (
+        <a key={s.label} href={s.href}>
+          <b>{s.n}</b>
+          <span>{s.label}</span>
+        </a>
       ))}
     </div>
   );
+}
+
+/** List URL filtered by publish status (Payload reads where[] from the query string). */
+export function statusListHref(adminRoute: string, collection: 'posts' | 'demos', status?: 'draft' | 'published'): string {
+  const base = `${adminRoute}/collections/${collection}`;
+  return status ? `${base}?where%5B_status%5D%5Bequals%5D=${status}` : base;
 }
 
 function Pill({ live, on, off }: { live: boolean; on: string; off: string }) {
@@ -60,15 +63,6 @@ function Empty({ icon, children, href, action }: { icon: IconName; children: Rea
   );
 }
 
-/** Small "open on the site" link, only for published items in a section that is public. */
-function LiveLink({ href, show }: { href: string; show: boolean }) {
-  if (!show) return null;
-  return (
-    <a className="bpc-dash__live" href={href} target="_blank" rel="noopener noreferrer" title="Open on the site" aria-label="Open on the site">
-      <Glyph name="external" size={13} />
-    </a>
-  );
-}
 
 export async function Dashboard(props: ServerProps) {
   const { payload, user } = props;
@@ -81,14 +75,11 @@ export async function Dashboard(props: ServerProps) {
   const count = (collection: 'demos' | 'posts', status: 'draft' | 'published') =>
     payload.count({ collection, where: { _status: { equals: status } }, overrideAccess: true });
 
-  const [posts, postsPublished, postsDraft, scheduled, media, demos, demosPublished, demosDraft] = await Promise.all([
-    // Not draft:true — a live post with unsaved autosave changes should still read "published".
-    payload.find({ collection: 'posts', limit: 6, sort: '-updatedAt', depth: 0, overrideAccess: true }),
+  const [postsPublished, postsDraft, scheduled, media, demosPublished, demosDraft] = await Promise.all([
     count('posts', 'published'),
     count('posts', 'draft'),
     payload.count({ collection: 'payload-jobs', where: { and: [{ taskSlug: { equals: 'schedulePublish' } }, { completedAt: { exists: false } }, { 'input.doc.relationTo': { equals: 'posts' } }] }, overrideAccess: true }).catch(() => ({ totalDocs: 0 })),
     payload.find({ collection: 'media', limit: 6, sort: '-updatedAt', depth: 0, overrideAccess: true }),
-    isAdmin ? payload.find({ collection: 'demos', limit: 6, sort: '-updatedAt', depth: 0, draft: true, overrideAccess: true }) : null,
     isAdmin ? count('demos', 'published') : null,
     isAdmin ? count('demos', 'draft') : null,
   ]);
@@ -120,53 +111,26 @@ export async function Dashboard(props: ServerProps) {
           <PanelLabel icon="posts" href={`${admin}/collections/posts`}>
             Blog posts
           </PanelLabel>
-          <Stats items={[[postsPublished.totalDocs, 'published'], [postsDraft.totalDocs, 'drafts'], [scheduled.totalDocs, 'scheduled']]} />
-          <ul className="bpc-dash__list">
-            {(posts.docs as Post[]).map((p) => (
-              <li key={p.id}>
-                <a href={`${admin}/collections/posts/${p.id}`}>{p.title}</a>
-                <span className="bpc-dash__meta-right">
-                  <LiveLink href={`${site}/blog/${p.slug}`} show={blogLive && p._status === 'published'} />
-                  <span className={`bpc-pill is-${p._status ?? 'draft'}`}>{p._status ?? 'draft'}</span>
-                </span>
-                <small>
-                  /blog/{p.slug} · {when(p.updatedAt)}
-                </small>
-              </li>
-            ))}
-            {posts.docs.length === 0 && (
-              <Empty icon="posts" href={`${admin}/collections/posts/create`} action="Write the first post →">
-                No posts yet.
-              </Empty>
-            )}
-          </ul>
+          <Stats
+            items={[
+              { n: postsPublished.totalDocs, label: 'published', href: statusListHref(admin, 'posts', 'published') },
+              { n: postsDraft.totalDocs, label: 'drafts', href: statusListHref(admin, 'posts', 'draft') },
+              { n: scheduled.totalDocs, label: 'scheduled', href: statusListHref(admin, 'posts') },
+            ]}
+          />
         </div>
 
-        {demos && (
+        {isAdmin && demosPublished && demosDraft && (
           <div className="bpc-dash__panel">
             <PanelLabel icon="demos" href={`${admin}/collections/demos`}>
               Demos
             </PanelLabel>
-            <Stats items={[[demosPublished!.totalDocs, 'published'], [demosDraft!.totalDocs, 'drafts']]} />
-            <ul className="bpc-dash__list">
-              {(demos.docs as Demo[]).map((d) => (
-                <li key={d.id}>
-                  <a href={`${admin}/collections/demos/${d.id}`}>{d.title}</a>
-                  <span className="bpc-dash__meta-right">
-                    <LiveLink href={`${site}/${d.slug}`} show={demosLive && d._status === 'published'} />
-                    <span className={`bpc-pill is-${d._status ?? 'draft'}`}>{d._status ?? 'draft'}</span>
-                  </span>
-                  <small>
-                    /{d.slug} · {when(d.updatedAt)}
-                  </small>
-                </li>
-              ))}
-              {demos.docs.length === 0 && (
-                <Empty icon="demos" href={`${admin}/collections/demos/create`} action="Add a demo →">
-                  No demos yet.
-                </Empty>
-              )}
-            </ul>
+            <Stats
+              items={[
+                { n: demosPublished.totalDocs, label: 'published', href: statusListHref(admin, 'demos', 'published') },
+                { n: demosDraft.totalDocs, label: 'drafts', href: statusListHref(admin, 'demos', 'draft') },
+              ]}
+            />
           </div>
         )}
 

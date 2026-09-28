@@ -86,3 +86,9 @@ export function createRequestFields(signed: SignedUrlResponse, file: { type: str
     }),
   };
 }
+
+/** What a Payload list drawer's onSelect expects when a file is picked
+ *  (the upload field's "Choose from existing" and the editor's image button). */
+export function pickArgs(doc: GalleryDoc): { collectionSlug: 'media'; doc: GalleryDoc; docID: string } {
+  return { collectionSlug: 'media', doc, docID: String(doc.id) };
+}

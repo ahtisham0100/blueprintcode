@@ -208,6 +208,16 @@ h1 { font-size: 2.4rem; line-height: 1; }
 .bpc-chip:hover { border-color: var(--bpc-ink); color: var(--bpc-ink); }
 .bpc-gallery__pages { display: flex; align-items: center; gap: 1rem; justify-content: center; padding: 1.5rem 0; font-family: var(--bpc-data); font-size: 11px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--bpc-ink-3); }
 .bpc-gallery__drop { position: fixed; inset: 0; z-index: 50; display: grid; place-items: center; background: rgba(11, 26, 46, 0.85); border: 2px dashed var(--bpc-ink); font-family: var(--bpc-display); font-size: 3rem; color: var(--bpc-ink); letter-spacing: 0.05em; pointer-events: none; }
+/* Picking mode: the gallery inside "Choose from existing" / the editor's image button. */
+.bpc-gallery--picking { padding-top: 0.5rem; }
+.bpc-gallery--picking .bpc-gallery__drop { position: absolute; font-size: 2rem; }
+.bpc-card.is-pickable { padding: 0; }
+.bpc-card__pick { all: unset; box-sizing: border-box; display: flex; flex-direction: column; width: 100%; height: 100%; cursor: pointer; }
+.bpc-card__pick:focus-visible { outline: 2px solid var(--bpc-ink); outline-offset: 2px; }
+.bpc-card__pick .bpc-card__media { display: block; }
+.bpc-card__pick .bpc-card__body { display: grid; }
+.bpc-card.is-pickable:hover { border-color: var(--bpc-blue); }
+.bpc-card.is-pickable:hover .bpc-chip { background: var(--bpc-ink); color: var(--bpc-ground); border-color: var(--bpc-ink); }
 
 /* Dashboard (components/Dashboard.tsx) ------------------------------------- */
 .bpc-dash { padding: 1.5rem var(--gutter-h) 0; }
@@ -215,7 +225,7 @@ h1 { font-size: 2.4rem; line-height: 1; }
 .bpc-dash__head h1 { margin: 0; }
 .bpc-dash__actions { display: flex; gap: 0.5rem; }
 .bpc-dash__actions .btn { text-decoration: none; }
-.bpc-dash__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 2rem; }
+.bpc-dash__grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 14px; margin-bottom: 2rem; align-items: start; }
 .bpc-dash__panel { background: var(--bpc-ground-2); border: 1px solid var(--bpc-line-soft); border-radius: 2px; padding: 1rem 1.1rem; }
 .bpc-dash__label { display: flex; align-items: center; gap: 0.5rem; font-family: var(--bpc-data); font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bpc-ink-3); margin-bottom: 0.9rem; padding-bottom: 0.7rem; border-bottom: 1px solid var(--bpc-line-soft); }
 .bpc-dash__label .bpc-glyph { color: var(--bpc-ink-2); }
@@ -230,6 +240,9 @@ h1 { font-size: 2.4rem; line-height: 1; }
 .bpc-dash__stats { display: flex; gap: 1.5rem; margin-bottom: 0.8rem; }
 .bpc-dash__stats b { display: block; font-family: var(--bpc-display); font-size: 2.2rem; line-height: 1; color: var(--bpc-ink); }
 .bpc-dash__stats span { font-family: var(--bpc-data); font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--bpc-ink-3); }
+.bpc-dash__stats a { display: block; text-decoration: none; padding: 0.35rem 0.5rem 0.4rem; margin: -0.35rem -0.5rem 0; border: 1px solid transparent; border-radius: 2px; }
+.bpc-dash__stats a:hover { border-color: var(--bpc-line); background: var(--bpc-ground-3); }
+.bpc-dash__stats a:hover span { color: var(--bpc-ink-2); }
 .bpc-dash__list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5rem; }
 .bpc-dash__list li { display: grid; grid-template-columns: 1fr auto; gap: 0.2rem 0.6rem; align-items: center; padding-top: 0.5rem; border-top: 1px solid var(--bpc-line-soft); }
 .bpc-dash__list a { color: var(--bpc-ink); text-decoration: none; font-size: 13px; }

@@ -6,15 +6,15 @@
    (see media/gallery.ts for the protocol). Styled by .bpc-gallery in
    (cms)/custom.css. */
 
-import { toast } from '@payloadcms/ui';
+import { toast, useListDrawerContext, useModal } from '@payloadcms/ui';
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { GalleryCard } from './GalleryCard';
 import { Glyph } from './Glyph';
 import {
   altFromFilename,
   createRequestFields,
-  describeFile,
   galleryQuery,
-  isImage,
+  pickArgs,
   signedUrlRequestBody,
   type GalleryDoc,
   type SignedUrlResponse,
@@ -42,7 +42,22 @@ export function MediaGallery(p: Props) {
   const [uploads, setUploads] = useState<Upload[]>([]);
   const [dragging, setDragging] = useState(false);
   const fileInput = useRef<HTMLInputElement>(null);
+  const root = useRef<HTMLDivElement>(null);
   const dragDepth = useRef(0);
+
+  // Opened as a picker ("Choose from existing", the editor's image button):
+  // a click selects the file for the field instead of opening it.
+  const { drawerSlug, onSelect } = useListDrawerContext();
+  const { closeModal } = useModal();
+  const picking = Boolean(drawerSlug && typeof onSelect === 'function');
+  const pick = useCallback(
+    (doc: GalleryDoc) => {
+      if (!onSelect) return;
+      onSelect(pickArgs(doc));
+      if (drawerSlug) closeModal(drawerSlug);
+    },
+    [onSelect, drawerSlug, closeModal],
+  );
 
   const load = useCallback(
     async (opts: { search?: string; page?: number }) => {
@@ -100,9 +115,11 @@ export function MediaGallery(p: Props) {
       const list = Array.from(files);
       if (!list.length) return;
       setUploads((u) => [...list.map((f) => ({ name: f.name, status: 'uploading' as const })), ...u]);
+      let lastDoc: GalleryDoc | null = null;
       for (const file of list) {
         try {
           const doc = await uploadOne(file);
+          lastDoc = doc;
           setDocs((d) => [doc, ...d]);
           setTotal((t) => t + 1);
           setUploads((u) => u.map((x) => (x.name === file.name && x.status === 'uploading' ? { ...x, status: 'done' } : x)));
@@ -113,13 +130,26 @@ export function MediaGallery(p: Props) {
         }
       }
       setTimeout(() => setUploads((u) => u.filter((x) => x.status !== 'done')), 4000);
+      // Uploading one file from a picker means "use this one". Re-read the
+      // saved record first: the create response predates the storage hook's
+      // rename, so the editor would otherwise label it "Untitled".
+      if (picking && list.length === 1 && lastDoc) {
+        const uploaded: GalleryDoc = lastDoc;
+        const saved = await fetch(`${p.apiRoute}/media/${uploaded.id}?depth=0`, { credentials: 'include' })
+          .then((r) => (r.ok ? (r.json() as Promise<GalleryDoc>) : uploaded))
+          .catch(() => uploaded);
+        pick(saved);
+      }
     },
-    [uploadOne],
+    [uploadOne, picking, pick, p.apiRoute],
   );
 
-  // Page-wide drag and drop.
+  // Drag and drop: page-wide on the Media page; inside a picker only on the
+  // gallery itself, so drops meant for the document's own fields are untouched.
   useEffect(() => {
     if (!p.canUpload) return;
+    const target: HTMLElement | Document | null = picking ? root.current : document;
+    if (!target) return;
     const enter = (e: DragEvent) => {
       if (!e.dataTransfer?.types.includes('Files')) return;
       dragDepth.current++;
@@ -139,24 +169,24 @@ export function MediaGallery(p: Props) {
       setDragging(false);
       void uploadFiles(e.dataTransfer.files);
     };
-    document.addEventListener('dragenter', enter);
-    document.addEventListener('dragleave', leave);
-    document.addEventListener('dragover', over);
-    document.addEventListener('drop', drop);
+    target.addEventListener('dragenter', enter as EventListener);
+    target.addEventListener('dragleave', leave as EventListener);
+    target.addEventListener('dragover', over as EventListener);
+    target.addEventListener('drop', drop as EventListener);
     return () => {
-      document.removeEventListener('dragenter', enter);
-      document.removeEventListener('dragleave', leave);
-      document.removeEventListener('dragover', over);
-      document.removeEventListener('drop', drop);
+      target.removeEventListener('dragenter', enter as EventListener);
+      target.removeEventListener('dragleave', leave as EventListener);
+      target.removeEventListener('dragover', over as EventListener);
+      target.removeEventListener('drop', drop as EventListener);
     };
-  }, [p.canUpload, uploadFiles]);
+  }, [p.canUpload, uploadFiles, picking]);
 
   return (
-    <div className={`bpc-gallery${dragging ? ' bpc-gallery--dragging' : ''}`}>
+    <div ref={root} className={`bpc-gallery${dragging ? ' bpc-gallery--dragging' : ''}${picking ? ' bpc-gallery--picking' : ''}`}>
       <header className="bpc-gallery__head">
         <h1 className="bpc-title-with-icon">
           <Glyph name="media" size={26} />
-          Media
+          {picking ? 'Choose a file' : 'Media'}
         </h1>
         <span className="bpc-gallery__count">{total} file{total === 1 ? '' : 's'}</span>
         <input
@@ -172,8 +202,13 @@ export function MediaGallery(p: Props) {
             <button type="button" className="btn btn--style-primary btn--size-medium" onClick={() => fileInput.current?.click()}>
               Upload
             </button>
-            <input ref={fileInput} type="file" multiple hidden onChange={(e) => e.target.files && void uploadFiles(e.target.files)} />
+            <input ref={fileInput} type="file" multiple={!picking} hidden onChange={(e) => e.target.files && void uploadFiles(e.target.files)} />
           </>
+        )}
+        {picking && drawerSlug && (
+          <button type="button" className="btn btn--style-secondary btn--size-medium" onClick={() => closeModal(drawerSlug)}>
+            Close
+          </button>
         )}
       </header>
 
@@ -190,29 +225,12 @@ export function MediaGallery(p: Props) {
 
       {docs.length === 0 ? (
         <p className="bpc-gallery__empty">
-          {search ? 'Nothing matches that search.' : p.canUpload ? 'No files yet. Drop images, video, PDFs or 3D models anywhere on this page.' : 'No files yet.'}
+          {search ? 'Nothing matches that search.' : p.canUpload ? `No files yet. Drop images, video, PDFs or 3D models ${picking ? 'here' : 'anywhere on this page'}.` : 'No files yet.'}
         </p>
       ) : (
         <ul className="bpc-gallery__grid">
           {docs.map((doc) => (
-            <li key={doc.id} className="bpc-card">
-              <a className="bpc-card__media" href={`${p.editBase}/${doc.id}`} title="Open">
-                {isImage(doc) && (doc.thumbnailURL || doc.url) ? (
-                  <img src={doc.thumbnailURL || doc.url || ''} alt={doc.alt ?? ''} loading="lazy" />
-                ) : (
-                  <span className="bpc-card__type">{(doc.filename ?? '').split('.').pop()?.toUpperCase()}</span>
-                )}
-              </a>
-              <div className="bpc-card__body">
-                <a className="bpc-card__name" href={`${p.editBase}/${doc.id}`}>
-                  {doc.alt || doc.filename}
-                </a>
-                <span className="bpc-card__meta">{describeFile(doc)}</span>
-                <button type="button" className="bpc-chip" onClick={() => void copyUrl(doc)} title={doc.url ?? ''}>
-                  Copy URL
-                </button>
-              </div>
-            </li>
+            <GalleryCard key={doc.id} doc={doc} editBase={p.editBase} onCopy={(d) => void copyUrl(d)} onPick={picking ? pick : undefined} />
           ))}
         </ul>
       )}
