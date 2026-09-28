@@ -67,18 +67,24 @@ export interface Config {
   };
   blocks: {};
   collections: {
-    users: User;
+    demos: Demo;
     media: Media;
+    redirects: Redirect;
+    users: User;
     'payload-kv': PayloadKv;
+    'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
   };
   collectionsJoins: {};
   collectionsSelect: {
-    users: UsersSelect<false> | UsersSelect<true>;
+    demos: DemosSelect<false> | DemosSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    redirects: RedirectsSelect<false> | RedirectsSelect<true>;
+    users: UsersSelect<false> | UsersSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
+    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
@@ -95,7 +101,13 @@ export interface Config {
   };
   user: User;
   jobs: {
-    tasks: unknown;
+    tasks: {
+      schedulePublish: TaskSchedulePublish;
+      inline: {
+        input: unknown;
+        output: unknown;
+      };
+    };
     workflows: unknown;
   };
 }
@@ -118,27 +130,89 @@ export interface UserAuthOperations {
   };
 }
 /**
+ * Interactive demos published at blueprintcode.ai/<slug>.
+ *
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users".
+ * via the `definition` "demos".
  */
-export interface User {
+export interface Demo {
   id: number;
   /**
-   * Must be a Google Workspace account on the company domain.
+   * Shown as the browser tab title and in search results.
    */
-  email: string;
-  name?: string | null;
+  title: string;
   /**
-   * Admins manage users, demos and campaigns. Writers get blog posts and media.
+   * The URL: blueprintcode.ai/<slug>. Lowercase letters, numbers, hyphens. Renaming a published demo adds a redirect.
    */
-  role: 'admin' | 'writer';
+  slug: string;
   /**
-   * Untick to revoke access immediately.
+   * Short label in the site header next to the wordmark (defaults to the title).
    */
-  active?: boolean | null;
+  label?: string | null;
+  /**
+   * The complete HTML document. Reference images and files from the Media library by URL.
+   */
+  html: string;
+  seo?: {
+    /**
+     * Overrides the title tag (max 60 characters).
+     */
+    metaTitle?: string | null;
+    /**
+     * Meta description (max 160 characters).
+     */
+    description?: string | null;
+    /**
+     * Only if this page is a copy of another URL. Leave empty for the page itself.
+     */
+    canonical?: string | null;
+    /**
+     * Keep out of search engines.
+     */
+    noindex?: boolean | null;
+    /**
+     * Social share title (defaults to the title).
+     */
+    ogTitle?: string | null;
+    /**
+     * Social share description (defaults to the meta description).
+     */
+    ogDescription?: string | null;
+    /**
+     * Social share image, ideally 1200×630.
+     */
+    ogImage?: (number | null) | Media;
+    /**
+     * Optional extra structured data (JSON-LD object).
+     */
+    jsonLd?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+  };
+  gallery?: {
+    /**
+     * List on the /prototypes page.
+     */
+    show?: boolean | null;
+    /**
+     * One or two lines for the gallery card.
+     */
+    summary?: string | null;
+    thumbnail?: (number | null) | Media;
+    /**
+     * Lower numbers first.
+     */
+    order?: number | null;
+  };
   updatedAt: string;
   createdAt: string;
-  collection: 'users';
+  _status?: ('draft' | 'published') | null;
 }
 /**
  * Images, video, PDFs and 3D models. Copy a file’s URL to use it in demo HTML.
@@ -194,6 +268,56 @@ export interface Media {
   };
 }
 /**
+ * Old URL → new URL. Created automatically when a demo’s slug changes.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects".
+ */
+export interface Redirect {
+  id: number;
+  /**
+   * Site path, e.g. /old-demo
+   */
+  from: string;
+  /**
+   * Site path (/new-demo) or full URL
+   */
+  to: string;
+  /**
+   * 301 (search engines transfer ranking). Untick for a temporary 302.
+   */
+  permanent?: boolean | null;
+  /**
+   * Why this exists (optional)
+   */
+  note?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users".
+ */
+export interface User {
+  id: number;
+  /**
+   * Must be a Google Workspace account on the company domain.
+   */
+  email: string;
+  name?: string | null;
+  /**
+   * Admins manage users, demos and campaigns. Writers get blog posts and media.
+   */
+  role: 'admin' | 'writer';
+  /**
+   * Untick to revoke access immediately.
+   */
+  active?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+  collection: 'users';
+}
+/**
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
@@ -212,18 +336,118 @@ export interface PayloadKv {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs".
+ */
+export interface PayloadJob {
+  id: number;
+  /**
+   * Input data provided to the job
+   */
+  input?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  taskStatus?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  completedAt?: string | null;
+  totalTried?: number | null;
+  /**
+   * If hasError is true this job will not be retried
+   */
+  hasError?: boolean | null;
+  /**
+   * If hasError is true, this is the error that caused it
+   */
+  error?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Task execution log
+   */
+  log?:
+    | {
+        executedAt: string;
+        completedAt: string;
+        taskSlug: 'inline' | 'schedulePublish';
+        taskID: string;
+        input?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        output?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        state: 'failed' | 'succeeded';
+        error?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  taskSlug?: ('inline' | 'schedulePublish') | null;
+  queue?: string | null;
+  waitUntil?: string | null;
+  processing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
-        relationTo: 'users';
-        value: number | User;
+        relationTo: 'demos';
+        value: number | Demo;
       } | null)
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'redirects';
+        value: number | Redirect;
+      } | null)
+    | ({
+        relationTo: 'users';
+        value: number | User;
       } | null);
   globalSlug?: string | null;
   user: {
@@ -269,15 +493,36 @@ export interface PayloadMigration {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "users_select".
+ * via the `definition` "demos_select".
  */
-export interface UsersSelect<T extends boolean = true> {
-  email?: T;
-  name?: T;
-  role?: T;
-  active?: T;
+export interface DemosSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  label?: T;
+  html?: T;
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        description?: T;
+        canonical?: T;
+        noindex?: T;
+        ogTitle?: T;
+        ogDescription?: T;
+        ogImage?: T;
+        jsonLd?: T;
+      };
+  gallery?:
+    | T
+    | {
+        show?: T;
+        summary?: T;
+        thumbnail?: T;
+        order?: T;
+      };
   updatedAt?: T;
   createdAt?: T;
+  _status?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -336,11 +581,66 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "redirects_select".
+ */
+export interface RedirectsSelect<T extends boolean = true> {
+  from?: T;
+  to?: T;
+  permanent?: T;
+  note?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "users_select".
+ */
+export interface UsersSelect<T extends boolean = true> {
+  email?: T;
+  name?: T;
+  role?: T;
+  active?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
   key?: T;
   data?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs_select".
+ */
+export interface PayloadJobsSelect<T extends boolean = true> {
+  input?: T;
+  taskStatus?: T;
+  completedAt?: T;
+  totalTried?: T;
+  hasError?: T;
+  error?: T;
+  log?:
+    | T
+    | {
+        executedAt?: T;
+        completedAt?: T;
+        taskSlug?: T;
+        taskID?: T;
+        input?: T;
+        output?: T;
+        state?: T;
+        error?: T;
+        id?: T;
+      };
+  taskSlug?: T;
+  queue?: T;
+  waitUntil?: T;
+  processing?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -383,6 +683,26 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSchedulePublish".
+ */
+export interface TaskSchedulePublish {
+  input: {
+    type?: ('publish' | 'unpublish') | null;
+    locale?: string | null;
+    doc?: {
+      relationTo: 'demos';
+      value: number | Demo;
+    } | null;
+    global?: string | null;
+    user?: {
+      relationTo: 'users';
+      value: number | User;
+    } | null;
+  };
+  output?: unknown;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

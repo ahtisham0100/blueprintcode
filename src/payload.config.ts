@@ -5,7 +5,9 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { buildConfig } from 'payload';
 import sharp from 'sharp';
 import { CMS_BRAND } from './cms/branding';
+import { Demos } from './cms/collections/Demos';
 import { Media } from './cms/collections/Media';
+import { Redirects } from './cms/collections/Redirects';
 import { Users } from './cms/collections/Users';
 import { mediaStoragePlugin } from './cms/media/storage';
 import { CMS_COOKIE_PREFIX, CMS_DB_SCHEMA, CMS_ROUTES, cmsServerUrl } from './cms/settings';
@@ -47,7 +49,7 @@ export default buildConfig({
       },
     },
   },
-  collections: [Users, Media],
+  collections: [Demos, Media, Redirects, Users],
   plugins: [mediaStoragePlugin()],
   // Multipart limit for uploads that do pass through the server (client
   // uploads go straight to R2). Matches maxBytesFor() in media/keys.ts.

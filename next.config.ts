@@ -1,6 +1,8 @@
 import type { NextConfig } from "next";
 import { withPayload } from "@payloadcms/next/withPayload";
 import { mediaHostForRewrite } from "./src/cms/media/urls";
+import { listStaticDemoSlugs, staticDemoRewriteSource } from "./src/lib/staticDemos";
+import path from "node:path";
 
 // Security response headers, applied to every route. A crawl flagged all four
 // as missing. None of them are ranking factors — this is ordinary hardening,
@@ -26,7 +28,17 @@ const securityHeaders = [
   { key: "Permissions-Policy", value: "camera=(), microphone=(), geolocation=()" },
 ];
 
+const staticDemoSource = staticDemoRewriteSource(listStaticDemoSlugs(path.join(process.cwd(), "public")));
+
 const nextConfig: NextConfig = {
+  // Database demos are rendered at request time with the shared header and
+  // footer partials; make sure those files ship with the serverless
+  // functions that read them (src/cms/demos/partials.ts).
+  outputFileTracingIncludes: {
+    "/[slug]": ["./public/partials/site-header.html", "./public/partials/site-footer.html"],
+    "/demo-preview/[id]": ["./public/partials/site-header.html", "./public/partials/site-footer.html"],
+  },
+
   images: {
     // The homepage hero is served from the media library on the media host.
     remotePatterns: [{ protocol: "https", hostname: "media.blueprintcode.ai", pathname: "/media/**" }],
@@ -84,23 +96,15 @@ const nextConfig: NextConfig = {
       beforeFiles: mediaHost
         ? [{ source: "/:path*", has: [{ type: "host", value: mediaHost }], destination: "/media/:path*" }]
         : [],
-      // Static demos live at public/<slug>/index.html and are served at /<slug>.
-      // This single wildcard replaces the old per-demo list: any /<slug> that
-      // isn't a real route or file falls through to its index.html, so adding a
-      // demo needs NO config change — just add public/<slug>/index.html (e.g.
-      // via the /admin uploader) and it goes live on the next deploy.
-      //
-      // Real routes (/, /about, /prototypes, /api/*, …) and real public files
-      // (/robots.txt, /site.css, …) are matched before these afterFiles rewrites,
-      // so they always win; only leftover single-segment paths reach this rule.
-      //
-      // DYNAMIC routes are matched AFTER afterFiles, so /cms (Payload's
-      // [[...segments]] catch-all) must be excluded here or it becomes
-      // /cms/index.html and 404s. The site's own [...missing] catch-all is
-      // fine: it only wants what nothing else claimed.
-      afterFiles: [
-        { source: "/:slug((?!cms$)[^/]+)", destination: "/:slug/index.html" },
-      ],
+      // Legacy static demos live at public/<slug>/index.html and are served at
+      // /<slug>. The rewrite names exactly those slugs (discovered at build
+      // time by src/lib/staticDemos.ts), so:
+      //   - a static demo is served before any dynamic route (it wins), and
+      //   - every other single-segment path reaches the dynamic [slug] route,
+      //     where demos published from the CMS live (behind CMS_PUBLIC).
+      // A demo added via the old /admin uploader is a commit, hence a rebuild,
+      // so the list is always current.
+      afterFiles: staticDemoSource ? [{ source: staticDemoSource, destination: "/:slug/index.html" }] : [],
     };
   },
 };

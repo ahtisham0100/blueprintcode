@@ -21,6 +21,7 @@
 import { readFileSync, writeFileSync, readdirSync, statSync } from 'node:fs';
 import { join, relative, sep } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { injectChrome, metaFromSlug, stripPartialComment } from './lib/chrome.mjs';
 
 const ROOT = join(fileURLToPath(new URL('.', import.meta.url)), '..');
 const PUBLIC = join(ROOT, 'public');
@@ -31,18 +32,6 @@ const PARTIALS = join(PUBLIC, 'partials');
 const SKIP_DIRS = new Set([PARTIALS, join(PUBLIC, 'capabilities')]);
 
 /* ---- markers -------------------------------------------------------------- */
-const M = (name) => ({
-  start: `<!--BPC:${name}:START-->`,
-  end: `<!--BPC:${name}:END-->`,
-});
-const ASSETS = M('ASSETS');
-const HEADER = M('HEADER');
-const FOOTER = M('FOOTER');
-const SCRIPT = M('SCRIPT');
-
-const CSS_LINK = '<link rel="stylesheet" href="/partials/site-chrome.css">';
-const JS_TAG = '<script defer src="/partials/site-chrome.js"></script>';
-
 /* ---- per-page metadata (single place for labels / footer meta) ------------ */
 // Keyed by path relative to public/, using forward slashes.
 const CONTENT = {
@@ -64,10 +53,10 @@ const DEMO_OVERRIDES = {
 };
 
 /* ---- helpers -------------------------------------------------------------- */
+// The injection itself lives in scripts/lib/chrome.mjs so the CMS renders
+// database demos with exactly the same chrome (src/cms/demos/render.ts).
 function readPartial(name) {
-  const raw = readFileSync(join(PARTIALS, name), 'utf8');
-  // Drop the leading authoring comment so it is not injected into pages.
-  return raw.replace(/^\s*<!--[\s\S]*?-->\s*/, '').trim();
+  return stripPartialComment(readFileSync(join(PARTIALS, name), 'utf8'));
 }
 
 const HEADER_TPL = readPartial('site-header.html');
@@ -80,49 +69,9 @@ function toPosix(p) {
 function metaFor(rel) {
   if (CONTENT[rel]) return CONTENT[rel];
   const folder = rel.split('/')[0];
-  const base = rel.split('/').pop().replace(/\.html$/i, '');
+  const base = rel.split('/').pop().replace(/.html$/i, '');
   const stem = folder === 'demos' ? base : folder;
-  const derived = stem.replace(/[-_]+/g, ' ').replace(/\(\d+\)/g, '').trim().toUpperCase();
-  const o = DEMO_OVERRIDES[rel] || {};
-  return {
-    route: null,
-    label: o.label || derived,
-    doc: o.doc || derived,
-    metaKey: o.metaKey || 'FORMAT',
-    metaVal: o.metaVal || 'LIVE DEMO',
-  };
-}
-
-function buildHeader(meta) {
-  let h = HEADER_TPL.replace('__LABEL__', meta.label);
-  if (meta.route) {
-    h = h.replace(`href="${meta.route}"`, `href="${meta.route}" aria-current="page"`);
-  }
-  return h;
-}
-
-function buildFooter(meta) {
-  return FOOTER_TPL
-    .replace('__DOC__', meta.doc)
-    .replace('__METAKEY__', meta.metaKey)
-    .replace('__METAVAL__', meta.metaVal);
-}
-
-function regionRe(marker) {
-  const esc = (s) => s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
-  return new RegExp(esc(marker.start) + '[\\s\\S]*?' + esc(marker.end));
-}
-
-function wrap(marker, block) {
-  return `${marker.start}\n${block}\n${marker.end}`;
-}
-
-/* Replace an existing marker region if present, otherwise run insert(). */
-function upsert(html, marker, block, insert) {
-  const re = regionRe(marker);
-  const wrapped = wrap(marker, block);
-  if (re.test(html)) return html.replace(re, wrapped);
-  return insert(html, wrapped);
+  return metaFromSlug(stem, DEMO_OVERRIDES[rel] || {});
 }
 
 // Exact inline burger handler shipped in the 7 content pages — remove it so it
@@ -159,38 +108,10 @@ for (const abs of files) {
   // 1) strip the old inline burger handler (content pages)
   html = html.replace(INLINE_BURGER_RE, '');
 
-  // 2) CSS link in <head>
-  html = upsert(html, ASSETS, CSS_LINK, (h, wrapped) => {
-    if (/<\/head>/i.test(h)) return h.replace(/<\/head>/i, `${wrapped}\n</head>`);
-    warnings.push('no </head>');
-    return h;
-  });
-
-  // 3) header
-  html = upsert(html, HEADER, buildHeader(meta), (h, wrapped) => {
-    const native = /<header class="head">[\s\S]*?<\/header>/;
-    if (isContent && native.test(h)) return h.replace(native, wrapped);
-    if (/<body[^>]*>/i.test(h)) return h.replace(/(<body[^>]*>)/i, `$1\n${wrapped}`);
-    warnings.push('no <body>');
-    return h;
-  });
-
-  // 4) footer
-  html = upsert(html, FOOTER, buildFooter(meta), (h, wrapped) => {
-    const native = /<footer\b[^>]*>[\s\S]*?<\/footer>/i;
-    if (isContent && native.test(h)) return h.replace(native, wrapped);
-    if (/<\/body>/i.test(h)) return h.replace(/<\/body>/i, `${wrapped}\n</body>`);
-    warnings.push('no </body> (footer)');
-    return h;
-  });
-
-  // 5) chrome script before </body>
-  html = upsert(html, SCRIPT, JS_TAG, (h, wrapped) => {
-    if (/<\/body>/i.test(h)) return h.replace(/<\/body>/i, `${wrapped}\n</body>`);
-    warnings.push('no </body> (script)');
-    return h;
-  });
-
+  // 2) shared chrome (css link, header, footer, script) via scripts/lib/chrome.mjs
+  const injected = injectChrome(html, meta, { headerTpl: HEADER_TPL, footerTpl: FOOTER_TPL, isContent });
+  html = injected.html;
+  warnings.push(...injected.warnings);
   writeFileSync(abs, html, 'utf8');
   report.push({ rel, kind: isContent ? 'content' : 'demo', label: meta.label, warnings });
 }

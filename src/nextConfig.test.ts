@@ -1,9 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
-// The static-demo rewrite runs before dynamic routes, so it must leave the
-// CMS's [[...segments]] route alone while still catching every demo slug.
+// The static-demo rewrite runs before dynamic routes. It must name exactly
+// the static demos that exist, so a slug published from the CMS reaches the
+// dynamic [slug] route instead of being rewritten to a missing index.html.
 describe('next.config demo rewrite', () => {
-  it('rewrites single-segment demo slugs but never /cms', async () => {
+  it('rewrites only the existing static demo slugs', async () => {
     const config = (await import('../next.config')).default;
     const rewrites = await config.rewrites!();
     const afterFiles = Array.isArray(rewrites) ? [] : rewrites.afterFiles ?? [];
@@ -14,10 +15,10 @@ describe('next.config demo rewrite', () => {
     const { pathToRegexp } = await import('next/dist/compiled/path-to-regexp');
     const re: RegExp = pathToRegexp(demoRule!.source);
 
-    for (const p of ['/woodlawn', '/premium-muay-thai-customiser', '/cms-demo', '/cmsx']) {
+    for (const p of ['/woodlawn', '/premium-muay-thai-customiser', '/stewart-screens-pitch']) {
       expect(re.test(p), p).toBe(true);
     }
-    for (const p of ['/cms', '/cms/login', '/sportswear-demo/product.html', '/']) {
+    for (const p of ['/cms', '/cms/login', '/sportswear-demo/product.html', '/', '/phase4-demo-test', '/some-new-cms-demo']) {
       expect(re.test(p), p).toBe(false);
     }
   });
