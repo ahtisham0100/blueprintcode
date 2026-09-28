@@ -9,6 +9,9 @@ describe('redirectForSlugChange', () => {
       permanent: true,
     });
   });
+  it('puts both paths under a prefix when the slug lives under one (posts under /blog)', () => {
+    expect(redirectForSlugChange({ slug: 'old' }, { slug: 'new' }, '/blog')).toEqual({ from: '/blog/old', to: '/blog/new', permanent: true });
+  });
   it('does nothing on create, unchanged slug, or missing values', () => {
     expect(redirectForSlugChange(undefined, { slug: 'a' })).toBeNull();
     expect(redirectForSlugChange({ slug: 'a' }, { slug: 'a' })).toBeNull();

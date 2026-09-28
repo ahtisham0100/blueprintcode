@@ -15,3 +15,10 @@ export const CMS_DB_SCHEMA = 'cms';
 export function cmsServerUrl(env: Record<string, string | undefined> = process.env): string {
   return (env.CMS_SERVER_URL ?? 'http://localhost:5000').replace(/\/$/, '');
 }
+
+/** Origin of the PUBLIC site for preview links and self-fetches: production's
+ *  https://blueprintcode.ai, or PUBLIC_SITE_URL locally (http://127.0.0.1:5000,
+ *  since localhost is the admin host in dev). */
+export function publicSiteOrigin(env: Record<string, string | undefined> = process.env): string {
+  return (env.PUBLIC_SITE_URL ?? 'https://blueprintcode.ai').replace(/\/$/, '');
+}

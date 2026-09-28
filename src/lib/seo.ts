@@ -124,3 +124,88 @@ export function webSiteJsonLd() {
     publisher: { '@id': `${SITE_URL}/#organization` },
   };
 }
+
+/* ---- Blog (Phase 5) ------------------------------------------------------ */
+
+export const BLOG_URL = `${SITE_URL}/blog`;
+export const BLOG_NAME = 'Blueprint Code AI — Blog';
+export const BLOG_DESCRIPTION =
+  'Practical notes on product configurators, guided selling, digital showrooms and connected ecommerce, from a working studio.';
+
+export type JsonLdPerson = { name: string; jobTitle?: string | null; url?: string | null; image?: string | null; sameAs?: string[] | null };
+
+export type BlogPostingInput = {
+  title: string;
+  url: string;
+  description?: string | null;
+  datePublished?: string | null;
+  dateModified?: string | null;
+  wordCount?: number | null;
+  image?: string | null;
+  author?: JsonLdPerson | null;
+  category?: string | null;
+};
+
+function personJsonLd(a: JsonLdPerson) {
+  return {
+    '@type': 'Person',
+    name: a.name,
+    ...(a.jobTitle ? { jobTitle: a.jobTitle } : {}),
+    ...(a.url ? { url: a.url } : {}),
+    ...(a.image ? { image: a.image } : {}),
+    ...(a.sameAs && a.sameAs.length ? { sameAs: [...a.sameAs] } : {}),
+  };
+}
+
+/** BlogPosting without @context, for nesting inside the Blog's blogPost list. */
+function blogPostingBody(p: BlogPostingInput) {
+  return {
+    '@type': 'BlogPosting',
+    headline: p.title,
+    url: p.url,
+    mainEntityOfPage: p.url,
+    ...(p.description ? { description: p.description } : {}),
+    ...(p.image ? { image: p.image } : {}),
+    ...(p.datePublished ? { datePublished: p.datePublished, dateModified: p.dateModified || p.datePublished } : {}),
+    ...(p.wordCount ? { wordCount: p.wordCount } : {}),
+    ...(p.category ? { articleSection: p.category } : {}),
+    ...(p.author ? { author: personJsonLd(p.author) } : {}),
+    publisher: { '@id': `${SITE_URL}/#organization` },
+  };
+}
+
+/** Structured data for one post page. */
+export function blogPostingJsonLd(p: BlogPostingInput) {
+  return {
+    '@context': 'https://schema.org',
+    ...blogPostingBody(p),
+    isPartOf: { '@type': 'Blog', '@id': `${BLOG_URL}#blog`, name: BLOG_NAME, url: BLOG_URL },
+  };
+}
+
+/** Structured data for the blog index: the Blog entity with its posts. */
+export function blogJsonLd(posts: BlogPostingInput[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Blog',
+    '@id': `${BLOG_URL}#blog`,
+    name: BLOG_NAME,
+    url: BLOG_URL,
+    description: BLOG_DESCRIPTION,
+    publisher: { '@id': `${SITE_URL}/#organization` },
+    blogPost: posts.map(blogPostingBody),
+  };
+}
+
+export function breadcrumbListJsonLd(items: { name: string; url: string }[]) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: items.map((it, i) => ({ '@type': 'ListItem', position: i + 1, name: it.name, item: it.url })),
+  };
+}
+
+/** JSON for a <script type="application/ld+json">: `<` escaped so content can never close the tag. */
+export function jsonLdScript(data: unknown): string {
+  return JSON.stringify(data).replace(/</g, '\\u003c');
+}

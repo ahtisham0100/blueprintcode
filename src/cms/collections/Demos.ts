@@ -10,14 +10,9 @@ import { redirectForSlugChange } from '../demos/redirects';
 import { pathsToRevalidate, pathsToRevalidateOnDelete, urlsToPing } from '../demos/revalidate';
 import { submitIndexNow } from '../../../scripts/lib/indexnow.mjs';
 import { slugify, validateDemoSlug } from '../demos/slug';
-import { isAdmin } from './Users';
-
-/** Origin of the public site for preview links: production's SITE_URL, or
- *  PUBLIC_SITE_URL locally (http://127.0.0.1:5000, since localhost is the
- *  admin host in dev). */
-function publicSiteOrigin(): string {
-  return (process.env.PUBLIC_SITE_URL ?? 'https://blueprintcode.ai').replace(/\/$/, '');
-}
+import { seoGroupField, seoPreviewField } from '../fields/seo';
+import { publicSiteOrigin } from '../settings';
+import { hiddenFromWriters, isAdmin } from './Users';
 
 /** Ask Next to drop cached copies of the public paths a change affects.
  *  Imported lazily: revalidatePath only exists inside the Next server; the
@@ -79,9 +74,6 @@ export const keepOldUrl: CollectionAfterChangeHook = async ({ doc, previousDoc, 
   return doc;
 };
 
-const SEO_TITLE_MAX = 60;
-const SEO_DESCRIPTION_MAX = 160;
-
 export const Demos: CollectionConfig = {
   slug: 'demos',
   admin: {
@@ -89,6 +81,7 @@ export const Demos: CollectionConfig = {
     defaultColumns: ['title', 'slug', '_status', 'updatedAt'],
     group: 'Content',
     description: 'Interactive demos published at blueprintcode.ai/<slug>.',
+    hidden: hiddenFromWriters,
     // Preview opens the latest draft on the public host with a 30-minute token.
     preview: async (doc) => `${publicSiteOrigin()}${previewPath(String(doc.id), await signPreviewToken(String(doc.id), sessionSecret()))}`,
   },
@@ -127,28 +120,7 @@ export const Demos: CollectionConfig = {
         },
         {
           label: 'SEO',
-          fields: [
-            {
-              name: 'seoPreview',
-              type: 'ui',
-              admin: { components: { Field: '/cms/components/SeoPreview.client#SeoPreview' } },
-            },
-            {
-              name: 'seo',
-              type: 'group',
-              label: false,
-              fields: [
-                { name: 'metaTitle', type: 'text', maxLength: SEO_TITLE_MAX, admin: { description: `Overrides the title tag (max ${SEO_TITLE_MAX} characters).` } },
-                { name: 'description', type: 'textarea', maxLength: SEO_DESCRIPTION_MAX, admin: { description: `Meta description (max ${SEO_DESCRIPTION_MAX} characters).` } },
-                { name: 'canonical', type: 'text', admin: { description: 'Only if this page is a copy of another URL. Leave empty for the page itself.' } },
-                { name: 'noindex', type: 'checkbox', defaultValue: false, admin: { description: 'Keep out of search engines.' } },
-                { name: 'ogTitle', type: 'text', admin: { description: 'Social share title (defaults to the title).' } },
-                { name: 'ogDescription', type: 'textarea', admin: { description: 'Social share description (defaults to the meta description).' } },
-                { name: 'ogImage', type: 'upload', relationTo: 'media', admin: { description: 'Social share image, ideally 1200×630.' } },
-                { name: 'jsonLd', type: 'json', admin: { description: 'Optional extra structured data (JSON-LD object).' } },
-              ],
-            },
-          ],
+          fields: [seoPreviewField({ pathPrefix: '/', noun: 'demo' }), seoGroupField()],
         },
         {
           label: 'Gallery',

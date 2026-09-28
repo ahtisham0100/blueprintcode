@@ -67,6 +67,9 @@ export interface Config {
   };
   blocks: {};
   collections: {
+    posts: Post;
+    categories: Category;
+    authors: Author;
     demos: Demo;
     media: Media;
     redirects: Redirect;
@@ -79,6 +82,9 @@ export interface Config {
   };
   collectionsJoins: {};
   collectionsSelect: {
+    posts: PostsSelect<false> | PostsSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    authors: AuthorsSelect<false> | AuthorsSelect<true>;
     demos: DemosSelect<false> | DemosSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -128,6 +134,209 @@ export interface UserAuthOperations {
     email: string;
     password: string;
   };
+}
+/**
+ * Blog posts, published at blueprintcode.ai/blog/<slug>.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts".
+ */
+export interface Post {
+  id: number;
+  /**
+   * The headline. Also the browser tab title and search result title unless overridden in SEO.
+   */
+  title: string;
+  /**
+   * The URL: blueprintcode.ai/blog/<slug>. Lowercase letters, numbers, hyphens. Renaming a published post adds a redirect.
+   */
+  slug: string;
+  /**
+   * One or two sentences for cards, the feed and (unless overridden) the meta description. Max 200 characters.
+   */
+  excerpt?: string | null;
+  /**
+   * Lead image, also the social share image unless SEO sets one. Ideally 1600×900 or wider.
+   */
+  cover?: (number | null) | Media;
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  category?: (number | null) | Category;
+  author?: (number | null) | Author;
+  /**
+   * Set automatically on first publish; edit to backdate.
+   */
+  publishedAt?: string | null;
+  /**
+   * Minutes, computed from the body on save.
+   */
+  readingTime?: number | null;
+  seo?: {
+    /**
+     * Overrides the title tag (max 60 characters).
+     */
+    metaTitle?: string | null;
+    /**
+     * Meta description (max 160 characters).
+     */
+    description?: string | null;
+    /**
+     * Only if this page is a copy of another URL. Leave empty for the page itself.
+     */
+    canonical?: string | null;
+    /**
+     * Keep out of search engines.
+     */
+    noindex?: boolean | null;
+    /**
+     * Social share title (defaults to the title).
+     */
+    ogTitle?: string | null;
+    /**
+     * Social share description (defaults to the meta description).
+     */
+    ogDescription?: string | null;
+    /**
+     * Social share image, ideally 1200×630.
+     */
+    ogImage?: (number | null) | Media;
+    /**
+     * Optional extra structured data (JSON-LD object).
+     */
+    jsonLd?:
+      | {
+          [k: string]: unknown;
+        }
+      | unknown[]
+      | string
+      | number
+      | boolean
+      | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * Images, video, PDFs and 3D models. Copy a file’s URL to use it in demo HTML.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "media".
+ */
+export interface Media {
+  id: number;
+  /**
+   * Describes the image for screen readers and search engines.
+   */
+  alt: string;
+  caption?: string | null;
+  prefix?: string | null;
+  _objectKey?: string | null;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
+  sizes?: {
+    thumb?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    medium?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    large?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+  };
+}
+/**
+ * Blog categories. Each one lists its posts at blueprintcode.ai/blog/category/<slug>.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  name: string;
+  /**
+   * The URL: blueprintcode.ai/blog/category/<slug>. Lowercase letters, numbers, hyphens.
+   */
+  slug: string;
+  /**
+   * One or two lines shown at the top of the category page and used as its meta description.
+   */
+  description?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * Who writes the posts. Shown in the byline and the author box, and sent to search engines as the article’s author.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors".
+ */
+export interface Author {
+  id: number;
+  name: string;
+  /**
+   * Used as the anchor on the About page (about#<slug>) and as a stable id.
+   */
+  slug: string;
+  /**
+   * Job title, e.g. "Founder & Solutions Architect".
+   */
+  title?: string | null;
+  /**
+   * Two or three sentences for the author box.
+   */
+  bio?: string | null;
+  avatar?: (number | null) | Media;
+  /**
+   * Public profiles (LinkedIn, personal site). Also sent as schema.org sameAs.
+   */
+  links?:
+    | {
+        label: string;
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  updatedAt: string;
+  createdAt: string;
 }
 /**
  * Interactive demos published at blueprintcode.ai/<slug>.
@@ -215,60 +424,7 @@ export interface Demo {
   _status?: ('draft' | 'published') | null;
 }
 /**
- * Images, video, PDFs and 3D models. Copy a file’s URL to use it in demo HTML.
- *
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "media".
- */
-export interface Media {
-  id: number;
-  /**
-   * Describes the image for screen readers and search engines.
-   */
-  alt: string;
-  caption?: string | null;
-  prefix?: string | null;
-  _objectKey?: string | null;
-  updatedAt: string;
-  createdAt: string;
-  url?: string | null;
-  thumbnailURL?: string | null;
-  filename?: string | null;
-  mimeType?: string | null;
-  filesize?: number | null;
-  width?: number | null;
-  height?: number | null;
-  focalX?: number | null;
-  focalY?: number | null;
-  sizes?: {
-    thumb?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    medium?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-    large?: {
-      url?: string | null;
-      width?: number | null;
-      height?: number | null;
-      mimeType?: string | null;
-      filesize?: number | null;
-      filename?: string | null;
-    };
-  };
-}
-/**
- * Old URL → new URL. Created automatically when a demo’s slug changes.
+ * Old URL → new URL. Created automatically when a demo’s or post’s slug changes.
  *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "redirects".
@@ -276,7 +432,7 @@ export interface Media {
 export interface Redirect {
   id: number;
   /**
-   * Site path, e.g. /old-demo
+   * Site path, e.g. /old-demo or /blog/old-post
    */
   from: string;
   /**
@@ -434,6 +590,18 @@ export interface PayloadLockedDocument {
   id: number;
   document?:
     | ({
+        relationTo: 'posts';
+        value: number | Post;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'authors';
+        value: number | Author;
+      } | null)
+    | ({
         relationTo: 'demos';
         value: number | Demo;
       } | null)
@@ -490,6 +658,67 @@ export interface PayloadMigration {
   batch?: number | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "posts_select".
+ */
+export interface PostsSelect<T extends boolean = true> {
+  title?: T;
+  slug?: T;
+  excerpt?: T;
+  cover?: T;
+  body?: T;
+  category?: T;
+  author?: T;
+  publishedAt?: T;
+  readingTime?: T;
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        description?: T;
+        canonical?: T;
+        noindex?: T;
+        ogTitle?: T;
+        ogDescription?: T;
+        ogImage?: T;
+        jsonLd?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors_select".
+ */
+export interface AuthorsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  title?: T;
+  bio?: T;
+  avatar?: T;
+  links?:
+    | T
+    | {
+        label?: T;
+        url?: T;
+        id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -692,10 +921,15 @@ export interface TaskSchedulePublish {
   input: {
     type?: ('publish' | 'unpublish') | null;
     locale?: string | null;
-    doc?: {
-      relationTo: 'demos';
-      value: number | Demo;
-    } | null;
+    doc?:
+      | ({
+          relationTo: 'posts';
+          value: number | Post;
+        } | null)
+      | ({
+          relationTo: 'demos';
+          value: number | Demo;
+        } | null);
     global?: string | null;
     user?: {
       relationTo: 'users';
@@ -703,6 +937,89 @@ export interface TaskSchedulePublish {
     } | null;
   };
   output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CalloutBlock".
+ */
+export interface CalloutBlock {
+  /**
+   * Small label above the note, e.g. "Planning note".
+   */
+  label?: string | null;
+  body: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  };
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'callout';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CtaBlock".
+ */
+export interface CtaBlock {
+  heading?: string | null;
+  text?: string | null;
+  buttons?:
+    | {
+        label: string;
+        /**
+         * Site path (/contact) or full URL.
+         */
+        href: string;
+        style?: ('solid' | 'outline') | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'cta';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "DemoEmbedBlock".
+ */
+export interface DemoEmbedBlock {
+  /**
+   * The demo’s slug: the part after blueprintcode.ai/ (e.g. premium-muay-thai-customiser).
+   */
+  demo: string;
+  /**
+   * Accessible name for the frame (defaults to the slug).
+   */
+  title?: string | null;
+  caption?: string | null;
+  /**
+   * Frame height in pixels.
+   */
+  height?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'demoEmbed';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "CodeSampleBlock".
+ */
+export interface CodeSampleBlock {
+  language?: ('plain' | 'html' | 'css' | 'javascript' | 'typescript' | 'json' | 'bash' | 'python' | 'sql') | null;
+  code: string;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'code';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

@@ -1,13 +1,15 @@
-/* When a published demo's slug changes, its old URL must keep working. Pure
-   planner; the Demos afterChange hook writes the redirect row. */
+/* When a published demo's (or post's) slug changes, its old URL must keep
+   working. Pure planner; the collection's afterChange hook writes the
+   redirect row. `prefix` is the URL base the slug lives under: '' for demos
+   (/<slug>), '/blog' for posts (/blog/<slug>). */
 
 export type SlugChange = { from: string; to: string; permanent: true } | null;
 
-export function redirectForSlugChange(previous: { slug?: string | null } | undefined, next: { slug?: string | null }): SlugChange {
+export function redirectForSlugChange(previous: { slug?: string | null } | undefined, next: { slug?: string | null }, prefix = ''): SlugChange {
   const from = previous?.slug;
   const to = next.slug;
   if (!from || !to || from === to) return null;
-  return { from: `/${from}`, to: `/${to}`, permanent: true };
+  return { from: `${prefix}/${from}`, to: `${prefix}/${to}`, permanent: true };
 }
 
 /** Redirect rows are site paths ("/old") or absolute URLs for `to`. */
