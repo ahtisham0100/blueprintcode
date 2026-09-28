@@ -21,6 +21,7 @@ export const RESERVED_SLUGS = new Set([
   'insights',
   'logo-preview',
   'media',
+  'not-found-page',
   'partials',
   'ppav-case-study',
   'pricing',

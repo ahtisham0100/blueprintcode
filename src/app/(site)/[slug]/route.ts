@@ -19,18 +19,36 @@ export const revalidate = 31536000;
 
 type Ctx = { params: Promise<{ slug: string }> };
 
-/** The site's own 404 page (not-found.tsx via /__not-found), as a response.
- *  A route handler's notFound() would only give the bare built-in page. */
+/** Path of the site's 404 page as a real route (not-found.tsx rendered by
+ *  (site)/not-found-page). NOT underscore-prefixed: Next treats those
+ *  folders as private and unroutable, which made this handler fetch itself. */
+export const NOT_FOUND_PAGE_PATH = '/not-found-page';
+const INTERNAL_HEADER = 'x-bpc-internal-404';
+
+/** The site's own 404 page, as a response. A route handler's notFound()
+ *  would only give the bare built-in page. Guarded against recursion: the
+ *  internal fetch is marked, and a marked request never fetches again. */
 async function siteNotFound(req: Request): Promise<Response> {
-  const res = await fetch(new URL('/__not-found', req.url), { cache: 'force-cache' });
-  return new Response(await res.text(), {
-    status: 404,
-    headers: { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=0, s-maxage=60' },
-  });
+  const headers = { 'content-type': 'text/html; charset=utf-8', 'cache-control': 'public, max-age=0, s-maxage=60' };
+  if (req.headers.get(INTERNAL_HEADER)) return new Response('Not found', { status: 404, headers });
+  // Explicit origin: req.url is normalised to "localhost" in dev, which is
+  // the ADMIN host here and would bounce the request to production.
+  const origin = (process.env.PUBLIC_SITE_URL ?? SITE_URL).replace(/\/$/, '');
+  const url = `${origin}${NOT_FOUND_PAGE_PATH}`;
+  try {
+    const res = await fetch(url, { headers: { [INTERNAL_HEADER]: '1' }, next: { revalidate: 3600 } });
+    const html = await res.text();
+    if (res.ok && html.includes('not-found')) return new Response(html, { status: 404, headers });
+    console.warn(`[slug] 404 page fetch of ${url} returned ${res.status} (${html.length} bytes, final url ${res.url})`);
+  } catch (err) {
+    console.warn(`[slug] 404 page fetch failed: ${String(err)}`);
+  }
+  return new Response('Not found', { status: 404, headers });
 }
 
 export async function GET(req: Request, { params }: Ctx) {
   const { slug } = await params;
+  if (req.headers.get(INTERNAL_HEADER)) return new Response('Not found', { status: 404 });
   if (!isCmsPublic()) return siteNotFound(req);
 
   const demo = await loadPublishedDemo(slug);

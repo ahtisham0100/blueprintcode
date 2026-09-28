@@ -1,7 +1,8 @@
 /* The site's 404 page as a fetchable route. Route handlers (the [slug] demo
    route) cannot render not-found.tsx themselves, so on a miss they fetch
    this page and return its HTML with a 404 status. Not linked, noindex,
-   absent from the sitemap. */
+   disallowed in robots.txt, absent from the sitemap. The folder name has
+   no leading underscore on purpose: Next makes such folders private. */
 
 import type { Metadata } from 'next';
 import NotFound from '../not-found';

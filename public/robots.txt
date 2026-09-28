@@ -8,5 +8,6 @@ Allow: /
 Disallow: /admin
 Disallow: /api/
 Disallow: /cms
+Disallow: /not-found-page
 
 Sitemap: https://blueprintcode.ai/sitemap.xml

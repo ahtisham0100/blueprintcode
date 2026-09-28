@@ -18,7 +18,7 @@ describe('validateDemoSlug', () => {
   });
 
   it('refuses to shadow real routes, files and CMS paths', () => {
-    for (const s of ['about', 'cms', 'media', 'api', 'admin', 'blog', 'demo-preview', 'services'])
+    for (const s of ['about', 'cms', 'media', 'api', 'admin', 'blog', 'demo-preview', 'services', 'not-found-page'])
       expect(validateDemoSlug(s), s).toMatch(/reserved/);
     expect(RESERVED_SLUGS.has('prototypes')).toBe(true);
     // Dotted names (robots.txt, sitemap.xml) never pass the shape check anyway.
