@@ -1,7 +1,7 @@
 import type { MetadataRoute } from 'next';
 import { readdirSync, readFileSync, statSync } from 'node:fs';
 import path from 'node:path';
-import { isCmsPublic } from '@/lib/flags';
+import { isBlogPublic, isCmsPublic } from '@/lib/flags';
 import { SITE_URL } from '@/lib/seo';
 import { NOTES } from './(content)/insights/notes';
 
@@ -130,6 +130,19 @@ async function cmsDemoEntries(staticSlugs: Set<string>): Promise<MetadataRoute.S
   }
 }
 
+/** The blog (Phase 5): index pages, categories in use and published posts,
+ *  once BLOG_PUBLIC is on. Until then /insights stays listed above. */
+async function blogEntries(): Promise<MetadataRoute.Sitemap> {
+  if (!isBlogPublic()) return [];
+  try {
+    const [{ loadAllPublishedPosts, loadCategories }, { blogSitemapEntries }] = await Promise.all([import('@/cms/blog/load'), import('@/cms/blog/sitemap')]);
+    const [posts, categories] = await Promise.all([loadAllPublishedPosts(1), loadCategories()]);
+    return blogSitemapEntries(posts, categories, SITE_URL);
+  } catch {
+    return [];
+  }
+}
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticEntries = STATIC_ROUTES.map((r) => ({
     url: r.path ? `${SITE_URL}/${r.path}` : `${SITE_URL}/`,
@@ -150,5 +163,5 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
 
   const staticDemos = staticDemoEntries();
   const staticSlugs = new Set(staticDemos.map((e) => e.url.slice(SITE_URL.length + 1)));
-  return [...staticEntries, ...noteEntries, ...staticDemos, ...(await cmsDemoEntries(staticSlugs))];
+  return [...staticEntries, ...noteEntries, ...(await blogEntries()), ...staticDemos, ...(await cmsDemoEntries(staticSlugs))];
 }

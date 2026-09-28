@@ -31,6 +31,10 @@ const securityHeaders = [
 const staticDemoSource = staticDemoRewriteSource(listStaticDemoSlugs(path.join(process.cwd(), "public")));
 
 const nextConfig: NextConfig = {
+  // forbidden() → 403 with (site)/forbidden.tsx. Used only by /blog-preview
+  // for invalid or expired preview links.
+  experimental: { authInterrupts: true },
+
   // Database demos are rendered at request time with the shared header and
   // footer partials; make sure those files ship with the serverless
   // functions that read them (src/cms/demos/partials.ts).
@@ -46,7 +50,18 @@ const nextConfig: NextConfig = {
 
   async headers() {
     // "/:path*" matches the root as well as every nested path.
-    return [{ source: "/:path*", headers: securityHeaders }];
+    return [
+      { source: "/:path*", headers: securityHeaders },
+      // Post previews (a page, so it cannot set these itself): never cached,
+      // never indexed. Demo previews set the same headers in their route.
+      {
+        source: "/blog-preview/:path*",
+        headers: [
+          { key: "X-Robots-Tag", value: "noindex, nofollow" },
+          { key: "Cache-Control", value: "no-store" },
+        ],
+      },
+    ];
   },
 
   async redirects() {

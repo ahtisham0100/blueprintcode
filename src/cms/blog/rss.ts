@@ -2,6 +2,7 @@
    loads the posts and serves the string. */
 
 export const RSS_CONTENT_TYPE = 'application/rss+xml; charset=utf-8';
+export const FEED_PATH = '/blog/feed.xml';
 
 export type RssItem = {
   title: string;
@@ -31,6 +32,12 @@ export function escapeXml(s: string): string {
 export function rfc822(iso: string | Date): string | null {
   const d = typeof iso === 'string' ? new Date(iso) : iso;
   return Number.isNaN(d.getTime()) ? null : d.toUTCString();
+}
+
+/** Feed readers show the item away from the site: make root-relative links and images absolute. */
+export function absolutiseUrls(html: string, siteUrl: string): string {
+  const base = siteUrl.replace(/\/$/, '');
+  return html.replace(/\b(href|src|srcSet|srcset)=("|')\/(?!\/)/g, (_m, attr, q) => `${attr}=${q}${base}/`);
 }
 
 function cdata(s: string): string {

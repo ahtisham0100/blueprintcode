@@ -95,4 +95,9 @@ describe('listingMetadata', () => {
     expect(two.title).toBe('Blog — page 2');
     expect(two.openGraph).toMatchObject({ type: 'website', url: 'https://blueprintcode.ai/blog/category/strategy/page/2', siteName: 'Blueprint Code AI' });
   });
+
+  it('noindexes an empty listing but keeps links followable', () => {
+    expect(listingMetadata({ title: 'C', description: 'D', path: '/blog/category/c', empty: true }).robots).toEqual({ index: false, follow: true });
+    expect(listingMetadata({ title: 'C', description: 'D', path: '/blog/category/c' }).robots).toMatchObject({ index: true });
+  });
 });

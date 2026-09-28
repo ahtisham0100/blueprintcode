@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { RSS_CONTENT_TYPE, buildRssFeed, escapeXml, rfc822 } from './rss';
+import { RSS_CONTENT_TYPE, absolutiseUrls, buildRssFeed, escapeXml, rfc822 } from './rss';
 
 describe('escapeXml', () => {
   it('escapes the five XML specials', () => {
@@ -49,6 +49,12 @@ describe('buildRssFeed', () => {
     expect(feed).toContain('<category>Strategy</category>');
     expect(feed).toContain('<content:encoded><![CDATA[<p>Body &amp; soul</p>]]></content:encoded>');
     expect(feed).not.toMatch(/<pubDate><\/pubDate>/);
+  });
+
+  it('absolutises root-relative links and images for readers', () => {
+    expect(absolutiseUrls('<a href="/pricing">x</a><img src="/media/a.png" srcSet="/m 1w"><a href="//cdn/x">y</a><a href="https://z/">z</a>', 'https://blueprintcode.ai/')).toBe(
+      '<a href="https://blueprintcode.ai/pricing">x</a><img src="https://blueprintcode.ai/media/a.png" srcSet="https://blueprintcode.ai/m 1w"><a href="//cdn/x">y</a><a href="https://z/">z</a>',
+    );
   });
 
   it('formats dates as RFC 822', () => {

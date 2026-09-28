@@ -81,7 +81,7 @@ export function postMetadata(post: PostForMeta, opts: { siteUrl?: string; previe
 }
 
 /** Index, page n and category listings. Page n ≥ 2 gets its own canonical. */
-export function listingMetadata(opts: { title: string; description: string; path: string; page?: number; siteUrl?: string }): Metadata {
+export function listingMetadata(opts: { title: string; description: string; path: string; page?: number; siteUrl?: string; empty?: boolean }): Metadata {
   const siteUrl = opts.siteUrl ?? SITE_URL;
   const page = opts.page && opts.page >= 2 ? opts.page : 1;
   const url = `${siteUrl}${opts.path}${page >= 2 ? `/page/${page}` : ''}`;
@@ -90,7 +90,8 @@ export function listingMetadata(opts: { title: string; description: string; path
     title,
     description: opts.description,
     alternates: { canonical: url },
-    robots: { index: true, follow: true, 'max-image-preview': 'large' },
+    // An empty listing (a category with nothing published yet) is a thin page: keep it out of the index.
+    robots: opts.empty ? { index: false, follow: true } : { index: true, follow: true, 'max-image-preview': 'large' },
     openGraph: { ...OG_DEFAULTS, type: 'website', url, title, description: opts.description },
     twitter: { card: 'summary' },
   };
