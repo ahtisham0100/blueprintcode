@@ -64,6 +64,8 @@ html[data-theme='dark'] {
 
   --font-body: var(--bpc-body);
   --font-mono: var(--bpc-data);
+  /* The Lexical editor's body text uses --font-serif (Georgia); posts are set in Plex. */
+  --font-serif: var(--bpc-body);
   --style-radius-s: 2px;
   --style-radius-m: 2px;
   --style-radius-l: 4px;
@@ -247,3 +249,13 @@ h1 { font-size: 2.4rem; line-height: 1; }
 .bpc-seo__meter.is-over i { background: #e5484d; }
 .bpc-seo__meter.is-empty { color: var(--bpc-ink-3); }
 .bpc-seo__hint { margin-top: 0.8rem; font-family: var(--bpc-data); font-size: 11px; color: var(--bpc-ink-3); }
+
+/* Post editor (Lexical in collections/Posts.ts) --------------------------- */
+/* Headings in the editor read like the published page: Bebas for h2/h3, the
+   DM Mono label style for h4, so writers see the hierarchy readers get. */
+.rich-text-lexical [contenteditable="true"] h2,
+.rich-text-lexical [contenteditable="true"] h3 { font-family: var(--bpc-display); font-weight: 400; letter-spacing: 0.025em; color: var(--bpc-ink); }
+.rich-text-lexical [contenteditable="true"] h2 { font-size: 30px; line-height: 1.05; }
+.rich-text-lexical [contenteditable="true"] h3 { font-size: 22px; line-height: 1.1; }
+.rich-text-lexical [contenteditable="true"] h4 { font-family: var(--bpc-data); font-size: 12px; font-weight: 400; letter-spacing: 0.14em; text-transform: uppercase; color: var(--bpc-ink-2); }
+.rich-text-lexical [contenteditable="true"] blockquote { border-left: 2px solid var(--bpc-ink); color: var(--bpc-ink); }
