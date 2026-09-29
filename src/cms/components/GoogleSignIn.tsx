@@ -3,14 +3,13 @@
 /* Rendered on Payload's login view (admin.components.beforeLogin). The
    email/password form is hidden because the users collection disables the
    local strategy, so the Google link is the only way in. Beside it sits a
-   welcome panel: a greeting for the time of day, a rotating headline and
-   Robo the mascot (WelcomeCrew.tsx). The copy is sample content — nothing here
-   reads CMS data, since the visitor isn't signed in yet. Styled via .bpc-login
-   in (cms)/custom.css; every animation stops under prefers-reduced-motion. */
+   short welcome: a "Studio online" tag with the local time, a greeting for
+   the time of day and a rotating headline. Nothing here reads CMS data,
+   since the visitor isn't signed in yet. Styled via .bpc-login in
+   (cms)/custom.css; every animation stops under prefers-reduced-motion. */
 
 import { useEffect, useRef, useState, type CSSProperties } from 'react';
 import { CMS_BRAND } from '../branding';
-import { WelcomeCrew } from './WelcomeCrew';
 
 const SIGN_IN_HREF = '/api/cms/oauth/google';
 
@@ -127,14 +126,6 @@ export function GoogleSignIn() {
             <i className="bpc-login__caret" aria-hidden="true" />
           </span>
         </h1>
-        <p className="bpc-login__lede bpc-login__in" style={{ '--d': 2 } as CSSProperties}>
-          Welcome to the {CMS_BRAND.name} content studio. This is where the blog, the demo showcase and every image on
-          the site come to life. Grab a coffee, sign in, and let&rsquo;s make something people will want to read.
-        </p>
-
-        <div className="bpc-login__in bpc-login__mascot" style={{ '--d': 3 } as CSSProperties}>
-          <WelcomeCrew />
-        </div>
       </section>
 
       <aside className="bpc-login__card bpc-login__in" style={{ '--d': 2 } as CSSProperties}>
