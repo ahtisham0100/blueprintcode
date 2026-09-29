@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef, useState } from 'react';
+import { COUNTRIES, GMT_OFFSETS, browserGmtOffset, countryGmtOffset } from './locations';
 
 /* Project-enquiry form. React port of the standalone contact.html (Rev M):
    a two-step wizard with inline validation, an error summary, a honeypot,
@@ -67,12 +68,12 @@ const LABELS: Record<string, string> = {
   description: 'Tell us briefly about the project', project_link: 'Existing website or reference link',
   outcome: 'What outcome matters most?', budget: 'Indicative budget', timeframe: 'Preferred timeframe',
   name: 'Name', company: 'Company', email: 'Work email', phone: 'Telephone number',
-  location: 'Country / time zone', brief_file: 'Supporting file',
+  country: 'Country', gmt: 'Time zone', brief_file: 'Supporting file',
 };
 
 const STEP_FIELDS: Record<1 | 2, string[]> = {
   1: ['build', 'stage', 'description', 'project_link'],
-  2: ['outcome', 'budget', 'timeframe', 'name', 'company', 'email', 'phone', 'location', 'brief_file'],
+  2: ['outcome', 'budget', 'timeframe', 'name', 'company', 'email', 'phone', 'country', 'gmt', 'brief_file'],
 };
 
 function normaliseUrl(v: string): string | null {
@@ -146,7 +147,8 @@ export default function ContactForm() {
         if (!v) return '';
         return /^[\d\s+().-]+$/.test(v) && v.replace(/\D/g, '').length >= 7 ? '' : 'Enter a telephone number using digits, or leave this blank.';
       },
-      location: () => (val('location') ? '' : 'Enter your country or time zone so we reply at a sensible hour.'),
+      country: () => (val('country') ? '' : 'Choose your country.'),
+      gmt: () => (val('gmt') ? '' : 'Choose your time zone so we reply at a sensible hour.'),
       brief_file: () => {
         const f = fileEl()?.files?.[0];
         return !f || f.size <= CONFIG.maxFileMB * 1048576 ? '' : `This file is larger than ${CONFIG.maxFileMB} MB. Attach a smaller version, or email it to ${CONFIG.email}.`;
@@ -179,7 +181,7 @@ export default function ContactForm() {
   function focusField(name: string) {
     const f = formRef.current?.querySelector<HTMLElement>(`[data-field="${name}"]`);
     if (!f) return;
-    const target = f.querySelector<HTMLElement>('input:not([type=hidden]), textarea');
+    const target = f.querySelector<HTMLElement>('input:not([type=hidden]), textarea, select');
     f.scrollIntoView({ block: 'center' });
     target?.focus({ preventScroll: true });
   }
@@ -208,9 +210,24 @@ export default function ContactForm() {
     try {
       if (tzRef.current) tzRef.current.value = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
     } catch { /* ignore */ }
+    // Preselect the visitor's current GMT offset; they can change it.
+    const gmt = formRef.current?.elements.namedItem('gmt') as HTMLSelectElement | null;
+    const offset = browserGmtOffset();
+    if (gmt && !gmt.value && GMT_OFFSETS.some((o) => o.value === offset)) gmt.value = offset;
   }, []);
 
   /* ---------- Field-level handlers ---------- */
+  // Picking a country moves the time zone to that country's current offset;
+  // the visitor can still change the time zone afterwards.
+  const onCountryChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    const gmt = formRef.current?.elements.namedItem('gmt') as HTMLSelectElement | null;
+    const offset = countryGmtOffset(e.target.value);
+    if (gmt && offset && GMT_OFFSETS.some((o) => o.value === offset)) {
+      gmt.value = offset;
+      revalidateField('gmt');
+    }
+  };
+
   const onFormInput = (e: React.FormEvent<HTMLFormElement>) => {
     const t = e.target as HTMLElement;
     if (t.id === 'description') setDescLen((t as HTMLTextAreaElement).value.length);
@@ -272,6 +289,10 @@ export default function ContactForm() {
     if (val('project_link')) fd.set('project_link', normaliseUrl(val('project_link'))!);
     if (!fileEl()?.files?.[0]) fd.delete('brief_file');
     if (!checked('also').includes('Something else')) fd.delete('build_other');
+    // The API stores one location string: "United Kingdom, GMT+00:00".
+    fd.set('location', `${val('country')}, ${val('gmt')}`);
+    fd.delete('country');
+    fd.delete('gmt');
     fd.set('enquiry_ref', ref);
     fd.set('submitted_at', new Date().toISOString());
     fd.set('_subject', `Project enquiry ${ref}: ${val('company')}`);
@@ -530,10 +551,24 @@ export default function ContactForm() {
                 </div>
               </div>
 
-              <div className={fieldClass('location')} data-field="location">
-                <label className="label" htmlFor="location">Country / time zone</label>
-                <input className="input" type="text" id="location" name="location" autoComplete="country-name" placeholder="United Kingdom, GMT" aria-describedby="err-location" aria-invalid={errors.location ? true : undefined} />
-                <p className="err" id="err-location">{errors.location}</p>
+              <div className="row">
+                <div className={fieldClass('country')} data-field="country">
+                  <label className="label" htmlFor="country">Country</label>
+                  <select className="input" id="country" name="country" autoComplete="country-name" defaultValue="" onChange={onCountryChange} aria-describedby="err-country" aria-invalid={errors.country ? true : undefined}>
+                    <option value="" disabled>Select your country</option>
+                    {COUNTRIES.map((c) => <option key={c} value={c}>{c}</option>)}
+                  </select>
+                  <p className="err" id="err-country">{errors.country}</p>
+                </div>
+                <div className={fieldClass('gmt')} data-field="gmt">
+                  <label className="label" htmlFor="gmt">Time zone</label>
+                  <span className="hint" id="gmt-hint">Set from your country — change it if needed</span>
+                  <select className="input" id="gmt" name="gmt" defaultValue="" aria-describedby="gmt-hint err-gmt" aria-invalid={errors.gmt ? true : undefined}>
+                    <option value="" disabled>Select GMT offset</option>
+                    {GMT_OFFSETS.map((o) => <option key={o.value} value={o.value}>{o.value} — {o.places}</option>)}
+                  </select>
+                  <p className="err" id="err-gmt">{errors.gmt}</p>
+                </div>
               </div>
             </fieldset>
 

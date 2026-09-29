@@ -35,6 +35,11 @@ const nextConfig: NextConfig = {
   // for invalid or expired preview links.
   experimental: { authInterrupts: true },
 
+  // Dev only. localhost is the admin host (ADMIN_HOST), so the public site is
+  // previewed on 127.0.0.1 — without this, next dev blocks its scripts there
+  // and client components (the contact form's step buttons) never hydrate.
+  allowedDevOrigins: ["127.0.0.1"],
+
   // Database demos are rendered at request time with the shared header and
   // footer partials; make sure those files ship with the serverless
   // functions that read them (src/cms/demos/partials.ts).

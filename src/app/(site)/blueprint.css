@@ -333,6 +333,26 @@
 .brc .invert .sprint-head p { max-width: 62ch; }
 .brc .invert .sprint-note { font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif; font-size: 13px; color: rgba(11, 26, 46, .6); line-height: 1.55; margin-top: 16px; max-width: 52ch; }
 
+/* ---------- design principle panel (no house template) ----------
+   A spacious drawing-frame statement, deliberately not a card: corner ticks,
+   one hairline frame, big display type. Leads straight into #work. */
+.brc .principle-panel { padding: 120px 0 72px; }
+.brc .pp-frame { position: relative; border: 1px solid var(--line); background: rgba(14, 33, 54, .55); padding: clamp(40px, 7vw, 96px) clamp(24px, 7vw, 104px); }
+.brc .pp-frame > i { position: absolute; width: 14px; height: 14px; border: 0 solid var(--ink-2); }
+.brc .pp-frame > i:nth-of-type(1) { top: -1px; left: -1px; border-top-width: 1px; border-left-width: 1px; }
+.brc .pp-frame > i:nth-of-type(2) { top: -1px; right: -1px; border-top-width: 1px; border-right-width: 1px; }
+.brc .pp-frame > i:nth-of-type(3) { bottom: -1px; left: -1px; border-bottom-width: 1px; border-left-width: 1px; }
+.brc .pp-frame > i:nth-of-type(4) { bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; }
+.brc .pp-ref { font-family: var(--data); font-size: 11px; font-weight: 500; letter-spacing: .2em; color: var(--ink-3); display: flex; align-items: center; gap: 16px; max-width: 420px; }
+.brc .pp-ref::after { content: ''; height: 1px; background: var(--line); flex: 1; }
+.brc .pp-frame h2 { margin-top: 28px; font-size: clamp(44px, 7vw, 96px); line-height: .95; max-width: 17ch; text-transform: uppercase; text-wrap: balance; }
+.brc .pp-copy { margin-top: 32px; font-size: clamp(16px, 1.5vw, 19px); line-height: 1.65; max-width: 58ch; }
+.brc .pp-tags { margin-top: 40px; padding-top: 22px; border-top: 1px solid var(--line-soft); display: flex; flex-wrap: wrap; gap: 8px 0; font-family: var(--data); font-size: 11px; letter-spacing: .18em; color: var(--ink); }
+.brc .pp-tags span + span::before { content: '/'; color: var(--ink-3); margin: 0 14px; }
+.brc .pp-next { display: inline-flex; align-items: center; gap: 12px; margin-top: 36px; font-family: var(--data); font-size: 11px; letter-spacing: .17em; text-transform: uppercase; color: var(--ink-2); border-bottom: 1px solid var(--line); padding-bottom: 6px; }
+.brc .pp-next:hover { color: var(--ink); border-bottom-color: var(--ink); }
+.brc .principle-panel + #work { border-top: 0; padding-top: 24px; }
+
 /* prototype index */
 .brc .project-index { border-top: 1px solid var(--line); margin-top: 8px; }
 .brc .project { display: grid; grid-template-columns: 70px 1.05fr 1fr auto; gap: 24px; align-items: center; border-bottom: 1px solid var(--line); padding: 22px 0; }
@@ -342,6 +362,7 @@
 .brc .project .status { font-family: var(--data); font-size: 11px; letter-spacing: .1em; color: var(--ink-3); white-space: nowrap; }
 .brc .project a.status { color: var(--ink); border-bottom: 1px solid var(--line); }
 .brc .project a.status:hover { border-bottom-color: var(--ink); }
+.brc .sr-only { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
 
 /* case */
 .brc .case { display: grid; grid-template-columns: 1.1fr .9fr; border: 1px solid var(--line); }

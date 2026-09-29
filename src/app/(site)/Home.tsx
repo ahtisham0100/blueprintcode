@@ -149,6 +149,22 @@ export default function Home() {
           </div>
         </div>
 
+        {/* ============ DESIGN PRINCIPLE — NO HOUSE TEMPLATE ============
+            Sits directly before the work so the very different visual styles
+            of the projects read as intent, not inconsistency. */}
+        <section className="principle-panel" aria-labelledby="no-house-template">
+          <div className="sheet">
+            <div className="pp-frame">
+              <i /><i /><i /><i />
+              <p className="pp-ref">DESIGN PRINCIPLE / 01</p>
+              <h2 id="no-house-template">Every system should look native to the business it serves.</h2>
+              <p className="pp-copy">We don&apos;t impose a house template. We design each visual language, customer journey and underlying tool around the product, the market and the commercial objective.</p>
+              <p className="pp-tags"><span>PRODUCT-LED</span><span>BRAND-SPECIFIC</span><span>COMMERCIALLY ENGINEERED</span></p>
+            </div>
+            <a className="pp-next" href="#work">Selected systems — open a project file <span aria-hidden="true">↓</span></a>
+          </div>
+        </section>
+
         {/* ============ 03 WORK ============ */}
         <section id="work">
           <div className="sheet">
@@ -161,26 +177,26 @@ export default function Home() {
               <article className="project">
                 <span className="n">01</span>
                 <h3>Cinema system designer</h3>
-                <p>Five connected tools returning one complete buying plan.</p>
+                <p>Five connected tools returning one complete cinema buying plan.</p>
                 <a className="status" href="/ppav-case-study">Read case study</a>
               </article>
               <article className="project">
                 <span className="n">02</span>
-                <h3>Mirrored elevator cabin</h3>
-                <p>True planar reflection, moving doors and environment-aware 3D.</p>
-                <span className="status">DEMO ON REQUEST</span>
+                <h3>Cabinet configurator</h3>
+                <p>Interactive 3D configuration for sizing, finishes and integrated equipment.</p>
+                <a className="status" href="https://pp-av.com/cabinet-configurator/" target="_blank" rel="noopener">View live <span aria-hidden="true">↗</span><span className="sr-only"> (opens pp-av.com in a new tab)</span></a>
               </article>
               <article className="project">
                 <span className="n">03</span>
-                <h3>Modular dock builder</h3>
-                <p>Grid-based layout, accessories, validation and quote generation.</p>
-                <span className="status">DEMO ON REQUEST</span>
+                <h3>Screen finder</h3>
+                <p>Guided screen and material selection matched to projector, room and viewing conditions.</p>
+                <a className="status" href="https://pp-av.com/screen-finder/" target="_blank" rel="noopener">View live <span aria-hidden="true">↗</span><span className="sr-only"> (opens pp-av.com in a new tab)</span></a>
               </article>
               <article className="project">
                 <span className="n">04</span>
-                <h3>Personalised product builder</h3>
-                <p>Drag-and-drop product customisation with anchored components.</p>
-                <span className="status">DEMO ON REQUEST</span>
+                <h3>Audio system designer</h3>
+                <p>Builds complete multichannel systems around room layout, speaker configuration and amplification.</p>
+                <a className="status" href="https://pp-av.com/audio-designer/" target="_blank" rel="noopener">View live <span aria-hidden="true">↗</span><span className="sr-only"> (opens pp-av.com in a new tab)</span></a>
               </article>
             </div>
           </div>
