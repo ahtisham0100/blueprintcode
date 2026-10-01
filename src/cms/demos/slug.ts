@@ -27,6 +27,7 @@ export const RESERVED_SLUGS = new Set([
   'partials',
   'ppav-case-study',
   'pricing',
+  'process-blueprinter',
   'prototypes',
   'robots.txt',
   'services',

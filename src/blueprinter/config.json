@@ -1,0 +1,519 @@
+{
+ "schema": "bpc.blueprinter/1",
+ "kinds": [
+  "customer",
+  "channel",
+  "contact",
+  "person",
+  "manual_data",
+  "system",
+  "measure",
+  "samples",
+  "quote",
+  "payment",
+  "order",
+  "stock",
+  "supplier",
+  "delivery",
+  "reporting",
+  "other"
+ ],
+ "manual_kinds": [
+  "contact",
+  "person",
+  "manual_data",
+  "measure"
+ ],
+ "blocks": [
+  {
+   "id": "customer",
+   "label": "Customer",
+   "kind": "customer"
+  },
+  {
+   "id": "website",
+   "label": "Website",
+   "kind": "channel"
+  },
+  {
+   "id": "social",
+   "label": "Social media",
+   "kind": "channel"
+  },
+  {
+   "id": "showroom",
+   "label": "Showroom",
+   "kind": "samples"
+  },
+  {
+   "id": "phone",
+   "label": "Phone",
+   "kind": "contact"
+  },
+  {
+   "id": "email",
+   "label": "Email",
+   "kind": "contact"
+  },
+  {
+   "id": "whatsapp",
+   "label": "WhatsApp",
+   "kind": "contact"
+  },
+  {
+   "id": "staff",
+   "label": "Staff",
+   "kind": "person"
+  },
+  {
+   "id": "rep",
+   "label": "Sales rep",
+   "kind": "person"
+  },
+  {
+   "id": "dealer",
+   "label": "Dealer",
+   "kind": "person"
+  },
+  {
+   "id": "spreadsheet",
+   "label": "Spreadsheet",
+   "kind": "manual_data"
+  },
+  {
+   "id": "paper",
+   "label": "Paper forms",
+   "kind": "manual_data"
+  },
+  {
+   "id": "crm",
+   "label": "CRM",
+   "kind": "system"
+  },
+  {
+   "id": "accounts",
+   "label": "Accounts software",
+   "kind": "system"
+  },
+  {
+   "id": "survey",
+   "label": "Site visit / measure",
+   "kind": "measure"
+  },
+  {
+   "id": "samples",
+   "label": "Samples",
+   "kind": "samples"
+  },
+  {
+   "id": "quote",
+   "label": "Quote",
+   "kind": "quote"
+  },
+  {
+   "id": "payment",
+   "label": "Payment",
+   "kind": "payment"
+  },
+  {
+   "id": "order",
+   "label": "Order",
+   "kind": "order"
+  },
+  {
+   "id": "stock",
+   "label": "Stock check",
+   "kind": "stock"
+  },
+  {
+   "id": "supplier",
+   "label": "Supplier",
+   "kind": "supplier"
+  },
+  {
+   "id": "delivery",
+   "label": "Delivery",
+   "kind": "delivery"
+  },
+  {
+   "id": "reports",
+   "label": "Reports / KPIs",
+   "kind": "reporting"
+  }
+ ],
+ "custom_rules": [
+  {
+   "re": "excel|sheet|spreadsheet|google sheets?|notebook|paper|form|fax|diary|whiteboard",
+   "kind": "manual_data"
+  },
+  {
+   "re": "phone|call|email|e-mail|whatsapp|text|sms|messag|chat|dm|instagram dm|facebook message",
+   "kind": "contact"
+  },
+  {
+   "re": "staff|admin|office|team|manager|sales|rep|estimator|engineer|designer|installer|dealer|agent|me\\b|owner",
+   "kind": "person"
+  },
+  {
+   "re": "crm|hubspot|salesforce|pipedrive|xero|sage|quickbooks|erp|netsuite|shopify|woocommerce|system|software|database|app",
+   "kind": "system"
+  },
+  {
+   "re": "survey|measur|site visit|visit|inspect|assess",
+   "kind": "measure"
+  },
+  {
+   "re": "sample|swatch|showroom|brochure|catalogue|catalog|mock",
+   "kind": "samples"
+  },
+  {
+   "re": "quot|estimate|proposal|pric",
+   "kind": "quote"
+  },
+  {
+   "re": "pay|invoice|deposit|card|bank|transfer",
+   "kind": "payment"
+  },
+  {
+   "re": "order|purchase|po\\b|book",
+   "kind": "order"
+  },
+  {
+   "re": "stock|inventory|warehouse|availability",
+   "kind": "stock"
+  },
+  {
+   "re": "supplier|factory|manufactur|wholesal|vendor",
+   "kind": "supplier"
+  },
+  {
+   "re": "deliver|courier|dispatch|ship|install|fit|van|collect",
+   "kind": "delivery"
+  },
+  {
+   "re": "report|kpi|dashboard|analytics|metric|figures",
+   "kind": "reporting"
+  },
+  {
+   "re": "website|web|online|shop|store|social|instagram|facebook|google|advert|ad\\b|marketplace|amazon|ebay",
+   "kind": "channel"
+  },
+  {
+   "re": "customer|client|buyer|visitor|lead",
+   "kind": "customer"
+  }
+ ],
+ "presets": [
+  {
+   "id": "trade",
+   "label": "Quote by email",
+   "steps": [
+    "customer",
+    "website",
+    "email",
+    "staff",
+    "spreadsheet",
+    "quote",
+    "phone",
+    "payment",
+    "order"
+   ],
+   "loops": [
+    [
+     3,
+     4
+    ]
+   ]
+  },
+  {
+   "id": "custom",
+   "label": "Made-to-order product",
+   "steps": [
+    "customer",
+    "showroom",
+    "samples",
+    "survey",
+    "staff",
+    "spreadsheet",
+    "quote",
+    "payment",
+    "supplier",
+    "delivery"
+   ],
+   "loops": [
+    [
+     4,
+     5
+    ]
+   ]
+  },
+  {
+   "id": "shop",
+   "label": "Online shop with manual stock",
+   "steps": [
+    "customer",
+    "website",
+    "order",
+    "staff",
+    "stock",
+    "spreadsheet",
+    "supplier",
+    "delivery",
+    "reports"
+   ],
+   "loops": [
+    [
+     4,
+     5
+    ]
+   ]
+  },
+  {
+   "id": "dealers",
+   "label": "Dealers and reps",
+   "steps": [
+    "customer",
+    "dealer",
+    "rep",
+    "phone",
+    "spreadsheet",
+    "quote",
+    "email",
+    "order",
+    "accounts"
+   ],
+   "loops": [
+    [
+     3,
+     4
+    ]
+   ]
+  }
+ ],
+ "stages": [
+  {
+   "id": "select",
+   "brief": "guided selection with questions that help customers choose the right product",
+   "label": "Guided Selection",
+   "area": "Select & Recommend",
+   "when": [
+    "contact",
+    "person",
+    "channel"
+   ],
+   "replaces": [
+    "contact",
+    "person",
+    "channel"
+   ],
+   "tags": [
+    [
+     "CUSTOMER SELF-SERVICE",
+     "Customers answer a few questions instead of emailing or calling to ask what suits them."
+    ]
+   ]
+  },
+  {
+   "id": "visualise",
+   "brief": "a visual configurator so customers can see and customise their product",
+   "label": "Visual Configurator",
+   "area": "Configure & Visualise",
+   "when": [
+    "samples"
+   ],
+   "replaces": [
+    "samples"
+   ],
+   "tags": [
+    [
+     "VISUALISE",
+     "Customers see their choice change on screen, instead of waiting for samples or a showroom visit."
+    ]
+   ]
+  },
+  {
+   "id": "calculate",
+   "brief": "a calculator that works out sizes and quantities from their measurements",
+   "label": "Size & Cost Calculator",
+   "area": "Plan & Calculate",
+   "when": [
+    "measure"
+   ],
+   "replaces": [
+    "measure"
+   ],
+   "tags": [
+    [
+     "CALCULATE",
+     "Measurements go into a calculator that works out sizes and quantities, so fewer site visits are needed."
+    ]
+   ]
+  },
+  {
+   "id": "recommend",
+   "brief": "automated recommendations from our own rules",
+   "label": "Automated Recommendation",
+   "area": "Select & Recommend",
+   "when": [
+    "contact",
+    "person",
+    "channel",
+    "samples",
+    "measure"
+   ],
+   "replaces": [],
+   "tags": [
+    [
+     "AUTOMATE",
+     "Your rules pick the right products every time, not whoever answers the email."
+    ]
+   ]
+  },
+  {
+   "id": "quote",
+   "brief": "instant quotes and online checkout",
+   "label": "Instant Quote / Checkout",
+   "area": "Quote & Convert",
+   "when": [
+    "quote",
+    "payment"
+   ],
+   "replaces": [
+    "quote",
+    "payment"
+   ],
+   "tags": [
+    [
+     "AUTOMATE",
+     "Prices and quotes are produced instantly from the same rules; customers can pay or accept online."
+    ]
+   ]
+  },
+  {
+   "id": "crm",
+   "brief": "a CRM integrated with enquiries and orders, so nobody retypes information by hand",
+   "label": "CRM",
+   "area": "Connect & Automate",
+   "when": [
+    "contact",
+    "person",
+    "manual_data",
+    "system"
+   ],
+   "replaces": [
+    "manual_data",
+    "system"
+   ],
+   "tags": [
+    [
+     "CONNECT",
+     "Every enquiry, quote and order lands in one place automatically."
+    ],
+    [
+     "REMOVE DUPLICATION",
+     "No retyping between inboxes, spreadsheets and systems."
+    ]
+   ]
+  },
+  {
+   "id": "stock",
+   "brief": "live stock levels and supplier sync",
+   "label": "Live Stock & Supplier Sync",
+   "area": "Connect & Automate",
+   "when": [
+    "stock",
+    "supplier"
+   ],
+   "replaces": [
+    "stock",
+    "supplier"
+   ],
+   "tags": [
+    [
+     "CONNECT",
+     "Availability and supplier orders update automatically."
+    ]
+   ]
+  },
+  {
+   "id": "fulfil",
+   "brief": "automated order and delivery updates",
+   "label": "Order & Fulfilment",
+   "area": "Connect & Automate",
+   "when": [
+    "order",
+    "delivery",
+    "payment",
+    "quote"
+   ],
+   "replaces": [
+    "order",
+    "delivery"
+   ],
+   "tags": [
+    [
+     "AUTOMATE",
+     "Confirmed orders trigger fulfilment and delivery updates without anyone chasing."
+    ]
+   ]
+  },
+  {
+   "id": "dashboard",
+   "brief": "a dashboard to keep track of KPIs",
+   "label": "Live Dashboard",
+   "area": "Connect & Automate",
+   "when": [
+    "reporting"
+   ],
+   "replaces": [
+    "reporting"
+   ],
+   "tags": [
+    [
+     "CONNECT",
+     "Your KPIs update themselves from real orders and enquiries."
+    ]
+   ]
+  }
+ ],
+ "tags": {
+  "AUTOMATE": {
+   "colour": "#9FE0B8"
+  },
+  "CONNECT": {
+   "colour": "#A9CBF0"
+  },
+  "CALCULATE": {
+   "colour": "#FFD28A"
+  },
+  "REMOVE DUPLICATION": {
+   "colour": "#FFB4A8"
+  },
+  "CUSTOMER SELF-SERVICE": {
+   "colour": "#EAF1F8"
+  },
+  "VISUALISE": {
+   "colour": "#D8B8FF"
+  }
+ },
+ "copy": {
+  "heading": "Blueprint your current process",
+  "intro": "Lay out how things work today, step by step. We'll show you how it could work instead. It takes about a minute.",
+  "generate": "Generate my blueprint",
+  "cta_heading": "Want to turn this into a defined project?",
+  "cta_text": "The full Blueprint Builder takes this further: the right tools, your rules, how they connect, and a reviewable specification.",
+  "cta_button": "Build the full blueprint",
+  "disclaimer": "An illustration based on the steps you entered. The full blueprint works out the detail with you.",
+  "studio": "Blueprint Code",
+  "site": "blueprintcode.ai"
+ },
+ "theme": {
+  "ground": "#0B1A2E",
+  "ground2": "#0E2136",
+  "line": "#2C4A6E",
+  "lineSoft": "#1D3552",
+  "ink": "#EAF1F8",
+  "ink2": "#8FA9C6",
+  "old": "#6F7F92"
+ }
+}

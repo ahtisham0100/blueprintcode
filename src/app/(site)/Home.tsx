@@ -52,6 +52,11 @@ export default function Home() {
                     />
                   </div>
                   <figcaption><span>Fig. 00</span><span>Old road / Blueprint Code road</span></figcaption>
+                  {/* The drawing ends at "Delivered"; this is where that road leads next. */}
+                  <a className="hero-journey" href="/process-blueprinter">
+                    <b>Take the journey <span aria-hidden="true">→</span></b>
+                    <span>Map your old road. See your Blueprint Code Road.</span>
+                  </a>
                 </figure>
                 <aside className="hero-side">
                   <b>DESIGNED FROM THE COMMERCIAL PROBLEM OUT.</b>

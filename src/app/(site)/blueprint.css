@@ -107,6 +107,24 @@
   font-family: var(--data); font-size: 10.5px; letter-spacing: .14em;
   text-transform: uppercase; color: var(--ink-3);
 }
+/* "Take the journey": right-aligned under the drawing, beneath the Blueprint
+   Code road, as the next step on it. The discovery route, kept apart from the
+   two commercial buttons on the left. */
+.brc .hero-journey {
+  display: flex; flex-direction: column; align-items: flex-end; gap: 4px;
+  width: max-content; max-width: 100%; margin: 18px 0 0 auto; text-align: right; text-decoration: none;
+}
+.brc .hero-journey b {
+  font-family: var(--display); font-weight: 400; font-size: 28px; line-height: 1; letter-spacing: .06em;
+  text-transform: uppercase; color: var(--ink);
+  border-bottom: 1px solid var(--ink-3); padding-bottom: 4px;
+}
+.brc .hero-journey b span { display: inline-block; transition: transform .2s ease; }
+.brc .hero-journey > span { font-family: var(--data); font-size: 11px; letter-spacing: .08em; color: var(--ink-2); }
+.brc .hero-journey:hover b { border-bottom-color: var(--ink); }
+.brc .hero-journey:hover b span { transform: translateX(4px); }
+.brc .hero-journey:focus-visible { outline: 2px solid var(--ink); outline-offset: 4px; }
+@media (prefers-reduced-motion: reduce) { .brc .hero-journey b span { transition: none; } }
 .brc .hero-side { border-left: 1px solid var(--line); padding-left: 26px; }
 .brc .hero-side b { display: block; font-family: var(--data); font-size: 12px; font-weight: 500; letter-spacing: .09em; color: var(--ink); margin-bottom: 12px; }
 .brc .hero-side p { font-size: 14px; }

@@ -1,0 +1,101 @@
+/* Process Blueprinter. Every rule is scoped under .pb so its generic class
+   names (.card, .btn, .chip …) never reach the site chrome or other pages. */
+
+.pb {
+  --ground: #0B1A2E; --ground-2: #0E2136; --ground-3: #122844; --line: #2C4A6E; --line-soft: #1D3552;
+  --ink: #EAF1F8; --ink-2: #8FA9C6; --old: #6F7F92; --warn: #FFD28A;
+  --display: 'Bebas Neue', Impact, 'Arial Narrow', sans-serif;
+  --mono: 'DM Mono', ui-monospace, Menlo, monospace;
+  --sans: 'IBM Plex Sans', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  color: var(--ink);
+  font: 400 16px/1.55 var(--sans);
+  background-color: var(--ground);
+  background-image: linear-gradient(var(--line-soft) 1px, transparent 1px), linear-gradient(90deg, var(--line-soft) 1px, transparent 1px);
+  background-size: 24px 24px;
+}
+.pb *, .pb *::before, .pb *::after { box-sizing: border-box; }
+.pb [hidden] { display: none !important; }
+.pb a { color: var(--ink); }
+.pb button, .pb input { font: inherit; color: inherit; }
+.pb :focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
+.pb .sr { position: absolute !important; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; }
+.pb-wrap { max-width: 1240px; margin: 0 auto; padding: 0 28px 72px; }
+.pb-hero { padding: 56px 0 24px; }
+.pb-kicker { font-family: var(--mono); font-size: 12px; letter-spacing: .16em; color: var(--ink-2); display: block; margin-bottom: 12px; }
+.pb h1 { font-family: var(--display); font-weight: 400; font-size: clamp(46px, 7vw, 92px); line-height: .9; letter-spacing: .01em; margin: 0 0 14px; color: var(--ink); }
+.pb-hero p { max-width: 56ch; color: var(--ink-2); font-size: 18px; margin: 0; }
+.pb h2 { font-family: var(--display); font-weight: 400; font-size: clamp(30px, 4vw, 44px); letter-spacing: .03em; line-height: 1; margin: 0 0 6px; color: var(--ink); }
+.pb h2:focus { outline: none; }
+.pb h3 { color: var(--ink); }
+.pb .step-n { font-family: var(--mono); font-size: 13px; color: var(--ink-2); display: block; margin-bottom: 4px; letter-spacing: .08em; }
+.pb-card { border: 1px solid var(--line); background: rgba(14, 33, 54, .94); padding: 24px 26px; margin-top: 22px; }
+.pb .muted { color: var(--ink-2); }
+.pb .small { font-size: 14px; }
+.pb .warn { color: var(--warn); }
+.pb .presets { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin: 14px 0 18px; }
+.pb .plbl { font-weight: 600; margin-right: 4px; }
+.pb .pre, .pb .blk { background: transparent; border: 1px solid var(--line); color: var(--ink); padding: 7px 12px; border-radius: 2px; cursor: pointer; font-size: 14px; }
+.pb .pre:hover, .pb .blk:hover { border-color: var(--ink-2); background: var(--ground-3); }
+.pb .pre[aria-pressed=true] { border-color: var(--ink); background: var(--ground-3); }
+.pb .undo { display: flex; gap: 12px; align-items: center; border-left: 3px solid var(--ink-2); background: var(--ground-2); padding: 6px 12px; margin: 0 0 12px; }
+.pb .undo .btn { padding: 6px 12px; font-size: 14px; }
+.pb .lane { list-style: none; margin: 0; padding: 18px; display: flex; flex-wrap: wrap; gap: 14px 0; align-items: center; border: 1px dashed var(--line); background: var(--ground); min-height: 92px; }
+.pb .step { display: flex; align-items: center; }
+.pb .chip { display: flex; align-items: center; gap: 8px; background: var(--ground-2); border: 1px solid var(--ink-2); padding: 8px 8px 8px 10px; border-radius: 3px; cursor: grab; position: relative; }
+.pb .step.manual .chip { border-style: dashed; }
+.pb .step.dragging .chip { opacity: .4; }
+.pb .step.drop-before .chip { box-shadow: -4px 0 0 var(--ink); }
+.pb .step.drop-after .chip { box-shadow: 4px 0 0 var(--ink); }
+.pb .s-num { font-family: var(--mono); font-size: 11px; color: var(--ink-2); }
+.pb .s-label { font-weight: 600; font-size: 15px; white-space: nowrap; }
+.pb .s-man { width: 22px; height: 22px; flex: none; border: 0; background: none; padding: 0; cursor: pointer; position: relative; border-radius: 50%; }
+.pb .s-man::after { content: ""; position: absolute; inset: 6px; border-radius: 50%; border: 1.5px solid var(--ink-2); background: transparent; }
+.pb .s-man.on::after { border-color: var(--warn); background: var(--warn); }
+.pb .s-man:hover::after { border-color: var(--ink); }
+.pb .s-ctrl { display: flex; gap: 2px; margin-left: 2px; }
+.pb .s-ctrl button { width: 26px; height: 26px; border: 1px solid transparent; background: none; color: var(--ink-2); cursor: pointer; border-radius: 2px; font-size: 16px; line-height: 1; }
+.pb .s-ctrl button:hover { border-color: var(--line); color: var(--ink); }
+.pb .lnk { width: 44px; height: 34px; margin: 0 4px; background: none; border: 1px solid transparent; color: var(--ink-2); font-size: 20px; cursor: pointer; border-radius: 2px; }
+.pb .lnk:hover { border-color: var(--line); color: var(--ink); }
+.pb .lnk.two { color: var(--warn); border-color: var(--warn); }
+.pb .lane-foot { display: flex; flex-wrap: wrap; gap: 6px 18px; justify-content: space-between; margin-top: 8px; }
+.pb .legend { display: flex; gap: 14px; flex-wrap: wrap; }
+.pb .legend > span { display: inline-flex; align-items: center; gap: 6px; }
+.pb .dot { width: 8px; height: 8px; border-radius: 50%; background: var(--warn); }
+.pb .palette { margin-top: 22px; }
+.pb .palette h3 { font-size: 15px; margin: 0 0 8px; }
+.pb .blocks { display: flex; flex-wrap: wrap; gap: 6px; }
+.pb .own { display: flex; gap: 8px; align-items: center; margin-top: 12px; flex-wrap: wrap; }
+.pb .own label { font-weight: 600; }
+.pb .own input { background: var(--ground); border: 1px solid var(--line); border-radius: 2px; padding: 8px 10px; min-width: 260px; }
+.pb .own input:focus-visible { outline: 2px solid var(--ink); outline-offset: 0; }
+.pb .gen { margin-top: 26px; display: flex; gap: 16px; align-items: center; flex-wrap: wrap; }
+.pb .btn { display: inline-block; text-decoration: none; font: 600 15px/1 var(--sans); padding: 12px 18px; border-radius: 2px; border: 1px solid var(--ink); background: var(--ink); color: var(--ground); cursor: pointer; }
+.pb .btn.ghost { background: transparent; color: var(--ink); border-color: var(--line); }
+.pb .btn.ghost:hover { border-color: var(--ink-2); }
+.pb .btn.big { font: 400 26px/1 var(--display); letter-spacing: .06em; padding: 16px 28px; }
+.pb .btn.big:hover { background: #fff; }
+.pb .msg { color: var(--warn); font-size: 14px; }
+.pb .diagram { margin-top: 14px; border: 1px solid var(--line); background: var(--ground); }
+.pb .diagram svg { display: block; width: 100%; height: auto; }
+.pb .bar { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 12px; }
+.pb .stale { border-left: 3px solid var(--warn); padding: 8px 12px; background: var(--ground-2); margin: 12px 0 0; }
+.pb .changes-h { margin: 26px 0 0; font-size: 18px; }
+.pb .changes { list-style: none; margin: 20px 0 0; padding: 0; display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 12px; }
+.pb .changes > li { border: 1px solid var(--line); background: var(--ground); padding: 14px 16px; }
+.pb .changes h3 { margin: 0 0 4px; font-size: 16.5px; }
+.pb .area { font: 500 11px var(--mono); color: var(--ink-2); letter-spacing: .05em; margin-left: 6px; white-space: nowrap; }
+.pb .inst { margin: 0 0 8px; color: var(--ink-2); font-size: 14px; }
+.pb .tags { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; font-size: 14.5px; }
+.pb .tg { display: inline-block; font: 500 10.5px var(--mono); letter-spacing: .05em; border: 1px solid; border-radius: 10px; padding: 1px 8px; margin-right: 8px; }
+.pb .disc { font-size: 13.5px; color: var(--ink-2); margin: 14px 0 0; }
+.pb-cta { border: 1px solid var(--ink-2); background: var(--ground-2); padding: 30px 32px; margin-top: 22px; display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 18px 30px; align-items: center; }
+.pb-cta p { margin: 0; color: var(--ink-2); max-width: 62ch; }
+@media (max-width: 760px) {
+  .pb-wrap { padding: 0 16px 56px; }
+  .pb-card { padding: 18px 14px; }
+  .pb .lane { padding: 12px; }
+  .pb .s-label { white-space: normal; }
+  .pb-cta { grid-template-columns: 1fr; padding: 22px 18px; }
+  .pb .own input { min-width: 0; flex: 1; }
+}
