@@ -1,0 +1,1358 @@
+{
+ "module": {
+  "id": "select-recommend",
+  "name": "Select & Recommend",
+  "schema": "bpc.discovery/1",
+  "intro": "Answer in your own words. If you're not sure, choose I don't know or Ask BPC to advise, and keep going. Nothing here is a technical commitment.",
+  "depth": "full"
+ },
+ "documents": [
+  {
+   "id": "purpose",
+   "title": "Tool Purpose and Users"
+  },
+  {
+   "id": "journey",
+   "title": "Tool Journey and States"
+  },
+  {
+   "id": "inputs",
+   "title": "Inputs and Data Requirements"
+  },
+  {
+   "id": "rules",
+   "title": "Business Rules and Priorities"
+  },
+  {
+   "id": "outputs",
+   "title": "Outputs, Recommendations and Calls to Action"
+  },
+  {
+   "id": "admin",
+   "title": "Admin Editing Requirements"
+  },
+  {
+   "id": "exceptions",
+   "title": "Exceptions and Fallbacks"
+  },
+  {
+   "id": "prototype",
+   "title": "Prototype Scope"
+  },
+  {
+   "id": "production",
+   "title": "Production Scope"
+  },
+  {
+   "id": "acceptance",
+   "title": "Acceptance Tests"
+  }
+ ],
+ "rule_templates": {
+  "oos_hide": {
+   "name": "Hide out-of-stock products",
+   "type": "eligibility",
+   "hard": true,
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "item",
+      "field": "stock",
+      "op": "eq",
+      "value": 0
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "exclude",
+     "message": "Out of stock"
+    }
+   ],
+   "because": "Discovery: out-of-stock products should be hidden."
+  },
+  "oos_estimate": {
+   "name": "Show a delivery estimate when out of stock",
+   "type": "calculation",
+   "hard": false,
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "item",
+      "field": "stock",
+      "op": "eq",
+      "value": 0
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "calculate",
+     "target": "delivery_days",
+     "expr": "lead_time_days + 3",
+     "round": "up"
+    },
+    {
+     "action": "message",
+     "text": "Ships in about {delivery_days} days"
+    }
+   ],
+   "because": "Discovery: show out-of-stock products with a delivery estimate."
+  },
+  "oos_lower": {
+   "name": "Rank out-of-stock products lower",
+   "type": "recommendation",
+   "hard": false,
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "item",
+      "field": "stock",
+      "op": "eq",
+      "value": 0
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "demote",
+     "amount": 20
+    }
+   ],
+   "because": "Discovery: show out-of-stock products lower down."
+  },
+  "region": {
+   "name": "Only show products that ship to the customer",
+   "type": "stock",
+   "hard": true,
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "item",
+      "field": "regions",
+      "op": "not_contains",
+      "value": {
+       "ref": "request.region"
+      }
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "exclude",
+     "message": "Doesn't ship to {request.region}"
+    }
+   ],
+   "because": "Discovery: some products are only available in certain regions."
+  },
+  "nomatch_relax": {
+   "name": "Show closest alternatives when nothing matches",
+   "type": "fallback",
+   "hard": false,
+   "when": {
+    "op": "all",
+    "items": []
+   },
+   "then": [
+    {
+     "action": "relax",
+     "field": "material"
+    },
+    {
+     "action": "message",
+     "text": "No exact matches, so here are the closest alternatives."
+    }
+   ],
+   "because": "Discovery: show the closest alternatives and say so."
+  },
+  "nomatch_staff": {
+   "name": "Pass unmatched requests to staff",
+   "type": "fallback",
+   "hard": false,
+   "when": {
+    "op": "all",
+    "items": []
+   },
+   "then": [
+    {
+     "action": "handoff",
+     "message": "Our team will find options for you."
+    }
+   ],
+   "because": "Discovery: pass the request to staff when nothing matches."
+  },
+  "trade_quote": {
+   "name": "Trade prices on request",
+   "type": "price",
+   "hard": false,
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "request",
+      "field": "customer_type",
+      "op": "is",
+      "value": "trade"
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "quote_only",
+     "message": "Trade pricing on request"
+    }
+   ],
+   "because": "Discovery: trade customers see different prices."
+  },
+  "stock_boost": {
+   "name": "Rank well-stocked products higher",
+   "type": "recommendation",
+   "hard": false,
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "item",
+      "field": "stock",
+      "op": "gte",
+      "value": 10
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "boost",
+     "amount": 10
+    }
+   ],
+   "because": "Discovery: stock levels should push products up the list."
+  }
+ },
+ "sections": [
+  {
+   "id": "A",
+   "title": "Purpose and users",
+   "intro": "Who the tool is for and what it helps them do.",
+   "questions": [
+    {
+     "id": "SR-A01",
+     "type": "multi",
+     "label": "Who will use it?",
+     "affects": [
+      "purpose",
+      "journey"
+     ],
+     "summary": "Used by {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "shoppers",
+       "label": "customers shopping online"
+      },
+      {
+       "id": "staff",
+       "label": "sales staff, in store or on calls"
+      },
+      {
+       "id": "trade",
+       "label": "trade customers or dealers"
+      },
+      {
+       "id": "admin",
+       "label": "your own admin team"
+      },
+      {
+       "id": "other",
+       "label": "someone else",
+       "other": true
+      }
+     ]
+    },
+    {
+     "id": "SR-A02",
+     "type": "textarea",
+     "label": "What are they trying to decide?",
+     "affects": [
+      "purpose"
+     ],
+     "summary": "Helps them decide: {value}",
+     "hint": "For example: which screen material suits their room, or which shirt goes with these trousers.",
+     "required": true,
+     "recommend": "We'll draft this with you from your product range at the scoping call."
+    },
+    {
+     "id": "SR-A03",
+     "type": "textarea",
+     "label": "What do they usually already know when they start?",
+     "affects": [
+      "inputs",
+      "journey"
+     ],
+     "summary": "They usually arrive knowing: {value}",
+     "hint": "Room size, budget, a product they already own, a colour they like."
+    },
+    {
+     "id": "SR-A04",
+     "type": "single",
+     "label": "What counts as a successful visit?",
+     "affects": [
+      "outputs",
+      "acceptance"
+     ],
+     "summary": "Success means the customer {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "basket",
+       "label": "adds to basket"
+      },
+      {
+       "id": "quote",
+       "label": "requests a quote",
+       "implies": [
+        {
+         "category": "quote",
+         "reason": "The result has to become a quote."
+        }
+       ]
+      },
+      {
+       "id": "shortlist",
+       "label": "saves or shares a shortlist"
+      },
+      {
+       "id": "appointment",
+       "label": "books an appointment"
+      },
+      {
+       "id": "contact",
+       "label": "contacts your team"
+      },
+      {
+       "id": "other",
+       "label": "something else",
+       "other": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "title": "Customer journey",
+   "intro": "How the conversation with the tool runs.",
+   "questions": [
+    {
+     "id": "SR-B01",
+     "type": "single",
+     "label": "How should they tell the tool what they need?",
+     "affects": [
+      "journey",
+      "inputs"
+     ],
+     "summary": "Customers describe their needs through {value}.",
+     "required": true,
+     "recommend": "A mix: three to five guided questions, then filters to refine.",
+     "options": [
+      {
+       "id": "guided",
+       "label": "step-by-step questions"
+      },
+      {
+       "id": "filters",
+       "label": "filters they set themselves"
+      },
+      {
+       "id": "text",
+       "label": "a request typed in their own words"
+      },
+      {
+       "id": "mix",
+       "label": "a mix of questions, filters and typed requests"
+      }
+     ]
+    },
+    {
+     "id": "SR-B02",
+     "type": "single",
+     "label": "How many questions before they see results?",
+     "affects": [
+      "journey"
+     ],
+     "summary": "They see results after {value} questions.",
+     "show_if": {
+      "q": "SR-B01",
+      "in": [
+       "guided",
+       "mix"
+      ]
+     },
+     "recommend": "Three to five. Show results early and let answers refine them.",
+     "options": [
+      {
+       "id": "1-3",
+       "label": "1 to 3"
+      },
+      {
+       "id": "4-6",
+       "label": "4 to 6"
+      },
+      {
+       "id": "7+",
+       "label": "7 or more"
+      }
+     ]
+    },
+    {
+     "id": "SR-B03",
+     "type": "single",
+     "label": "When should it ask another question instead of showing results?",
+     "affects": [
+      "journey",
+      "rules"
+     ],
+     "summary": "It asks another question {value}.",
+     "recommend": "Only when more than about 12 products still match.",
+     "options": [
+      {
+       "id": "toomany",
+       "label": "only when too many products still match"
+      },
+      {
+       "id": "always",
+       "label": "always, until every question is answered"
+      },
+      {
+       "id": "never",
+       "label": "never; it always shows results straight away"
+      }
+     ]
+    },
+    {
+     "id": "SR-B04",
+     "type": "single",
+     "label": "How many results should it show?",
+     "affects": [
+      "outputs"
+     ],
+     "summary": "It shows {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "one",
+       "label": "one best match"
+      },
+      {
+       "id": "three",
+       "label": "the top three, side by side"
+      },
+      {
+       "id": "list",
+       "label": "a ranked list"
+      },
+      {
+       "id": "all",
+       "label": "every match, ranked"
+      }
+     ]
+    },
+    {
+     "id": "SR-B05",
+     "type": "single",
+     "label": "Should it explain why each result was chosen?",
+     "affects": [
+      "outputs",
+      "acceptance"
+     ],
+     "summary": "Explanations: {value}.",
+     "recommend": "Yes, for every result. Short reasons build trust and cut returns.",
+     "options": [
+      {
+       "id": "all",
+       "label": "for every result"
+      },
+      {
+       "id": "top",
+       "label": "for the top match only"
+      },
+      {
+       "id": "no",
+       "label": "none"
+      }
+     ]
+    },
+    {
+     "id": "SR-B06",
+     "type": "multi",
+     "label": "Where does the journey start?",
+     "affects": [
+      "journey",
+      "production"
+     ],
+     "summary": "Starts from {value}.",
+     "options": [
+      {
+       "id": "product",
+       "label": "a product page"
+      },
+      {
+       "id": "category",
+       "label": "a category page"
+      },
+      {
+       "id": "home",
+       "label": "the homepage"
+      },
+      {
+       "id": "dedicated",
+       "label": "a dedicated page"
+      },
+      {
+       "id": "partner",
+       "label": "a partner's website"
+      },
+      {
+       "id": "instore",
+       "label": "an in-store tablet"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "C",
+   "title": "Products and data",
+   "intro": "Where the product information lives and how good it is.",
+   "questions": [
+    {
+     "id": "SR-C01",
+     "type": "single",
+     "label": "Where does your product information live today?",
+     "affects": [
+      "inputs",
+      "production"
+     ],
+     "summary": "Product data comes from {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "sheet",
+       "label": "a spreadsheet"
+      },
+      {
+       "id": "platform",
+       "label": "the shop platform"
+      },
+      {
+       "id": "pim",
+       "label": "a PIM",
+       "implies": [
+        {
+         "category": "connect",
+         "reason": "Data has to move between systems."
+        }
+       ]
+      },
+      {
+       "id": "erp",
+       "label": "an ERP",
+       "implies": [
+        {
+         "category": "connect",
+         "reason": "Data has to move between systems."
+        }
+       ]
+      },
+      {
+       "id": "api",
+       "label": "a supplier or internal API",
+       "implies": [
+        {
+         "category": "connect",
+         "reason": "Data has to move between systems."
+        }
+       ]
+      },
+      {
+       "id": "manual",
+       "label": "manual records"
+      },
+      {
+       "id": "other",
+       "label": "somewhere else",
+       "other": true
+      }
+     ]
+    },
+    {
+     "id": "SR-C02",
+     "type": "single",
+     "label": "Roughly how many products?",
+     "affects": [
+      "inputs",
+      "production"
+     ],
+     "summary": "About {value} products.",
+     "required": true,
+     "options": [
+      {
+       "id": "lt50",
+       "label": "under 50"
+      },
+      {
+       "id": "50-500",
+       "label": "50 to 500"
+      },
+      {
+       "id": "500-5k",
+       "label": "500 to 5,000"
+      },
+      {
+       "id": "5k+",
+       "label": "more than 5,000"
+      }
+     ]
+    },
+    {
+     "id": "SR-C03",
+     "type": "single",
+     "label": "Do products come in variants, such as size or colour?",
+     "affects": [
+      "inputs"
+     ],
+     "summary": "Variants: {value}.",
+     "options": [
+      {
+       "id": "no",
+       "label": "no"
+      },
+      {
+       "id": "few",
+       "label": "a few per product"
+      },
+      {
+       "id": "many",
+       "label": "many per product"
+      }
+     ]
+    },
+    {
+     "id": "SR-C04",
+     "type": "multi",
+     "label": "Which details decide what suits a customer?",
+     "affects": [
+      "inputs",
+      "rules"
+     ],
+     "summary": "Matching uses {value}.",
+     "required": true,
+     "recommend": "We'll pick these with you from a sample of your catalogue.",
+     "options": [
+      {
+       "id": "category",
+       "label": "category"
+      },
+      {
+       "id": "colour",
+       "label": "colour"
+      },
+      {
+       "id": "material",
+       "label": "material"
+      },
+      {
+       "id": "size",
+       "label": "size or dimensions",
+       "implies": [
+        {
+         "category": "plan",
+         "reason": "Sizes depend on the customer's measurements."
+        }
+       ]
+      },
+      {
+       "id": "price",
+       "label": "price"
+      },
+      {
+       "id": "stock",
+       "label": "stock"
+      },
+      {
+       "id": "leadtime",
+       "label": "lead time"
+      },
+      {
+       "id": "compat",
+       "label": "compatibility with other products",
+       "implies": [
+        {
+         "category": "configure",
+         "reason": "Products must be combined compatibly."
+        }
+       ]
+      },
+      {
+       "id": "region",
+       "label": "region or shipping"
+      },
+      {
+       "id": "specs",
+       "label": "performance specifications"
+      },
+      {
+       "id": "other",
+       "label": "other details",
+       "other": true
+      }
+     ]
+    },
+    {
+     "id": "SR-C05",
+     "type": "single",
+     "label": "How complete is that information today?",
+     "affects": [
+      "inputs",
+      "prototype"
+     ],
+     "summary": "Data quality: {value}.",
+     "recommend": "We'll audit a sample of 20 to 50 products at scoping.",
+     "options": [
+      {
+       "id": "complete",
+       "label": "complete and accurate"
+      },
+      {
+       "id": "gaps",
+       "label": "mostly complete, with gaps"
+      },
+      {
+       "id": "scattered",
+       "label": "scattered or inconsistent"
+      }
+     ]
+    },
+    {
+     "id": "SR-C06",
+     "type": "single",
+     "label": "How often does it change?",
+     "affects": [
+      "production",
+      "admin"
+     ],
+     "summary": "Changes {value}.",
+     "options": [
+      {
+       "id": "daily",
+       "label": "daily",
+       "implies": [
+        {
+         "category": "connect",
+         "reason": "Product data changes daily."
+        }
+       ]
+      },
+      {
+       "id": "weekly",
+       "label": "weekly"
+      },
+      {
+       "id": "monthly",
+       "label": "monthly"
+      },
+      {
+       "id": "rarely",
+       "label": "rarely"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "D",
+   "title": "Rules and results",
+   "intro": "The business rules. You'll refine these in the Rules Studio.",
+   "questions": [
+    {
+     "id": "SR-D01",
+     "type": "single",
+     "label": "What should happen with out-of-stock products?",
+     "affects": [
+      "rules",
+      "exceptions",
+      "acceptance"
+     ],
+     "summary": "Out-of-stock products: {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "hide",
+       "label": "hide them",
+       "rules": [
+        "oos_hide"
+       ]
+      },
+      {
+       "id": "estimate",
+       "label": "show them with a delivery estimate",
+       "rules": [
+        "oos_estimate"
+       ]
+      },
+      {
+       "id": "lower",
+       "label": "show them lower down",
+       "rules": [
+        "oos_lower"
+       ]
+      },
+      {
+       "id": "normal",
+       "label": "show them normally"
+      }
+     ],
+     "show_if": {
+      "q": "SR-C04",
+      "in": [
+       "stock"
+      ]
+     }
+    },
+    {
+     "id": "SR-D02",
+     "type": "single",
+     "label": "Are some products only available in certain regions?",
+     "affects": [
+      "rules",
+      "acceptance"
+     ],
+     "summary": "Regional availability: {value}.",
+     "options": [
+      {
+       "id": "yes",
+       "label": "yes",
+       "rules": [
+        "region"
+       ]
+      },
+      {
+       "id": "no",
+       "label": "no"
+      }
+     ]
+    },
+    {
+     "id": "SR-D03",
+     "type": "single",
+     "label": "If nothing matches exactly, what should it do?",
+     "affects": [
+      "exceptions",
+      "rules",
+      "acceptance"
+     ],
+     "summary": "When nothing matches, it {value}.",
+     "required": true,
+     "recommend": "Show the closest alternatives, and say plainly what didn't match.",
+     "options": [
+      {
+       "id": "relax",
+       "label": "shows the closest alternatives and says so",
+       "rules": [
+        "nomatch_relax"
+       ]
+      },
+      {
+       "id": "staff",
+       "label": "passes the request to your team",
+       "rules": [
+        "nomatch_staff"
+       ]
+      },
+      {
+       "id": "message",
+       "label": "shows a message and lets them change answers"
+      }
+     ]
+    },
+    {
+     "id": "SR-D04",
+     "type": "multi",
+     "label": "What should push a product up the list?",
+     "affects": [
+      "rules",
+      "outputs"
+     ],
+     "summary": "Ranking favours {value}.",
+     "options": [
+      {
+       "id": "fit",
+       "label": "best fit to their answers"
+      },
+      {
+       "id": "margin",
+       "label": "margin"
+      },
+      {
+       "id": "stock",
+       "label": "stock levels",
+       "rules": [
+        "stock_boost"
+       ]
+      },
+      {
+       "id": "promo",
+       "label": "promotions"
+      },
+      {
+       "id": "popular",
+       "label": "reviews or popularity"
+      }
+     ]
+    },
+    {
+     "id": "SR-D05",
+     "type": "single",
+     "label": "How should prices appear?",
+     "affects": [
+      "rules",
+      "outputs"
+     ],
+     "summary": "Pricing: {value}.",
+     "options": [
+      {
+       "id": "standard",
+       "label": "standard prices for everyone"
+      },
+      {
+       "id": "trade",
+       "label": "different prices for trade customers",
+       "rules": [
+        "trade_quote"
+       ],
+       "implies": [
+        {
+         "category": "quote",
+         "reason": "Trade customers get prices on request."
+        }
+       ]
+      },
+      {
+       "id": "quote",
+       "label": "quote only for some products",
+       "implies": [
+        {
+         "category": "quote",
+         "reason": "The result has to become a quote."
+        }
+       ]
+      },
+      {
+       "id": "none",
+       "label": "no prices"
+      }
+     ]
+    },
+    {
+     "id": "SR-D06",
+     "type": "single",
+     "label": "Do any results need staff approval before the customer can go ahead?",
+     "affects": [
+      "rules",
+      "exceptions"
+     ],
+     "summary": "Staff approval: {value}.",
+     "options": [
+      {
+       "id": "no",
+       "label": "not needed"
+      },
+      {
+       "id": "yes",
+       "label": "needed in some cases"
+      }
+     ]
+    },
+    {
+     "id": "SR-D07",
+     "type": "textarea",
+     "label": "When is approval needed?",
+     "affects": [
+      "rules",
+      "acceptance"
+     ],
+     "summary": "Approval is needed when {value}",
+     "show_if": {
+      "q": "SR-D06",
+      "in": [
+       "yes"
+      ]
+     },
+     "hint": "For example: orders over 50 units, or custom sizes."
+    }
+   ]
+  },
+  {
+   "id": "E",
+   "title": "Staff and admin",
+   "intro": "What your team sees, and what they can change after launch.",
+   "questions": [
+    {
+     "id": "SR-E01",
+     "type": "multi",
+     "label": "When should a request go to your team?",
+     "affects": [
+      "exceptions",
+      "journey"
+     ],
+     "summary": "Requests go to staff when {value}.",
+     "options": [
+      {
+       "id": "never",
+       "label": "never",
+       "exclusive": true
+      },
+      {
+       "id": "large",
+       "label": "it's a large or trade order"
+      },
+      {
+       "id": "nomatch",
+       "label": "nothing matches"
+      },
+      {
+       "id": "help",
+       "label": "the customer asks for help"
+      },
+      {
+       "id": "custom",
+       "label": "it's a custom or special order",
+       "implies": [
+        {
+         "category": "quote",
+         "reason": "Custom orders are handled by quote."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "SR-E02",
+     "type": "multi",
+     "label": "What should your team receive?",
+     "affects": [
+      "outputs",
+      "production"
+     ],
+     "summary": "Staff receive {value}.",
+     "show_if": {
+      "q": "SR-E01",
+      "has_selection": true
+     },
+     "options": [
+      {
+       "id": "answers",
+       "label": "the customer's answers"
+      },
+      {
+       "id": "products",
+       "label": "the recommended products"
+      },
+      {
+       "id": "contact",
+       "label": "contact details"
+      },
+      {
+       "id": "rules",
+       "label": "which rules applied"
+      },
+      {
+       "id": "notes",
+       "label": "the customer's notes"
+      }
+     ]
+    },
+    {
+     "id": "SR-E03",
+     "type": "multi",
+     "label": "What will your team need to change after launch?",
+     "affects": [
+      "admin",
+      "production"
+     ],
+     "summary": "After launch, your team edits {value}.",
+     "required": true,
+     "recommend": "Products, rules and wording. Question structure changes go through us.",
+     "options": [
+      {
+       "id": "products",
+       "label": "products and their details"
+      },
+      {
+       "id": "questions",
+       "label": "questions and answer options"
+      },
+      {
+       "id": "rules",
+       "label": "rules"
+      },
+      {
+       "id": "wording",
+       "label": "wording and explanations"
+      },
+      {
+       "id": "prices",
+       "label": "prices"
+      },
+      {
+       "id": "nothing",
+       "label": "nothing; BPC maintains it",
+       "exclusive": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "F",
+   "title": "Platform and constraints",
+   "intro": "Where it runs and what it must respect.",
+   "questions": [
+    {
+     "id": "SR-F01",
+     "type": "single",
+     "label": "Where does your shop run?",
+     "affects": [
+      "production",
+      "outputs"
+     ],
+     "summary": "Runs on {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "woocommerce",
+       "label": "WooCommerce"
+      },
+      {
+       "id": "shopify",
+       "label": "Shopify"
+      },
+      {
+       "id": "magento",
+       "label": "Magento or Adobe Commerce"
+      },
+      {
+       "id": "bigcommerce",
+       "label": "BigCommerce"
+      },
+      {
+       "id": "custom",
+       "label": "A custom build"
+      },
+      {
+       "id": "none",
+       "label": "No online shop yet"
+      },
+      {
+       "id": "other",
+       "label": "Other",
+       "other": true
+      }
+     ]
+    },
+    {
+     "id": "SR-F02",
+     "type": "single",
+     "label": "Do customers need to give contact details?",
+     "affects": [
+      "journey",
+      "production"
+     ],
+     "summary": "Contact details: {value}.",
+     "recommend": "Optional, to save or email their results. Asking earlier loses people.",
+     "options": [
+      {
+       "id": "no",
+       "label": "not asked for"
+      },
+      {
+       "id": "optional",
+       "label": "optional, to save or email results"
+      },
+      {
+       "id": "before",
+       "label": "required before results"
+      },
+      {
+       "id": "quote",
+       "label": "required to request a quote"
+      }
+     ]
+    },
+    {
+     "id": "SR-F03",
+     "type": "text",
+     "label": "Which languages or countries must it support?",
+     "affects": [
+      "production"
+     ],
+     "summary": "Languages and countries: {value}."
+    }
+   ]
+  },
+  {
+   "id": "G",
+   "title": "Scope",
+   "intro": "What the first prototype proves, and what production needs.",
+   "questions": [
+    {
+     "id": "SR-G01",
+     "type": "textarea",
+     "label": "What must the first working prototype prove?",
+     "affects": [
+      "prototype",
+      "acceptance"
+     ],
+     "summary": "The prototype must prove: {value}",
+     "required": true,
+     "recommend": "The questions, rules and results for one product range, on a sample of real data."
+    },
+    {
+     "id": "SR-G02",
+     "type": "multi",
+     "label": "What's needed before it goes live?",
+     "affects": [
+      "production"
+     ],
+     "summary": "Before launch: {value}.",
+     "options": [
+      {
+       "id": "catalogue",
+       "label": "the full catalogue"
+      },
+      {
+       "id": "live",
+       "label": "live stock and prices"
+      },
+      {
+       "id": "basket",
+       "label": "basket or quote connection"
+      },
+      {
+       "id": "notify",
+       "label": "staff notifications"
+      },
+      {
+       "id": "analytics",
+       "label": "analytics"
+      },
+      {
+       "id": "languages",
+       "label": "more than one language"
+      }
+     ]
+    },
+    {
+     "id": "SR-G03",
+     "type": "text",
+     "label": "Is there a date driving this?",
+     "affects": [
+      "prototype",
+      "production"
+     ],
+     "summary": "Driven by: {value}.",
+     "hint": "A launch, season or trade show."
+    }
+   ]
+  }
+ ],
+ "example": {
+  "tool_name": "Screen Finder",
+  "answers": {
+   "SR-A01": {
+    "value": [
+     "shoppers",
+     "trade"
+    ]
+   },
+   "SR-A02": {
+    "value": "Which projection screen size, type and material suits their room, projector and budget."
+   },
+   "SR-A03": {
+    "value": "Room width and seating distance, their projector model, and whether the room is bright."
+   },
+   "SR-A04": {
+    "value": "basket"
+   },
+   "SR-B01": {
+    "value": "mix"
+   },
+   "SR-B02": {
+    "status": "bpc"
+   },
+   "SR-B04": {
+    "value": "three"
+   },
+   "SR-B05": {
+    "value": "all"
+   },
+   "SR-B06": {
+    "value": [
+     "product",
+     "dedicated",
+     "partner"
+    ]
+   },
+   "SR-C01": {
+    "value": "sheet"
+   },
+   "SR-C02": {
+    "value": "50-500"
+   },
+   "SR-C03": {
+    "value": "many"
+   },
+   "SR-C04": {
+    "value": [
+     "category",
+     "material",
+     "size",
+     "price",
+     "stock",
+     "compat"
+    ]
+   },
+   "SR-C05": {
+    "value": "gaps",
+    "status": "assumption"
+   },
+   "SR-D01": {
+    "value": "estimate"
+   },
+   "SR-D02": {
+    "value": "yes"
+   },
+   "SR-D03": {
+    "value": "relax"
+   },
+   "SR-D04": {
+    "value": [
+     "fit",
+     "stock"
+    ]
+   },
+   "SR-D05": {
+    "value": "trade"
+   },
+   "SR-E03": {
+    "status": "unknown"
+   },
+   "SR-F01": {
+    "value": "woocommerce"
+   }
+  }
+ }
+}

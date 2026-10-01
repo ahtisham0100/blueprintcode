@@ -1,0 +1,308 @@
+{
+ "module": {
+  "id": "plan",
+  "name": "Plan & Calculate",
+  "schema": "bpc.discovery/1",
+  "depth": "intake",
+  "intro": "A short guided intake. We'll go deeper at the scoping call. If you're not sure, choose I don't know or Ask BPC to advise."
+ },
+ "documents": [
+  {
+   "id": "purpose",
+   "title": "Tool Purpose and Users"
+  },
+  {
+   "id": "journey",
+   "title": "Tool Journey and States"
+  },
+  {
+   "id": "inputs",
+   "title": "Inputs and Data Requirements"
+  },
+  {
+   "id": "rules",
+   "title": "Business Rules and Priorities"
+  },
+  {
+   "id": "outputs",
+   "title": "Outputs, Recommendations and Calls to Action"
+  },
+  {
+   "id": "admin",
+   "title": "Admin Editing Requirements"
+  },
+  {
+   "id": "exceptions",
+   "title": "Exceptions and Fallbacks"
+  },
+  {
+   "id": "prototype",
+   "title": "Prototype Scope"
+  },
+  {
+   "id": "production",
+   "title": "Production Scope"
+  },
+  {
+   "id": "acceptance",
+   "title": "Acceptance Tests"
+  }
+ ],
+ "rule_templates": {},
+ "sections": [
+  {
+   "id": "A",
+   "title": "Purpose and inputs",
+   "intro": "What's being planned and from what.",
+   "questions": [
+    {
+     "id": "PC-A01",
+     "type": "multi",
+     "label": "Who will use it?",
+     "affects": [
+      "purpose",
+      "journey"
+     ],
+     "summary": "Used by {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "shoppers",
+       "label": "customers shopping online"
+      },
+      {
+       "id": "staff",
+       "label": "sales staff, in store or on calls"
+      },
+      {
+       "id": "trade",
+       "label": "trade customers or dealers"
+      },
+      {
+       "id": "admin",
+       "label": "your own admin team"
+      },
+      {
+       "id": "other",
+       "label": "someone else",
+       "other": true
+      }
+     ]
+    },
+    {
+     "id": "PC-A02",
+     "type": "textarea",
+     "label": "What are they planning or working out?",
+     "affects": [
+      "purpose"
+     ],
+     "summary": "They're working out: {value}",
+     "required": true,
+     "hint": "For example: the right screen size for their room, or how much flooring to order."
+    },
+    {
+     "id": "PC-A03",
+     "type": "multi",
+     "label": "What will they enter?",
+     "affects": [
+      "inputs",
+      "journey"
+     ],
+     "summary": "They enter {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "dims",
+       "label": "room or object dimensions"
+      },
+      {
+       "id": "qty",
+       "label": "quantities or people"
+      },
+      {
+       "id": "usage",
+       "label": "how they'll use it"
+      },
+      {
+       "id": "location",
+       "label": "location or postcode"
+      },
+      {
+       "id": "existing",
+       "label": "equipment they already own"
+      },
+      {
+       "id": "budget",
+       "label": "a budget"
+      }
+     ]
+    },
+    {
+     "id": "PC-A04",
+     "type": "single",
+     "label": "Where do the formulas come from?",
+     "affects": [
+      "rules",
+      "inputs"
+     ],
+     "summary": "Formulas come from {value}.",
+     "recommend": "Your own rules of thumb first; we'll check them against manufacturer data.",
+     "options": [
+      {
+       "id": "own",
+       "label": "our own rules of thumb"
+      },
+      {
+       "id": "standard",
+       "label": "an industry standard"
+      },
+      {
+       "id": "supplier",
+       "label": "supplier or manufacturer data"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "title": "Results",
+   "intro": "What the tool gives back and where it goes next.",
+   "questions": [
+    {
+     "id": "PC-B01",
+     "type": "multi",
+     "label": "What should it produce?",
+     "affects": [
+      "outputs"
+     ],
+     "summary": "It produces {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "numbers",
+       "label": "numbers with a short explanation"
+      },
+      {
+       "id": "drawing",
+       "label": "a drawing or layout"
+      },
+      {
+       "id": "products",
+       "label": "a list of suitable products",
+       "implies": [
+        {
+         "category": "select",
+         "reason": "Customers need help choosing products."
+        }
+       ]
+      },
+      {
+       "id": "plan",
+       "label": "a saved plan"
+      },
+      {
+       "id": "pdf",
+       "label": "a PDF"
+      }
+     ]
+    },
+    {
+     "id": "PC-B02",
+     "type": "multi",
+     "label": "Where should the result go next?",
+     "affects": [
+      "outputs",
+      "journey"
+     ],
+     "summary": "Results go to {value}.",
+     "options": [
+      {
+       "id": "selector",
+       "label": "a product selector",
+       "implies": [
+        {
+         "category": "select",
+         "reason": "Customers need help choosing products."
+        }
+       ]
+      },
+      {
+       "id": "quote",
+       "label": "a quote",
+       "implies": [
+        {
+         "category": "quote",
+         "reason": "The result has to become a quote."
+        }
+       ]
+      },
+      {
+       "id": "basket",
+       "label": "the basket"
+      },
+      {
+       "id": "staff",
+       "label": "your team"
+      }
+     ]
+    },
+    {
+     "id": "PC-B03",
+     "type": "single",
+     "label": "What if their inputs don't make sense?",
+     "affects": [
+      "exceptions",
+      "acceptance"
+     ],
+     "summary": "Odd inputs: {value}.",
+     "recommend": "Warn with the likely mistake and let them correct it; never block silently.",
+     "options": [
+      {
+       "id": "warn",
+       "label": "warn and let them correct it"
+      },
+      {
+       "id": "staff",
+       "label": "pass to your team"
+      },
+      {
+       "id": "block",
+       "label": "stop and explain"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Z",
+   "title": "Scope",
+   "intro": "What the first prototype proves.",
+   "questions": [
+    {
+     "id": "PC-Z01",
+     "type": "textarea",
+     "label": "What must the first working prototype prove?",
+     "affects": [
+      "prototype",
+      "acceptance"
+     ],
+     "summary": "The prototype must prove: {value}",
+     "required": true,
+     "recommend": "The calculation for your most common case, checked against three worked examples you supply."
+    },
+    {
+     "id": "PC-Z02",
+     "type": "text",
+     "label": "Is there a date driving this?",
+     "affects": [
+      "prototype",
+      "production"
+     ],
+     "summary": "Driven by: {value}.",
+     "hint": "A launch, season, trade show or compliance deadline."
+    }
+   ]
+  }
+ ]
+}

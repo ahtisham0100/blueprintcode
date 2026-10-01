@@ -1,0 +1,260 @@
+{
+ "module": {
+  "id": "connect",
+  "name": "Connect & Automate",
+  "schema": "bpc.discovery/1",
+  "depth": "intake",
+  "intro": "A short guided intake. We'll go deeper at the scoping call. If you're not sure, choose I don't know or Ask BPC to advise."
+ },
+ "documents": [
+  {
+   "id": "purpose",
+   "title": "Tool Purpose and Users"
+  },
+  {
+   "id": "journey",
+   "title": "Tool Journey and States"
+  },
+  {
+   "id": "inputs",
+   "title": "Inputs and Data Requirements"
+  },
+  {
+   "id": "rules",
+   "title": "Business Rules and Priorities"
+  },
+  {
+   "id": "outputs",
+   "title": "Outputs, Recommendations and Calls to Action"
+  },
+  {
+   "id": "admin",
+   "title": "Admin Editing Requirements"
+  },
+  {
+   "id": "exceptions",
+   "title": "Exceptions and Fallbacks"
+  },
+  {
+   "id": "prototype",
+   "title": "Prototype Scope"
+  },
+  {
+   "id": "production",
+   "title": "Production Scope"
+  },
+  {
+   "id": "acceptance",
+   "title": "Acceptance Tests"
+  }
+ ],
+ "rule_templates": {},
+ "sections": [
+  {
+   "id": "A",
+   "title": "Today's manual work",
+   "intro": "What's done by hand and between which systems.",
+   "questions": [
+    {
+     "id": "CA-A01",
+     "type": "textarea",
+     "label": "What do people re-key or copy by hand today?",
+     "affects": [
+      "purpose",
+      "inputs"
+     ],
+     "summary": "Done by hand today: {value}",
+     "required": true
+    },
+    {
+     "id": "CA-A02",
+     "type": "multi",
+     "label": "Which systems are involved?",
+     "affects": [
+      "inputs",
+      "production"
+     ],
+     "summary": "Systems: {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "shop",
+       "label": "the online shop"
+      },
+      {
+       "id": "erp",
+       "label": "an ERP"
+      },
+      {
+       "id": "pim",
+       "label": "a PIM"
+      },
+      {
+       "id": "crm",
+       "label": "a CRM"
+      },
+      {
+       "id": "accounts",
+       "label": "accounting software"
+      },
+      {
+       "id": "sheet",
+       "label": "spreadsheets"
+      },
+      {
+       "id": "email",
+       "label": "email"
+      },
+      {
+       "id": "supplier",
+       "label": "a supplier feed"
+      },
+      {
+       "id": "other",
+       "label": "something else",
+       "other": true
+      }
+     ]
+    },
+    {
+     "id": "CA-A03",
+     "type": "single",
+     "label": "Which way does data need to flow?",
+     "affects": [
+      "rules"
+     ],
+     "summary": "Data flows {value}.",
+     "options": [
+      {
+       "id": "one",
+       "label": "one way"
+      },
+      {
+       "id": "two",
+       "label": "both ways"
+      }
+     ]
+    },
+    {
+     "id": "CA-A04",
+     "type": "single",
+     "label": "How fresh does it need to be?",
+     "affects": [
+      "rules",
+      "production"
+     ],
+     "summary": "Updates {value}.",
+     "recommend": "Hourly is usually enough; real time only where stock is scarce.",
+     "options": [
+      {
+       "id": "realtime",
+       "label": "in real time"
+      },
+      {
+       "id": "hourly",
+       "label": "hourly"
+      },
+      {
+       "id": "daily",
+       "label": "daily"
+      },
+      {
+       "id": "demand",
+       "label": "when someone asks"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "title": "Failures and people",
+   "intro": "What happens when something goes wrong.",
+   "questions": [
+    {
+     "id": "CA-B01",
+     "type": "text",
+     "label": "Who should hear about it when a sync fails?",
+     "affects": [
+      "exceptions",
+      "admin"
+     ],
+     "summary": "Failures go to {value}."
+    },
+    {
+     "id": "CA-B02",
+     "type": "single",
+     "label": "Do staff need a portal to review or approve anything?",
+     "affects": [
+      "admin",
+      "outputs"
+     ],
+     "summary": "Staff portal: {value}.",
+     "options": [
+      {
+       "id": "yes",
+       "label": "yes"
+      },
+      {
+       "id": "no",
+       "label": "no"
+      }
+     ]
+    },
+    {
+     "id": "CA-B03",
+     "type": "single",
+     "label": "Roughly how many records change a day?",
+     "affects": [
+      "production"
+     ],
+     "summary": "About {value} changes a day.",
+     "options": [
+      {
+       "id": "lt100",
+       "label": "under 100"
+      },
+      {
+       "id": "100-1k",
+       "label": "100 to 1,000"
+      },
+      {
+       "id": "1k+",
+       "label": "more than 1,000"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Z",
+   "title": "Scope",
+   "intro": "What the first prototype proves.",
+   "questions": [
+    {
+     "id": "CA-Z01",
+     "type": "textarea",
+     "label": "What must the first working prototype prove?",
+     "affects": [
+      "prototype",
+      "acceptance"
+     ],
+     "summary": "The prototype must prove: {value}",
+     "required": true,
+     "recommend": "One end-to-end sync for one record type, with failures reported."
+    },
+    {
+     "id": "CA-Z02",
+     "type": "text",
+     "label": "Is there a date driving this?",
+     "affects": [
+      "prototype",
+      "production"
+     ],
+     "summary": "Driven by: {value}.",
+     "hint": "A launch, season, trade show or compliance deadline."
+    }
+   ]
+  }
+ ]
+}

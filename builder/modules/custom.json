@@ -1,0 +1,174 @@
+{
+ "module": {
+  "id": "custom",
+  "name": "Custom tool",
+  "schema": "bpc.discovery/1",
+  "depth": "intake",
+  "intro": "A short guided intake. We'll go deeper at the scoping call. If you're not sure, choose I don't know or Ask BPC to advise."
+ },
+ "documents": [
+  {
+   "id": "purpose",
+   "title": "Tool Purpose and Users"
+  },
+  {
+   "id": "journey",
+   "title": "Tool Journey and States"
+  },
+  {
+   "id": "inputs",
+   "title": "Inputs and Data Requirements"
+  },
+  {
+   "id": "rules",
+   "title": "Business Rules and Priorities"
+  },
+  {
+   "id": "outputs",
+   "title": "Outputs, Recommendations and Calls to Action"
+  },
+  {
+   "id": "admin",
+   "title": "Admin Editing Requirements"
+  },
+  {
+   "id": "exceptions",
+   "title": "Exceptions and Fallbacks"
+  },
+  {
+   "id": "prototype",
+   "title": "Prototype Scope"
+  },
+  {
+   "id": "production",
+   "title": "Production Scope"
+  },
+  {
+   "id": "acceptance",
+   "title": "Acceptance Tests"
+  }
+ ],
+ "rule_templates": {},
+ "sections": [
+  {
+   "id": "A",
+   "title": "The idea",
+   "intro": "Describe it in your own words.",
+   "questions": [
+    {
+     "id": "CT-A01",
+     "type": "multi",
+     "label": "Who will use it?",
+     "affects": [
+      "purpose",
+      "journey"
+     ],
+     "summary": "Used by {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "shoppers",
+       "label": "customers shopping online"
+      },
+      {
+       "id": "staff",
+       "label": "sales staff, in store or on calls"
+      },
+      {
+       "id": "trade",
+       "label": "trade customers or dealers"
+      },
+      {
+       "id": "admin",
+       "label": "your own admin team"
+      },
+      {
+       "id": "other",
+       "label": "someone else",
+       "other": true
+      }
+     ]
+    },
+    {
+     "id": "CT-A02",
+     "type": "textarea",
+     "label": "What problem does it solve?",
+     "affects": [
+      "purpose"
+     ],
+     "summary": "It solves: {value}",
+     "required": true
+    },
+    {
+     "id": "CT-A03",
+     "type": "textarea",
+     "label": "What goes in?",
+     "affects": [
+      "inputs"
+     ],
+     "summary": "Inputs: {value}",
+     "hint": "What people enter, choose or upload."
+    },
+    {
+     "id": "CT-A04",
+     "type": "textarea",
+     "label": "What comes out?",
+     "affects": [
+      "outputs"
+     ],
+     "summary": "Outputs: {value}",
+     "required": true
+    },
+    {
+     "id": "CT-A05",
+     "type": "textarea",
+     "label": "What rules should it follow?",
+     "affects": [
+      "rules"
+     ],
+     "summary": "Rules: {value}"
+    },
+    {
+     "id": "CT-A06",
+     "type": "textarea",
+     "label": "Where does the information come from?",
+     "affects": [
+      "inputs",
+      "production"
+     ],
+     "summary": "Data comes from {value}"
+    }
+   ]
+  },
+  {
+   "id": "Z",
+   "title": "Scope",
+   "intro": "What the first prototype proves.",
+   "questions": [
+    {
+     "id": "CT-Z01",
+     "type": "textarea",
+     "label": "What must the first working prototype prove?",
+     "affects": [
+      "prototype",
+      "acceptance"
+     ],
+     "summary": "The prototype must prove: {value}",
+     "required": true,
+     "recommend": "We'll agree this with you at scoping."
+    },
+    {
+     "id": "CT-Z02",
+     "type": "text",
+     "label": "Is there a date driving this?",
+     "affects": [
+      "prototype",
+      "production"
+     ],
+     "summary": "Driven by: {value}.",
+     "hint": "A launch, season, trade show or compliance deadline."
+    }
+   ]
+  }
+ ]
+}

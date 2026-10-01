@@ -1,0 +1,283 @@
+{
+ "categories": [
+  {
+   "id": "configure",
+   "name": "Configure & Visualise",
+   "module": "configure",
+   "prefix": "CV",
+   "summary": "Customers build their own version of a product and see it change as they choose.",
+   "patterns": [
+    {
+     "re": "customi[sz]\\w*|personali[sz]\\w*|bespoke|made[- ]to[- ](order|measure)|(build|design|create|make) (your|their|my) own",
+     "weight": 2,
+     "reason": "customers make their own version of a product"
+    },
+    {
+     "re": "configur\\w*|product builder|kit builder|spec(ification)? builder",
+     "weight": 2,
+     "reason": "the product is configured from options"
+    },
+    {
+     "re": "visuali[sz]\\w*|3d|augmented reality|\\bar\\b view|render(s|ing|ed)?|mock-?ups?|preview\\w*|see (what|how) (it|they) (looks?|would look)",
+     "weight": 2,
+     "reason": "customers need to see the result before buying"
+    },
+    {
+     "re": "(multiple|many|lots of|loads of|hundreds of|thousands of|different) (variables|variations|options|variants|sizes|materials|finishes|colou?rs|combinations|configurations|specs|specifications)",
+     "weight": 2,
+     "reason": "each product comes in many variations"
+    },
+    {
+     "re": "\\d[\\d,]* (materials|sizes|finishes|fabrics|colou?rs|options|variants|combinations|configurations)",
+     "weight": 2,
+     "reason": "there are counted options, such as materials and sizes"
+    },
+    {
+     "re": "engrav\\w*|monogram\\w*|print(ed)? (name|logo|text)|modular|bundles?|kits?",
+     "weight": 1,
+     "reason": "products are assembled or personalised"
+    },
+    {
+     "re": "options|variants|add-?ons|variables|variations|finish(es)?|swatch\\w*|fabrics?|colou?rways?",
+     "weight": 1,
+     "reason": "products come with options"
+    },
+    {
+     "re": "materials?|sizes?|dimensions",
+     "weight": 1,
+     "reason": "size or material is part of the choice"
+    }
+   ]
+  },
+  {
+   "id": "select",
+   "name": "Select & Recommend",
+   "module": "select_recommend",
+   "prefix": "SR",
+   "summary": "Guide customers to the right product with questions that eliminate options, plus filters and rules.",
+   "patterns": [
+    {
+     "re": "which (one|product|model|size|screen|material|type|version)s?|the right \\w+|best (one|option|fit|match)",
+     "weight": 2,
+     "reason": "customers need to find the right product"
+    },
+    {
+     "re": "help(ing)? (them|customers|people|buyers|shoppers|users) (choose|pick|find|decide|select)",
+     "weight": 2,
+     "reason": "customers need help choosing"
+    },
+    {
+     "re": "recommend\\w*|suggest\\w*|finder|selector|matchmak\\w*|advis(or|er)|wizard|guided (selling|buying)|gift guide|size guide|fit finder",
+     "weight": 2,
+     "reason": "the tool recommends products"
+    },
+    {
+     "re": "eliminat\\w*|narrow(s|ing|ed)? (it |them |things |the (range|options|choice) )?down|questions?|questionnaire|quiz",
+     "weight": 2,
+     "reason": "questions narrow down the options"
+    },
+    {
+     "re": "\\d{3,}[\\d,]* (sizes|products|options|variants|skus|combinations|models|items)|\\d{1,3}(,\\d{3})+ (sizes|products|options|variants|skus|combinations)",
+     "weight": 2,
+     "reason": "the range is too large to browse"
+    },
+    {
+     "re": "compar\\w*|confus\\w*|overwhelm\\w*|too many (products|options|choices)|shortlist\\w*|filter\\w*",
+     "weight": 1,
+     "reason": "the range is hard to compare"
+    },
+    {
+     "re": "suit(s|able)?|match(es|ing)?|compatib\\w*|goes? with|fits? (their|the)",
+     "weight": 1,
+     "reason": "products must suit the customer's situation"
+    },
+    {
+     "re": "returns?\\b|wrong (product|size|one)",
+     "weight": 1,
+     "reason": "customers buy the wrong product and return it"
+    }
+   ]
+  },
+  {
+   "id": "plan",
+   "name": "Plan & Calculate",
+   "module": "plan",
+   "prefix": "PC",
+   "summary": "Work things out from the customer's situation: sizes, quantities, layouts, costs.",
+   "patterns": [
+    {
+     "re": "plan(ner|ning)?\\b|layout|floor ?plans?|room planner|space planning",
+     "weight": 2,
+     "reason": "customers plan a space or project"
+    },
+    {
+     "re": "calculat\\w*|work out|how (many|much)|estimat\\w* (the )?(size|quantity|amount|cost|energy)|sizing tool",
+     "weight": 2,
+     "reason": "something has to be calculated"
+    },
+    {
+     "re": "roi|return on investment|payback|savings calculator|running costs?|total cost",
+     "weight": 2,
+     "reason": "customers need to see costs or savings worked out"
+    },
+    {
+     "re": "room|dimensions?|measure\\w*|distance|area|square (metres|meters|feet)|width|height|depth",
+     "weight": 1,
+     "reason": "it depends on room sizes or measurements"
+    },
+    {
+     "re": "quantit\\w*|coverage|capacity|allowance|load|budget\\w*",
+     "weight": 1,
+     "reason": "quantities, budgets or allowances need working out"
+    }
+   ]
+  },
+  {
+   "id": "quote",
+   "name": "Quote & Convert",
+   "module": "quote",
+   "prefix": "QC",
+   "summary": "Turn a specification into a quote, proposal or order, with approvals and follow-up.",
+   "patterns": [
+    {
+     "re": "quot(e|es|ing|ation)|proposals?|tenders?|rfqs?|cpq|price (list|book)s? for trade",
+     "weight": 2,
+     "reason": "customers need a quote rather than a fixed price"
+    },
+    {
+     "re": "trade (price|pricing|account|customers?)s?|b2b|dealers?|resellers?|wholesale|bulk|distributors?",
+     "weight": 2,
+     "reason": "trade or business customers buy differently"
+    },
+    {
+     "re": "deposit|invoice\\w*|payment links?|purchase orders?|\\bpos?\\b|order forms?|contracts?|e-?sign\\w*|sign[- ]off",
+     "weight": 1,
+     "reason": "there are order, payment or sign-off steps"
+    },
+    {
+     "re": "price on request|custom pricing|negotiat\\w*|discount\\w*|margin",
+     "weight": 1,
+     "reason": "prices vary per customer or order"
+    },
+    {
+     "re": "leads?|enquir\\w*|inquir\\w*|follow[- ]?ups?|convert\\w*|sales pipeline|close (the |more )?(sale|deal)s?",
+     "weight": 1,
+     "reason": "enquiries need turning into orders"
+    }
+   ]
+  },
+  {
+   "id": "connect",
+   "name": "Connect & Automate",
+   "module": "connect",
+   "prefix": "CA",
+   "summary": "Link systems and remove manual work: stock, prices, orders, notifications, reporting.",
+   "patterns": [
+    {
+     "re": "integrat\\w*|sync\\w*|apis?|erp|pim|crm|xero|sage|netsuite|zapier|hubspot|salesforce|edi",
+     "weight": 2,
+     "reason": "several systems need to share data"
+    },
+    {
+     "re": "manual(ly)?|re-?key\\w*|copy and paste|spreadsheets?|by hand|double entry",
+     "weight": 2,
+     "reason": "information is moved by hand today"
+    },
+    {
+     "re": "back ?-?end|back[- ]office|admin (panel|system|area|dashboard|portal)|portal|dashboards?|control panel",
+     "weight": 2,
+     "reason": "a back-office system or dashboard is needed"
+    },
+    {
+     "re": "kpis?|key performance|metrics|reporting|reports?|analytics|track(ing)? (performance|sales|orders|leads|kpis?)|keep track|monitor\\w*|insights?",
+     "weight": 2,
+     "reason": "performance needs tracking and reporting"
+    },
+    {
+     "re": "automat\\w*|workflows?|notif\\w*|alerts?|reminders?|triggers?",
+     "weight": 1,
+     "reason": "steps should happen automatically"
+    },
+    {
+     "re": "stock levels?|inventory|warehouse|fulfil+ment|price (file|list|updates?)|feeds?|database|single source|logins?|accounts?|permissions?",
+     "weight": 1,
+     "reason": "stock, prices or accounts are managed in systems"
+    }
+   ]
+  },
+  {
+   "id": "audit",
+   "name": "Audit & Improve",
+   "module": "audit",
+   "prefix": "AI",
+   "summary": "Find and fix what stops people using or buying: accessibility, speed, conversion.",
+   "patterns": [
+    {
+     "re": "accessib\\w*|wcag|screen readers?|disab\\w*|compliance|regulat\\w*|european accessibility act|ada\\b",
+     "weight": 2,
+     "reason": "accessibility or compliance matters"
+    },
+    {
+     "re": "audit\\w*|review (our|the) (site|website|shop|store)|health check|ux review|usability test\\w*",
+     "weight": 2,
+     "reason": "the current site needs reviewing"
+    },
+    {
+     "re": "conversion|drop[- ]?offs?|abandon\\w*|bounce|nobody buys|low sales|not converting",
+     "weight": 2,
+     "reason": "people leave before buying"
+    },
+    {
+     "re": "slow|speed|performance|seo|mobile|usability|broken|optimi[sz]\\w*|a/?b test\\w*|heat ?maps?",
+     "weight": 1,
+     "reason": "the site has performance or usability problems"
+    },
+    {
+     "re": "kpis?|metrics|analytics|measure (success|performance|results)",
+     "weight": 1,
+     "reason": "results need measuring so they can be improved"
+    }
+   ]
+  },
+  {
+   "id": "custom",
+   "name": "Custom tool",
+   "module": "custom",
+   "prefix": "CT",
+   "summary": "Something that doesn't fit the categories above.",
+   "patterns": []
+  }
+ ],
+ "signals": [
+  {
+   "re": "dealers?|resellers?|distributors?|partners?|retailers?",
+   "title": "Dealers or partners will use it",
+   "note": "Decide whether each dealer gets their own branded version, pricing and login, and who maintains their copy."
+  },
+  {
+   "re": "reps?\\b|sales (reps?|team|staff|people)|field sales",
+   "title": "Sales reps will use it",
+   "note": "Reps may need a staff mode: trade prices, saved customers and quotes they can send."
+  },
+  {
+   "re": "in the field|on[- ]site|on sites|site visits?|at the customer'?s|showroom|in store|trade shows?",
+   "title": "It will be used away from a desk",
+   "note": "Plan for phones and tablets, poor signal (working offline) and sharing results on the spot."
+  },
+  {
+   "re": "share|shared|embed\\w*|white[- ]label\\w*|on (their|dealers'?) (sites?|websites?)",
+   "title": "It will be shared or embedded elsewhere",
+   "note": "Plan for embedding on other websites, white-label styling and keeping every copy up to date."
+  },
+  {
+   "re": "offline|no signal|poor signal|without (internet|wi-?fi)",
+   "title": "It must work offline",
+   "note": "Offline use changes how data is stored and synced; it needs designing in from the start."
+  },
+  {
+   "re": "languages?|translat\\w*|countries|international|export",
+   "title": "More than one market",
+   "note": "Plan for languages, currencies and regional pricing or availability."
+  }
+ ]
+}

@@ -1,0 +1,240 @@
+{
+ "module": {
+  "id": "audit",
+  "name": "Audit & Improve",
+  "schema": "bpc.discovery/1",
+  "depth": "intake",
+  "intro": "A short guided intake. We'll go deeper at the scoping call. If you're not sure, choose I don't know or Ask BPC to advise."
+ },
+ "documents": [
+  {
+   "id": "purpose",
+   "title": "Tool Purpose and Users"
+  },
+  {
+   "id": "journey",
+   "title": "Tool Journey and States"
+  },
+  {
+   "id": "inputs",
+   "title": "Inputs and Data Requirements"
+  },
+  {
+   "id": "rules",
+   "title": "Business Rules and Priorities"
+  },
+  {
+   "id": "outputs",
+   "title": "Outputs, Recommendations and Calls to Action"
+  },
+  {
+   "id": "admin",
+   "title": "Admin Editing Requirements"
+  },
+  {
+   "id": "exceptions",
+   "title": "Exceptions and Fallbacks"
+  },
+  {
+   "id": "prototype",
+   "title": "Prototype Scope"
+  },
+  {
+   "id": "production",
+   "title": "Production Scope"
+  },
+  {
+   "id": "acceptance",
+   "title": "Acceptance Tests"
+  }
+ ],
+ "rule_templates": {},
+ "sections": [
+  {
+   "id": "A",
+   "title": "The site and the worry",
+   "intro": "What we're looking at and why.",
+   "questions": [
+    {
+     "id": "AI-A01",
+     "type": "text",
+     "label": "Which site or pages?",
+     "affects": [
+      "purpose",
+      "inputs"
+     ],
+     "summary": "Site: {value}.",
+     "required": true,
+     "hint": "A web address, or the journeys that matter most."
+    },
+    {
+     "id": "AI-A02",
+     "type": "multi",
+     "label": "What worries you?",
+     "affects": [
+      "purpose",
+      "acceptance"
+     ],
+     "summary": "Concerns: {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "a11y",
+       "label": "accessibility or compliance"
+      },
+      {
+       "id": "conversion",
+       "label": "people leaving before buying"
+      },
+      {
+       "id": "speed",
+       "label": "speed"
+      },
+      {
+       "id": "mobile",
+       "label": "mobile experience"
+      },
+      {
+       "id": "search",
+       "label": "search visibility"
+      },
+      {
+       "id": "choice",
+       "label": "customers struggling to choose products",
+       "implies": [
+        {
+         "category": "select",
+         "reason": "Customers need help choosing products."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "AI-A03",
+     "type": "text",
+     "label": "Is there a deadline, such as a regulator's date?",
+     "affects": [
+      "prototype",
+      "production"
+     ],
+     "summary": "Deadline: {value}."
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "title": "Fixing it",
+   "intro": "Who fixes what, and how much.",
+   "questions": [
+    {
+     "id": "AI-B01",
+     "type": "single",
+     "label": "Who will make the fixes?",
+     "affects": [
+      "production",
+      "admin"
+     ],
+     "summary": "Fixes by {value}.",
+     "options": [
+      {
+       "id": "bpc",
+       "label": "Blueprint Code"
+      },
+      {
+       "id": "team",
+       "label": "your own team"
+      },
+      {
+       "id": "agency",
+       "label": "another agency"
+      }
+     ]
+    },
+    {
+     "id": "AI-B02",
+     "type": "single",
+     "label": "How much of the site?",
+     "affects": [
+      "prototype",
+      "production"
+     ],
+     "summary": "Scope: {value}.",
+     "recommend": "Your three most important journeys first, then the rest.",
+     "options": [
+      {
+       "id": "key",
+       "label": "the most important journeys"
+      },
+      {
+       "id": "pages",
+       "label": "specific pages"
+      },
+      {
+       "id": "all",
+       "label": "the whole site"
+      }
+     ]
+    },
+    {
+     "id": "AI-B03",
+     "type": "single",
+     "label": "Where does it run?",
+     "affects": [
+      "production"
+     ],
+     "summary": "Runs on {value}.",
+     "options": [
+      {
+       "id": "woocommerce",
+       "label": "WooCommerce"
+      },
+      {
+       "id": "shopify",
+       "label": "Shopify"
+      },
+      {
+       "id": "custom",
+       "label": "a custom build"
+      },
+      {
+       "id": "other",
+       "label": "something else",
+       "other": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Z",
+   "title": "Scope",
+   "intro": "What the first deliverable is.",
+   "questions": [
+    {
+     "id": "AI-Z01",
+     "type": "textarea",
+     "label": "What must the first working prototype prove?",
+     "affects": [
+      "prototype",
+      "acceptance"
+     ],
+     "summary": "The prototype must prove: {value}",
+     "required": true,
+     "recommend": "A scored audit of your key journeys with the ten most important fixes."
+    },
+    {
+     "id": "AI-Z02",
+     "type": "text",
+     "label": "Is there a date driving this?",
+     "affects": [
+      "prototype",
+      "production"
+     ],
+     "summary": "Driven by: {value}.",
+     "hint": "A launch, season, trade show or compliance deadline."
+    }
+   ]
+  }
+ ]
+}

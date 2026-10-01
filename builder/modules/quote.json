@@ -1,0 +1,273 @@
+{
+ "module": {
+  "id": "quote",
+  "name": "Quote & Convert",
+  "schema": "bpc.discovery/1",
+  "depth": "intake",
+  "intro": "A short guided intake. We'll go deeper at the scoping call. If you're not sure, choose I don't know or Ask BPC to advise."
+ },
+ "documents": [
+  {
+   "id": "purpose",
+   "title": "Tool Purpose and Users"
+  },
+  {
+   "id": "journey",
+   "title": "Tool Journey and States"
+  },
+  {
+   "id": "inputs",
+   "title": "Inputs and Data Requirements"
+  },
+  {
+   "id": "rules",
+   "title": "Business Rules and Priorities"
+  },
+  {
+   "id": "outputs",
+   "title": "Outputs, Recommendations and Calls to Action"
+  },
+  {
+   "id": "admin",
+   "title": "Admin Editing Requirements"
+  },
+  {
+   "id": "exceptions",
+   "title": "Exceptions and Fallbacks"
+  },
+  {
+   "id": "prototype",
+   "title": "Prototype Scope"
+  },
+  {
+   "id": "production",
+   "title": "Production Scope"
+  },
+  {
+   "id": "acceptance",
+   "title": "Acceptance Tests"
+  }
+ ],
+ "rule_templates": {},
+ "sections": [
+  {
+   "id": "A",
+   "title": "What's quoted",
+   "intro": "Who asks for quotes and what goes into them.",
+   "questions": [
+    {
+     "id": "QC-A01",
+     "type": "multi",
+     "label": "Who will use it?",
+     "affects": [
+      "purpose",
+      "journey"
+     ],
+     "summary": "Used by {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "shoppers",
+       "label": "customers shopping online"
+      },
+      {
+       "id": "staff",
+       "label": "sales staff, in store or on calls"
+      },
+      {
+       "id": "trade",
+       "label": "trade customers or dealers"
+      },
+      {
+       "id": "admin",
+       "label": "your own admin team"
+      },
+      {
+       "id": "other",
+       "label": "someone else",
+       "other": true
+      }
+     ]
+    },
+    {
+     "id": "QC-A02",
+     "type": "textarea",
+     "label": "What do you quote for?",
+     "affects": [
+      "purpose",
+      "inputs"
+     ],
+     "summary": "Quotes cover: {value}",
+     "required": true
+    },
+    {
+     "id": "QC-A03",
+     "type": "single",
+     "label": "How is the price worked out?",
+     "affects": [
+      "rules",
+      "inputs"
+     ],
+     "summary": "Prices come from {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "list",
+       "label": "a price list"
+      },
+      {
+       "id": "formula",
+       "label": "a formula or rate card"
+      },
+      {
+       "id": "costing",
+       "label": "costing each job"
+      },
+      {
+       "id": "manual",
+       "label": "staff setting the price by hand"
+      }
+     ]
+    },
+    {
+     "id": "QC-A04",
+     "type": "single",
+     "label": "Does anyone approve a quote before it's sent?",
+     "affects": [
+      "rules",
+      "exceptions"
+     ],
+     "summary": "Approval: {value}.",
+     "options": [
+      {
+       "id": "no",
+       "label": "not needed"
+      },
+      {
+       "id": "some",
+       "label": "needed above a value or discount"
+      },
+      {
+       "id": "all",
+       "label": "needed for every quote"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "title": "Output and follow-up",
+   "intro": "What the customer receives and what happens next.",
+   "questions": [
+    {
+     "id": "QC-B01",
+     "type": "multi",
+     "label": "What should the customer receive?",
+     "affects": [
+      "outputs",
+      "acceptance"
+     ],
+     "summary": "Customers receive {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "pdf",
+       "label": "a PDF quote"
+      },
+      {
+       "id": "email",
+       "label": "an email"
+      },
+      {
+       "id": "accept",
+       "label": "a link to accept online"
+      },
+      {
+       "id": "deposit",
+       "label": "a deposit payment link"
+      },
+      {
+       "id": "crm",
+       "label": "a record in your CRM",
+       "implies": [
+        {
+         "category": "connect",
+         "reason": "Data has to move between systems."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "QC-B02",
+     "type": "text",
+     "label": "How long is a quote valid?",
+     "affects": [
+      "rules"
+     ],
+     "summary": "Quotes are valid for {value}."
+    },
+    {
+     "id": "QC-B03",
+     "type": "multi",
+     "label": "What follow-up should happen?",
+     "affects": [
+      "outputs",
+      "production"
+     ],
+     "summary": "Follow-up: {value}.",
+     "options": [
+      {
+       "id": "remind",
+       "label": "reminders to the customer"
+      },
+      {
+       "id": "alert",
+       "label": "alerts to your team"
+      },
+      {
+       "id": "expire",
+       "label": "expiry notices"
+      },
+      {
+       "id": "none",
+       "label": "none",
+       "exclusive": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Z",
+   "title": "Scope",
+   "intro": "What the first prototype proves.",
+   "questions": [
+    {
+     "id": "QC-Z01",
+     "type": "textarea",
+     "label": "What must the first working prototype prove?",
+     "affects": [
+      "prototype",
+      "acceptance"
+     ],
+     "summary": "The prototype must prove: {value}",
+     "required": true,
+     "recommend": "A correct quote for your three most common jobs, produced in under a minute."
+    },
+    {
+     "id": "QC-Z02",
+     "type": "text",
+     "label": "Is there a date driving this?",
+     "affects": [
+      "prototype",
+      "production"
+     ],
+     "summary": "Driven by: {value}.",
+     "hint": "A launch, season, trade show or compliance deadline."
+    }
+   ]
+  }
+ ]
+}

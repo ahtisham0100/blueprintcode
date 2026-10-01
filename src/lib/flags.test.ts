@@ -1,5 +1,5 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
-import { isBlogPublic, isCmsPublic } from './flags';
+import { isBlogPublic, isBuilderPublic, isCmsPublic } from './flags';
 
 describe('isCmsPublic', () => {
   afterEach(() => vi.unstubAllEnvs());
@@ -39,6 +39,24 @@ describe('isBlogPublic', () => {
     for (const v of ['on', 'TRUE', '1']) {
       vi.stubEnv('BLOG_PUBLIC', v);
       expect(isBlogPublic()).toBe(true);
+    }
+  });
+});
+
+describe('isBuilderPublic', () => {
+  afterEach(() => vi.unstubAllEnvs());
+
+  it('is off by default and independent of the other switches', () => {
+    vi.stubEnv('BUILDER_PUBLIC', '');
+    vi.stubEnv('CMS_PUBLIC', 'on');
+    vi.stubEnv('BLOG_PUBLIC', 'on');
+    expect(isBuilderPublic()).toBe(false);
+  });
+
+  it('turns on with on / true / 1', () => {
+    for (const v of ['on', 'true', '1']) {
+      vi.stubEnv('BUILDER_PUBLIC', v);
+      expect(isBuilderPublic()).toBe(true);
     }
   });
 });

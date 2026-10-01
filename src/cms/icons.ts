@@ -21,6 +21,8 @@ export const ICONS = {
   globe: '<circle cx="12" cy="12" r="9"/><path d="M3 12h18"/><path d="M12 3c2.4 2.5 3.6 5.5 3.6 9s-1.2 6.5-3.6 9c-2.4-2.5-3.6-5.5-3.6-9S9.6 5.5 12 3z"/>',
   clock: '<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 3"/>',
   pulse: '<path d="M3 12h4l2-5 4 10 2-5h6"/>',
+  // Blueprint Builder: a drawing sheet with its title block
+  builder: '<rect x="3" y="3" width="18" height="18"/><path d="M3 15h18"/><path d="M12 15v6"/><path d="M7 7h6"/><path d="M7 10h10"/>',
 } as const;
 
 export type IconName = keyof typeof ICONS;

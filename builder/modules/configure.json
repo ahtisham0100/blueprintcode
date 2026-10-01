@@ -1,0 +1,334 @@
+{
+ "module": {
+  "id": "configure",
+  "name": "Configure & Visualise",
+  "schema": "bpc.discovery/1",
+  "depth": "intake",
+  "intro": "A short guided intake. We'll go deeper at the scoping call. If you're not sure, choose I don't know or Ask BPC to advise."
+ },
+ "documents": [
+  {
+   "id": "purpose",
+   "title": "Tool Purpose and Users"
+  },
+  {
+   "id": "journey",
+   "title": "Tool Journey and States"
+  },
+  {
+   "id": "inputs",
+   "title": "Inputs and Data Requirements"
+  },
+  {
+   "id": "rules",
+   "title": "Business Rules and Priorities"
+  },
+  {
+   "id": "outputs",
+   "title": "Outputs, Recommendations and Calls to Action"
+  },
+  {
+   "id": "admin",
+   "title": "Admin Editing Requirements"
+  },
+  {
+   "id": "exceptions",
+   "title": "Exceptions and Fallbacks"
+  },
+  {
+   "id": "prototype",
+   "title": "Prototype Scope"
+  },
+  {
+   "id": "production",
+   "title": "Production Scope"
+  },
+  {
+   "id": "acceptance",
+   "title": "Acceptance Tests"
+  }
+ ],
+ "rule_templates": {},
+ "sections": [
+  {
+   "id": "A",
+   "title": "Purpose and product",
+   "intro": "What customers configure and why.",
+   "questions": [
+    {
+     "id": "CV-A01",
+     "type": "multi",
+     "label": "Who will use it?",
+     "affects": [
+      "purpose",
+      "journey"
+     ],
+     "summary": "Used by {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "shoppers",
+       "label": "customers shopping online"
+      },
+      {
+       "id": "staff",
+       "label": "sales staff, in store or on calls"
+      },
+      {
+       "id": "trade",
+       "label": "trade customers or dealers"
+      },
+      {
+       "id": "admin",
+       "label": "your own admin team"
+      },
+      {
+       "id": "other",
+       "label": "someone else",
+       "other": true
+      }
+     ]
+    },
+    {
+     "id": "CV-A02",
+     "type": "textarea",
+     "label": "What will customers configure?",
+     "affects": [
+      "purpose",
+      "inputs"
+     ],
+     "summary": "Customers configure: {value}",
+     "required": true,
+     "hint": "For example: a media cabinet in three widths, with a choice of finishes and handles."
+    },
+    {
+     "id": "CV-A03",
+     "type": "multi",
+     "label": "Which things can they change?",
+     "affects": [
+      "inputs",
+      "rules"
+     ],
+     "summary": "They can change {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "size",
+       "label": "size or dimensions",
+       "implies": [
+        {
+         "category": "plan",
+         "reason": "Something has to be worked out from the customer's measurements."
+        }
+       ]
+      },
+      {
+       "id": "materials",
+       "label": "materials or finishes"
+      },
+      {
+       "id": "colours",
+       "label": "colours"
+      },
+      {
+       "id": "components",
+       "label": "components or modules"
+      },
+      {
+       "id": "addons",
+       "label": "add-ons and accessories"
+      },
+      {
+       "id": "personal",
+       "label": "text, logos or engraving"
+      },
+      {
+       "id": "layout",
+       "label": "layout or arrangement"
+      }
+     ]
+    },
+    {
+     "id": "CV-A04",
+     "type": "single",
+     "label": "Do some choices rule out others?",
+     "affects": [
+      "rules",
+      "exceptions"
+     ],
+     "summary": "Incompatible choices: {value}.",
+     "options": [
+      {
+       "id": "yes",
+       "label": "yes, some combinations can't be made"
+      },
+      {
+       "id": "no",
+       "label": "no, everything works together"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "title": "Visuals, pricing and finish",
+   "intro": "How it looks and what happens at the end.",
+   "questions": [
+    {
+     "id": "CV-B01",
+     "type": "single",
+     "label": "How should the product be shown?",
+     "affects": [
+      "outputs",
+      "production"
+     ],
+     "summary": "Shown as {value}.",
+     "recommend": "Start with photos or renders per choice; move to real-time 3D if the range justifies it.",
+     "options": [
+      {
+       "id": "3d",
+       "label": "real-time 3D the customer can rotate"
+      },
+      {
+       "id": "renders",
+       "label": "photo-real images that change with each choice"
+      },
+      {
+       "id": "2d",
+       "label": "a layered 2D illustration"
+      }
+     ]
+    },
+    {
+     "id": "CV-B02",
+     "type": "single",
+     "label": "Do 3D models of the product exist?",
+     "affects": [
+      "inputs",
+      "production"
+     ],
+     "summary": "3D models: {value}.",
+     "options": [
+      {
+       "id": "mesh",
+       "label": "yes, as 3D files"
+      },
+      {
+       "id": "cad",
+       "label": "yes, as CAD files"
+      },
+      {
+       "id": "photos",
+       "label": "no, photos only"
+      },
+      {
+       "id": "none",
+       "label": "no, nothing yet"
+      }
+     ]
+    },
+    {
+     "id": "CV-B03",
+     "type": "single",
+     "label": "How should pricing work?",
+     "affects": [
+      "rules",
+      "outputs"
+     ],
+     "summary": "Pricing: {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "live",
+       "label": "the price updates as they choose"
+      },
+      {
+       "id": "end",
+       "label": "the price shows at the end"
+      },
+      {
+       "id": "quote",
+       "label": "no prices; they request a quote",
+       "implies": [
+        {
+         "category": "quote",
+         "reason": "The result has to become a quote."
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "CV-B04",
+     "type": "multi",
+     "label": "What happens when they finish?",
+     "affects": [
+      "outputs",
+      "acceptance"
+     ],
+     "summary": "When finished: {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "cart",
+       "label": "add to basket"
+      },
+      {
+       "id": "quote",
+       "label": "request a quote",
+       "implies": [
+        {
+         "category": "quote",
+         "reason": "The result has to become a quote."
+        }
+       ]
+      },
+      {
+       "id": "share",
+       "label": "save and share a link"
+      },
+      {
+       "id": "pdf",
+       "label": "download a spec sheet"
+      },
+      {
+       "id": "ar",
+       "label": "see it in their room (AR)"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Z",
+   "title": "Scope",
+   "intro": "What the first prototype proves.",
+   "questions": [
+    {
+     "id": "CV-Z01",
+     "type": "textarea",
+     "label": "What must the first working prototype prove?",
+     "affects": [
+      "prototype",
+      "acceptance"
+     ],
+     "summary": "The prototype must prove: {value}",
+     "required": true,
+     "recommend": "Every option, rule and price for one product, with supplied photos or an illustration."
+    },
+    {
+     "id": "CV-Z02",
+     "type": "text",
+     "label": "Is there a date driving this?",
+     "affects": [
+      "prototype",
+      "production"
+     ],
+     "summary": "Driven by: {value}.",
+     "hint": "A launch, season, trade show or compliance deadline."
+    }
+   ]
+  }
+ ]
+}

@@ -8,6 +8,7 @@ import type { ReactNode } from 'react';
 import { isBlogPublic, isCmsPublic } from '@/lib/flags';
 import type { IconName } from '../icons';
 import { CMS_ROUTES, publicSiteOrigin } from '../settings';
+import { BuilderPanel, loadBuilderSummary } from './BuilderPanel';
 import { Glyph } from './Glyph';
 
 type MediaDoc = { id: number | string; alt?: string | null; filename?: string | null; thumbnailURL?: string | null; mimeType?: string | null; updatedAt: string };
@@ -75,13 +76,14 @@ export async function Dashboard(props: ServerProps) {
   const count = (collection: 'demos' | 'posts', status: 'draft' | 'published') =>
     payload.count({ collection, where: { _status: { equals: status } }, overrideAccess: true });
 
-  const [postsPublished, postsDraft, scheduled, media, demosPublished, demosDraft] = await Promise.all([
+  const [postsPublished, postsDraft, scheduled, media, demosPublished, demosDraft, builder] = await Promise.all([
     count('posts', 'published'),
     count('posts', 'draft'),
     payload.count({ collection: 'payload-jobs', where: { and: [{ taskSlug: { equals: 'schedulePublish' } }, { completedAt: { exists: false } }, { 'input.doc.relationTo': { equals: 'posts' } }] }, overrideAccess: true }).catch(() => ({ totalDocs: 0 })),
     payload.find({ collection: 'media', limit: 6, sort: '-updatedAt', depth: 0, overrideAccess: true }),
     isAdmin ? count('demos', 'published') : null,
     isAdmin ? count('demos', 'draft') : null,
+    isAdmin ? loadBuilderSummary() : null,
   ]);
 
   return (
@@ -133,6 +135,8 @@ export async function Dashboard(props: ServerProps) {
             />
           </div>
         )}
+
+        {builder && <BuilderPanel data={builder} />}
 
         <div className="bpc-dash__panel">
           <PanelLabel icon="media" href={`${admin}/collections/media`}>

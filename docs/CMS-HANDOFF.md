@@ -37,6 +37,7 @@ Locally (one dev server, port 5000): **`http://localhost:5000` is the ADMIN host
 | **6** | Leads + replies inbox (Resend inbound on `reply.blueprintcode.ai`) | **next** |
 | 7 | Email campaigns (Resend Broadcasts) | later |
 | 8 | Ops: backups (pg_dump, R2→B2), Neon branch previews, audit log, rate limits | later |
+| B | Blueprint Builder on the site: `/builder`, client accounts, send to BPC, BPC review from the CMS (§10) | done locally, **behind `BUILDER_PUBLIC`**; not deployed |
 | — | Switch-over: import demos to prod, `CMS_PUBLIC=on`, 301 `/admin`, retire static files + old uploader; wire `/prototypes` to `gallery.show` | later, user decides |
 
 ## 3. Repo map (what matters)
@@ -188,3 +189,61 @@ with `BLOG_PUBLIC` unset every blog URL is 404 and the rest of the site is uncha
 Not specified in detail yet. Scope from §2: Resend inbound on `reply.blueprintcode.ai`, leads from the contact form visible and answerable in the CMS
 (today they live in `public.leads`, shown by the old `/admin/leads`). Follow §4: tests first, a reviewed migration, admin-only access unless the user
 says otherwise, nothing public changes without a flag.
+
+## 10. Blueprint Builder (client discovery app) — added 2026-09-30
+
+The client-facing discovery and specification tool (source in `builder/`, its own README and DEV_NOTES)
+is served by the site at **`/builder` on the public host**, with its server in `src/builder/`. Everything
+is behind **`BUILDER_PUBLIC`** (off → `/builder*` and `/api/builder/*` are 404).
+
+**Who signs in how.** Clients: email link only (`/api/builder/auth/request` → `/builder/sign-in?token=` →
+button POSTs to `/api/builder/auth/verify` → `bpcb-client` cookie, 14 days). Staff: unchanged Google CMS login;
+they review a client project through `/api/cms/builder-review/<id>` (Payload endpoint, admins only) → 5-minute
+signed link → `/builder/review` → `bpcb-review` cookie for that ONE project, 4 hours. All builder tokens are
+signed with `BUILDER_SECRET` (never `PAYLOAD_SECRET`) and have their own audiences; none is valid in the CMS.
+Client accounts live only in `builder.clients`, never in `cms.users`.
+
+**Files.**
+```
+builder/                         the app (engines, UI, modules); build.mjs → builder/dist/ (gitignored; predev/prebuild)
+src/builder/settings.ts          paths, cookie names, TTLs, limits, builderSecret()
+src/builder/auth/                session.ts (client/review/review-link JWTs + cookies), loginToken.ts (random token, sha256, email check)
+src/builder/engines.ts           imports builder/engine/*.js + modules; readProject() validates, blueprintMarkdown(), projectHandover()
+src/builder/merge.ts             who may change what: client vs BPC parts of a saved project
+src/builder/api.ts               /api/builder/* handlers (deps injected); pages.ts: /builder, /builder/sign-in, /builder/review
+src/builder/store.ts             BuilderStore interface + Neon implementation; testing.ts = in-memory store + recording mailer
+src/builder/mail.ts              sign-in, submission (to BPC, with .md + handover .json) and client-copy emails; Resend over fetch
+src/builder/deps.ts              real wiring (env, Neon, Resend, built page)
+src/app/(site)/builder/[[...path]]/route.ts, src/app/(site)/api/builder/[...path]/route.ts   thin routes, flag-gated
+src/cms/builder/review.ts        the CMS → public-site review hand-off endpoint
+src/cms/components/BuilderPanel.tsx   dashboard panel (admins): counts + recent projects with review links
+src/cms/migrations/20260930_120000_add_builder.ts   hand-written SQL: schema builder (clients, login_tokens, projects, submissions, rate_limits)
+```
+
+**Safety rules the code enforces (tests in `src/builder/*.test.ts`).** Every non-GET request must carry the
+site's own `Origin`; JSON endpoints need `application/json`; bodies are size-capped (project 2.5 MB). Clients
+only ever see their own projects (anything else is a 404). Sign-in requests: 5/hour per address, 20/hour per
+IP, same answer whether or not the address has an account; tokens single-use, 15 minutes, stored hashed.
+The server re-reads every saved project with the engines and applies `mergeForRole`, so a client can't forge
+BPC approvals, clarifications or comments, and a reviewer can't change the client's work. What is sent to BPC
+is generated on the server from the stored project. `/builder` is served with a CSP whose `connect-src 'self'`
+stops the page talking to any other host. Deleting an account deletes its projects and submissions.
+
+**Env.** `BUILDER_PUBLIC`, `BUILDER_SECRET` (32+ chars), `BUILDER_FROM` (falls back to `LEADS_FROM`),
+`BUILDER_NOTIFY_TO` (falls back to `LEADS_NOTIFY_TO`, then hello@). Emails need `RESEND_API_KEY` and a verified
+sending domain; without a key, local dev prints the sign-in link in the dev server log and sending reports "not
+emailed". Locally `.env.local` has `BUILDER_PUBLIC=on` and a generated `BUILDER_SECRET`.
+
+**Verified locally (2026-09-30)** in the browser pane against the dev branch: sign-in by link → save the device
+project to the account → edit syncs (rev bumps) → send (stored; "not emailed" without Resend) → CMS dashboard
+lists it → review link from the CMS → reviewer comment saved as BPC → as the client, a forged BPC comment and
+approval are stripped; wrong Origin → 403; text/plain → 415; `/builder` on the admin host → 301 to the public
+site. Dev branch holds one test client (client.test@example.com) and project BP-K2GBK98P2D; safe to delete.
+
+**To launch (the user decides):** set `BUILDER_SECRET`, `BUILDER_FROM` (verified domain), `RESEND_API_KEY` and
+`BUILDER_PUBLIC=on` in Vercel; deploy (prebuild applies `add_builder` to production); then link `/builder`
+from the site (header/contact page) when ready.
+
+**Not done yet:** a CMS screen per submission (today the email has both files and the dashboard links to the
+review), version history beyond submission snapshots, linking submissions into the Phase 6 leads inbox.
+

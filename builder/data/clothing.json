@@ -1,0 +1,1146 @@
+{
+ "name": "Sample clothing catalogue",
+ "sample": true,
+ "fields": [
+  {
+   "id": "sku",
+   "label": "SKU",
+   "type": "text"
+  },
+  {
+   "id": "name",
+   "label": "Name",
+   "type": "text"
+  },
+  {
+   "id": "category",
+   "label": "Category",
+   "type": "enum",
+   "parse_priority": 1,
+   "synonyms": {
+    "shirt": [
+     "shirts",
+     "overshirt",
+     "overshirts",
+     "top",
+     "tops"
+    ],
+    "trousers": [
+     "trouser",
+     "pants",
+     "chinos",
+     "chino",
+     "jeans"
+    ],
+    "shorts": [
+     "short"
+    ],
+    "jacket": [
+     "jackets",
+     "blazer",
+     "blazers",
+     "coat",
+     "coats",
+     "overcoat"
+    ]
+   },
+   "phrase_order": 3
+  },
+  {
+   "id": "colour",
+   "label": "Colour",
+   "type": "enum",
+   "parse_priority": 2,
+   "synonyms": {
+    "green": [
+     "olive",
+     "sage"
+    ],
+    "beige": [
+     "sand",
+     "stone",
+     "tan"
+    ]
+   },
+   "phrase_order": 1
+  },
+  {
+   "id": "material",
+   "label": "Material",
+   "type": "enum",
+   "parse_priority": 3,
+   "synonyms": {
+    "wool": [
+     "woollen"
+    ]
+   },
+   "phrase_order": 2
+  },
+  {
+   "id": "sizes",
+   "label": "Sizes",
+   "type": "list",
+   "parse_priority": 4,
+   "phrase_order": 0,
+   "parse_prefix": [
+    "size",
+    "sizes"
+   ]
+  },
+  {
+   "id": "price",
+   "label": "Price",
+   "type": "number",
+   "unit": "\u00a3",
+   "price": true
+  },
+  {
+   "id": "stock",
+   "label": "Stock",
+   "type": "number"
+  },
+  {
+   "id": "lead_time_days",
+   "label": "Lead time (days)",
+   "type": "number"
+  },
+  {
+   "id": "regions",
+   "label": "Ships to",
+   "type": "list"
+  }
+ ],
+ "context": [
+  {
+   "id": "region",
+   "label": "Customer region",
+   "type": "enum",
+   "values": [
+    "UK",
+    "EU",
+    "US"
+   ],
+   "default": "UK"
+  },
+  {
+   "id": "customer_type",
+   "label": "Customer type",
+   "type": "enum",
+   "values": [
+    "retail",
+    "trade"
+   ],
+   "default": "retail"
+  },
+  {
+   "id": "quantity",
+   "label": "Quantity",
+   "type": "number",
+   "default": 1
+  }
+ ],
+ "items": [
+  {
+   "sku": "CL-001",
+   "name": "Riviera linen shirt",
+   "category": "shirt",
+   "colour": "blue",
+   "material": "linen",
+   "sizes": [
+    "S",
+    "M",
+    "L"
+   ],
+   "price": 58,
+   "stock": 24,
+   "lead_time_days": 5,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-002",
+   "name": "Harbour linen overshirt",
+   "category": "shirt",
+   "colour": "blue",
+   "material": "linen",
+   "sizes": [
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 72,
+   "stock": 0,
+   "lead_time_days": 45,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-003",
+   "name": "Olive grove linen shirt",
+   "category": "shirt",
+   "colour": "green",
+   "material": "linen",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 58,
+   "stock": 14,
+   "lead_time_days": 5,
+   "regions": [
+    "UK",
+    "EU"
+   ]
+  },
+  {
+   "sku": "CL-004",
+   "name": "Sage linen camp shirt",
+   "category": "shirt",
+   "colour": "green",
+   "material": "linen",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 64,
+   "stock": 6,
+   "lead_time_days": 7,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-005",
+   "name": "Chalk linen shirt",
+   "category": "shirt",
+   "colour": "white",
+   "material": "linen",
+   "sizes": [
+    "S",
+    "M",
+    "L"
+   ],
+   "price": 55,
+   "stock": 30,
+   "lead_time_days": 5,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-006",
+   "name": "Sand linen shirt",
+   "category": "shirt",
+   "colour": "beige",
+   "material": "linen",
+   "sizes": [
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 55,
+   "stock": 12,
+   "lead_time_days": 5,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-007",
+   "name": "Oxford cotton shirt",
+   "category": "shirt",
+   "colour": "blue",
+   "material": "cotton",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 45,
+   "stock": 40,
+   "lead_time_days": 3,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-008",
+   "name": "Poplin cotton shirt",
+   "category": "shirt",
+   "colour": "white",
+   "material": "cotton",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 39,
+   "stock": 55,
+   "lead_time_days": 3,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-009",
+   "name": "Twill cotton shirt",
+   "category": "shirt",
+   "colour": "white",
+   "material": "cotton",
+   "sizes": [
+    "S",
+    "M",
+    "L"
+   ],
+   "price": 42,
+   "stock": 0,
+   "lead_time_days": 21,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-010",
+   "name": "Forest cotton shirt",
+   "category": "shirt",
+   "colour": "green",
+   "material": "cotton",
+   "sizes": [
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 45,
+   "stock": 18,
+   "lead_time_days": 3,
+   "regions": [
+    "UK",
+    "EU"
+   ]
+  },
+  {
+   "sku": "CL-011",
+   "name": "Midnight cotton shirt",
+   "category": "shirt",
+   "colour": "black",
+   "material": "cotton",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 45,
+   "stock": 22,
+   "lead_time_days": 3,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-012",
+   "name": "Western denim shirt",
+   "category": "shirt",
+   "colour": "blue",
+   "material": "denim",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 68,
+   "stock": 9,
+   "lead_time_days": 10,
+   "regions": [
+    "UK",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-013",
+   "name": "Coastal linen trousers",
+   "category": "trousers",
+   "colour": "blue",
+   "material": "linen",
+   "sizes": [
+    "S",
+    "M",
+    "L"
+   ],
+   "price": 79,
+   "stock": 16,
+   "lead_time_days": 5,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-014",
+   "name": "Drawstring linen trousers",
+   "category": "trousers",
+   "colour": "blue",
+   "material": "linen",
+   "sizes": [
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 69,
+   "stock": 0,
+   "lead_time_days": 14,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-015",
+   "name": "Dune linen trousers",
+   "category": "trousers",
+   "colour": "beige",
+   "material": "linen",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 75,
+   "stock": 11,
+   "lead_time_days": 5,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-016",
+   "name": "Salt linen trousers",
+   "category": "trousers",
+   "colour": "white",
+   "material": "linen",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 75,
+   "stock": 7,
+   "lead_time_days": 5,
+   "regions": [
+    "UK",
+    "EU"
+   ]
+  },
+  {
+   "sku": "CL-017",
+   "name": "Navy cotton chinos",
+   "category": "trousers",
+   "colour": "navy",
+   "material": "cotton",
+   "sizes": [
+    "S",
+    "M",
+    "L"
+   ],
+   "price": 59,
+   "stock": 26,
+   "lead_time_days": 3,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-018",
+   "name": "Moss cotton chinos",
+   "category": "trousers",
+   "colour": "green",
+   "material": "cotton",
+   "sizes": [
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 59,
+   "stock": 13,
+   "lead_time_days": 3,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-019",
+   "name": "Stone cotton chinos",
+   "category": "trousers",
+   "colour": "beige",
+   "material": "cotton",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 55,
+   "stock": 31,
+   "lead_time_days": 3,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-020",
+   "name": "Charcoal wool trousers",
+   "category": "trousers",
+   "colour": "black",
+   "material": "wool",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 129,
+   "stock": 8,
+   "lead_time_days": 10,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-021",
+   "name": "Navy wool trousers",
+   "category": "trousers",
+   "colour": "navy",
+   "material": "wool",
+   "sizes": [
+    "S",
+    "M",
+    "L"
+   ],
+   "price": 135,
+   "stock": 5,
+   "lead_time_days": 10,
+   "regions": [
+    "UK",
+    "EU"
+   ]
+  },
+  {
+   "sku": "CL-022",
+   "name": "Straight denim jeans",
+   "category": "trousers",
+   "colour": "blue",
+   "material": "denim",
+   "sizes": [
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 85,
+   "stock": 34,
+   "lead_time_days": 5,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-023",
+   "name": "Tapered denim jeans",
+   "category": "trousers",
+   "colour": "blue",
+   "material": "denim",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 89,
+   "stock": 0,
+   "lead_time_days": 40,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-024",
+   "name": "Lagoon linen shorts",
+   "category": "shorts",
+   "colour": "blue",
+   "material": "linen",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 45,
+   "stock": 19,
+   "lead_time_days": 5,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-025",
+   "name": "Fern linen shorts",
+   "category": "shorts",
+   "colour": "green",
+   "material": "linen",
+   "sizes": [
+    "S",
+    "M",
+    "L"
+   ],
+   "price": 45,
+   "stock": 10,
+   "lead_time_days": 5,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-026",
+   "name": "Sand cotton shorts",
+   "category": "shorts",
+   "colour": "beige",
+   "material": "cotton",
+   "sizes": [
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 35,
+   "stock": 40,
+   "lead_time_days": 3,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-027",
+   "name": "Denim cut-offs",
+   "category": "shorts",
+   "colour": "blue",
+   "material": "denim",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 49,
+   "stock": 15,
+   "lead_time_days": 5,
+   "regions": [
+    "UK",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-028",
+   "name": "Dune linen blazer",
+   "category": "jacket",
+   "colour": "beige",
+   "material": "linen",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 165,
+   "stock": 6,
+   "lead_time_days": 14,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-029",
+   "name": "Navy wool blazer",
+   "category": "jacket",
+   "colour": "navy",
+   "material": "wool",
+   "sizes": [
+    "S",
+    "M",
+    "L"
+   ],
+   "price": 229,
+   "stock": 4,
+   "lead_time_days": 21,
+   "regions": [
+    "UK",
+    "EU"
+   ]
+  },
+  {
+   "sku": "CL-030",
+   "name": "Bottle wool overcoat",
+   "category": "jacket",
+   "colour": "green",
+   "material": "wool",
+   "sizes": [
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 289,
+   "stock": 3,
+   "lead_time_days": 30,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-031",
+   "name": "Trucker denim jacket",
+   "category": "jacket",
+   "colour": "blue",
+   "material": "denim",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 95,
+   "stock": 12,
+   "lead_time_days": 7,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  },
+  {
+   "sku": "CL-032",
+   "name": "Black cotton field jacket",
+   "category": "jacket",
+   "colour": "black",
+   "material": "cotton",
+   "sizes": [
+    "S",
+    "M",
+    "L",
+    "XL"
+   ],
+   "price": 119,
+   "stock": 9,
+   "lead_time_days": 7,
+   "regions": [
+    "UK",
+    "EU",
+    "US"
+   ]
+  }
+ ],
+ "rules": [
+  {
+   "id": "R-001",
+   "name": "Don't offer slow out-of-stock items",
+   "type": "eligibility",
+   "priority": 10,
+   "hard": true,
+   "status": "active",
+   "source": "client",
+   "owner": "Operations",
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "item",
+      "field": "stock",
+      "op": "eq",
+      "value": 0
+     },
+     {
+      "scope": "item",
+      "field": "lead_time_days",
+      "op": "gt",
+      "value": 30
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "exclude",
+     "message": "Out of stock with a lead time over 30 days"
+    }
+   ],
+   "because": "We don't sell items we can't deliver within a month."
+  },
+  {
+   "id": "R-002",
+   "name": "Only show items that ship to the customer",
+   "type": "eligibility",
+   "priority": 20,
+   "hard": true,
+   "status": "active",
+   "source": "client",
+   "owner": "Operations",
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "item",
+      "field": "regions",
+      "op": "not_contains",
+      "value": {
+       "ref": "request.region"
+      }
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "exclude",
+     "message": "Doesn't ship to {request.region}"
+    }
+   ],
+   "because": "Carriers and duties are only set up for these regions."
+  },
+  {
+   "id": "R-003",
+   "name": "Promote well-stocked linen",
+   "type": "recommendation",
+   "priority": 30,
+   "hard": false,
+   "status": "active",
+   "source": "client",
+   "owner": "Merchandising",
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "item",
+      "field": "material",
+      "op": "is",
+      "value": "linen"
+     },
+     {
+      "scope": "item",
+      "field": "stock",
+      "op": "gte",
+      "value": 10
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "boost",
+     "amount": 20
+    }
+   ],
+   "because": "Summer range; we want to move the linen stock."
+  },
+  {
+   "id": "R-004",
+   "name": "Trade volume discount",
+   "type": "price",
+   "priority": 40,
+   "hard": false,
+   "status": "active",
+   "source": "client",
+   "owner": "Sales",
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "request",
+      "field": "quantity",
+      "op": "gte",
+      "value": 10
+     },
+     {
+      "scope": "request",
+      "field": "customer_type",
+      "op": "is",
+      "value": "trade"
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "adjust_price",
+     "mode": "percent",
+     "amount": -10,
+     "round": "1"
+    },
+    {
+     "action": "message",
+     "text": "Trade price for 10+ units"
+    }
+   ],
+   "because": "Standard trade terms."
+  },
+  {
+   "id": "R-005",
+   "name": "Large orders need approval",
+   "type": "approval",
+   "priority": 50,
+   "hard": true,
+   "status": "active",
+   "source": "client",
+   "owner": "Sales",
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "request",
+      "field": "quantity",
+      "op": "gte",
+      "value": 50
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "require_approval",
+     "message": "Orders of 50 or more are confirmed by our trade team."
+    }
+   ],
+   "because": "Stock has to be reserved with the supplier."
+  },
+  {
+   "id": "R-006",
+   "name": "Tailoring is quote-only for trade",
+   "type": "price",
+   "priority": 60,
+   "hard": false,
+   "status": "active",
+   "source": "client",
+   "owner": "Sales",
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "item",
+      "field": "price",
+      "op": "gte",
+      "value": 150
+     },
+     {
+      "scope": "request",
+      "field": "customer_type",
+      "op": "is",
+      "value": "trade"
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "quote_only",
+     "message": "Trade pricing on request"
+    }
+   ],
+   "because": "Tailoring margins are negotiated per account."
+  },
+  {
+   "id": "R-007",
+   "name": "Made-to-order delivery estimate",
+   "type": "calculation",
+   "priority": 70,
+   "hard": false,
+   "status": "active",
+   "source": "client",
+   "owner": "Operations",
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "item",
+      "field": "stock",
+      "op": "eq",
+      "value": 0
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "calculate",
+     "target": "delivery_days",
+     "expr": "lead_time_days + 3",
+     "round": "up"
+    },
+    {
+     "action": "message",
+     "text": "Made to order: ships in about {delivery_days} days"
+    }
+   ],
+   "because": "Customers need to know when it will arrive."
+  },
+  {
+   "id": "R-008",
+   "name": "Relax material when nothing matches",
+   "type": "fallback",
+   "priority": 80,
+   "hard": false,
+   "status": "active",
+   "source": "client",
+   "owner": "Merchandising",
+   "when": {
+    "op": "all",
+    "items": []
+   },
+   "then": [
+    {
+     "action": "relax",
+     "field": "material"
+    },
+    {
+     "action": "message",
+     "text": "No exact matches, so we're showing other materials."
+    }
+   ],
+   "because": "Better to show a close alternative than an empty page."
+  },
+  {
+   "id": "R-009",
+   "name": "Show out-of-stock items anyway",
+   "type": "eligibility",
+   "priority": 5,
+   "hard": false,
+   "status": "suggested",
+   "source": "ai",
+   "owner": "AI suggestion",
+   "when": {
+    "op": "all",
+    "items": [
+     {
+      "scope": "item",
+      "field": "stock",
+      "op": "eq",
+      "value": 0
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "include",
+     "message": "Shown for back-order"
+    }
+   ],
+   "because": "Could capture back-orders."
+  },
+  {
+   "id": "R-010",
+   "name": "Wool stays in the UK and EU",
+   "type": "stock",
+   "priority": 25,
+   "hard": false,
+   "status": "disabled",
+   "source": "bpc",
+   "owner": "BPC",
+   "when": {
+    "op": "any",
+    "items": [
+     {
+      "scope": "item",
+      "field": "material",
+      "op": "is",
+      "value": "wool"
+     },
+     {
+      "op": "all",
+      "items": [
+       {
+        "scope": "item",
+        "field": "category",
+        "op": "is",
+        "value": "jacket"
+       },
+       {
+        "scope": "item",
+        "field": "price",
+        "op": "gt",
+        "value": 200
+       }
+      ]
+     }
+    ]
+   },
+   "then": [
+    {
+     "action": "exclude",
+     "message": "Not stocked for this region"
+    }
+   ],
+   "because": "Example of a grouped condition, currently disabled."
+  }
+ ],
+ "sample_requests": [
+  "Show all blue and green linen shirts and trousers",
+  "Linen shirts under \u00a360, not white",
+  "Green linen trousers",
+  "Wool jackets in stock",
+  "Denim between \u00a350 and \u00a390"
+ ],
+ "phrases": {
+  "in stock": {
+   "field": "stock",
+   "op": "gt",
+   "value": 0
+  },
+  "available now": {
+   "field": "stock",
+   "op": "gt",
+   "value": 0
+  }
+ }
+}

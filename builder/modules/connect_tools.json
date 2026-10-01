@@ -1,0 +1,347 @@
+{
+ "module": {
+  "id": "connect_tools",
+  "name": "Connecting Tools",
+  "schema": "bpc.discovery/1",
+  "depth": "full",
+  "intro": "These questions cover the journey as a whole. The map, what passes between tools and who owns each decision are set in the journey editor."
+ },
+ "documents": [
+  {
+   "id": "connections",
+   "title": "Tool Map and Connections"
+  }
+ ],
+ "rule_templates": {},
+ "sections": [
+  {
+   "id": "A",
+   "title": "Moving between tools",
+   "intro": "Order, progress and shared records.",
+   "questions": [
+    {
+     "id": "CX-A01",
+     "type": "single",
+     "label": "Can someone start with any of the tools?",
+     "affects": [
+      "connections"
+     ],
+     "summary": "Starting point: {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "any",
+       "label": "any tool"
+      },
+      {
+       "id": "first",
+       "label": "only the first tool"
+      },
+      {
+       "id": "some",
+       "label": "some tools, not all"
+      }
+     ]
+    },
+    {
+     "id": "CX-A02",
+     "type": "single",
+     "label": "Can they move back and forth without losing their work?",
+     "affects": [
+      "connections"
+     ],
+     "summary": "Moving back and forth: {value}.",
+     "required": true,
+     "recommend": "Yes, keeping everything; later results update when an earlier answer changes.",
+     "options": [
+      {
+       "id": "keep",
+       "label": "yes, everything is kept"
+      },
+      {
+       "id": "reset",
+       "label": "yes, but later results reset"
+      },
+      {
+       "id": "no",
+       "label": "no, it's one way"
+      }
+     ]
+    },
+    {
+     "id": "CX-A03",
+     "type": "single",
+     "label": "When an earlier answer changes, what should happen to later results?",
+     "affects": [
+      "connections"
+     ],
+     "summary": "When an earlier answer changes: {value}.",
+     "required": true,
+     "recommend": "Recalculate automatically and show the customer what changed.",
+     "options": [
+      {
+       "id": "show",
+       "label": "recalculate and show what changed"
+      },
+      {
+       "id": "silent",
+       "label": "recalculate quietly"
+      },
+      {
+       "id": "clear",
+       "label": "clear later results and ask again"
+      },
+      {
+       "id": "per",
+       "label": "it depends on the connection (set in the journey editor)"
+      }
+     ]
+    },
+    {
+     "id": "CX-A04",
+     "type": "multi",
+     "label": "What is shared across the tools?",
+     "affects": [
+      "connections"
+     ],
+     "summary": "Shared across tools: {value}.",
+     "options": [
+      {
+       "id": "project",
+       "label": "one saved project"
+      },
+      {
+       "id": "account",
+       "label": "a customer account"
+      },
+      {
+       "id": "basket",
+       "label": "one basket"
+      },
+      {
+       "id": "quote",
+       "label": "one quote",
+       "implies": [
+        {
+         "category": "quote",
+         "reason": "The result has to become a quote."
+        }
+       ]
+      },
+      {
+       "id": "none",
+       "label": "nothing; each tool stands alone",
+       "exclusive": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "B",
+   "title": "Conflicts and the finish",
+   "intro": "Disagreements, staff and where it all ends.",
+   "questions": [
+    {
+     "id": "CX-B01",
+     "type": "single",
+     "label": "When two tools produce choices that don't work together, what should happen?",
+     "affects": [
+      "connections"
+     ],
+     "summary": "Conflicts: {value}.",
+     "required": true,
+     "hint": "For example, the planner recommends a 120-inch screen but the chosen projector can't fill it.",
+     "recommend": "Explain the conflict and let the customer choose which to change.",
+     "options": [
+      {
+       "id": "earlier",
+       "label": "the earlier tool wins; later tools adapt"
+      },
+      {
+       "id": "later",
+       "label": "the later tool wins, with a warning"
+      },
+      {
+       "id": "ask",
+       "label": "explain it and let the customer choose"
+      },
+      {
+       "id": "staff",
+       "label": "pass it to staff"
+      }
+     ]
+    },
+    {
+     "id": "CX-B02",
+     "type": "single",
+     "label": "Can staff review or override a result?",
+     "affects": [
+      "connections"
+     ],
+     "summary": "Staff overrides: {value}.",
+     "options": [
+      {
+       "id": "recorded",
+       "label": "yes, and every override is recorded"
+      },
+      {
+       "id": "yes",
+       "label": "yes"
+      },
+      {
+       "id": "no",
+       "label": "no"
+      }
+     ]
+    },
+    {
+     "id": "CX-B03",
+     "type": "single",
+     "label": "Where does the combined journey end?",
+     "affects": [
+      "connections"
+     ],
+     "summary": "The journey ends with {value}.",
+     "required": true,
+     "options": [
+      {
+       "id": "plan",
+       "label": "a saved plan"
+      },
+      {
+       "id": "brief",
+       "label": "an emailed brief"
+      },
+      {
+       "id": "catalogue",
+       "label": "a curated catalogue"
+      },
+      {
+       "id": "quote",
+       "label": "a quote request",
+       "implies": [
+        {
+         "category": "quote",
+         "reason": "The result has to become a quote."
+        }
+       ]
+      },
+      {
+       "id": "basket",
+       "label": "a basket"
+      },
+      {
+       "id": "checkout",
+       "label": "checkout"
+      },
+      {
+       "id": "staff",
+       "label": "a handoff to staff"
+      },
+      {
+       "id": "appointment",
+       "label": "an appointment"
+      }
+     ]
+    },
+    {
+     "id": "CX-B04",
+     "type": "multi",
+     "label": "Which systems receive the combined result?",
+     "affects": [
+      "connections"
+     ],
+     "summary": "The result goes to {value}.",
+     "options": [
+      {
+       "id": "shop",
+       "label": "the online shop"
+      },
+      {
+       "id": "crm",
+       "label": "a CRM",
+       "implies": [
+        {
+         "category": "connect",
+         "reason": "Data has to move between systems."
+        }
+       ]
+      },
+      {
+       "id": "erp",
+       "label": "an ERP",
+       "implies": [
+        {
+         "category": "connect",
+         "reason": "Data has to move between systems."
+        }
+       ]
+      },
+      {
+       "id": "email",
+       "label": "email to your team"
+      },
+      {
+       "id": "none",
+       "label": "none",
+       "exclusive": true
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "Z",
+   "title": "Scope",
+   "intro": "What the first combined prototype proves.",
+   "questions": [
+    {
+     "id": "CX-Z01",
+     "type": "textarea",
+     "label": "What must a prototype of the combined journey prove?",
+     "affects": [
+      "connections"
+     ],
+     "summary": "The combined prototype must prove: {value}",
+     "required": true,
+     "recommend": "The whole journey on sample data, including one earlier change that recalculates everything after it."
+    }
+   ]
+  }
+ ],
+ "example": {
+  "answers": {
+   "CX-A01": {
+    "value": "some"
+   },
+   "CX-A02": {
+    "value": "keep"
+   },
+   "CX-A03": {
+    "value": "show"
+   },
+   "CX-A04": {
+    "value": [
+     "project",
+     "basket"
+    ]
+   },
+   "CX-B01": {
+    "status": "bpc_accepted"
+   },
+   "CX-B02": {
+    "value": "recorded"
+   },
+   "CX-B03": {
+    "value": "basket"
+   },
+   "CX-B04": {
+    "value": [
+     "shop",
+     "email"
+    ]
+   }
+  }
+ }
+}

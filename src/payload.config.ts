@@ -5,6 +5,7 @@ import { lexicalEditor } from '@payloadcms/richtext-lexical';
 import { buildConfig } from 'payload';
 import sharp from 'sharp';
 import { CMS_BRAND } from './cms/branding';
+import { builderReviewEndpoint } from './cms/builder/review';
 import { Authors } from './cms/collections/Authors';
 import { Categories } from './cms/collections/Categories';
 import { Demos } from './cms/collections/Demos';
@@ -56,6 +57,8 @@ export default buildConfig({
     },
   },
   collections: [Posts, Categories, Authors, Demos, Media, Redirects, Users],
+  // Opens a Blueprint Builder project for BPC review on the public site.
+  endpoints: [builderReviewEndpoint],
   plugins: [mediaStoragePlugin()],
   // Multipart limit for uploads that do pass through the server (client
   // uploads go straight to R2). Matches maxBytesFor() in media/keys.ts.

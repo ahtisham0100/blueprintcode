@@ -46,6 +46,8 @@ const nextConfig: NextConfig = {
   outputFileTracingIncludes: {
     "/[slug]": ["./public/partials/site-header.html", "./public/partials/site-footer.html"],
     "/demo-preview/[id]": ["./public/partials/site-header.html", "./public/partials/site-footer.html"],
+    // Blueprint Builder's one-page app, built by builder/build.mjs in prebuild.
+    "/builder/[[...path]]": ["./builder/dist/blueprint-builder.html"],
   },
 
   images: {

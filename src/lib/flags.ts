@@ -27,3 +27,13 @@ export function isCmsPublic(): boolean {
 export function isBlogPublic(): boolean {
   return flagOn('BLOG_PUBLIC');
 }
+
+/**
+ * BUILDER_PUBLIC gates Blueprint Builder on the public site: the app at
+ * /builder, its sign-in and review pages, and every /api/builder endpoint.
+ * Off (the default) means all of them are 404; the CMS dashboard panel still
+ * shows whatever projects exist.
+ */
+export function isBuilderPublic(): boolean {
+  return flagOn('BUILDER_PUBLIC');
+}

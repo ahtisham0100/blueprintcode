@@ -10,6 +10,7 @@ export const RESERVED_SLUGS = new Set([
   'assets',
   'blog',
   'blog-preview',
+  'builder',
   'capabilities',
   'cms',
   'configurators',
