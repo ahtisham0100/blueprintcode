@@ -313,7 +313,7 @@ export default function Home() {
         <section className="close" id="contact">
           <div className="sheet">
             <p className="section-no">07 / START A PROJECT</p>
-            <h2>What do customers or staff ask before they&apos;ll buy?</h2>
+            <h2>What do customers and staff ask before they understand?</h2>
             <p>Tell us that question, what you sell, and how the process works today. We&apos;ll tell you which tool answers it and what the first build would cost — usually a Prototype Sprint.</p>
             <div className="hero-actions">
               <a className="button solid" href="/contact">Discuss your project</a>
