@@ -161,6 +161,14 @@ export default function Home() {
           <div className="sheet">
             <div className="pp-frame">
               <i /><i /><i /><i />
+              <div className="pp-art" aria-hidden="true">
+                <Image
+                  src="/Blueprint%20Product%20Configurator%20Schematic.png"
+                  alt=""
+                  fill
+                  sizes="(max-width: 850px) 100vw, 70vw"
+                />
+              </div>
               <p className="pp-ref">DESIGN PRINCIPLE / 01</p>
               <h2 id="no-house-template">Every system should look native to the business it serves.</h2>
               <p className="pp-copy">We don&apos;t impose a house template. We design each visual language, customer journey and underlying tool around the product, the market and the commercial objective.</p>
@@ -313,7 +321,7 @@ export default function Home() {
         <section className="close" id="contact">
           <div className="sheet">
             <p className="section-no">07 / START A PROJECT</p>
-            <h2>What do customers and staff ask before they understand?</h2>
+            <h2>What do customers or staff need to ask before they can move forward?</h2>
             <p>Tell us that question, what you sell, and how the process works today. We&apos;ll tell you which tool answers it and what the first build would cost — usually a Prototype Sprint.</p>
             <div className="hero-actions">
               <a className="button solid" href="/contact">Discuss your project</a>

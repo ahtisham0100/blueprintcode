@@ -361,6 +361,11 @@
 .brc .pp-frame > i:nth-of-type(2) { top: -1px; right: -1px; border-top-width: 1px; border-right-width: 1px; }
 .brc .pp-frame > i:nth-of-type(3) { bottom: -1px; left: -1px; border-bottom-width: 1px; border-left-width: 1px; }
 .brc .pp-frame > i:nth-of-type(4) { bottom: -1px; right: -1px; border-bottom-width: 1px; border-right-width: 1px; }
+/* Configurator schematic overlaid on the right, faded into the frame on its
+   left edge so the statement keeps the clean ground to sit on. */
+.brc .pp-art { position: absolute; top: 0; right: 0; bottom: 0; width: 60%; pointer-events: none; -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 45%); mask-image: linear-gradient(to right, transparent 0%, #000 45%); }
+.brc .pp-art img { object-fit: cover; object-position: right center; }
+.brc .pp-frame > :not(i):not(.pp-art) { position: relative; z-index: 1; }
 .brc .pp-ref { font-family: var(--data); font-size: 11px; font-weight: 500; letter-spacing: .2em; color: var(--ink-3); display: flex; align-items: center; gap: 16px; max-width: 420px; }
 .brc .pp-ref::after { content: ''; height: 1px; background: var(--line); flex: 1; }
 .brc .pp-frame h2 { margin-top: 28px; font-size: clamp(44px, 7vw, 96px); line-height: .95; max-width: 17ch; text-transform: uppercase; text-wrap: balance; }
@@ -430,6 +435,7 @@
   .brc .project { grid-template-columns: 45px 1fr auto; }
   .brc .project p { grid-column: 2; }
   .brc .principles { grid-template-columns: 1fr; }
+  .brc .pp-art { width: 100%; opacity: .3; }
   .brc .hero { padding-top: 55px; }
   .brc .roll-track { padding: 22px 22px 0; }
   .brc .roll-stage { height: 850px; min-height: 0; }
