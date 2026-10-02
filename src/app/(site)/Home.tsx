@@ -42,10 +42,10 @@ export default function Home() {
                   <div className="hero-plate">
                     <i /><i /><i /><i />
                     <Image
-                      src="https://media.blueprintcode.ai/media/269cb9b4-0e0d-4679-911e-412d16c8bc8a/hero-homepage-27fd1048.png"
-                      alt="Blueprint comparison: on the left, the old road — phone calls, email threads, spreadsheets and PDFs looping back and forth around a configured product. On the right, the Blueprint Code road — one straight line from product configurator to AI recommendation, quote and order, and delivery."
-                      width={1619}
-                      height={971}
+                      src="/hero image updated.png"
+                      alt="Blueprint comparison: on the left, the old road — phone calls, emails, spreadsheets, PDFs, people and databases tangling their way into a manual process. On the right, the Blueprint Code road — one straight line from product configurator to AI recommendation, quote and order, and delivery."
+                      width={1536}
+                      height={1024}
                       sizes="(max-width: 850px) 92vw, (max-width: 1240px) 60vw, 840px"
                       loading="eager"
                       fetchPriority="high"
