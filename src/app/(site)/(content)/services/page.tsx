@@ -21,6 +21,13 @@ export const metadata: Metadata = {
 
 const SERVICES = [
   {
+    href: '/services/website-accessibility-audit',
+    label: 'ACCESSIBILITY',
+    name: 'Website accessibility audits',
+    rate: 'Free pre-check',
+    summary: 'A free automated WCAG 2.2 AA pre-check, then human review, a prioritised remediation blueprint, the fixes and a retest.',
+  },
+  {
     href: '/services/wcag-compliance-audit-pricing',
     label: 'ACCESSIBILITY & COMPLIANCE',
     name: 'WCAG compliance audits',
