@@ -595,7 +595,7 @@ export default function ContactForm() {
               </button>
               <button type="button" className="btn btn-quiet" id="to-step-1" onClick={() => goStep(1)}>Back to your project</button>
             </div>
-            <p className="privacy">Your enquiry goes directly to the BPC project team. We don’t use your details for unrelated marketing.</p>
+            <p className="privacy">Your enquiry goes directly to the BPC project team. We don’t use your details for unrelated marketing. See our <a href="/privacy">Privacy Policy</a>.</p>
             {sendError && (
               <p className="send-error" id="send-error" role="alert">
                 Your brief didn’t send. Check your connection and select Send again, or email{' '}

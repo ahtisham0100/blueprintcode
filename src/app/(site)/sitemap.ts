@@ -64,6 +64,12 @@ const STATIC_ROUTES: {
   { path: 'about', sources: ['(content)/about/page.tsx'], changeFrequency: 'yearly', priority: 0.6 },
   { path: 'contact', sources: ['contact/page.tsx'], changeFrequency: 'yearly', priority: 0.5 },
   { path: 'standards-and-credentials', sources: ['(content)/standards-and-credentials/page.tsx', '(content)/standards-and-credentials/data.json'], changeFrequency: 'yearly', priority: 0.5 },
+  { path: 'legal', sources: ['(content)/legal/page.tsx'], changeFrequency: 'yearly', priority: 0.3 },
+  { path: 'privacy', sources: ['(content)/privacy/page.tsx'], changeFrequency: 'yearly', priority: 0.3 },
+  { path: 'cookies', sources: ['(content)/cookies/page.tsx'], changeFrequency: 'yearly', priority: 0.3 },
+  { path: 'terms', sources: ['(content)/terms/page.tsx'], changeFrequency: 'yearly', priority: 0.3 },
+  { path: 'accessibility', sources: ['(content)/accessibility/page.tsx'], changeFrequency: 'yearly', priority: 0.3 },
+  { path: 'tool-terms', sources: ['(content)/tool-terms/page.tsx'], changeFrequency: 'yearly', priority: 0.3 },
   { path: 'demo-viewer', sources: ['demo-viewer/page.tsx', 'demo-viewer/DemoPlayground.tsx'], changeFrequency: 'yearly', priority: 0.3 },
   { path: 'logo-preview', sources: ['logo-preview/page.tsx'], changeFrequency: 'yearly', priority: 0.2 },
 ];

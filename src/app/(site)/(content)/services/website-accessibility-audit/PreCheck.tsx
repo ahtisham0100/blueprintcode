@@ -61,7 +61,7 @@ export default function PreCheck() {
         {state === 'sending' ? 'Sending…' : 'Request free pre-check →'}
       </button>
 
-      <p className="scan-note">Automated pre-check · WCAG 2.2 A &amp; AA · results by email. We&rsquo;ll email you the results and may contact you about that review. No mailing list.</p>
+      <p className="scan-note">Automated pre-check · WCAG 2.2 A &amp; AA · results by email. We&rsquo;ll email you the results and may contact you about that review. No mailing list. See our <a href="/tool-terms">tool terms</a> and <a href="/privacy">Privacy Policy</a>.</p>
 
       <p
         ref={statusRef}

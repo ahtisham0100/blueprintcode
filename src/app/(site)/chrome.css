@@ -12,6 +12,7 @@
    page shows only its content. Flag is set by the inline script in layout.tsx. */
 .is-embedded .head,
 .is-embedded footer,
+.is-embedded .consent,
 .is-embedded .skip { display: none !important; }
 
 /* Page canvas. The dark background lives in the per-route stylesheets
@@ -63,12 +64,14 @@ html { background: #0B1A2E; }
 
 .head,
 footer,
+.consent,
 .skip {
   --ground: #0B1A2E;
   --ink: #EAF1F8;
   --ink-3: #5F7C9E;
   --line: #2C4A6E;
   --line-soft: #1D3552;
+  --ink-2: #8FA9C6;
   --max: 1240px;
   --gut: 32px;
   --display: 'Bebas Neue', Impact, sans-serif;
@@ -172,13 +175,14 @@ footer .sheet {
 .tb a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
 .tb a:hover { border-bottom-color: var(--ink); }
 
-/* footer reference grid — the field-notes + trust links, drawn as labelled
-   columns in the same drafting-strip grid pattern as the .tb title block above.
-   Each column is a section: a label (SERVICES / FIELD NOTES / TRUST) with its links stacked
-   in a single column below. The centre rule lines up with the .tb centre rule. */
+/* footer reference grid — the field-notes, trust and legal links, drawn as
+   labelled columns in the same drafting-strip grid pattern as the .tb title block
+   above. Each column is a section: a label (SERVICES / FIELD NOTES / TRUST / LEGAL)
+   with its links stacked in a single column below. Four columns, so every rule
+   lines up with a .tb rule. */
 .foot-index {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(4, 1fr);
   font-family: var(--data);
   font-size: 11px;
   letter-spacing: .12em;
@@ -197,6 +201,81 @@ footer .sheet {
 .foot-col-key { color: var(--ink-3); }
 .foot-col a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
 .foot-col a:hover { border-bottom-color: var(--ink); }
+/* "Cookie settings" is a button (it opens the banner), styled as a footer link */
+.foot-col button {
+  font: inherit;
+  letter-spacing: inherit;
+  color: var(--ink);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid var(--line);
+  padding: 0;
+  cursor: pointer;
+}
+.foot-col button:hover { border-bottom-color: var(--ink); }
+
+/* registered company disclosure — required on the website by UK company law */
+.foot-legal {
+  font-family: var(--data);
+  font-size: 11px;
+  letter-spacing: .08em;
+  line-height: 1.8;
+  color: var(--ink-3);
+  padding-top: 16px;
+  border-top: 1px solid var(--line-soft);
+}
+
+/* cookie consent banner ---------------------------------------------------------
+   Pinned to the bottom of the viewport, non-modal: the page stays usable behind
+   it. Both choices carry equal weight, as the ICO expects. */
+.consent {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 40;
+  background: var(--ground);
+  border-top: 2px solid var(--ink);
+  box-shadow: 0 -12px 32px rgba(0, 0, 0, .35);
+  font-family: 'IBM Plex Sans', system-ui, -apple-system, sans-serif;
+}
+.consent:focus { outline: none; }
+.consent:focus-visible { outline: 2px solid var(--ink); outline-offset: -4px; }
+.consent-inner {
+  width: min(var(--max), calc(100% - var(--gut) * 2));
+  margin: auto;
+  padding: 20px 0;
+  display: flex;
+  align-items: center;
+  gap: 32px;
+}
+.consent-copy { flex: 1; }
+.consent-key {
+  font-family: var(--data);
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: .14em;
+  color: var(--ink-2);
+  margin: 0 0 6px;
+}
+.consent p { margin: 0; font-size: 14.5px; line-height: 1.6; color: var(--ink); max-width: 78ch; }
+.consent a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--ink-2); }
+.consent a:hover { border-bottom-color: var(--ink); }
+.consent-actions { display: flex; gap: 12px; flex-shrink: 0; }
+.consent-btn {
+  font-family: var(--data);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: .11em;
+  text-transform: uppercase;
+  color: var(--ink);
+  background: transparent;
+  border: 1px solid var(--ink);
+  padding: 12px 18px;
+  cursor: pointer;
+}
+.consent-btn:hover { background: var(--ink); color: var(--ground); }
+.consent-btn:focus-visible, .foot-col button:focus-visible { outline: 2px solid var(--ink); outline-offset: 3px; }
 
 /* mobile -------------------------------------------------------------------- */
 @media (max-width: 900px) {
@@ -220,6 +299,14 @@ footer .sheet {
   .head nav a { font-size: 14px; letter-spacing: .12em; padding: 18px 0; border-bottom: 1px solid var(--line-soft); }
   .head nav a.button { margin-top: 20px; text-align: center; border-bottom: 1px solid var(--ink); }
 }
+@media (max-width: 900px) {
+  .consent-inner { flex-direction: column; align-items: stretch; gap: 16px; padding: 18px 0; }
+  .consent-actions { flex-wrap: wrap; }
+  .consent-btn { flex: 1 1 140px; }
+}
 @media (max-width: 560px) {
-  .head, footer { --gut: 20px; }
+  .head, footer, .consent { --gut: 20px; }
+}
+@media print {
+  .consent { display: none; }
 }

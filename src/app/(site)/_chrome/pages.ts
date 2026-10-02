@@ -96,6 +96,42 @@ const PAGES: Record<string, ChromeMeta> = {
     metaKey: 'SCOPE',
     metaVal: 'COMPANY & INDIVIDUAL',
   },
+  '/legal': {
+    label: 'LEGAL',
+    doc: 'LEGAL & COMPANY',
+    metaKey: 'ISSUER',
+    metaVal: 'BLUEPRINT CODE AI LTD — NO. 17490525',
+  },
+  '/privacy': {
+    label: 'LEGAL',
+    doc: 'PRIVACY POLICY',
+    metaKey: 'ISSUER',
+    metaVal: 'BLUEPRINT CODE AI LTD — NO. 17490525',
+  },
+  '/cookies': {
+    label: 'LEGAL',
+    doc: 'COOKIE & TRACKING POLICY',
+    metaKey: 'ISSUER',
+    metaVal: 'BLUEPRINT CODE AI LTD — NO. 17490525',
+  },
+  '/terms': {
+    label: 'LEGAL',
+    doc: 'WEBSITE TERMS OF USE',
+    metaKey: 'ISSUER',
+    metaVal: 'BLUEPRINT CODE AI LTD — NO. 17490525',
+  },
+  '/accessibility': {
+    label: 'LEGAL',
+    doc: 'ACCESSIBILITY STATEMENT',
+    metaKey: 'ISSUER',
+    metaVal: 'BLUEPRINT CODE AI LTD — NO. 17490525',
+  },
+  '/tool-terms': {
+    label: 'LEGAL',
+    doc: 'AUTOMATED TOOLS & SCANNER TERMS',
+    metaKey: 'ISSUER',
+    metaVal: 'BLUEPRINT CODE AI LTD — NO. 17490525',
+  },
 };
 
 const FALLBACK: ChromeMeta = PAGES['/'];

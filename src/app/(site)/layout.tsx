@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import Script from 'next/script';
 import './chrome.css';
 import Header from './_chrome/Header';
 import Footer from './_chrome/Footer';
+import Consent from './_chrome/Consent';
 import {
   SITE_URL,
   SITE_NAME,
@@ -83,14 +83,9 @@ export default function RootLayout({
         <Header />
         {children}
         <Footer />
-        {/* Microsoft Clarity tracking for https://blueprintcode.ai/ */}
-        <Script
-          id="ms-clarity"
-          dangerouslySetInnerHTML={{
-            __html:
-              '(function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window, document, "clarity", "script", "ylt8ejgq97");',
-          }}
-        />
+        {/* Cookie banner. It also loads Microsoft Clarity, and only once the
+            visitor has allowed analytics — see Consent.tsx. */}
+        <Consent />
       </body>
     </html>
   );

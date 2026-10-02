@@ -2,6 +2,8 @@
 
 import { usePathname } from 'next/navigation';
 import { chromeFor } from './pages';
+import { CookieSettingsButton } from './Consent';
+import { COMPANY, LEGAL_DOCS } from '../(content)/_legal/company';
 
 /* Global site footer — the "title block" (.tb) drafting strip. DOCUMENT and the
    third column vary per route; STUDIO and CONTACT are constant. */
@@ -50,6 +52,20 @@ export default function Footer() {
           <span className="foot-col-key">TRUST</span>
           <a href="/standards-and-credentials">Standards &amp; Credentials</a>
         </div>
+        <div className="foot-col">
+          <span className="foot-col-key">LEGAL</span>
+          {LEGAL_DOCS.filter((d) => d.href !== '/tool-terms').map((d) => (
+            <a key={d.href} href={d.href}>{d.short}</a>
+          ))}
+          <a href="/legal">Legal &amp; company</a>
+          <CookieSettingsButton />
+        </div>
+      </div>
+      <div className="sheet foot-legal">
+        <p>
+          {COMPANY.legalName} · Registered in {COMPANY.registeredIn} · Company no. {COMPANY.number} · Registered
+          office: {COMPANY.office}
+        </p>
       </div>
     </footer>
   );
