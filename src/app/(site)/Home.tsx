@@ -46,6 +46,7 @@ export default function Home() {
                       alt="Blueprint comparison: on the left, the old road — phone calls, emails, spreadsheets, PDFs, people and databases tangling their way into a manual process. On the right, the Blueprint Code road — one straight line from product configurator to AI recommendation, quote and order, and delivery."
                       width={1536}
                       height={1024}
+                      quality={100}
                       sizes="(max-width: 850px) 92vw, (max-width: 1240px) 60vw, 840px"
                       loading="eager"
                       fetchPriority="high"

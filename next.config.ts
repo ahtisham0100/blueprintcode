@@ -53,6 +53,9 @@ const nextConfig: NextConfig = {
   images: {
     // The homepage hero is served from the media library on the media host.
     remotePatterns: [{ protocol: "https", hostname: "media.blueprintcode.ai", pathname: "/media/**" }],
+    // 75 is the default; 90 and 100 are for the homepage hero, whose hairlines and small
+    // labels go soft under heavier compression.
+    qualities: [75, 90, 100],
   },
 
   async headers() {
