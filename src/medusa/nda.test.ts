@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { recipients } from './record';
+import { ndaMail, recipients } from './record';
 import { isPartnerEmail, ndaCookie, ndaSecret, parseNdaInput, readCookie, signNdaSession, verifyNdaSession } from './nda';
 
 const SECRET = 'x'.repeat(40);
@@ -59,5 +59,22 @@ describe('NDA notification recipients', () => {
     expect(recipients(undefined)).toEqual(['james@blueprintcode.ai']);
     expect(recipients(' ')).toEqual(['james@blueprintcode.ai']);
     expect(recipients('a@x.com, b@x.com,,c@x.com ')).toEqual(['a@x.com', 'b@x.com', 'c@x.com']);
+  });
+});
+
+describe('NDA notification email', () => {
+  const base = { name: 'Ada Lovelace', email: 'ada@instantly.ai', ndaVersion: 'v1', acceptedAt: '2026-10-05T14:58:18.435Z', ip: '1.2.3.4', userAgent: 'UA <x>' };
+  it('composes a branded message for an Instantly signer', () => {
+    const m = ndaMail(base);
+    expect(m.subject).toBe('NDA signed: Ada Lovelace (ada@instantly.ai) — Medusa × Instantly');
+    expect(m.html).toContain('has entered the partner room');
+    expect(m.html).toContain('5 October 2026 at 15:58 UK');
+    expect(m.html).toContain('UA &lt;x&gt;');
+    expect(m.text).toContain('Signed by: Ada Lovelace');
+  });
+  it('marks a Blueprint Code AI signer as an internal preview', () => {
+    const m = ndaMail({ ...base, email: 'james@blueprintcode.ai' });
+    expect(m.subject).toMatch(/^\[Internal preview\] /);
+    expect(m.html).toContain('previewed the partner room');
   });
 });
