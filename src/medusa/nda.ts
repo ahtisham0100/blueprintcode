@@ -15,6 +15,8 @@ export const NDA_COOKIE = 'bpc_medusa_nda';
 export const NDA_SESSION_TTL = 24 * 60 * 60;
 /** Only Instantly staff may enter; the form says so and the server enforces it. */
 export const PARTNER_EMAIL_DOMAIN = 'instantly.ai';
+/** Blueprint Code AI's own addresses may also enter, to preview and test the room. */
+export const INTERNAL_EMAIL_DOMAIN = 'blueprintcode.ai';
 
 const ISSUER = 'bpc-medusa';
 const AUDIENCE = 'bpc-medusa-partner-room';
@@ -40,12 +42,17 @@ export function parseNdaInput(body: unknown): { ok: true; value: NdaInput } | { 
   return { ok: true, value: { name, email, accepted: true, ndaVersion } };
 }
 
+/** A Blueprint Code AI signer: a preview, not a partner acceptance. */
+export function isInternalEmail(email: string): boolean {
+  return email.toLowerCase().endsWith(`@${INTERNAL_EMAIL_DOMAIN}`);
+}
+
 export function isPartnerEmail(email: string): boolean {
   const at = email.lastIndexOf('@');
   if (at <= 0 || at !== email.indexOf('@')) return false;
   const local = email.slice(0, at);
   const domain = email.slice(at + 1);
-  return /^[^\s@]+$/.test(local) && domain === PARTNER_EMAIL_DOMAIN;
+  return /^[^\s@]+$/.test(local) && (domain === PARTNER_EMAIL_DOMAIN || domain === INTERNAL_EMAIL_DOMAIN);
 }
 
 /** The signing key is derived from the configured secret, so even when

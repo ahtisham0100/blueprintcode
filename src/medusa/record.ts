@@ -5,6 +5,7 @@
    enters the room without a trace. */
 
 import { neon } from '@neondatabase/serverless';
+import { isInternalEmail } from './nda';
 
 export type NdaAcceptance = {
   name: string;
@@ -92,7 +93,7 @@ export async function emailNdaAcceptance(a: NdaAcceptance, env: NodeJS.ProcessEn
       body: JSON.stringify({
         from,
         to,
-        subject: `NDA signed: ${a.name} (${a.email}) — Medusa × Instantly`,
+        subject: `${isInternalEmail(a.email) ? '[Internal preview] ' : ''}NDA signed: ${a.name} (${a.email}) — Medusa × Instantly`,
         html,
         text,
         reply_to: a.email,

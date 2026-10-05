@@ -132,7 +132,7 @@ a.btn,button.btn{appearance:none;border:1px solid #cda642;background:#07100e;col
     const accepted=document.getElementById('ndaAgree').checked;
 
     if(!name){ error.textContent='Please enter your name.'; return; }
-    if(!/^[^@\s]+@instantly\.ai$/i.test(email)){
+    if(!/^[^@\s]+@(instantly\.ai|blueprintcode\.ai)$/i.test(email)){
       error.textContent='Please use your Instantly company email to access the confidential partner room.';
       return;
     }

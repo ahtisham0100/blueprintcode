@@ -19,6 +19,8 @@ describe('NDA input', () => {
   });
   it('checks the domain exactly', () => {
     expect(isPartnerEmail('x@instantly.ai')).toBe(true);
+    expect(isPartnerEmail('x@blueprintcode.ai')).toBe(true);
+    expect(isPartnerEmail('x@blueprintcode.ai.evil.com')).toBe(false);
     expect(isPartnerEmail('x@sub.instantly.ai')).toBe(false);
     expect(isPartnerEmail('x@notinstantly.ai')).toBe(false);
     expect(isPartnerEmail('x@y@instantly.ai')).toBe(false);
