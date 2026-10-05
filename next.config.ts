@@ -48,6 +48,9 @@ const nextConfig: NextConfig = {
     "/demo-preview/[id]": ["./public/partials/site-header.html", "./public/partials/site-footer.html"],
     // Blueprint Builder's one-page app, built by builder/build.mjs in prebuild.
     "/builder/[[...path]]": ["./builder/dist/blueprint-builder.html"],
+    // The Medusa x Instantly partner pages, kept as hand-built HTML (src/medusa/).
+    "/medusa-instantly": ["./src/medusa/partnership.html"],
+    "/medusa-instantly/partner-room": ["./src/medusa/partner-room.html"],
   },
 
   images: {

@@ -1,0 +1,185 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="robots" content="noindex,nofollow,noarchive">
+<title>Medusa Heads × Instantly — Proposed Partnership</title>
+<style>
+*{box-sizing:border-box}html{scroll-behavior:smooth;background:#020706}body{margin:0;background:#020706;color:#f5efe2;font-family:Inter,Arial,sans-serif}
+section{min-height:100vh;display:grid;place-items:center;padding:18px;border-bottom:1px solid rgba(214,168,65,.16)}
+.frame{position:relative;width:min(96vw,calc((100vh - 36px)*16/9));aspect-ratio:16/9;overflow:hidden;background:#020706;box-shadow:0 20px 80px #000}
+.panel{position:absolute;inset:0;background-repeat:no-repeat;background-size:200% 200%;}
+.p1{background-position:0% 0%} .p2{background-position:100% 0%} .p3{background-position:0% 100%} .p4{background-position:100% 100%}
+/* The generated artwork's faux controls live in the bottom ~14%. This mask removes them; all controls below are genuine HTML. */
+.mask{position:absolute;left:0;right:0;bottom:0;height:14.8%;background:linear-gradient(180deg,rgba(2,7,6,.82),#020706 28%,#020706);border-top:1px solid rgba(214,168,65,.28);z-index:2}
+.controls{position:absolute;z-index:3;left:50%;bottom:2.8%;transform:translateX(-50%);display:flex;gap:1.2vw;justify-content:center;width:82%}
+a.btn,button.btn{appearance:none;border:1px solid #cda642;background:#07100e;color:#f7f0e2;min-width:22%;padding:1.05vw 2vw;text-decoration:none;text-align:center;font-weight:800;letter-spacing:.055em;cursor:pointer;font-size:clamp(10px,1vw,16px);font-family:inherit}
+.gold{background:linear-gradient(90deg,#e5bd55,#f5d67a)!important;color:#111!important;border-color:#e9c35e!important}.sub{display:block;font-size:.62em;opacity:.65;margin-top:.28em;letter-spacing:.13em}
+@media(max-width:700px){section{padding:8px;min-height:auto}.frame{width:100%;margin:6px 0}.controls{width:94%;gap:6px;bottom:2.2%}a.btn,button.btn{padding:8px 7px;min-width:0;flex:1;font-size:9px}.mask{height:16%}}
+
+#ndaGate{position:fixed;inset:0;z-index:9999;display:none;place-items:center;padding:24px;background:rgba(0,0,0,.86);backdrop-filter:blur(12px)}
+#ndaGate.open{display:grid}
+.nda-card{width:min(720px,94vw);max-height:90vh;overflow:auto;background:linear-gradient(180deg,#0b110f,#050806);border:1px solid rgba(214,168,65,.42);box-shadow:0 30px 100px #000;padding:34px}
+.nda-kicker{font:700 11px/1.2 Inter,Arial,sans-serif;letter-spacing:.25em;text-transform:uppercase;color:#d6a841}
+.nda-card h2{margin:10px 0 8px;font:500 clamp(30px,5vw,52px)/1 Georgia,serif;color:#f5efe2}
+.nda-card p,.nda-terms{color:#bdb9ae;line-height:1.6}
+.nda-terms{margin:22px 0;padding:18px;border:1px solid rgba(214,168,65,.18);background:#070b09;font-size:13px}
+.nda-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.nda-field label{display:block;margin:0 0 7px;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:#d6a841}
+.nda-field input{width:100%;padding:14px 15px;border:1px solid rgba(214,168,65,.28);background:#020706;color:#fff;outline:none;font:inherit}
+.nda-field input:focus{border-color:#d6a841}
+.nda-check{display:flex;gap:10px;align-items:flex-start;margin:18px 0;color:#ddd8cc;font-size:13px;line-height:1.45}
+.nda-check input{margin-top:3px;accent-color:#d6a841}
+.nda-error{min-height:20px;color:#e9a38f;font-size:12px;margin:8px 0}
+.nda-actions{display:flex;gap:12px;flex-wrap:wrap}
+.nda-submit,.nda-close{appearance:none;border:1px solid #d6a841;padding:13px 18px;font:700 11px Inter,Arial,sans-serif;letter-spacing:.12em;text-transform:uppercase;cursor:pointer}
+.nda-submit{background:#d6a841;color:#090805}.nda-close{background:transparent;color:#d6a841}
+.nda-note{margin-top:14px;font-size:11px;color:#777}
+@media(max-width:620px){.nda-grid{grid-template-columns:1fr}.nda-card{padding:24px}}
+
+</style>
+<style>
+.panel{background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important;}
+.p1{background-image:url(/assets/medusa-instantly/panel-1.jpg)!important;}
+.p2{background-image:url(/assets/medusa-instantly/panel-2.jpg)!important;}
+.p3{background-image:url(/assets/medusa-instantly/panel-3.jpg)!important;}
+.p4{background-image:url(/assets/medusa-instantly/panel-4.jpg)!important;}
+</style>
+</head><body>
+<section id="desire"><div class="frame"><div class="panel p1"></div><div class="mask"></div><nav class="controls"><a class="btn gold" href="#journey">SEE THE HUNT →</a><a class="btn" href="#tour">PARTNER TOUR ↓</a></nav></div></section>
+<section id="journey"><div class="frame"><div class="panel p2"></div><div class="mask"></div><nav class="controls"><a class="btn" href="#desire">← BACK</a><a class="btn gold" href="#partnership">SEE THE PARTNERSHIP →</a></nav></div></section>
+<section id="partnership"><div class="frame"><div class="panel p3"></div><div class="mask"></div><nav class="controls"><a class="btn" href="#journey">← BACK</a><a class="btn gold" href="#tour">SEE THE TOUR →</a></nav></div></section>
+<section id="tour"><div class="frame"><div class="panel p4"></div><div class="mask"></div><nav class="controls"><button class="btn gold" onclick="openNdaGate()">🔒 SIGN NDA & ENTER →<span class="sub">CONFIDENTIAL PARTNER ROOM</span></button><a class="btn" href="#desire">← BACK TO OVERVIEW</a></nav></div></section>
+<div id="ndaGate" aria-hidden="true">
+  <div class="nda-card" role="dialog" aria-modal="true" aria-labelledby="ndaTitle">
+    <div class="nda-kicker">Confidential partner room</div>
+    <h2 id="ndaTitle">Sign NDA &amp; Enter</h2>
+    <p>This room contains confidential Medusa Heads partnership material prepared for Instantly.</p>
+
+    <form id="ndaForm" novalidate>
+      <div class="nda-grid">
+        <div class="nda-field">
+          <label for="ndaName">Name</label>
+          <input id="ndaName" name="name" autocomplete="name" required>
+        </div>
+        <div class="nda-field">
+          <label for="ndaEmail">Instantly work email</label>
+          <input id="ndaEmail" name="email" type="email" autocomplete="email" placeholder="name@instantly.ai" required>
+        </div>
+      </div>
+
+      <div class="nda-terms">
+        <strong>Confidentiality acknowledgement</strong><br>
+        By entering the confidential partner room, you acknowledge that the material presented is confidential and is supplied solely for evaluating a potential Medusa Heads × Instantly partnership. You agree not to disclose, reproduce or use the confidential material for any other purpose without written permission from Blueprint Code AI Ltd.
+      </div>
+
+      <label class="nda-check">
+        <input id="ndaAgree" name="accepted" type="checkbox" required>
+        <span>I have read and agree to the Confidentiality Agreement.</span>
+      </label>
+
+      <input type="hidden" name="nda_version" value="MH-INSTANTLY-2026-10-04-v1">
+      <div id="ndaError" class="nda-error" aria-live="polite"></div>
+
+      <div class="nda-actions">
+        <button class="nda-submit" type="submit">Sign NDA &amp; Enter →</button>
+        <button class="nda-close" type="button" id="ndaClose">Back to overview</button>
+      </div>
+      <div class="nda-note">Your acceptance is recorded with a timestamp and Blueprint Code AI is notified by email.</div>
+    </form>
+  </div>
+</div>
+
+
+<script>
+(() => {
+  const gate = document.getElementById('ndaGate');
+  const form = document.getElementById('ndaForm');
+  const error = document.getElementById('ndaError');
+  const close = document.getElementById('ndaClose');
+
+  function openGate(e){
+    if(e) e.preventDefault();
+    gate.classList.add('open');
+    gate.setAttribute('aria-hidden','false');
+    document.body.style.overflow='hidden';
+    setTimeout(()=>document.getElementById('ndaName').focus(),50);
+  }
+  function closeGate(){
+    gate.classList.remove('open');
+    gate.setAttribute('aria-hidden','true');
+    document.body.style.overflow='';
+  }
+
+  // Capture existing NDA/enter controls without changing the visual design.
+  // The gate's own buttons are excluded: its submit button also says "NDA",
+  // and openGate's preventDefault would otherwise swallow the submit.
+  [...document.querySelectorAll('a,button')].forEach(el => {
+    if(gate.contains(el)) return;
+    const t=(el.textContent||'').toLowerCase();
+    if(t.includes('nda') || t.includes('enter')){
+      el.addEventListener('click', openGate);
+    }
+  });
+
+  close.addEventListener('click', closeGate);
+  gate.addEventListener('click', e => { if(e.target===gate) closeGate(); });
+  document.addEventListener('keydown', e => { if(e.key==='Escape' && gate.classList.contains('open')) closeGate(); });
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    error.textContent='';
+    const name=document.getElementById('ndaName').value.trim();
+    const email=document.getElementById('ndaEmail').value.trim().toLowerCase();
+    const accepted=document.getElementById('ndaAgree').checked;
+
+    if(!name){ error.textContent='Please enter your name.'; return; }
+    if(!/^[^@\s]+@instantly\.ai$/i.test(email)){
+      error.textContent='Please use your Instantly company email to access the confidential partner room.';
+      return;
+    }
+    if(!accepted){ error.textContent='Please accept the Confidentiality Agreement to continue.'; return; }
+
+    const submit=form.querySelector('.nda-submit');
+    submit.disabled=true; submit.textContent='Recording…';
+    try{
+      const res=await fetch('/api/medusa-instantly/nda',{
+        method:'POST',
+        headers:{'Content-Type':'application/json'},
+        body:JSON.stringify({name,email,accepted:true,nda_version:form.nda_version.value})
+      });
+      const data=await res.json().catch(()=>({}));
+      if(!res.ok||!data.ok){
+        error.textContent=data.error||'Something went wrong recording your acceptance. Please try again or email james@blueprintcode.ai.';
+        return;
+      }
+      window.location.assign(data.next||'/medusa-instantly/partner-room');
+    }catch{
+      error.textContent='Could not reach the server. Please check your connection and try again.';
+    }finally{
+      submit.disabled=false; submit.textContent='Sign NDA & Enter →';
+    }
+  });
+
+  // Sent back here from the partner room without a valid NDA session
+  // (?nda=required): open the gate straight away.
+  if(new URLSearchParams(location.search).get('nda')==='required'){
+    history.replaceState(null,'',location.pathname+'#tour');
+    openGate();
+  }
+})();
+</script>
+
+
+<script>
+function openNdaGate(){
+  const gate=document.getElementById('ndaGate');
+  if(gate){gate.classList.add('open');gate.setAttribute('aria-hidden','false');
+    const first=gate.querySelector('input'); if(first) setTimeout(()=>first.focus(),50);
+  }
+}
+function closeNdaGate(){
+  const gate=document.getElementById('ndaGate');
+  if(gate){gate.classList.remove('open');gate.setAttribute('aria-hidden','true');}
+}
+</script>
+
+</body></html>
