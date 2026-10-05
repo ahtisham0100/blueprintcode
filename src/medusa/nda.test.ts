@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import { recipients } from './record';
 import { isPartnerEmail, ndaCookie, ndaSecret, parseNdaInput, readCookie, signNdaSession, verifyNdaSession } from './nda';
 
 const SECRET = 'x'.repeat(40);
@@ -48,5 +49,13 @@ describe('NDA session', () => {
     expect(ndaSecret(env({ MEDUSA_NDA_SECRET: 'a'.repeat(20), PAYLOAD_SECRET: 'b'.repeat(20) }))).toBe('a'.repeat(20));
     expect(ndaSecret(env({ PAYLOAD_SECRET: 'b'.repeat(20) }))).toBe('b'.repeat(20));
     expect(() => ndaSecret(env({}))).toThrow();
+  });
+});
+
+describe('NDA notification recipients', () => {
+  it('defaults to James and accepts a comma-separated list', () => {
+    expect(recipients(undefined)).toEqual(['james@blueprintcode.ai']);
+    expect(recipients(' ')).toEqual(['james@blueprintcode.ai']);
+    expect(recipients('a@x.com, b@x.com,,c@x.com ')).toEqual(['a@x.com', 'b@x.com', 'c@x.com']);
   });
 });

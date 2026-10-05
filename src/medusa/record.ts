@@ -47,6 +47,12 @@ export async function storeNdaAcceptance(a: NdaAcceptance, databaseUrl = process
   return true;
 }
 
+/** MEDUSA_NDA_NOTIFY_TO is one address or a comma-separated list. */
+export function recipients(raw: string | undefined): string[] {
+  const list = (raw ?? '').split(',').map((a) => a.trim()).filter(Boolean);
+  return list.length ? list : [DEFAULT_NOTIFY_TO];
+}
+
 const esc = (v: string) => v.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 
 /** Returns "sent", "skipped" (no API key) or "error: …". */
@@ -54,7 +60,7 @@ export async function emailNdaAcceptance(a: NdaAcceptance, env: NodeJS.ProcessEn
   const apiKey = env.RESEND_API_KEY;
   if (!apiKey) return 'skipped';
   const from = env.LEADS_FROM || 'Blueprint Code AI <onboarding@resend.dev>';
-  const to = env.MEDUSA_NDA_NOTIFY_TO || DEFAULT_NOTIFY_TO;
+  const to = recipients(env.MEDUSA_NDA_NOTIFY_TO);
 
   const rows: [string, string][] = [
     ['Name', a.name],
