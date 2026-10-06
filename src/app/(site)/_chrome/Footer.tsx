@@ -1,7 +1,7 @@
 'use client';
 
 import { usePathname } from 'next/navigation';
-import { chromeFor } from './pages';
+import { chromeFor, TOOLS_NAV } from './pages';
 import { CookieSettingsButton } from './Consent';
 import { COMPANY, LEGAL_DOCS } from '../(content)/_legal/company';
 
@@ -32,6 +32,13 @@ export default function Footer() {
         </div>
       </div>
       <div className="sheet foot-index">
+        <div className="foot-col">
+          <span className="foot-col-key">TOOLS</span>
+          {TOOLS_NAV.map((t) => (
+            <a key={t.href} href={t.href}>{t.label}</a>
+          ))}
+          <a href="/ppav-case-study">PP-AV case study →</a>
+        </div>
         <div className="foot-col">
           <span className="foot-col-key">SERVICES</span>
           <a href="/services/website-accessibility-audit">Website accessibility audit</a>

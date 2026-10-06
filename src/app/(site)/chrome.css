@@ -122,6 +122,70 @@ footer,
 .head nav a:hover { color: var(--ink); }
 .head nav a[aria-current] { color: var(--ink); }
 
+/* nav dropdown (the Tools category) ------------------------------------------
+   Pure CSS: the panel opens on hover and on keyboard focus within the group,
+   so it needs no script. The trigger is itself a link to the category page.
+   The panel's top padding bridges the gap to the trigger, so the pointer can
+   travel down into it without the group losing :hover. */
+.head .nav-group { position: relative; display: flex; align-items: center; }
+.head .nav-group-link { display: inline-flex; align-items: center; gap: 7px; }
+.head .nav-group.is-current > .nav-group-link { color: var(--ink); }
+.head .nav-caret {
+  width: 6px;
+  height: 6px;
+  border-right: 1px solid currentColor;
+  border-bottom: 1px solid currentColor;
+  transform: translateY(-2px) rotate(45deg);
+  transition: transform .2s;
+}
+.head .nav-group:hover .nav-caret,
+.head .nav-group:focus-within .nav-caret { transform: translateY(1px) rotate(225deg); }
+.head .nav-menu {
+  position: absolute;
+  top: 100%;
+  left: -20px;
+  padding-top: 22px;
+  z-index: 21;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-6px);
+  transition: opacity .18s ease, transform .18s ease, visibility 0s linear .18s;
+}
+.head .nav-group:hover .nav-menu,
+.head .nav-group:focus-within .nav-menu { opacity: 1; visibility: visible; transform: none; transition-delay: 0s; }
+.head .nav-menu-panel {
+  min-width: 300px;
+  background: var(--ground);
+  border: 1px solid var(--line);
+  box-shadow: 0 18px 40px rgba(0, 0, 0, .45);
+  padding: 8px 0;
+  position: relative;
+}
+/* drafting-sheet corner tick, echoing the title block */
+.head .nav-menu-panel::before {
+  content: '';
+  position: absolute;
+  top: -1px;
+  left: 20px;
+  width: 24px;
+  height: 2px;
+  background: var(--ink);
+}
+.head .nav-menu-panel a {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  padding: 12px 20px;
+  color: var(--ink);
+  border-left: 2px solid transparent;
+  transition: background .15s, border-color .15s;
+}
+.head .nav-menu-panel a:hover,
+.head .nav-menu-panel a:focus-visible { background: var(--line-soft); border-left-color: var(--ink); outline: none; }
+.head .nav-menu-panel a[aria-current] { border-left-color: var(--ink-3); }
+.head .nav-menu-panel b { font-weight: 500; letter-spacing: .1em; }
+.head .nav-menu-panel small { font-family: 'IBM Plex Sans', system-ui, sans-serif; font-size: 12.5px; letter-spacing: 0; color: var(--ink-2); line-height: 1.4; }
+
 .head .button {
   display: inline-block;
   border: 1px solid var(--ink);
@@ -175,14 +239,15 @@ footer .sheet {
 .tb a { color: var(--ink); text-decoration: none; border-bottom: 1px solid var(--line); }
 .tb a:hover { border-bottom-color: var(--ink); }
 
-/* footer reference grid — the field-notes, trust and legal links, drawn as
-   labelled columns in the same drafting-strip grid pattern as the .tb title block
-   above. Each column is a section: a label (SERVICES / FIELD NOTES / TRUST / LEGAL)
-   with its links stacked in a single column below. Four columns, so every rule
-   lines up with a .tb rule. */
+/* footer reference grid — the tools, services, field-notes, trust and legal
+   links, drawn as labelled columns in the same drafting-strip grid pattern as
+   the .tb title block above. Each column is a section: a label (TOOLS /
+   SERVICES / FIELD NOTES / TRUST / LEGAL) with its links stacked in a single
+   column below. Five columns since the TOOLS category was added, so the rules
+   no longer pair with the four .tb rules; TRUST (one link) is the narrow one. */
 .foot-index {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: 1.1fr 1.2fr 1.1fr .8fr 1fr;
   font-family: var(--data);
   font-size: 11px;
   letter-spacing: .12em;
@@ -298,6 +363,17 @@ footer .sheet {
   body.nav-open .head nav { display: flex; }
   .head nav a { font-size: 14px; letter-spacing: .12em; padding: 18px 0; border-bottom: 1px solid var(--line-soft); }
   .head nav a.button { margin-top: 20px; text-align: center; border-bottom: 1px solid var(--ink); }
+  /* The Tools group is a flat, indented list inside the burger menu: no hover
+     on touch, so the panel is always open and sits in the flow. */
+  .head .nav-group { display: block; }
+  .head .nav-group-link { display: flex; justify-content: space-between; }
+  .head .nav-caret { display: none; }
+  .head .nav-menu { position: static; padding: 0; opacity: 1; visibility: visible; transform: none; transition: none; }
+  .head .nav-menu-panel { min-width: 0; border: 0; box-shadow: none; padding: 0; background: none; }
+  .head .nav-menu-panel::before { display: none; }
+  .head .nav-menu-panel a { padding: 14px 0 14px 18px; font-size: 13px; border-left: 1px solid var(--line); border-bottom: 1px solid var(--line-soft); }
+  .head .nav-menu-panel a:hover, .head .nav-menu-panel a:focus-visible { background: none; border-left-color: var(--ink); }
+  .head .nav-menu-panel small { display: none; }
 }
 @media (max-width: 900px) {
   .consent-inner { flex-direction: column; align-items: stretch; gap: 16px; padding: 18px 0; }

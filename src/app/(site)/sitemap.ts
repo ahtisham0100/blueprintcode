@@ -49,7 +49,8 @@ const STATIC_ROUTES: {
   changeFrequency: ChangeFrequency;
   priority: number;
 }[] = [
-  { path: '', sources: ['page.tsx', 'Home.tsx'], changeFrequency: 'monthly', priority: 1 },
+  { path: '', sources: ['page.tsx', 'home.css'], changeFrequency: 'monthly', priority: 1 },
+  { path: 'tools', sources: ['tools/page.tsx', 'tools/Tools.tsx'], changeFrequency: 'monthly', priority: 0.9 },
   { path: 'configurators', sources: ['(content)/configurators/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },
   { path: 'services/3d-product-configurator-development', sources: ['(content)/services/3d-product-configurator-development/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },
   { path: 'services/guided-selling-tools', sources: ['(content)/services/guided-selling-tools/page.tsx'], changeFrequency: 'monthly', priority: 0.8 },

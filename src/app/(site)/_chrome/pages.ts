@@ -3,8 +3,10 @@
    Header.tsx and Footer.tsx via chromeFor(pathname). */
 
 export type NavKey =
+  | 'tools'
   | 'configurators'
   | 'prototypes'
+  | 'process-blueprinter'
   | 'ppav-case-study'
   | 'pricing'
   | 'insights'
@@ -24,10 +26,17 @@ export interface ChromeMeta {
 
 const PAGES: Record<string, ChromeMeta> = {
   '/': {
-    label: 'BUILD SYSTEMS / 2026',
+    label: 'INTELLIGENCE SYSTEMS',
     doc: 'BLUEPRINT CODE AI',
     metaKey: 'DIRECTION',
     metaVal: 'UK & GLOBAL',
+  },
+  '/tools': {
+    label: 'BPC TOOLS',
+    doc: 'BPC TOOLS — INTERACTIVE SYSTEMS',
+    metaKey: 'DISCIPLINE',
+    metaVal: 'INTERACTIVE COMMERCE',
+    current: 'tools',
   },
   '/about': {
     label: 'ABOUT',
@@ -48,6 +57,13 @@ const PAGES: Record<string, ChromeMeta> = {
     metaKey: 'WORKED EXAMPLE',
     metaVal: 'PP-AV — 5 CONNECTED TOOLS',
     current: 'configurators',
+  },
+  '/process-blueprinter': {
+    label: 'PROCESS BLUEPRINTER',
+    doc: 'PROCESS BLUEPRINTER',
+    metaKey: 'DISCIPLINE',
+    metaVal: 'INTERACTIVE COMMERCE',
+    current: 'process-blueprinter',
   },
   '/insights': {
     label: 'FIELD NOTES',
@@ -140,10 +156,32 @@ export function chromeFor(pathname: string): ChromeMeta {
   return PAGES[pathname] ?? FALLBACK;
 }
 
+export interface NavLink {
+  key: NavKey;
+  href: string;
+  label: string;
+  /** One-line description, shown under the label inside a dropdown. */
+  note?: string;
+}
+
+export interface NavItem extends NavLink {
+  /** Sub-links revealed on hover/focus; the item itself stays a link. */
+  children?: NavLink[];
+}
+
+/** The Tools category: the BPC Tools overview (the former homepage) and the
+ *  tool pages that used to sit at the top level of the nav. Shared by the
+ *  header dropdown and the footer TOOLS column. */
+export const TOOLS_NAV: NavLink[] = [
+  { key: 'tools', href: '/tools', label: 'BPC Tools overview', note: 'Configurators, commerce and AI systems' },
+  { key: 'configurators', href: '/configurators', label: 'Configurators', note: 'Six tool types, one connected system' },
+  { key: 'prototypes', href: '/prototypes', label: 'Prototypes', note: 'Working prototypes you can try' },
+  { key: 'process-blueprinter', href: '/process-blueprinter', label: 'Process Blueprinter', note: 'Map your old road, see the Blueprint Code road' },
+];
+
 /** Primary nav items, in order. */
-export const NAV: { key: NavKey; href: string; label: string }[] = [
-  { key: 'configurators', href: '/configurators', label: 'Configurators' },
-  { key: 'prototypes', href: '/prototypes', label: 'Prototypes' },
+export const NAV: NavItem[] = [
+  { key: 'tools', href: '/tools', label: 'Tools', children: TOOLS_NAV },
   { key: 'ppav-case-study', href: '/ppav-case-study', label: 'Case study' },
   { key: 'pricing', href: '/pricing', label: 'Pricing' },
   { key: 'insights', href: '/insights', label: 'Insights' },

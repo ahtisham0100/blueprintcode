@@ -6,16 +6,18 @@ import { initBlueprintRoll } from './blueprintRoll';
 import { ROLL_CARDS } from './rollCards';
 import { AMAZON_STORE_URL } from '@/lib/links';
 
-export default function Home() {
+export default function Tools() {
   // Drive the blueprint-roll page-turn once the section is in the DOM.
   useEffect(() => initBlueprintRoll(), []);
 
   return (
     <div className="bp-root">
-      {/* Header and footer are the global site chrome (src/app/_chrome), rendered
-          by the root layout. The homepage keeps only its blueprint-roll body. */}
+      {/* Header and footer are the global site chrome (src/app/(site)/_chrome),
+          rendered by the root layout. This page keeps only its blueprint-roll
+          body. It was the homepage until the intelligence-layer homepage
+          replaced it; it now lives at /tools as the BPC Tools overview. */}
 
-      {/* ============ BLUEPRINT-ROLL HOMEPAGE CONTENT ============ */}
+      {/* ============ BLUEPRINT-ROLL TOOLS CONTENT ============ */}
       <main id="main" className="brc">
         <span id="top" />
 
@@ -23,7 +25,7 @@ export default function Home() {
         <section className="hero" style={{ borderTop: 0 }}>
           <div className="sheet">
             <div className="titlebar">
-              <span>Sheet 00 / Company overview</span>
+              <span>Sheet 00 / BPC Tools overview</span>
               <span>Discipline: Interactive commerce</span>
               <span>Status: Operational</span>
             </div>
