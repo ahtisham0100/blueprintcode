@@ -21,6 +21,9 @@ describe('NDA input', () => {
     expect(isPartnerEmail('x@instantly.ai')).toBe(true);
     expect(isPartnerEmail('x@blueprintcode.ai')).toBe(true);
     expect(isPartnerEmail('x@blueprintcode.ai.evil.com')).toBe(false);
+    expect(isPartnerEmail('mikkalayese@gmail.com')).toBe(true);
+    expect(isPartnerEmail('MikkaLayese@Gmail.com')).toBe(true);
+    expect(isPartnerEmail('someone-else@gmail.com')).toBe(false);
     expect(isPartnerEmail('x@sub.instantly.ai')).toBe(false);
     expect(isPartnerEmail('x@notinstantly.ai')).toBe(false);
     expect(isPartnerEmail('x@y@instantly.ai')).toBe(false);

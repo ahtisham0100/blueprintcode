@@ -17,6 +17,8 @@ export const NDA_SESSION_TTL = 24 * 60 * 60;
 export const PARTNER_EMAIL_DOMAIN = 'instantly.ai';
 /** Blueprint Code AI's own addresses may also enter, to preview and test the room. */
 export const INTERNAL_EMAIL_DOMAIN = 'blueprintcode.ai';
+/** Individually invited signers outside those domains (lower-case). */
+export const INVITED_EMAILS: ReadonlySet<string> = new Set(['mikkalayese@gmail.com']);
 
 const ISSUER = 'bpc-medusa';
 const AUDIENCE = 'bpc-medusa-partner-room';
@@ -52,7 +54,8 @@ export function isPartnerEmail(email: string): boolean {
   if (at <= 0 || at !== email.indexOf('@')) return false;
   const local = email.slice(0, at);
   const domain = email.slice(at + 1);
-  return /^[^\s@]+$/.test(local) && (domain === PARTNER_EMAIL_DOMAIN || domain === INTERNAL_EMAIL_DOMAIN);
+  if (!/^[^\s@]+$/.test(local)) return false;
+  return domain === PARTNER_EMAIL_DOMAIN || domain === INTERNAL_EMAIL_DOMAIN || INVITED_EMAILS.has(email.toLowerCase());
 }
 
 /** The signing key is derived from the configured secret, so even when

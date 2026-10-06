@@ -132,8 +132,9 @@ a.btn,button.btn{appearance:none;border:1px solid #cda642;background:#07100e;col
     const accepted=document.getElementById('ndaAgree').checked;
 
     if(!name){ error.textContent='Please enter your name.'; return; }
-    if(!/^[^@\s]+@(instantly\.ai|blueprintcode\.ai)$/i.test(email)){
-      error.textContent='Please use your Instantly company email to access the confidential partner room.';
+    // Who may enter is decided by the server (src/medusa/nda.ts); this only catches a malformed address.
+    if(!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)){
+      error.textContent='Please enter a valid email address.';
       return;
     }
     if(!accepted){ error.textContent='Please accept the Confidentiality Agreement to continue.'; return; }
