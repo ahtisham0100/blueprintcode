@@ -89,3 +89,6 @@ main.a11y :focus-visible{outline:3px solid var(--ink);outline-offset:4px}
   .evidence-body{padding:22px}
   .evidence-stat{grid-template-columns:1fr}
 }
+
+/* The Tools menu links straight to #scan; keep the section clear of the sticky header. */
+.a11y section[id]{scroll-margin-top:88px}

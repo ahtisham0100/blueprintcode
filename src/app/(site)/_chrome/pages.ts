@@ -7,6 +7,7 @@ export type NavKey =
   | 'configurators'
   | 'prototypes'
   | 'process-blueprinter'
+  | 'wcag-scanner'
   | 'ppav-case-study'
   | 'pricing'
   | 'insights'
@@ -91,6 +92,13 @@ const PAGES: Record<string, ChromeMeta> = {
     doc: 'SERVICES INDEX',
     metaKey: 'ISSUE',
     metaVal: '2026 — PUBLISHED RATES',
+  },
+  '/services/website-accessibility-audit': {
+    label: 'WCAG SCANNER',
+    doc: 'WEBSITE ACCESSIBILITY AUDIT',
+    metaKey: 'STANDARD',
+    metaVal: 'WCAG 2.2 AA — FREE PRE-CHECK',
+    current: 'wcag-scanner',
   },
   '/services/wcag-compliance-audit-pricing': {
     label: 'WCAG AUDIT PRICING',
@@ -177,6 +185,7 @@ export const TOOLS_NAV: NavLink[] = [
   { key: 'configurators', href: '/configurators', label: 'Configurators', note: 'Six tool types, one connected system' },
   { key: 'prototypes', href: '/prototypes', label: 'Prototypes', note: 'Working prototypes you can try' },
   { key: 'process-blueprinter', href: '/process-blueprinter', label: 'Process Blueprinter', note: 'Map your old road, see the Blueprint Code road' },
+  { key: 'wcag-scanner', href: '/services/website-accessibility-audit#scan', label: 'WCAG Scanner', note: 'Free WCAG 2.2 AA pre-check for any website' },
 ];
 
 /** Primary nav items, in order. */
