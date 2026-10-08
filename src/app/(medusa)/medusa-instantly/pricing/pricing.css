@@ -1,0 +1,102 @@
+/* Medusa Heads pricing page. Carried over from the hand-built
+   medusa-heads-pricing HTML; selectors are unscoped because this stylesheet
+   only loads under the (medusa) root layout, which has no other pages. */
+:root{--night:#070b12;--deep:#0b111b;--ink:#f1eee7;--muted:#8f938f;--bronze:#b79a63;--bronze2:#6f5b39;--cyan:#79d7e8;--line:#292a28}
+*{box-sizing:border-box}[hidden]{display:none!important}body{margin:0;background:radial-gradient(circle at 80% 20%,rgba(183,154,99,.08),transparent 28%),var(--night);color:var(--ink);font-family:Inter,sans-serif}
+header{height:78px;border-bottom:1px solid #24241f;display:flex;align-items:center;justify-content:space-between;padding:0 4.5vw;background:rgba(7,11,18,.92);position:sticky;top:0;z-index:5}
+.brand{display:flex;gap:12px;align-items:center}.brand img{width:34px;height:34px}.brandname{font:600 17px "Cormorant Garamond";letter-spacing:.16em}.brandname small{display:block;font:400 8px IBM Plex Mono;color:#77786f;letter-spacing:.22em;margin-top:5px}
+.meta{font:400 9px IBM Plex Mono;color:#74766f;letter-spacing:.15em}.meta b{color:var(--bronze);font-weight:400}
+main{max-width:1460px;margin:auto;padding:0 5vw 80px}
+.hero{display:grid;grid-template-columns:1.1fr .9fr;gap:5vw;align-items:center;min-height:580px;border-bottom:1px solid #24241f}
+.k{font:500 9px IBM Plex Mono;color:var(--bronze);letter-spacing:.22em;margin-bottom:20px}
+h1,h2{font-family:"Cormorant Garamond",serif;font-weight:500;text-transform:uppercase;letter-spacing:-.035em}
+h1{font-size:clamp(64px,7vw,110px);line-height:.78;margin:0 0 28px}h2{font-size:clamp(42px,5vw,72px);line-height:.9;margin:0}
+.lead{max-width:700px;color:#aeb0aa;font-size:16px;line-height:1.75}.rule{margin-top:22px;font:400 9px IBM Plex Mono;color:#666a67;letter-spacing:.08em}
+.visual{min-height:460px;border-left:1px solid #24241f;display:grid;place-items:center;position:relative}.visual img{width:min(390px,78%);height:auto}.cap{position:absolute;left:20px;bottom:20px;font:400 8px/1.8 IBM Plex Mono;color:#5e625e;letter-spacing:.12em}.cap b{color:var(--bronze);font-weight:400}
+.sec{padding:70px 0;border-bottom:1px solid #24241f}.head{display:grid;grid-template-columns:.8fr 1.2fr;gap:4vw;align-items:end;margin-bottom:32px}.copy{color:#9ea19c;line-height:1.7;margin:0}
+.modes{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.card{border:1px solid var(--line);background:linear-gradient(145deg,#0d131c,#080c12);padding:26px;display:flex;flex-direction:column;min-height:405px;position:relative}.card.featured{border-color:var(--bronze2)}.tag{font:500 8px IBM Plex Mono;color:#6f726c;letter-spacing:.16em}.card h3{font:600 35px "Cormorant Garamond";letter-spacing:.04em;margin:18px 0 6px}.strap{color:#a4a69f;font-size:13px;min-height:38px}.price{margin:25px 0 7px}.price b{font:500 44px "Cormorant Garamond"}.price span{font:400 9px IBM Plex Mono;color:#777a75}.gold{font:400 9px IBM Plex Mono;color:var(--bronze);letter-spacing:.08em;margin-bottom:17px}ul{list-style:none;padding:0;margin:0 0 22px}li{padding:9px 0;border-top:1px solid #252722;color:#969993;font-size:13px;line-height:1.5}li:before{content:"—";color:var(--bronze2);margin-right:8px}
+.sel{margin-top:auto;border:1px solid var(--bronze);background:transparent;color:#e4d3ae;padding:13px;font:500 9px IBM Plex Mono;letter-spacing:.13em;cursor:pointer}.sel.active,.sel:hover{background:var(--bronze);color:#080b10}
+.cerb{margin-top:14px;border:1px solid #34312a;background:linear-gradient(90deg,rgba(183,154,99,.06),#0a1019);padding:22px;display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center}.cmark{width:52px;height:52px;border:1px solid var(--bronze2);display:grid;place-items:center;font:600 25px "Cormorant Garamond";color:var(--bronze)}.cerb h3{margin:0 0 5px;font:600 22px "Cormorant Garamond"}.cerb p{margin:0;color:#8f938f;font-size:13px;line-height:1.55}.cerb small{font:500 9px IBM Plex Mono;color:var(--bronze);letter-spacing:.1em;text-align:right}
+.cerb-side{display:flex;flex-direction:column;gap:8px;align-items:flex-end}
+.purses{display:grid;grid-template-columns:repeat(4,1fr);gap:9px}.purse{border:1px solid var(--line);background:var(--deep);padding:18px 14px;min-height:190px;display:flex;flex-direction:column;cursor:pointer;font:inherit;color:inherit;text-align:left;width:100%}.purse.active,.purse:hover{border-color:var(--bronze)}.pn{font:500 8px IBM Plex Mono;color:#777a75;letter-spacing:.15em}.coins{font:500 34px "Cormorant Garamond";margin-top:18px}.cl{font:400 8px IBM Plex Mono;color:var(--bronze);letter-spacing:.12em}.pp{margin-top:auto;color:#9c9f99;font-size:12px}.pp b{display:block;color:var(--ink);font:500 17px "Cormorant Garamond"}
+.define{display:grid;grid-template-columns:1fr 1fr;gap:24px;margin:0 0 28px}.define div{border-left:1px solid var(--bronze2);padding-left:20px}.define strong{display:block;font:500 27px "Cormorant Garamond";margin-bottom:6px}.define span{font:400 9px/1.6 IBM Plex Mono;color:#777a75;letter-spacing:.06em}
+.builder{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:32px}.box{border:1px solid var(--line);background:var(--deep);padding:26px}.row{display:flex;justify-content:space-between;gap:15px;padding:11px 0;border-top:1px solid #252722;color:#8f938f;font-size:13px}.row b{color:var(--ink)}.total{margin-top:15px;padding-top:17px;border-top:1px solid var(--bronze2);display:flex;justify-content:space-between;align-items:end}.total span{font:500 9px IBM Plex Mono;color:#777a75}.total b{font:500 34px "Cormorant Garamond"}blockquote{margin:0;font:500 clamp(28px,3vw,42px)/1.08 "Cormorant Garamond"}.box p{color:#8f938f;font-size:13px;line-height:1.6}
+.cerb-pricing{margin-top:16px;padding-top:16px;border-top:1px solid #2d2b25}
+.cerb-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;max-width:980px}
+.cerb-tier{border:1px solid var(--line);background:#0b111b;padding:18px}
+.cerb-tier .ctag{font:500 8px IBM Plex Mono;color:#77786f;letter-spacing:.14em}
+.cerb-tier h4{font:600 24px "Cormorant Garamond";margin:10px 0 5px;letter-spacing:.04em}
+.cerb-tier .cprice{margin:14px 0 10px}
+.cerb-tier .cprice b{font:500 32px "Cormorant Garamond";color:var(--ink)}
+.cerb-tier .cprice span{font:400 9px IBM Plex Mono;color:#777a75}
+.cerb-tier p{margin:0;color:#8f938f;font-size:12.5px;line-height:1.55}
+.cerb-tier .sel{margin-top:14px}
+.cerb-lead{color:var(--bronze);margin-bottom:8px}
+.filter{font:400 9px IBM Plex Mono;color:var(--ink);letter-spacing:.1em;margin:-8px 0 17px;padding:7px 9px;border:1px solid var(--bronze2);align-self:flex-start}
+.selwrap{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+.selopt{border:1px solid var(--line);background:transparent;color:var(--ink);font:500 9px IBM Plex Mono;letter-spacing:.08em;padding:6px 8px;cursor:pointer}
+.selopt.active{border-color:var(--bronze);background:var(--bronze);color:#080b10}
+.selopt:disabled{cursor:not-allowed;color:#5e625e;border-style:dashed}
+.selopt:focus-visible,.sel:focus-visible,.purse:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.reserve{margin-top:14px;border:1px solid #34312a;background:linear-gradient(90deg,rgba(121,215,232,.04),#0a1019);padding:24px;display:grid;grid-template-columns:auto 1fr;gap:20px;align-items:start}
+.reserve .rmark{width:52px;height:52px;border:1px solid #3d5f66;display:grid;place-items:center;font:600 25px "Cormorant Garamond";color:var(--cyan)}
+.reserve h3{margin:0 0 6px;font:600 24px "Cormorant Garamond";letter-spacing:.04em}
+.reserve p{margin:0 0 12px;color:#8f938f;font-size:13px;line-height:1.6;max-width:760px}
+.reserve .bands{display:flex;gap:6px;flex-wrap:wrap;margin-top:4px}
+.reserve .band{font:400 8px IBM Plex Mono;letter-spacing:.1em;padding:6px 9px;border:1px solid var(--line);color:#8f938f}
+.reserve .band.live{border-color:var(--bronze2);color:var(--ink)}
+.reserve .band.res{border-color:#3d5f66;color:var(--cyan)}
+.reserve .band.out{border-style:dashed;color:#5e625e}
+@media(max-width:600px){.reserve{grid-template-columns:1fr}}
+.summary{margin-top:26px;font:500 clamp(22px,2.2vw,30px)/1.2 "Cormorant Garamond";color:var(--ink);max-width:640px}
+.hiw{padding:80px 0 10px;text-align:left;border-bottom:1px solid #24241f}
+.hiw h2{margin-bottom:14px}.hiw p{max-width:640px;color:#8f938f;line-height:1.7;margin:0 0 50px}
+details.fine{border-top:1px solid #252722;margin-top:4px}
+details.fine summary{cursor:pointer;list-style:none;padding:12px 0;font:500 9px IBM Plex Mono;letter-spacing:.13em;color:var(--bronze)}
+details.fine summary::-webkit-details-marker{display:none}
+details.fine summary:before{content:"+ ";}details.fine[open] summary:before{content:"– ";}
+details.fine summary:focus-visible{outline:2px solid var(--cyan);outline-offset:2px}
+.mini{border:1px solid var(--bronze);background:transparent;color:#e4d3ae;font:500 8px IBM Plex Mono;letter-spacing:.1em;padding:5px 8px;cursor:pointer;margin-left:8px}
+.mini.active{background:var(--bronze);color:#080b10}
+.bonus{font:400 9px IBM Plex Mono;color:var(--cyan);letter-spacing:.08em;margin:-10px 0 17px}
+.cerb-note{margin-top:10px;font:400 8px/1.6 IBM Plex Mono;color:#666a67;letter-spacing:.06em}
+.estimate-note{font:400 11px/1.55 Inter,sans-serif;color:#92958f;margin:10px 0 0}.row label{max-width:70%}
+.row input[type=number]{width:94px;text-align:right;background:#080c12;color:var(--ink);border:1px solid var(--bronze2);padding:7px;font:inherit}
+@media(max-width:700px){.cerb-grid{grid-template-columns:1fr}}
+
+.heads-intro{display:grid;grid-template-columns:1fr 1fr;gap:28px;margin-bottom:28px}
+.heads-card{border:1px solid var(--line);background:var(--deep);padding:24px}
+.heads-card strong{display:block;font:500 30px/1.05 "Cormorant Garamond";margin-bottom:7px}
+.heads-card span{font:400 9px/1.6 IBM Plex Mono;color:#777a75;letter-spacing:.06em}
+.heads-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+.head-pack{border:1px solid var(--line);background:#0b111b;padding:20px;min-height:230px;display:flex;flex-direction:column}
+.head-pack.featured{border-color:var(--bronze2)}
+.head-pack .hlabel{font:500 8px IBM Plex Mono;color:#77786f;letter-spacing:.14em}
+.head-pack h3{font:600 25px "Cormorant Garamond";margin:12px 0 7px;letter-spacing:.03em}
+.head-pack .count{font:500 38px/1 "Cormorant Garamond";color:var(--ink);margin:10px 0 4px}
+.head-pack .count small{font:400 9px IBM Plex Mono;color:var(--bronze);letter-spacing:.08em}
+.head-pack p{color:#8f938f;font-size:12.5px;line-height:1.55;margin:10px 0 0}
+.head-pack .head-note{margin-top:auto;padding-top:16px;font:400 8px/1.5 IBM Plex Mono;color:#666a67;letter-spacing:.07em}
+@media(max-width:980px){.heads-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-width:700px){.heads-intro,.heads-grid{grid-template-columns:1fr}}
+
+.cmp-wrap{overflow-x:auto;border:1px solid var(--line);background:var(--deep)}
+.cmp{width:100%;border-collapse:collapse;min-width:620px}
+.cmp th,.cmp td{text-align:left;padding:16px 20px;border-top:1px solid #252722;font-size:13px;line-height:1.55;vertical-align:top}
+.cmp thead th{border-top:0;font:500 9px IBM Plex Mono;letter-spacing:.14em;color:#77786f}
+.cmp thead th.us{color:var(--bronze)}
+.cmp tbody th{font:500 9px IBM Plex Mono;letter-spacing:.1em;color:#77786f;width:22%}
+.cmp td{color:#8f938f;width:39%}
+.cmp td.us{color:var(--ink);background:rgba(183,154,99,.05);border-left:1px solid var(--bronze2)}
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.cmp-foot{margin-top:22px;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;align-items:end}
+.cmp-foot blockquote{max-width:620px}
+.faq{display:grid;grid-template-columns:1fr 1fr;gap:10px}.faq article{border:1px solid var(--line);padding:20px;background:#0b111b}.faq h3{font:600 19px "Cormorant Garamond";margin:0 0 8px}.faq p{margin:0;color:#8f938f;font-size:13px;line-height:1.6}
+.cta{text-align:center;padding:70px 0 10px}.cta p{max-width:680px;margin:18px auto;color:#92958f;line-height:1.7}.cta a{display:inline-block;border:1px solid var(--bronze);padding:14px 18px;text-decoration:none;color:#e4d3ae;font:500 10px IBM Plex Mono;letter-spacing:.13em}
+.vat{margin-top:28px}
+footer{border-top:1px solid #24241f;padding:22px 4.5vw;display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap;font:400 8px IBM Plex Mono;color:#5f625e;letter-spacing:.1em}
+@media(max-width:1100px){.modes{grid-template-columns:1fr}.purses{grid-template-columns:repeat(2,1fr)}.card{min-height:0}}
+@media(max-width:850px){.hero,.head,.builder,.define{grid-template-columns:1fr}.visual{border-left:0;border-top:1px solid #24241f}}
+@media(max-width:600px){main{padding-left:20px;padding-right:20px}.purses{grid-template-columns:repeat(2,1fr)}.faq{grid-template-columns:1fr}.cerb{grid-template-columns:auto 1fr}.cerb small{grid-column:1/-1;text-align:left}.cerb-side{grid-column:1/-1;align-items:flex-start}}
+.launch{padding:46px 0;scroll-margin-top:80px}.launch figure{margin:0;max-width:1180px}.launch img{display:block;width:100%;height:auto;border:1px solid var(--bronze2);box-shadow:0 0 0 1px rgba(183,154,99,.12),0 30px 60px -30px rgba(0,0,0,.8)}.launch figcaption{margin-top:14px;font:400 9px/1.8 IBM Plex Mono;color:#777a75;letter-spacing:.12em}.launch figcaption b{color:var(--bronze);font-weight:400}
