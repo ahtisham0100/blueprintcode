@@ -1,6 +1,20 @@
 import { describe, expect, it } from 'vitest';
-import { ndaMail, recipients } from './record';
-import { isPartnerEmail, ndaCookie, ndaSecret, parseNdaInput, readCookie, signNdaSession, verifyNdaSession } from './nda';
+import { accessCodeMail, ndaMail, recipients } from './record';
+import {
+  accessCodeHash,
+  generateAccessCode,
+  isPartnerEmail,
+  ndaCookie,
+  ndaSecret,
+  normaliseAccessCode,
+  parseNdaInput,
+  pendingCookie,
+  readCookie,
+  signNdaSession,
+  signPendingAccess,
+  verifyNdaSession,
+  verifyPendingAccess,
+} from './nda';
 
 const SECRET = 'x'.repeat(40);
 const NOW = 1_800_000_000;
@@ -74,7 +88,7 @@ describe('NDA notification email', () => {
   it('composes a branded message for an Instantly signer', () => {
     const m = ndaMail(base);
     expect(m.subject).toBe('NDA signed: Ada Lovelace (ada@instantly.ai) — Medusa × Instantly');
-    expect(m.html).toContain('has entered the partner room');
+    expect(m.html).toContain('has signed the NDA');
     expect(m.html).toContain('5 October 2026 at 15:58 UK');
     expect(m.html).toContain('UA &lt;x&gt;');
     expect(m.text).toContain('Signed by: Ada Lovelace');
@@ -82,6 +96,46 @@ describe('NDA notification email', () => {
   it('marks a Blueprint Code AI signer as an internal preview', () => {
     const m = ndaMail({ ...base, email: 'james@blueprintcode.ai' });
     expect(m.subject).toMatch(/^\[Internal preview\] /);
-    expect(m.html).toContain('previewed the partner room');
+    expect(m.html).toContain('previewed the NDA gate');
+  });
+});
+
+describe('Access codes', () => {
+  const s = { name: 'Ada', email: 'ada@instantly.ai', ndaVersion: 'v2' };
+  it('generates readable XXXX-XXXX codes that normalise back', () => {
+    for (let i = 0; i < 50; i++) {
+      const c = generateAccessCode();
+      expect(c).toMatch(/^[A-HJKMNP-Z2-9]{4}-[A-HJKMNP-Z2-9]{4}$/);
+      expect(normaliseAccessCode(c)).toBe(c.replace('-', ''));
+    }
+  });
+  it('ignores case, spaces and dashes, and rejects anything else', () => {
+    expect(normaliseAccessCode(' abcd-efgh ')).toBe('ABCDEFGH');
+    expect(normaliseAccessCode('ABCD EFGH')).toBe('ABCDEFGH');
+    expect(normaliseAccessCode('ABCDEFG')).toBeNull();
+    expect(normaliseAccessCode('ABCDEFG0')).toBeNull();
+    expect(normaliseAccessCode(42)).toBeNull();
+  });
+  it('hashes with the secret', async () => {
+    expect(await accessCodeHash('ABCDEFGH', SECRET)).toMatch(/^[0-9a-f]{64}$/);
+    expect(await accessCodeHash('ABCDEFGH', SECRET)).not.toBe(await accessCodeHash('ABCDEFGH', 'y'.repeat(40)));
+  });
+  it('redeems the pending cookie only with its own code, for a week', async () => {
+    const h = await accessCodeHash('ABCDEFGH', SECRET);
+    const t = await signPendingAccess({ ...s, codeHash: h }, SECRET, NOW);
+    expect(await verifyPendingAccess(t, h, SECRET, NOW + 60)).toEqual(s);
+    expect(await verifyPendingAccess(t, await accessCodeHash('ABCDEFGJ', SECRET), SECRET, NOW)).toBeNull();
+    expect(await verifyPendingAccess(t, h, SECRET, NOW + 7 * 86400 + 1)).toBeNull();
+    // A pending token never opens the room on its own.
+    expect(await verifyNdaSession(t, SECRET, NOW)).toBeNull();
+  });
+  it('scopes the pending cookie to the access endpoint', () => {
+    expect(pendingCookie('tok', false)).toBe('bpc_medusa_pending=tok; Path=/api/medusa-instantly/access; HttpOnly; SameSite=Lax; Max-Age=604800');
+  });
+  it('emails the code with a link back to the gate', () => {
+    const m = accessCodeMail('Ada Lovelace', 'ABCD-EFGH');
+    expect(m.subject).toContain('ABCD-EFGH');
+    expect(m.html).toContain('Your access code, Ada');
+    expect(m.html).toContain('/medusa-instantly?access=code');
   });
 });

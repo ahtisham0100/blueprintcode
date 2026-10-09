@@ -103,8 +103,8 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
 <div id="ndaGate" role="dialog" aria-modal="true" aria-labelledby="ndaTitle">
   <div class="nda-card">
     <div class="nda-kicker">Confidential partner room</div>
-    <h2 id="ndaTitle">Sign NDA &amp; Enter</h2>
-    <p>This confidentiality undertaking protects the non-public product architecture, IP, pricing, commercial model, technical approach and partnership material disclosed inside the room.</p>
+    <h2 id="ndaTitle">Sign NDA &amp; Request Access</h2>
+    <p>This confidentiality undertaking protects the non-public product architecture, IP, pricing, commercial model, technical approach and partnership material disclosed inside the room. Once accepted, we will send a private access code to your work email.</p>
     <div class="nda-terms" id="ndaTerms">By entering, you agree to keep non-public information confidential, use it only to evaluate a potential partnership with Blueprint Code AI / Medusa Heads, and not disclose or exploit it outside that purpose without written permission. Public information and information independently developed or lawfully received from another source are excluded.</div>
     <form id="ndaForm" novalidate>
       <div class="nda-grid">
@@ -115,11 +115,19 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
       </div>
       <label class="nda-check"><input id="ndaAccept" type="checkbox" required><span>I confirm the details above are accurate, I have authority to accept this confidentiality undertaking for myself / my organisation, and I agree to the terms above.</span></label>
       <div class="nda-actions">
-        <button class="nda-submit" type="submit">Sign NDA &amp; Enter →</button>
+        <button class="nda-submit" type="submit">Sign NDA &amp; Request Code →</button>
         <button class="nda-close" type="button" id="ndaCancel">Cancel</button>
       </div>
       <div class="nda-msg" id="ndaMsg" role="status" aria-live="polite"></div>
-      <div class="nda-note">Partner version · NDA version MH-PARTNER-2026-10-v2</div>
+      <div class="nda-note">Partner version · NDA version MH-PARTNER-2026-10-v2 · Access codes are issued only after NDA acceptance.</div>
+    </form>
+    <form class="nda-terms" id="codeForm" style="margin-top:18px" novalidate>
+      <strong style="display:block;color:#d6a841;letter-spacing:.12em;font-size:11px;text-transform:uppercase;margin-bottom:10px">Already have an access code?</strong>
+      <div class="nda-grid" style="grid-template-columns:1fr auto;align-items:end">
+        <div class="nda-field"><label for="accessCode">Private access code</label><input id="accessCode" autocomplete="one-time-code" inputmode="text" autocapitalize="characters" spellcheck="false" placeholder="Enter code"></div>
+        <button class="nda-submit" type="submit" id="codeEnter">Enter confidential room →</button>
+      </div>
+      <div class="nda-msg" id="codeMsg" role="status" aria-live="polite"></div>
     </form>
   </div>
 </div>
@@ -127,8 +135,10 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
 <script>
 (() => {
   // The NDA is recorded and checked by the server (src/medusa/nda.ts), which
-  // also decides who may enter; a valid acceptance sets the room cookie.
+  // also decides who may enter. A valid acceptance emails the signer a private
+  // code; entering it here sets the room cookie.
   const NDA_ENDPOINT='/api/medusa-instantly/nda';
+  const CODE_VERIFY_ENDPOINT='/api/medusa-instantly/access';
   const ROOM_URL='/medusa-instantly/partner-room';
   const NDA_VERSION='MH-PARTNER-2026-10-v2';
 
@@ -143,10 +153,11 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
 
   const gate=document.getElementById('ndaGate'),form=document.getElementById('ndaForm'),msg=document.getElementById('ndaMsg'),submit=form.querySelector('.nda-submit');
   const field=id=>document.getElementById(id).value.trim();
+  const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
   let lastFocus=null;
-  function openGate(){lastFocus=document.activeElement;gate.classList.add('open');document.body.style.overflow='hidden';document.getElementById('ndaName').focus();}
-  function closeGate(){gate.classList.remove('open');document.body.style.overflow='';msg.textContent='';if(lastFocus)lastFocus.focus();}
-  document.getElementById('ndaOpen').onclick=openGate;
+  function openGate(focusId){lastFocus=document.activeElement;gate.classList.add('open');document.body.style.overflow='hidden';document.getElementById(focusId||'ndaName').focus();}
+  function closeGate(){gate.classList.remove('open');document.body.style.overflow='';msg.textContent='';codeMsg.textContent='';if(lastFocus)lastFocus.focus();}
+  document.getElementById('ndaOpen').onclick=()=>openGate();
   document.getElementById('ndaCancel').onclick=closeGate;
   gate.addEventListener('click',e=>{if(e.target===gate)closeGate();});
   gate.addEventListener('keydown',e=>{if(e.key==='Escape')closeGate();});
@@ -167,20 +178,46 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
         msg.textContent=data.error||'We could not record your acceptance just now. Please try again, or email james@blueprintcode.ai.';
         return;
       }
-      msg.className='nda-msg ok';msg.textContent='Accepted. Opening the partner room…';
-      location.assign(data.next||ROOM_URL);
+      msg.className='nda-msg ok';
+      msg.innerHTML='NDA accepted. A private access code has been sent to <strong>'+esc(record.email)+'</strong>. Enter it below to open the confidential partner room containing IP, current indicative pricing, commercial model and technical material.';
+      submit.textContent='NDA SIGNED · CODE SENT';
+      accessCode.focus();
     }catch(err){
       submit.disabled=false;
       msg.textContent='Could not reach the server. Please check your connection and try again.';
     }
   });
 
+  const codeForm=document.getElementById('codeForm'),codeEnter=document.getElementById('codeEnter'),accessCode=document.getElementById('accessCode'),codeMsg=document.getElementById('codeMsg');
+  codeForm.addEventListener('submit',async e=>{
+    e.preventDefault();codeMsg.className='nda-msg';
+    const code=accessCode.value.trim();
+    if(!code){codeMsg.textContent='Enter the private access code sent to your work email.';return;}
+    codeEnter.disabled=true;codeMsg.textContent='Verifying access code…';
+    try{
+      const r=await fetch(CODE_VERIFY_ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({code})});
+      const data=await r.json().catch(()=>({}));
+      if(!r.ok||!data.ok){
+        codeEnter.disabled=false;
+        codeMsg.textContent=data.error||'That code could not be verified. Check the code or request a new one.';
+        return;
+      }
+      codeMsg.className='nda-msg ok';codeMsg.textContent='Access verified. Opening the confidential partner room…';
+      location.assign(data.next||ROOM_URL);
+    }catch(err){
+      codeEnter.disabled=false;
+      codeMsg.textContent='Could not reach the server. Please check your connection and try again.';
+    }
+  });
+
   // Sent back here from the partner room without a valid NDA session
-  // (?nda=required): show the last panel with the gate already open.
-  if(q.get('nda')==='required'){
+  // (?nda=required), or from the access-code email (?access=code): show the
+  // last panel with the gate already open.
+  const access=q.get('access')==='code';
+  if(q.get('nda')==='required'||access){
     history.replaceState(null,'',location.pathname+(partner?'?partner='+encodeURIComponent(partner):'')+'#ecosystem');
     document.getElementById('ecosystem').scrollIntoView();
-    openGate();
+    openGate(access?'accessCode':'ndaName');
   }
 })();
 </script>

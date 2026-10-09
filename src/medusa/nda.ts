@@ -126,3 +126,91 @@ export function ndaSecret(env: NodeJS.ProcessEnv = process.env): string {
   if (!s || s.length < 16) throw new Error('MEDUSA_NDA_SECRET (or PAYLOAD_SECRET) is not set');
   return s;
 }
+
+/* Access codes. Signing the NDA no longer opens the room directly: the signer
+   is emailed a private code, and entering it on /medusa-instantly sets the
+   room cookie. Codes are stored only as a keyed hash (Postgres, so a code works
+   on any device) and in a signed "pending" cookie (so the signing browser
+   works even without a database). */
+
+export const ACCESS_API_PATH = '/api/medusa-instantly/access';
+export const PENDING_COOKIE = 'bpc_medusa_pending';
+/** A code can be used, on any device, for a week after signing. */
+export const ACCESS_CODE_TTL = 7 * 24 * 60 * 60;
+const PENDING_AUDIENCE = 'bpc-medusa-access-pending';
+/** No 0/O, 1/I/L: the code is read from an email and typed by hand. */
+const CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
+const CODE_LENGTH = 8;
+
+/** A fresh code, formatted "XXXX-XXXX". */
+export function generateAccessCode(): string {
+  const out: string[] = [];
+  const buf = new Uint8Array(1);
+  // Rejection sampling keeps every character equally likely.
+  const limit = 256 - (256 % CODE_ALPHABET.length);
+  while (out.length < CODE_LENGTH) {
+    crypto.getRandomValues(buf);
+    if (buf[0] < limit) out.push(CODE_ALPHABET[buf[0] % CODE_ALPHABET.length]);
+  }
+  return `${out.slice(0, 4).join('')}-${out.slice(4).join('')}`;
+}
+
+/** What the visitor typed, as the 8 canonical characters, or null if it
+ *  cannot be a code. Case, spaces and dashes don't matter. */
+export function normaliseAccessCode(input: unknown): string | null {
+  if (typeof input !== 'string') return null;
+  const c = input.toUpperCase().replace(/[\s-]/g, '');
+  if (c.length !== CODE_LENGTH) return null;
+  for (const ch of c) if (!CODE_ALPHABET.includes(ch)) return null;
+  return c;
+}
+
+/** Keyed hash of a normalised code; the code itself is never stored. */
+export async function accessCodeHash(code: string, secret: string): Promise<string> {
+  const digest = await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`medusa-code:${secret}:${code}`));
+  return Array.from(new Uint8Array(digest), (b) => b.toString(16).padStart(2, '0')).join('');
+}
+
+export async function signPendingAccess(
+  s: NdaSession & { codeHash: string },
+  secret: string,
+  nowSec = Math.floor(Date.now() / 1000),
+): Promise<string> {
+  return new SignJWT({ name: s.name, email: s.email, nda: s.ndaVersion, code: s.codeHash })
+    .setProtectedHeader({ alg: 'HS256', typ: 'JWT' })
+    .setSubject(s.email)
+    .setIssuer(ISSUER)
+    .setAudience(PENDING_AUDIENCE)
+    .setIssuedAt(nowSec)
+    .setExpirationTime(nowSec + ACCESS_CODE_TTL)
+    .sign(await signingKey(secret));
+}
+
+/** The signer in the pending cookie, if it is valid and was issued for this code. */
+export async function verifyPendingAccess(
+  token: string | null | undefined,
+  codeHash: string,
+  secret: string,
+  nowSec?: number,
+): Promise<NdaSession | null> {
+  if (!token) return null;
+  try {
+    const { payload } = await jwtVerify(token, await signingKey(secret), {
+      issuer: ISSUER,
+      audience: PENDING_AUDIENCE,
+      algorithms: ['HS256'],
+      currentDate: nowSec === undefined ? undefined : new Date(nowSec * 1000),
+    });
+    if (payload.code !== codeHash) return null;
+    if (typeof payload.email !== 'string' || !isPartnerEmail(payload.email)) return null;
+    if (typeof payload.name !== 'string' || typeof payload.nda !== 'string') return null;
+    return { name: payload.name, email: payload.email, ndaVersion: payload.nda };
+  } catch {
+    return null;
+  }
+}
+
+/** Sent only to the access endpoint. maxAge 0 clears it. */
+export function pendingCookie(token: string, secure: boolean, maxAge = ACCESS_CODE_TTL): string {
+  return `${PENDING_COOKIE}=${token}; Path=${ACCESS_API_PATH}; HttpOnly; SameSite=Lax; Max-Age=${maxAge}${secure ? '; Secure' : ''}`;
+}
