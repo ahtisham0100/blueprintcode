@@ -8,7 +8,11 @@ const NOW = 1_800_000_000;
 describe('NDA input', () => {
   it('accepts a complete Instantly submission', () => {
     const r = parseNdaInput({ name: '  Ada   Lovelace ', email: 'Ada@Instantly.ai', accepted: true, nda_version: 'v1' });
-    expect(r).toEqual({ ok: true, value: { name: 'Ada Lovelace', email: 'ada@instantly.ai', accepted: true, ndaVersion: 'v1' } });
+    expect(r).toEqual({ ok: true, value: { name: 'Ada Lovelace', email: 'ada@instantly.ai', company: null, role: null, accepted: true, ndaVersion: 'v1' } });
+  });
+  it('keeps the optional company and role', () => {
+    const r = parseNdaInput({ name: 'Ada', email: 'ada@instantly.ai', company: ' Instantly ', role: '', accepted: true });
+    expect(r).toMatchObject({ ok: true, value: { company: 'Instantly', role: null } });
   });
   it('rejects non-Instantly addresses, missing names and an unticked box', () => {
     expect(parseNdaInput({ name: 'A', email: 'a@gmail.com', accepted: true })).toMatchObject({ ok: false });
@@ -66,7 +70,7 @@ describe('NDA notification recipients', () => {
 });
 
 describe('NDA notification email', () => {
-  const base = { name: 'Ada Lovelace', email: 'ada@instantly.ai', ndaVersion: 'v1', acceptedAt: '2026-10-05T14:58:18.435Z', ip: '1.2.3.4', userAgent: 'UA <x>' };
+  const base = { name: 'Ada Lovelace', email: 'ada@instantly.ai', company: 'Instantly', role: null, ndaVersion: 'v1', acceptedAt: '2026-10-05T14:58:18.435Z', ip: '1.2.3.4', userAgent: 'UA <x>' };
   it('composes a branded message for an Instantly signer', () => {
     const m = ndaMail(base);
     expect(m.subject).toBe('NDA signed: Ada Lovelace (ada@instantly.ai) — Medusa × Instantly');

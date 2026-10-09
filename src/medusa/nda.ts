@@ -9,7 +9,7 @@ export const PARTNERSHIP_PATH = '/medusa-instantly';
 export const PARTNER_ROOM_PATH = '/medusa-instantly/partner-room';
 export const NDA_API_PATH = '/api/medusa-instantly/nda';
 
-export const NDA_VERSION = 'MH-INSTANTLY-2026-10-04-v1';
+export const NDA_VERSION = 'MH-PARTNER-2026-10-v2';
 export const NDA_COOKIE = 'bpc_medusa_nda';
 /** The room stays open for a day after signing; after that the gate is shown again. */
 export const NDA_SESSION_TTL = 24 * 60 * 60;
@@ -25,13 +25,24 @@ const AUDIENCE = 'bpc-medusa-partner-room';
 
 export type NdaSession = { name: string; email: string; ndaVersion: string };
 
-export type NdaInput = { name: string; email: string; accepted: boolean; ndaVersion: string };
+/** Company and role are asked for by the form but optional here (null when blank). */
+export type NdaInput = {
+  name: string;
+  email: string;
+  company: string | null;
+  role: string | null;
+  accepted: boolean;
+  ndaVersion: string;
+};
 
 /** Parses and validates the JSON body of the NDA form. Returns an error message
  *  for the visitor, or the clean input. */
 export function parseNdaInput(body: unknown): { ok: true; value: NdaInput } | { ok: false; error: string } {
   const b = (body && typeof body === 'object' ? body : {}) as Record<string, unknown>;
-  const name = typeof b.name === 'string' ? b.name.trim().replace(/\s+/g, ' ').slice(0, 120) : '';
+  const text = (v: unknown) => (typeof v === 'string' ? v.trim().replace(/\s+/g, ' ').slice(0, 120) : '');
+  const name = text(b.name);
+  const company = text(b.company) || null;
+  const role = text(b.role) || null;
   const email = typeof b.email === 'string' ? b.email.trim().toLowerCase() : '';
   const accepted = b.accepted === true || b.accepted === 'true' || b.accepted === 'on';
   const ndaVersion = typeof b.nda_version === 'string' && b.nda_version ? b.nda_version.slice(0, 64) : NDA_VERSION;
@@ -41,7 +52,7 @@ export function parseNdaInput(body: unknown): { ok: true; value: NdaInput } | { 
     return { ok: false, error: 'Please use your Instantly company email to access the confidential partner room.' };
   }
   if (!accepted) return { ok: false, error: 'Please accept the Confidentiality Agreement to continue.' };
-  return { ok: true, value: { name, email, accepted: true, ndaVersion } };
+  return { ok: true, value: { name, email, company, role, accepted: true, ndaVersion } };
 }
 
 /** A Blueprint Code AI signer: a preview, not a partner acceptance. */

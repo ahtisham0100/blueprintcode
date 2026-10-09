@@ -11,6 +11,8 @@ import { isInternalEmail, PARTNERSHIP_PATH } from './nda';
 export type NdaAcceptance = {
   name: string;
   email: string;
+  company: string | null;
+  role: string | null;
   ndaVersion: string;
   acceptedAt: string;
   ip: string | null;
@@ -37,6 +39,8 @@ export async function storeNdaAcceptance(a: NdaAcceptance, databaseUrl = process
           ip          text,
           user_agent  text
         )`;
+      // Added when the form started asking for company and role.
+      await sql`ALTER TABLE medusa_nda_acceptances ADD COLUMN IF NOT EXISTS company text, ADD COLUMN IF NOT EXISTS role text`;
     })().catch((e) => {
       schemaReady = null;
       throw e;
@@ -44,8 +48,8 @@ export async function storeNdaAcceptance(a: NdaAcceptance, databaseUrl = process
   }
   await schemaReady;
   await sql`
-    INSERT INTO medusa_nda_acceptances (accepted_at, name, email, nda_version, ip, user_agent)
-    VALUES (${a.acceptedAt}, ${a.name}, ${a.email}, ${a.ndaVersion}, ${a.ip}, ${a.userAgent})`;
+    INSERT INTO medusa_nda_acceptances (accepted_at, name, email, company, role, nda_version, ip, user_agent)
+    VALUES (${a.acceptedAt}, ${a.name}, ${a.email}, ${a.company}, ${a.role}, ${a.ndaVersion}, ${a.ip}, ${a.userAgent})`;
   return true;
 }
 
@@ -65,6 +69,8 @@ export function ndaMail(a: NdaAcceptance): { subject: string; html: string; text
     rows: [
       { label: 'Signed by', value: a.name },
       { label: 'Email', value: a.email, kind: 'email' },
+      { label: 'Company', value: a.company ?? '' },
+      { label: 'Role', value: a.role ?? '' },
       { label: 'Accepted', value: ukTime(a.acceptedAt) },
       { label: 'NDA version', value: a.ndaVersion },
       { label: 'IP address', value: a.ip ?? '' },

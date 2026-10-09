@@ -21,10 +21,12 @@ export async function POST(req: Request): Promise<Response> {
   const parsed = parseNdaInput(body);
   if (!parsed.ok) return NextResponse.json({ ok: false, error: parsed.error }, { status: 400 });
 
-  const { name, email, ndaVersion } = parsed.value;
+  const { name, email, company, role, ndaVersion } = parsed.value;
   const acceptance = {
     name,
     email,
+    company,
+    role,
     ndaVersion,
     acceptedAt: new Date().toISOString(),
     ip: req.headers.get('x-forwarded-for')?.split(',')[0]?.trim() || null,

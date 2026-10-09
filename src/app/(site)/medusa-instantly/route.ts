@@ -1,5 +1,5 @@
 /* GET /medusa-instantly — the Medusa Heads × Instantly partnership proposal:
-   four full-bleed panels and the "Sign NDA & Enter" gate (src/medusa/). A
+   three panels (the path, the Hunt, the ecosystem) and the "Sign NDA & Enter" gate (src/medusa/). A
    private pitch page: reachable by link, noindex, not in the sitemap. */
 
 import { PRIVATE_HTML_HEADERS, partnershipHtml } from '@/medusa/pages';

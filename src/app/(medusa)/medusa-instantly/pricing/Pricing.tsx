@@ -19,10 +19,12 @@ interface Mode {
   /** "From £…": Pursue's price depends on the outreach platform. */
   from?: boolean;
   coins: number;
-  /** Tightest selection ceiling the plan allows (top N% of scans). */
+  /** Tightest selectivity the plan allows (top N% of qualified scans). */
   filter: number;
-  ceiling: string;
-  bonus?: boolean;
+  /** Seek's +100 Coins in the first month. */
+  firstMonthBonus?: boolean;
+  /** The cyan line under the allowance. */
+  bonus?: string;
   featured?: boolean;
   items: string[];
 }
@@ -35,8 +37,8 @@ const MODES: Mode[] = [
     price: 149,
     coins: 50,
     filter: 40,
-    ceiling: 'TOP 40% OF SCANS',
-    bonus: true,
+    firstMonthBonus: true,
+    bonus: '+100 BONUS COINS IN YOUR FIRST MONTH',
     items: [
       'Three specialist Heads hunting for you',
       'Evidence-qualified opportunities',
@@ -48,27 +50,27 @@ const MODES: Mode[] = [
     key: 'Enrich',
     tag: 'MODE / 02',
     strap: 'Identify the likely decision-makers and add the contact context around the opportunity.',
-    price: 349,
+    price: 249,
     coins: 150,
     filter: 30,
-    ceiling: 'TOP 30–40% OF SCANS',
+    bonus: 'DECISION-MAKERS + CONTACT DETAILS ON EVERY OPPORTUNITY',
     featured: true,
     items: [
-      'Everything in Seek',
-      'Likely decision-makers identified',
+      'Likely decision-makers identified for every opportunity',
       'Roles and contact details for outreach',
       'Context for a first message',
+      'Everything in Seek',
     ],
   },
   {
     key: 'Pursue',
     tag: 'MODE / 03',
     strap: 'Send qualified opportunities straight into your outreach campaigns.',
-    price: 399,
+    price: 299,
     from: true,
     coins: 150,
     filter: 20,
-    ceiling: 'TOP 20–40% OF SCANS',
+    bonus: 'FINAL PRICE DEPENDS ON YOUR OUTREACH PARTNER',
     items: [
       'Everything in Enrich',
       'Sent straight into your outreach campaigns',
@@ -88,15 +90,15 @@ interface Purse {
 }
 
 const PURSES: Purse[] = [
-  { name: 'Starter', coins: 150, price: 149, unit: '£0.99 / opportunity · ex VAT' },
-  { name: 'Growth', coins: 500, price: 399, unit: '£0.80 / opportunity · ex VAT' },
-  { name: 'Scale', coins: 1500, price: 899, unit: '£0.60 / opportunity · ex VAT' },
+  { name: 'Starter', coins: 150, price: 225, unit: '£1.50 / opportunity · ex VAT' },
+  { name: 'Growth', coins: 500, price: 625, unit: '£1.25 / opportunity · ex VAT' },
+  { name: 'Scale', coins: 1500, price: 1500, unit: '£1.00 / opportunity · ex VAT' },
   { name: 'Agency & Corporate', coins: 5000, price: 0, unit: 'Volume pricing · shared Purse', custom: true },
 ];
 
 interface Check {
   key: CheckKey;
-  /** Charge per delivered Coin, in pounds. Pack includes the Cerberus £0.30. */
+  /** Charge per delivered Coin, in pounds. Pack includes the Cerberus people checks. */
   rate: number;
   label: string;
   tag: string;
@@ -108,24 +110,33 @@ interface Check {
 const CHECKS: Check[] = [
   {
     key: 'Cerberus',
-    rate: 0.3,
+    rate: 0.5,
     label: 'CERBERUS',
     tag: 'PEOPLE VERIFICATION',
-    price: '£0.30',
+    price: '£0.50',
     body: 'Verifies the people Enrich has identified: role accuracy, whether they are still at the company, decision-making relevance, company relationships, officer or ownership context where useful, source freshness and contradictions. It strengthens the human side of the case without changing the Head’s selection rules.',
   },
   {
     key: 'Cerberus Pack',
-    rate: 0.8,
-    label: 'CERBERUS + PACK',
-    tag: 'FINANCIAL VERIFICATION',
-    price: '+£0.50',
-    body: 'Includes the Cerberus people checks, then adds deeper financial verification using relevant licensed paid-data sources where available: richer company financials, credit or risk indicators, ownership context and commercial-strength signals selected for that Hunt.',
+    rate: 5,
+    label: 'CERBERUS PACK',
+    tag: 'FULL COMMERCIAL VERIFICATION',
+    price: '£5.00',
+    body: 'Includes all Cerberus people checks, then verifies the existing opportunity in greater commercial depth using relevant licensed paid-data and research sources where available: richer company financials, credit or risk indicators, ownership and group context, director history, directly relevant contracts or procurement evidence, regulatory or filing flags, commercial-strength signals and material contradictions. The Pack strengthens confidence in the case Medusa has already made; it does not broaden the Hunt or search for unrelated new intelligence.',
     featured: true,
   },
 ];
 
-const SELECTIONS = [20, 30, 40] as const;
+/** Cerberus Gate: run after delivery on the Pack-checked opportunities chosen
+ *  for handoff, so it only exists alongside Pack. Pounds per gated opportunity. */
+const GATE_RATE = 1.25;
+
+/** Selectivity per Head: how much of the qualified pool is delivered now. */
+const SELECTIONS = [
+  { value: 20, label: 'FOCUSED' },
+  { value: 30, label: 'BALANCED' },
+  { value: 40, label: 'BROAD' },
+] as const;
 
 const gbp = (n: number) =>
   '£' + n.toLocaleString('en-GB', { minimumFractionDigits: n % 1 ? 2 : 0, maximumFractionDigits: 2 });
@@ -136,17 +147,22 @@ export default function Pricing() {
   const [checkKey, setCheckKey] = useState<CheckKey | null>(null);
   const [selection, setSelection] = useState<number>(40);
   const [deliveries, setDeliveries] = useState('0');
+  const [gate, setGate] = useState(false);
+  const [gatedInput, setGatedInput] = useState('0');
   const [showVerification, setShowVerification] = useState(true);
 
   const mode = MODES.find((m) => m.key === modeKey) ?? MODES[0];
   const purse = PURSES.find((p) => p.name === purseName) ?? null;
   const check = CHECKS.find((c) => c.key === checkKey) ?? null;
 
-  // A plan's ceiling is the tightest selection it allows; a looser one carries over.
+  // A plan allows selectivity down to its own band; a looser choice carries over.
   const tight = mode.filter;
   const selected = selection < tight ? tight : selection;
   const checked = Math.max(0, Math.floor(Number(deliveries) || 0));
   const verifyCost = check ? Math.round(checked * check.rate * 100) / 100 : 0;
+  // Gated opportunities are a subset of the checked deliveries.
+  const gated = Math.min(Math.max(0, Math.floor(Number(gatedInput) || 0)), checked);
+  const gateCost = gate ? Math.round(gated * GATE_RATE * 100) / 100 : 0;
   const prefix = mode.from ? 'From ' : '';
 
   const chooseMode = (m: Mode) => {
@@ -154,7 +170,23 @@ export default function Pricing() {
     setSelection((s) => (s < m.filter ? m.filter : s));
   };
   const togglePurse = (name: string) => setPurseName((p) => (p === name ? null : name));
-  const toggleCheck = (key: CheckKey) => setCheckKey((c) => (c === key ? null : key));
+  const toggleCheck = (key: CheckKey) => {
+    const next = checkKey === key ? null : key;
+    setCheckKey(next);
+    if (next !== 'Cerberus Pack') setGate(false);
+  };
+  // Adding Gate switches Pack on, since Gate only runs on Pack-checked opportunities.
+  const toggleGate = () => {
+    if (gate) return setGate(false);
+    setGate(true);
+    setCheckKey('Cerberus Pack');
+  };
+  const changeDeliveries = (v: string) => {
+    setDeliveries(v);
+    const cap = Math.max(0, Math.floor(Number(v) || 0));
+    if ((Number(gatedInput) || 0) > cap) setGatedInput(String(cap));
+  };
+  const changeGated = (v: string) => setGatedInput(Number(v) > checked ? String(checked) : v);
 
   return (
     <main>
@@ -171,7 +203,7 @@ export default function Pricing() {
           </p>
           <p className="summary">From £149 a month. Qualified opportunities, not lists. Top up when you need more.</p>
           <div className="rule">
-            PREMIUM VERIFIES THE COMPANY. CERBERUS VERIFIES THE PEOPLE. CERBERUS PACK ADDS FINANCIAL DEPTH ON TOP.
+            PREMIUM VERIFIES THE COMPANY. CERBERUS VERIFIES THE PEOPLE. CERBERUS PACK VERIFIES THE WHOLE OPPORTUNITY.
           </div>
         </div>
         <div className="visual">
@@ -190,7 +222,7 @@ export default function Pricing() {
         <figure>
           <img
             src="/medusa/launch-pricing.webp"
-            alt="Indicative launch pricing: Medusa Heads combines a monthly subscription with included Medusa Coins, then scales through additional Coins, extra Heads and Cerberus verification. Pursue moves qualified opportunities into downstream execution platforms such as Instantly. Medusa qualifies. Instantly executes."
+            alt="Indicative launch pricing: a monthly subscription with included base features, then scaling through additional usage, extra features and optional verification. Qualified opportunities can move directly into downstream execution platforms such as sales engagement, CRM or other channels. Medusa qualifies. Your platform executes."
             width="1672"
             height="941"
             loading="eager"
@@ -205,17 +237,18 @@ export default function Pricing() {
       <section className="sec" id="compare">
         <div className="head">
           <div>
-            <div className="k">01 / THE CREAM, NOT THE CARTON</div>
+            <div className="k">01 / FILTER BEFORE THE ENGINE</div>
             <h2>
-              SKIM THE CREAM.
+              BETTER INPUTS.
               <br />
-              LEAVE THE LIST.
+              BEFORE EXECUTION.
             </h2>
           </div>
           <p className="copy">
-            Contact databases sell you records and leave the judgement to you. Medusa does the judgement first: every
-            organisation is researched, evidenced and qualified against your criteria before it reaches you. If it
-            doesn&apos;t make the cut, you never see it, and it never uses a Coin.
+            Most outbound systems become useful once a candidate has already entered the workflow. Medusa works one
+            step earlier: it researches the wider market, applies your commercial judgement, and only passes forward
+            the organisations that earn their place. If it doesn&apos;t make the cut, you never see it, and it never
+            uses a Coin.
           </p>
         </div>
         <div className="cmp-wrap">
@@ -225,49 +258,49 @@ export default function Pricing() {
                 <th scope="col">
                   <span className="sr">Compared</span>
                 </th>
-                <th scope="col">LEAD LISTS</th>
+                <th scope="col">CANDIDATE POOL</th>
                 <th scope="col" className="us">
-                  MEDUSA
+                  MEDUSA QUALIFIED
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr>
-                <th scope="row">WHAT YOU GET</th>
-                <td>Records that match your filters</td>
-                <td className="us">Organisations that match your criteria, with evidence</td>
+                <th scope="row">WHAT ENTERS THE ENGINE</th>
+                <td>Organisations that match initial search or filter criteria</td>
+                <td className="us">Organisations that have earned their place through evidence-led qualification</td>
               </tr>
               <tr>
-                <th scope="row">WHO QUALIFIES THEM</th>
-                <td>You, after you&apos;ve paid</td>
-                <td className="us">Medusa, before delivery</td>
+                <th scope="row">WHEN JUDGEMENT HAPPENS</th>
+                <td>After candidates enter the workflow</td>
+                <td className="us">Before delivery or handoff</td>
               </tr>
               <tr>
                 <th scope="row">REJECTS AND DUPLICATES</th>
-                <td>Still use your credits</td>
+                <td>May still require review or cleanup</td>
                 <td className="us">Never use a Coin</td>
               </tr>
               <tr>
-                <th scope="row">WHY THIS LEAD</th>
-                <td>Job title and company size</td>
+                <th scope="row">WHY THIS ORGANISATION</th>
+                <td>Initial matching data</td>
                 <td className="us">Source evidence and reasoning you can check</td>
               </tr>
               <tr>
                 <th scope="row">OVER TIME</th>
-                <td>Same filters, same results</td>
-                <td className="us">Sharper, from your outcome feedback</td>
+                <td>Criteria can be rerun and refined</td>
+                <td className="us">Heads sharpen from outcome feedback</td>
               </tr>
               <tr>
-                <th scope="row">WHO RUNS IT</th>
-                <td>Someone building searches and cleaning exports</td>
-                <td className="us">Your Heads, running every month</td>
+                <th scope="row">ROLE IN THE STACK</th>
+                <td>Feeds the execution workflow</td>
+                <td className="us">Improves what deserves to enter it</td>
               </tr>
             </tbody>
           </table>
         </div>
         <div className="cmp-foot">
-          <blockquote>Fewer leads. Every one worth the call.</blockquote>
-          <div className="rule">LEAD LISTS SELL VOLUME. MEDUSA SELLS JUDGEMENT.</div>
+          <blockquote>Fewer candidates. Better inputs.</blockquote>
+          <div className="rule">MEDUSA FILTERS BEFORE THE ENGINE.</div>
         </div>
       </section>
 
@@ -283,8 +316,8 @@ export default function Pricing() {
           </div>
           <p className="copy">
             Every plan starts with Premium company verification using Medusa’s core public and open evidence. Higher
-            plans take each qualified opportunity further and let you choose a tighter maximum selection band. Only
-            organisations meeting the qualification standard are delivered.
+            plans take each qualified opportunity further. You can also choose how selective each Head should be:
+            Focused, Balanced or Broad. Only organisations that meet the qualification standard are ever considered.
           </p>
         </div>
         <div className="modes">
@@ -301,8 +334,8 @@ export default function Pricing() {
                 <span>/ MONTH · EX VAT</span>
               </div>
               <div className="gold">3 HEADS + {m.coins} MEDUSA COINS INCLUDED / MONTH</div>
-              {m.bonus && <div className="bonus">+100 BONUS COINS IN YOUR FIRST MONTH</div>}
-              <div className="filter">SELECTION CEILING: {m.ceiling}</div>
+              {m.bonus && <div className="bonus">{m.bonus}</div>}
+              <div className="filter">SELECTION: UP TO THE TOP {m.filter}% OF QUALIFIED SCANS</div>
               <ul>
                 {m.items.map((item) => (
                   <li key={item}>{item}</li>
@@ -332,9 +365,9 @@ export default function Pricing() {
             </h2>
           </div>
           <p className="copy">
-            Medusa Premium verifies the company as standard. When a Hunt deserves more scrutiny, add Cerberus to verify
-            the people Enrich identifies. Where financial depth is worth it, add Cerberus Pack on top for paid-data
-            financial checking.
+            Medusa Premium verifies the company as standard. Cerberus verifies the people. Cerberus Pack adds full
+            commercial verification of the existing opportunity. After delivery, you can run Cerberus Gate on the
+            Pack-checked opportunities you select for handoff.
           </p>
         </div>
         <div className="cerb" id="cerberus-box">
@@ -368,18 +401,36 @@ export default function Pricing() {
                     </article>
                   );
                 })}
+                <article className={gate ? 'cerb-tier gate-tier active' : 'cerb-tier gate-tier'}>
+                  <div className="ctag">AFTER DELIVERY · ON YOUR SELECTION</div>
+                  <h4>CERBERUS GATE</h4>
+                  <div className="cprice">
+                    <b>+£1.25</b> <span>/ SELECTED OPPORTUNITY · EX VAT</span>
+                  </div>
+                  <p>
+                    Run Gate after delivery, only on the Pack-checked opportunities you select for handoff. It checks the
+                    permitted-use context: target jurisdiction, applicable outreach rules, source and licence provenance,
+                    suppression or objection status, retention or use restrictions, and whether the Pack findings can be
+                    passed downstream for the intended purpose. You pay only for the opportunities you choose to Gate.
+                  </p>
+                  <button type="button" className={gate ? 'sel active' : 'sel'} aria-pressed={gate} onClick={toggleGate}>
+                    {gate ? 'GATE ADDED' : 'ADD GATE'}
+                  </button>
+                </article>
               </div>
               <div className="cerb-note cerb-lead">
-                PREMIUM VERIFIES THE COMPANY. CERBERUS VERIFIES THE PEOPLE. CERBERUS PACK ADDS FINANCIAL DEPTH ON TOP.
+                PREMIUM QUALIFIES THE COMPANY. CERBERUS VERIFIES THE PEOPLE. CERBERUS PACK VERIFIES THE EXISTING
+                COMMERCIAL CASE IN DEPTH. GATE CHECKS WHETHER THE OPPORTUNITIES YOU SELECT CAN BE HANDED OFF.
               </div>
               <div className="cerb-note">
-                CERBERUS COSTS £0.30 PER DELIVERED COIN. CERBERUS PACK ADDS £0.50 ON TOP, MAKING £0.80 TOTAL PER
-                PACK-CHECKED COIN. VERIFICATION DOES NOT REPLACE THE PURSE.
+                CERBERUS COSTS £0.50 PER DELIVERED COIN. CERBERUS PACK COSTS £5.00 PER DELIVERED COIN AND INCLUDES THE
+                PEOPLE CHECKS PLUS FULL COMMERCIAL VERIFICATION. CERBERUS GATE IS AN OPTIONAL +£1.25 PER OPPORTUNITY YOU
+                SELECT, RUN AFTER DELIVERY ON PACK-CHECKED OPPORTUNITIES. GATE IS NOT A STANDALONE CHECK.
               </div>
             </div>
           </div>
           <div className="cerb-side">
-            <small>WORKS WITH ANY PLAN</small>
+            <small>AVAILABLE WITH ENRICH &amp; PURSUE</small>
             <button
               type="button"
               className={showVerification ? 'sel active' : 'sel'}
@@ -465,7 +516,7 @@ export default function Pricing() {
             </div>
             <div className="row">
               <span>First-month bonus</span>
-              <b>{mode.bonus ? '+100 COINS' : '—'}</b>
+              <b>{mode.firstMonthBonus ? '+100 COINS' : '—'}</b>
             </div>
             <div className="row">
               <span>Purse (one-off)</span>
@@ -478,9 +529,9 @@ export default function Pricing() {
             <details className="fine">
               <summary>FINE-TUNE</summary>
               <div className="row">
-                <span>Selection ceiling per Head</span>
-                <span className="selwrap" role="group" aria-label="Selection per Head">
-                  {SELECTIONS.map((v) => {
+                <span>How selective should Medusa be?</span>
+                <span className="selwrap" role="group" aria-label="Selectivity per Head">
+                  {SELECTIONS.map(({ value: v, label }) => {
                     const locked = v < tight;
                     return (
                       <button
@@ -492,17 +543,24 @@ export default function Pricing() {
                         aria-pressed={v === selected}
                         onClick={() => setSelection(v)}
                       >
-                        TOP {v}%{locked ? (v === 20 ? ' · PURSUE' : ' · ENRICH') : ''}
+                        {label} · {v}%{locked ? (v === 20 ? ' · PURSUE' : ' · ENRICH') : ''}
                       </button>
                     );
                   })}
                 </span>
               </div>
+              <p className="estimate-note">
+                Qualification decides whether an opportunity is good enough. Selectivity decides how much of the
+                qualified pool you want delivered now.
+              </p>
             </details>
             <div className="row">
               <span>Verification</span>
               <span>
-                <b>{check ? `${check.label} / £${check.rate.toFixed(2)} PER DELIVERED COIN` : 'PREMIUM / COMPANY'}</b>
+                <b>
+                  {check ? `${check.label} / £${check.rate.toFixed(2)} PER DELIVERED COIN` : 'PREMIUM / COMPANY'}
+                  {gate ? ' + GATE ON SELECTED' : ''}
+                </b>
                 {CHECKS.map((c) => (
                   <button
                     key={c.key}
@@ -514,6 +572,9 @@ export default function Pricing() {
                     {c.key === 'Cerberus' ? 'CERBERUS' : 'PACK'}
                   </button>
                 ))}
+                <button type="button" className={gate ? 'mini active' : 'mini'} aria-pressed={gate} onClick={toggleGate}>
+                  GATE
+                </button>
               </span>
             </div>
             <div className="row" hidden={!check}>
@@ -526,13 +587,26 @@ export default function Pricing() {
                 inputMode="numeric"
                 aria-describedby="cerb-estimate-note"
                 value={deliveries}
-                onChange={(e) => setDeliveries(e.target.value)}
+                onChange={(e) => changeDeliveries(e.target.value)}
               />
             </div>
             <p id="cerb-estimate-note" className="estimate-note" hidden={!check}>
-              Enter your expected number of delivered opportunities to be checked. Cerberus costs £0.30 per delivered
-              Coin. Cerberus Pack adds £0.50 on top of Cerberus, making the total £0.80 per Pack-checked Coin.
+              Enter your expected number of delivered opportunities to be checked. Cerberus costs £0.50 per delivered
+              Coin. Cerberus Pack costs £5.00 per delivered Coin. Gate adds £1.25 only on the Pack-checked
+              opportunities you select for it.
             </p>
+            <div className="row" hidden={!gate}>
+              <label htmlFor="gated-coins">Opportunities you expect to Gate / month</label>
+              <input
+                type="number"
+                id="gated-coins"
+                min={0}
+                step={1}
+                inputMode="numeric"
+                value={gatedInput}
+                onChange={(e) => changeGated(e.target.value)}
+              />
+            </div>
             <div className="row">
               <span>Core evidence</span>
               <b>PREMIUM / COMPANY VERIFIED</b>
@@ -556,17 +630,21 @@ export default function Pricing() {
               <span>{check ? `Estimated ${check.label} usage / month` : 'Estimated verification usage / month'}</span>
               <b>{gbp(verifyCost)}</b>
             </div>
+            <div className="row" hidden={!gate}>
+              <span>Estimated Gate usage / month</span>
+              <b>{gbp(gateCost)}</b>
+            </div>
             <div className="total">
               <span>ESTIMATED MONTHLY COST (EXCL. ONE-OFF PURSE)</span>
               <b>
                 {prefix}
-                {gbp(mode.price + verifyCost)}
+                {gbp(mode.price + verifyCost + gateCost)}
               </b>
             </div>
             <p className="estimate-note">
-              All amounts ex VAT. Medusa subscription is recurring. Selected Purse is a one-off purchase; Cerberus is
-              charged only on actual delivered opportunities checked. Cerberus Pack adds a further £0.50 per
-              Pack-checked Coin on top of the £0.30 Cerberus charge.
+              All amounts ex VAT. Medusa subscription is recurring. Selected Purse is a one-off purchase; verification is
+              charged only on actual delivered opportunities checked. Cerberus Pack is £5.00 per Pack-checked Coin.
+              Cerberus Gate is a Pack-only add-on at +£1.25, charged only on the opportunities you select for it.
             </p>
           </div>
           <div className="box">
@@ -577,8 +655,8 @@ export default function Pricing() {
               and volume scale independently. Click a Purse again to remove it. The calculator separates one-off Purse
               purchases from recurring subscription charges and optional verification usage. Premium company
               verification is built in; Enrich identifies likely decision-makers, Cerberus verifies those people, then
-              Cerberus Pack adds financial depth when the extra scrutiny is worth it. Selection per Head lives under
-              Fine-tune.
+              Cerberus Pack deepens verification of the same opportunity when the commercial case justifies more
+              scrutiny. Pack verifies deeper; it does not broaden the Hunt. Selectivity per Head lives under Fine-tune.
             </p>
           </div>
         </div>
@@ -673,16 +751,15 @@ export default function Pricing() {
           <div>
             <h3>THE RESERVE</h3>
             <p>
-              Nothing Medusa researches is wasted. Opportunities that clear the qualification bar but miss your Head’s
-              chosen selection band are ranked and held in its Reserve, up to the top 50% of scans. When a hunting
-              ground stops yielding at your selection, you can release another qualifying band from the Reserve
-              instead of waiting for new scans. Released opportunities are re-checked before delivery and use one Coin
-              each, like any other.
+              Qualified opportunities that do not make your current selection are not wasted. Medusa ranks the next
+              strongest opportunities and holds them in the Reserve, ready to release later if you want to widen the
+              Hunt. Qualification decides whether an opportunity is good enough; selectivity decides what is delivered
+              now. Released opportunities are re-checked before delivery and use one Coin each, like any other.
             </p>
-            <div className="bands" aria-label="Example: a Head running at top 30%">
-              <span className="band live">TOP 30% · DELIVERED</span>
-              <span className="band res">30–50% · HELD IN RESERVE</span>
-              <span className="band out">BELOW 50% OR BELOW THE BAR · NOT KEPT</span>
+            <div className="bands" aria-label="Example: a Head running in Balanced mode">
+              <span className="band live">BALANCED · STRONGEST 30% · DELIVERED NOW</span>
+              <span className="band res">NEXT 20% · HELD IN RESERVE</span>
+              <span className="band out">BELOW QUALIFICATION STANDARD · NOT KEPT</span>
             </div>
           </div>
         </div>
@@ -705,12 +782,12 @@ export default function Pricing() {
         </div>
         <div className="faq">
           <article>
-            <h3>Do better plans get better research?</h3>
+            <h3>What does selectivity mean?</h3>
             <p>
-              Same evidence standard, more selective options. Seek can select up to the top 40% of scanned
-              organisations, Enrich as tightly as the top 30%, and Pursue as tightly as the top 20%. These are
-              ceilings, not delivery guarantees: an organisation must still clear the qualification standard. Each
-              delivery shows how many organisations were scanned.
+              Qualification decides whether an opportunity is good enough. Selectivity decides how much of that
+              qualified pool you want delivered now. Broad can deliver up to the top 40% of qualified scans, Balanced
+              up to the top 30%, and Focused up to the top 20%. These are maximum selection bands, not guaranteed pass
+              rates: anything below the qualification standard is rejected.
             </p>
           </article>
           <article>
@@ -724,13 +801,16 @@ export default function Pricing() {
           <article>
             <h3>What happens when a niche runs dry?</h3>
             <p>
-              Release the next band from the Head’s Reserve, or let it move to Monitoring and report only new
-              entrants and changes. Add another Head to open a new market.
+              Release the next qualifying opportunities from the Head’s Reserve, or let it move to Monitoring and
+              report only new entrants and changes. Add another Head to open a new market.
             </p>
           </article>
           <article>
-            <h3>Can I change selection later?</h3>
-            <p>Yes, per Head, at any time. Loosen it freely; tighten it to your plan’s limit. Upgrading unlocks tighter selection.</p>
+            <h3>Can I change selectivity later?</h3>
+            <p>
+              Yes, per Head, at any time. Move between Broad, Balanced and Focused within your plan’s available range.
+              Upgrading unlocks tighter selectivity.
+            </p>
           </article>
           <article>
             <h3>Does the Reserve cost extra?</h3>
@@ -746,9 +826,12 @@ export default function Pricing() {
           <article>
             <h3>How are Cerberus checks charged?</h3>
             <p>
-              Premium company verification is included. Cerberus adds people-level verification at £0.30 per delivered
-              Coin. Cerberus Pack sits on top of Cerberus and adds deeper financial verification using relevant
-              paid-data sources for a further £0.50 per delivered Coin, making £0.80 total for a Pack-checked Coin.
+              Premium company verification is included. Cerberus adds people-level verification at £0.50 per delivered
+              Coin. Cerberus Pack costs £5.00 per delivered Coin and includes the people checks plus deeper
+              verification of the existing commercial case. Pack verifies deeper; it does not broaden the Hunt. Cerberus
+              Gate is optional and runs after delivery: select the Pack-checked opportunities you want to hand off, and
+              Gate checks jurisdiction, permitted-use context, source/licence provenance, suppression status and
+              handoff restrictions for £1.25 each.
             </p>
           </article>
         </div>
@@ -769,7 +852,8 @@ export default function Pricing() {
         <a href="/contact">BUILD MY FIRST HEAD →</a>
         <div className="rule">
           ILLUSTRATIVE PRICES — PURSE AND VERIFICATION RATES TO BE CONFIRMED AGAINST CLIENT ZERO UNIT ECONOMICS AND
-          PAID-DATA COSTS BEFORE LAUNCH. CERBERUS PACK IS +£0.50 PER COIN ON TOP OF CERBERUS.
+          PAID-DATA COSTS BEFORE LAUNCH. CERBERUS IS £0.50 PER COIN. CERBERUS PACK IS £5.00 PER COIN. CERBERUS GATE IS
+          +£1.25 PER SELECTED PACK-CHECKED OPPORTUNITY, RUN AFTER DELIVERY.
         </div>
       </section>
     </main>
