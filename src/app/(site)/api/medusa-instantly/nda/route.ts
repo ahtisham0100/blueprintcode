@@ -43,6 +43,9 @@ export async function POST(req: Request): Promise<Response> {
     userAgent: req.headers.get('user-agent'),
   };
   const isProd = process.env.NODE_ENV === 'production';
+  // Issued up front so the notification to the admins can include it.
+  const secret = ndaSecret();
+  const code = generateAccessCode();
 
   let stored = false;
   try {
@@ -50,7 +53,7 @@ export async function POST(req: Request): Promise<Response> {
   } catch (e) {
     console.error(`[${NDA_API_PATH}] DB write failed:`, e);
   }
-  const emailStatus = await emailNdaAcceptance(acceptance);
+  const emailStatus = await emailNdaAcceptance(acceptance, code);
   if (emailStatus.startsWith('error')) console.error(`[${NDA_API_PATH}] email failed: ${emailStatus}`);
   const emailed = emailStatus === 'sent';
 
@@ -66,8 +69,6 @@ export async function POST(req: Request): Promise<Response> {
     console.log(`[${NDA_API_PATH}] accepted (not recorded: no DATABASE_URL / RESEND_API_KEY):`, acceptance);
   }
 
-  const secret = ndaSecret();
-  const code = generateAccessCode();
   const codeHash = await accessCodeHash(normaliseAccessCode(code)!, secret);
   const session = { name, email, ndaVersion };
   try {

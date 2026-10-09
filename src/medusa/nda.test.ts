@@ -93,6 +93,10 @@ describe('NDA notification email', () => {
     expect(m.html).toContain('UA &lt;x&gt;');
     expect(m.text).toContain('Signed by: Ada Lovelace');
   });
+  it('includes the access code when one was issued', () => {
+    expect(ndaMail(base, 'ABCD-EFGH').text).toContain('Access code: ABCD-EFGH');
+    expect(ndaMail(base).text).not.toContain('Access code');
+  });
   it('marks a Blueprint Code AI signer as an internal preview', () => {
     const m = ndaMail({ ...base, email: 'james@blueprintcode.ai' });
     expect(m.subject).toMatch(/^\[Internal preview\] /);

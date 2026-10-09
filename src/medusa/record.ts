@@ -109,7 +109,8 @@ export async function redeemAccessCode(codeHash: string, databaseUrl = process.e
 /** MEDUSA_NDA_NOTIFY_TO is one address or a comma-separated list. */
 export const recipients = (raw: string | undefined) => recipientList(raw, DEFAULT_NOTIFY_TO);
 
-export function ndaMail(a: NdaAcceptance): { subject: string; html: string; text: string } {
+/** `code` is the access code emailed to the signer, shown so admins can quote it. */
+export function ndaMail(a: NdaAcceptance, code?: string): { subject: string; html: string; text: string } {
   const internal = isInternalEmail(a.email);
   const firstName = a.name.split(' ')[0] || 'the signer';
   const { html, text } = brandMail({
@@ -122,6 +123,7 @@ export function ndaMail(a: NdaAcceptance): { subject: string; html: string; text
     rows: [
       { label: 'Signed by', value: a.name },
       { label: 'Email', value: a.email, kind: 'email' },
+      { label: 'Access code', value: code ?? '' },
       { label: 'Company', value: a.company ?? '' },
       { label: 'Role', value: a.role ?? '' },
       { label: 'Accepted', value: ukTime(a.acceptedAt) },
@@ -186,8 +188,12 @@ async function sendMail(
 }
 
 /** Returns "sent", "skipped" (no API key) or "error: …". */
-export function emailNdaAcceptance(a: NdaAcceptance, env: NodeJS.ProcessEnv = process.env): Promise<string> {
-  return sendMail(env, { to: recipients(env.MEDUSA_NDA_NOTIFY_TO), replyTo: a.email, ...ndaMail(a) });
+export function emailNdaAcceptance(
+  a: NdaAcceptance,
+  code?: string,
+  env: NodeJS.ProcessEnv = process.env,
+): Promise<string> {
+  return sendMail(env, { to: recipients(env.MEDUSA_NDA_NOTIFY_TO), replyTo: a.email, ...ndaMail(a, code) });
 }
 
 /** Returns "sent", "skipped" (no API key) or "error: …". The NDA notification
