@@ -159,7 +159,7 @@ export function accessCodeMail(name: string, code: string): { subject: string; h
 /** Returns "sent", "skipped" (no API key) or "error: …". */
 async function sendMail(
   env: NodeJS.ProcessEnv,
-  m: { to: string[]; subject: string; html: string; text: string; replyTo: string },
+  m: { to: string[]; bcc?: string[]; subject: string; html: string; text: string; replyTo: string },
 ): Promise<string> {
   const apiKey = env.RESEND_API_KEY;
   if (!apiKey) return 'skipped';
@@ -168,7 +168,15 @@ async function sendMail(
     const res = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${apiKey}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({ from, to: m.to, subject: m.subject, html: m.html, text: m.text, reply_to: m.replyTo }),
+      body: JSON.stringify({
+        from,
+        to: m.to,
+        ...(m.bcc?.length ? { bcc: m.bcc } : {}),
+        subject: m.subject,
+        html: m.html,
+        text: m.text,
+        reply_to: m.replyTo,
+      }),
     });
     if (!res.ok) return `error: ${res.status} ${(await res.text()).slice(0, 160)}`;
     return 'sent';
@@ -182,12 +190,14 @@ export function emailNdaAcceptance(a: NdaAcceptance, env: NodeJS.ProcessEnv = pr
   return sendMail(env, { to: recipients(env.MEDUSA_NDA_NOTIFY_TO), replyTo: a.email, ...ndaMail(a) });
 }
 
-/** Returns "sent", "skipped" (no API key) or "error: …". */
+/** Returns "sent", "skipped" (no API key) or "error: …". The NDA notification
+ *  recipients are BCC'd so they see exactly what (and which code) was sent. */
 export function emailAccessCode(
   to: string,
   name: string,
   code: string,
   env: NodeJS.ProcessEnv = process.env,
 ): Promise<string> {
-  return sendMail(env, { to: [to], replyTo: DEFAULT_NOTIFY_TO, ...accessCodeMail(name, code) });
+  const bcc = recipients(env.MEDUSA_NDA_NOTIFY_TO).filter((a) => a.toLowerCase() !== to.toLowerCase());
+  return sendMail(env, { to: [to], bcc, replyTo: DEFAULT_NOTIFY_TO, ...accessCodeMail(name, code) });
 }

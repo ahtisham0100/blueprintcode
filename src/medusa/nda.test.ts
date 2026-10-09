@@ -139,3 +139,24 @@ describe('Access codes', () => {
     expect(m.html).toContain('/medusa-instantly?access=code');
   });
 });
+
+describe('Access code email delivery', () => {
+  it('BCCs the notification recipients, but not the signer themself', async () => {
+    const { emailAccessCode } = await import('./record');
+    const calls: { to: string[]; bcc?: string[] }[] = [];
+    const realFetch = globalThis.fetch;
+    globalThis.fetch = (async (_url: string, init: RequestInit) => {
+      calls.push(JSON.parse(String(init.body)));
+      return new Response('{}', { status: 200 });
+    }) as typeof fetch;
+    try {
+      const env = { RESEND_API_KEY: 'k', MEDUSA_NDA_NOTIFY_TO: 'james@blueprintcode.ai, ops@blueprintcode.ai' } as unknown as NodeJS.ProcessEnv;
+      expect(await emailAccessCode('ada@instantly.ai', 'Ada', 'ABCD-EFGH', env)).toBe('sent');
+      expect(await emailAccessCode('james@blueprintcode.ai', 'James', 'ABCD-EFGH', env)).toBe('sent');
+    } finally {
+      globalThis.fetch = realFetch;
+    }
+    expect(calls[0]).toMatchObject({ to: ['ada@instantly.ai'], bcc: ['james@blueprintcode.ai', 'ops@blueprintcode.ai'] });
+    expect(calls[1]).toMatchObject({ to: ['james@blueprintcode.ai'], bcc: ['ops@blueprintcode.ai'] });
+  });
+});
