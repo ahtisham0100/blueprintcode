@@ -49,8 +49,8 @@ const nextConfig: NextConfig = {
     // Blueprint Builder's one-page app, built by builder/build.mjs in prebuild.
     "/builder/[[...path]]": ["./builder/dist/blueprint-builder.html"],
     // The Medusa x Instantly partner pages, kept as hand-built HTML (src/medusa/).
-    "/medusa-instantly": ["./src/medusa/partnership.html"],
-    "/medusa-instantly/partner-room": ["./src/medusa/partner-room.html"],
+    "/medusa-partner": ["./src/medusa/partnership.html"],
+    "/medusa-partner/partner-room": ["./src/medusa/partner-room.html"],
   },
 
   images: {
@@ -112,6 +112,12 @@ const nextConfig: NextConfig = {
         destination: "/signet-ring-configurator",
         permanent: true,
       },
+      // The Medusa partner pages moved from /medusa-instantly; links already
+      // sent (proposal emails, access-code emails) keep working. 308 keeps
+      // POSTs to the old API paths as POSTs.
+      { source: "/medusa-instantly", destination: "/medusa-partner", permanent: true },
+      { source: "/medusa-instantly/:path*", destination: "/medusa-partner/:path*", permanent: true },
+      { source: "/api/medusa-instantly/:path*", destination: "/api/medusa-partner/:path*", permanent: true },
     ];
   },
 

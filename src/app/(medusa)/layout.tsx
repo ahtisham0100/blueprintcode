@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { SITE_URL } from '@/lib/seo';
 
-/* Root layout for the Medusa Heads pages (currently /medusa-instantly/pricing).
+/* Root layout for the Medusa Heads pages (currently /medusa-partner/pricing).
    A separate route group from (site) so these pages carry Medusa's own header,
    footer and type rather than the Blueprint Code AI chrome — the same
    multiple-root-layouts arrangement (site) and (cms) already use. Fonts are

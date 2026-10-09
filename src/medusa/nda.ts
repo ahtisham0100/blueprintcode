@@ -1,13 +1,13 @@
 /* The Medusa Heads × Instantly partner pages. Signing the NDA on
-   /medusa-instantly sets a short-lived HS256 cookie; /medusa-instantly/partner-room
+   /medusa-partner sets a short-lived HS256 cookie; /medusa-partner/partner-room
    serves the confidential brief only when it verifies. Pure functions here; the
    route handlers supply env and request. */
 
 import { SignJWT, jwtVerify } from 'jose';
 
-export const PARTNERSHIP_PATH = '/medusa-instantly';
-export const PARTNER_ROOM_PATH = '/medusa-instantly/partner-room';
-export const NDA_API_PATH = '/api/medusa-instantly/nda';
+export const PARTNERSHIP_PATH = '/medusa-partner';
+export const PARTNER_ROOM_PATH = '/medusa-partner/partner-room';
+export const NDA_API_PATH = '/api/medusa-partner/nda';
 
 export const NDA_VERSION = 'MH-PARTNER-2026-10-v2';
 export const NDA_COOKIE = 'bpc_medusa_nda';
@@ -128,12 +128,12 @@ export function ndaSecret(env: NodeJS.ProcessEnv = process.env): string {
 }
 
 /* Access codes. Signing the NDA no longer opens the room directly: the signer
-   is emailed a private code, and entering it on /medusa-instantly sets the
+   is emailed a private code, and entering it on /medusa-partner sets the
    room cookie. Codes are stored only as a keyed hash (Postgres, so a code works
    on any device) and in a signed "pending" cookie (so the signing browser
    works even without a database). */
 
-export const ACCESS_API_PATH = '/api/medusa-instantly/access';
+export const ACCESS_API_PATH = '/api/medusa-partner/access';
 export const PENDING_COOKIE = 'bpc_medusa_pending';
 /** A code can be used, on any device, for a week after signing. */
 export const ACCESS_CODE_TTL = 7 * 24 * 60 * 60;

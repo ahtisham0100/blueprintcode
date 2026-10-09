@@ -2,7 +2,7 @@ import type { Metadata } from 'next';
 import Pricing from './Pricing';
 import './pricing.css';
 
-/* /medusa-instantly/pricing — the Medusa Heads pricing page, public (no NDA),
+/* /medusa-partner/pricing — the Medusa Heads pricing page, public (no NDA),
    linked from the confidential partner brief. It mirrors the pricing page on
    medusaheads.com, which stays the canonical URL. Not in the sitemap for the
    same reason. */
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   title: TITLE,
   description: DESCRIPTION,
   alternates: { canonical: 'https://medusaheads.com/pricing.html' },
-  openGraph: { title: TITLE, description: DESCRIPTION, type: 'website', url: '/medusa-instantly/pricing' },
+  openGraph: { title: TITLE, description: DESCRIPTION, type: 'website', url: '/medusa-partner/pricing' },
   twitter: { card: 'summary' },
 };
 

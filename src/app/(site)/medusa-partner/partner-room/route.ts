@@ -1,5 +1,5 @@
-/* GET /medusa-instantly/partner-room — the confidential partner brief. Served
-   only with a valid NDA cookie (set by POST /api/medusa-instantly/nda);
+/* GET /medusa-partner/partner-room — the confidential partner brief. Served
+   only with a valid NDA cookie (set by POST /api/medusa-partner/nda);
    otherwise the visitor is sent back to the proposal with the gate open. */
 
 import { NDA_COOKIE, PARTNERSHIP_PATH, ndaSecret, readCookie, verifyNdaSession } from '@/medusa/nda';

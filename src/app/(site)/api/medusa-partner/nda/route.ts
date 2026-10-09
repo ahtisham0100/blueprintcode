@@ -1,8 +1,8 @@
-/* POST /api/medusa-instantly/nda — the "Sign NDA & Request Code" form on
-   /medusa-instantly. Validates the signer (Instantly work email, box ticked),
+/* POST /api/medusa-partner/nda — the "Sign NDA & Request Code" form on
+   /medusa-partner. Validates the signer (Instantly work email, box ticked),
    records the acceptance (Postgres + email to James), then emails the signer
    a private access code. The room itself opens only when that code is entered
-   (POST /api/medusa-instantly/access). JSON in, JSON out. */
+   (POST /api/medusa-partner/access). JSON in, JSON out. */
 
 import { NextResponse } from 'next/server';
 import {

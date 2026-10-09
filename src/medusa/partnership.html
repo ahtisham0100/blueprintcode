@@ -137,9 +137,9 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
   // The NDA is recorded and checked by the server (src/medusa/nda.ts), which
   // also decides who may enter. A valid acceptance emails the signer a private
   // code; entering it here sets the room cookie.
-  const NDA_ENDPOINT='/api/medusa-instantly/nda';
-  const CODE_VERIFY_ENDPOINT='/api/medusa-instantly/access';
-  const ROOM_URL='/medusa-instantly/partner-room';
+  const NDA_ENDPOINT='/api/medusa-partner/nda';
+  const CODE_VERIFY_ENDPOINT='/api/medusa-partner/access';
+  const ROOM_URL='/medusa-partner/partner-room';
   const NDA_VERSION='MH-PARTNER-2026-10-v2';
 
   const q=new URLSearchParams(location.search);
@@ -211,10 +211,10 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
   });
 
   // Sent back here from the partner room without a valid NDA session
-  // (?nda=required), or from the access-code email (?access=code): show the
-  // last panel with the gate already open.
+  // (?nda=required), from the access-code email (?access=code), or linked
+  // straight to the last panel (#ecosystem): show it with the gate open.
   const access=q.get('access')==='code';
-  if(q.get('nda')==='required'||access){
+  if(q.get('nda')==='required'||access||location.hash==='#ecosystem'){
     history.replaceState(null,'',location.pathname+(partner?'?partner='+encodeURIComponent(partner):'')+'#ecosystem');
     document.getElementById('ecosystem').scrollIntoView();
     openGate(access?'accessCode':'ndaName');

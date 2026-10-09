@@ -1,7 +1,7 @@
-/* POST /api/medusa-instantly/access — the "Already have an access code?" box
-   on /medusa-instantly. A code emailed after signing the NDA (see ../nda) is
+/* POST /api/medusa-partner/access — the "Already have an access code?" box
+   on /medusa-partner. A code emailed after signing the NDA (see ../nda) is
    checked against the signing browser's pending cookie, then the database;
-   a match sets the cookie that opens /medusa-instantly/partner-room. */
+   a match sets the cookie that opens /medusa-partner/partner-room. */
 
 import { NextResponse } from 'next/server';
 import {

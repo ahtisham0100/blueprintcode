@@ -63,7 +63,7 @@ describe('NDA session', () => {
   });
   it('writes a scoped HttpOnly cookie and reads it back', () => {
     const c = ndaCookie('tok', true);
-    expect(c).toBe('bpc_medusa_nda=tok; Path=/medusa-instantly; HttpOnly; SameSite=Lax; Max-Age=86400; Secure');
+    expect(c).toBe('bpc_medusa_nda=tok; Path=/medusa-partner; HttpOnly; SameSite=Lax; Max-Age=86400; Secure');
     expect(readCookie('a=1; bpc_medusa_nda=tok; b=2', 'bpc_medusa_nda')).toBe('tok');
     expect(readCookie(null, 'bpc_medusa_nda')).toBeNull();
   });
@@ -134,13 +134,13 @@ describe('Access codes', () => {
     expect(await verifyNdaSession(t, SECRET, NOW)).toBeNull();
   });
   it('scopes the pending cookie to the access endpoint', () => {
-    expect(pendingCookie('tok', false)).toBe('bpc_medusa_pending=tok; Path=/api/medusa-instantly/access; HttpOnly; SameSite=Lax; Max-Age=604800');
+    expect(pendingCookie('tok', false)).toBe('bpc_medusa_pending=tok; Path=/api/medusa-partner/access; HttpOnly; SameSite=Lax; Max-Age=604800');
   });
   it('emails the code with a link back to the gate', () => {
     const m = accessCodeMail('Ada Lovelace', 'ABCD-EFGH');
     expect(m.subject).toContain('ABCD-EFGH');
     expect(m.html).toContain('Your access code, Ada');
-    expect(m.html).toContain('/medusa-instantly?access=code');
+    expect(m.html).toContain('/medusa-partner?access=code');
   });
 });
 
