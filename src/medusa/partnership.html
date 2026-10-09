@@ -31,6 +31,12 @@ a.btn,button.btn{appearance:none;border:1px solid #aeb5b9;background:linear-grad
 a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #f4d170;outline-offset:2px}
 #ndaGate{position:fixed;inset:0;z-index:9999;display:none;place-items:center;padding:24px;background:rgba(0,0,0,.86);backdrop-filter:blur(12px)}
 #ndaGate.open{display:grid}
+/* Locked until an access code is entered: only the gate shows, and it can't be
+   dismissed. The server marks a valid NDA session with <html data-nda="ok">. */
+html:not([data-nda="ok"]) section{display:none}
+html:not([data-nda="ok"]) #ndaGate{display:grid}
+html:not([data-nda="ok"]) .nda-close{display:none}
+section:focus{outline:none}
 .nda-card{width:min(720px,94vw);max-height:90vh;overflow:auto;background:linear-gradient(180deg,#0b110f,#050806);border:1px solid rgba(214,168,65,.42);box-shadow:0 30px 100px #000;padding:34px}
 .nda-kicker{font:700 11px/1.2 Inter,Arial,sans-serif;letter-spacing:.25em;text-transform:uppercase;color:#d6a841}
 .nda-card h2{margin:10px 0 8px;font:500 clamp(30px,5vw,52px)/1 Georgia,serif;color:#f5efe2}
@@ -61,7 +67,7 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
 </head>
 <body>
 
-<section id="partnership">
+<section id="partnership" tabindex="-1">
   <div class="slide-wrap">
     <div class="frame" role="img" aria-label="Partner opportunity: Medusa researches, evidences and qualifies opportunities before they enter your platform, then learns from the outcomes. Includes a four-step partnership path: intro, proof, integrate, scale.">
       <div class="panel p-path"></div>
@@ -95,7 +101,7 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
     </div>
     <nav class="controls">
       <a class="btn" href="#hunt">← BACK</a>
-      <button class="btn gold" type="button" id="ndaOpen">🔒 SIGN NDA &amp; ENTER →<span class="sub">CONFIDENTIAL PARTNER ROOM</span></button>
+      <a class="btn gold" href="/medusa-partner/partner-room" id="roomLink">ENTER PARTNER ROOM →<span class="sub">CONFIDENTIAL</span></a>
     </nav>
   </div>
 </section>
@@ -136,10 +142,9 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
 (() => {
   // The NDA is recorded and checked by the server (src/medusa/nda.ts), which
   // also decides who may enter. A valid acceptance emails the signer a private
-  // code; entering it here sets the room cookie.
+  // code; entering it here sets the room cookie and reveals the proposal.
   const NDA_ENDPOINT='/api/medusa-partner/nda';
   const CODE_VERIFY_ENDPOINT='/api/medusa-partner/access';
-  const ROOM_URL='/medusa-partner/partner-room';
   const NDA_VERSION='MH-PARTNER-2026-10-v2';
 
   const q=new URLSearchParams(location.search);
@@ -154,10 +159,9 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
   const gate=document.getElementById('ndaGate'),form=document.getElementById('ndaForm'),msg=document.getElementById('ndaMsg'),submit=form.querySelector('.nda-submit');
   const field=id=>document.getElementById(id).value.trim();
   const esc=s=>s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  let lastFocus=null;
-  function openGate(focusId){lastFocus=document.activeElement;gate.classList.add('open');document.body.style.overflow='hidden';document.getElementById(focusId||'ndaName').focus();}
-  function closeGate(){gate.classList.remove('open');document.body.style.overflow='';msg.textContent='';codeMsg.textContent='';if(lastFocus)lastFocus.focus();}
-  document.getElementById('ndaOpen').onclick=()=>openGate();
+  const root=document.documentElement;
+  const locked=()=>root.dataset.nda!=='ok';
+  function closeGate(){if(locked())return;gate.classList.remove('open');msg.textContent='';codeMsg.textContent='';}
   document.getElementById('ndaCancel').onclick=closeGate;
   gate.addEventListener('click',e=>{if(e.target===gate)closeGate();});
   gate.addEventListener('keydown',e=>{if(e.key==='Escape')closeGate();});
@@ -202,23 +206,25 @@ a.btn:focus-visible,button:focus-visible,input:focus-visible{outline:2px solid #
         codeMsg.textContent=data.error||'That code could not be verified. Check the code or request a new one.';
         return;
       }
-      codeMsg.className='nda-msg ok';codeMsg.textContent='Access verified. Opening the confidential partner room…';
-      location.assign(data.next||ROOM_URL);
+      // Unlocked: reveal the proposal in place; its last button leads to the room.
+      root.dataset.nda='ok';
+      gate.classList.remove('open');
+      history.replaceState(null,'',cleanUrl());
+      window.scrollTo(0,0);
+      document.getElementById('partnership').focus({preventScroll:true});
     }catch(err){
       codeEnter.disabled=false;
       codeMsg.textContent='Could not reach the server. Please check your connection and try again.';
     }
   });
 
-  // Sent back here from the partner room without a valid NDA session
-  // (?nda=required), from the access-code email (?access=code), or linked
-  // straight to the last panel (#ecosystem): show it with the gate open.
-  const access=q.get('access')==='code';
-  if(q.get('nda')==='required'||access||location.hash==='#ecosystem'){
-    history.replaceState(null,'',location.pathname+(partner?'?partner='+encodeURIComponent(partner):'')+'#ecosystem');
-    document.getElementById('ecosystem').scrollIntoView();
-    openGate(access?'accessCode':'ndaName');
-  }
+  // The address without the one-off ?nda=required (sent back from the room) or
+  // ?access=code (the link in the code email), keeping ?partner=.
+  function cleanUrl(hash){return location.pathname+(partner?'?partner='+encodeURIComponent(partner):'')+(hash||'');}
+  if(q.has('nda')||q.has('access'))history.replaceState(null,'',cleanUrl(locked()?'':location.hash));
+  // Locked: the gate is already showing; start in the code box when they
+  // arrived from the code email.
+  if(locked())document.getElementById(q.get('access')==='code'?'accessCode':'ndaName').focus();
 })();
 </script>
 </body>
