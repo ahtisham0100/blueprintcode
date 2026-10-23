@@ -40,6 +40,11 @@ export const metadata: Metadata = {
   // which would stretch it. Revisit if a 1200x630 OG artwork is added.
   twitter: { card: 'summary' },
   manifest: '/site.webmanifest',
+  // Bing Webmaster Tools ownership check. Keep it after verification passes:
+  // Bing re-checks periodically and drops the site if the tag disappears.
+  verification: {
+    other: { 'msvalidate.01': '52BEE6CEE59BEA462488305913284C94' },
+  },
 };
 
 export default function RootLayout({
