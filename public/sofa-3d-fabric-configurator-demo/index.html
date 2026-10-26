@@ -1,0 +1,410 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Loma three-seater sofa — 3D fabric configurator</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Young+Serif&family=Hanken+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --plaster:#E7E5E0; --stage:#DEDCD6; --paper:#F7F6F3; --ink:#26282C; --ink-2:#5E6066;
+  --moss:#5F654F; --rule:#CFCCC4; --focus:#3B4458;
+  color-scheme: light;
+  box-sizing:border-box;
+  padding-top:env(safe-area-inset-top,0px); padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    --plaster:#1E1F21; --stage:#262729; --paper:#2A2B2E; --ink:#ECEAE5; --ink-2:#A6A49E;
+    --moss:#AEB596; --rule:#3A3B3E; --focus:#AEB596; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"]{
+  --plaster:#1E1F21; --stage:#262729; --paper:#2A2B2E; --ink:#ECEAE5; --ink-2:#A6A49E;
+  --moss:#AEB596; --rule:#3A3B3E; --focus:#AEB596; color-scheme: dark;
+}
+*,*::before,*::after{box-sizing:inherit}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{margin:0;height:100%}
+body{background:var(--plaster);color:var(--ink);font:400 16px/1.55 "Hanken Grotesk",system-ui,-apple-system,"Segoe UI",sans-serif;-webkit-font-smoothing:antialiased}
+.shop{display:grid;grid-template-columns:minmax(0,1.55fr) minmax(320px,1fr);min-height:100%}
+.stage{position:relative;background:var(--stage);min-height:420px}
+#view{position:absolute;inset:0;width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+#view:active{cursor:grabbing}
+.stage-ui{position:absolute;left:20px;right:20px;bottom:18px;display:flex;align-items:center;justify-content:space-between;gap:12px;pointer-events:none}
+.hint{font-size:13px;color:var(--ink-2);transition:opacity .6s}
+.hint.gone{opacity:0}
+.tools{display:flex;gap:6px;pointer-events:auto}
+.tools button{width:40px;height:40px;border-radius:50%;border:1px solid var(--rule);background:var(--paper);color:var(--ink);font:500 18px/1 inherit;display:grid;place-items:center;cursor:pointer}
+.tools button:hover{border-color:var(--ink-2)}
+.loading{position:absolute;inset:0;display:grid;place-items:center;color:var(--ink-2);font-size:14px;transition:opacity .5s}
+.loading.done{opacity:0;pointer-events:none}
+.panel{background:var(--paper);padding:56px clamp(24px,4vw,56px) 40px;display:flex;flex-direction:column;gap:28px}
+.brand{font-size:14px;color:var(--ink-2);margin:0}
+h1{font:400 clamp(30px,3.2vw,42px)/1.12 "Young Serif",Georgia,serif;margin:6px 0 10px;letter-spacing:-.01em}
+.price{font-size:20px;font-weight:500;margin:0}
+.fabric-head{display:flex;justify-content:space-between;align-items:baseline;margin:0 0 14px}
+.fabric-head h2{font-size:16px;font-weight:600;margin:0}
+.fabric-head output{color:var(--ink-2);font-size:15px}
+.swatches{display:flex;gap:14px;flex-wrap:wrap;margin:0;padding:0;border:0}
+.sw{position:relative;width:56px;height:56px;border-radius:50%;border:0;padding:0;cursor:pointer;background-size:180%;background-position:center;box-shadow:inset 0 0 0 1px rgba(0,0,0,.12)}
+.sw::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1.5px solid transparent;transition:border-color .2s}
+.sw[aria-checked="true"]::after{border-color:var(--ink)}
+.sw:focus-visible{outline:none}
+.sw:focus-visible::after{border-color:var(--focus);border-style:dashed}
+.sw span{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.spec{margin:0;display:grid;grid-template-columns:auto 1fr;gap:6px 20px;font-size:15px;border-top:1px solid var(--rule);padding-top:20px}
+.spec dt{color:var(--ink-2)}
+.spec dd{margin:0}
+.buy{appearance:none;border:0;background:var(--ink);color:var(--paper);font:600 16px/1 inherit;padding:18px 24px;border-radius:999px;cursor:pointer;width:100%}
+.buy:hover{opacity:.9}
+.buy:focus-visible,.tools button:focus-visible{outline:2px solid var(--focus);outline-offset:3px}
+.toast{min-height:22px;font-size:14px;color:var(--moss);margin:-14px 0 0}
+.note{font-size:13px;color:var(--ink-2);margin-top:auto;border-top:1px solid var(--rule);padding-top:18px;max-width:60ch}
+.note a{color:inherit}
+@media (max-width:860px){
+  .shop{grid-template-columns:1fr}
+  .stage{height:62vh;min-height:360px}
+  .panel{padding-top:32px}
+}
+@media (prefers-reduced-motion: reduce){ .hint,.loading,.sw::after{transition:none} }
+</style>
+<script src="/partials/watermark.js" defer></script></head>
+<body>
+<main class="shop">
+  <section class="stage" aria-label="3D view of the sofa">
+    <canvas id="view" tabindex="0" aria-label="Drag to turn the sofa. Use arrow keys to turn, plus and minus to zoom."></canvas>
+    <div class="loading" id="loading">Preparing the 3D view</div>
+    <div class="stage-ui">
+      <p class="hint" id="hint">Drag to turn, pinch to zoom.</p>
+      <div class="tools">
+        <button type="button" id="zin" aria-label="Zoom in">+</button>
+        <button type="button" id="zout" aria-label="Zoom out">−</button>
+        <button type="button" id="reset" aria-label="Reset view">⟲</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="panel">
+    <div>
+      <p class="brand">Your store</p>
+      <h1>Loma three-seater sofa</h1>
+      <p class="price">£2,450</p>
+    </div>
+
+    <div>
+      <div class="fabric-head"><h2 id="fabric-label">Fabric</h2><output id="fabric-name" for="swatches"></output></div>
+      <div class="swatches" id="swatches" role="radiogroup" aria-labelledby="fabric-label"></div>
+    </div>
+
+    <dl class="spec">
+      <dt>Size</dt><dd>220 W × 95 D × 85 H cm</dd>
+      <dt>Cover</dt><dd>Bouclé, <span id="spec-fabric"></span></dd>
+      <dt>Seats</dt><dd>Three</dd>
+    </dl>
+
+    <button class="buy" id="buy" type="button">Add to basket</button>
+    <p class="toast" id="toast" role="status" aria-live="polite"></p>
+
+    <p class="note">Demo build for the 3D furniture configurator brief. The sofa is a stand-in modelled from the reference photo and target dimensions; the production version swaps in a photo-matched GLB. Each fabric maps to a Shopify variant, so choosing one here selects it in the product form.</p>
+  </section>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/three@0.147.0/examples/js/controls/OrbitControls.js"></script>
+<script>
+const CFG = {"product": "Loma three-seater sofa", "brand": "Your store", "price": "\u00a32,450", "dims_cm": {"w": 220, "d": 95, "h": 85}, "fabrics": [{"id": "ivory", "name": "Ivory", "hex": "#DCD6C9", "variant": "44012001"}, {"id": "taupe", "name": "Taupe", "hex": "#A39C88", "variant": "44012002"}, {"id": "charcoal", "name": "Charcoal", "hex": "#55585D", "variant": "44012003"}, {"id": "olive", "name": "Olive", "hex": "#7A806B", "variant": "44012004"}, {"id": "navy", "name": "Navy", "hex": "#3B4458", "variant": "44012005"}]};
+(() => {
+"use strict";
+const $ = id => document.getElementById(id);
+const canvas = $("view");
+const reduceMotion = matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+/* ---------- renderer / scene ---------- */
+const renderer = new THREE.WebGLRenderer({canvas, antialias:true, alpha:true});
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.outputEncoding = THREE.sRGBEncoding;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 0.82;
+renderer.shadowMap.enabled = true;
+renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(30, 1, 0.05, 50);
+const HOME_DIR = new THREE.Vector3(0.48, 0.27, 0.84).normalize();
+let homeDist = 4.6;
+const HOME = new THREE.Vector3();
+
+const controls = new THREE.OrbitControls(camera, canvas);
+const TARGET = new THREE.Vector3(0, 0.38, 0);
+controls.target.copy(TARGET);
+controls.enableDamping = true; controls.dampingFactor = 0.08;
+controls.enablePan = false;
+controls.minDistance = 1.6; controls.maxDistance = 7;
+controls.minPolarAngle = 0.15; controls.maxPolarAngle = Math.PI/2 - 0.04;
+controls.rotateSpeed = 0.7;
+controls.autoRotate = !reduceMotion; controls.autoRotateSpeed = 0.6;
+
+/* soft studio environment built in code (no external HDR) */
+(function env(){
+  const pm = new THREE.PMREMGenerator(renderer);
+  const room = new THREE.Scene();
+  const box = new THREE.Mesh(new THREE.BoxGeometry(12,8,12), new THREE.MeshBasicMaterial({color:0x8a8884, side:THREE.BackSide}));
+  room.add(box);
+  const panel = (w,h,x,y,z,i)=>{ const m=new THREE.Mesh(new THREE.PlaneGeometry(w,h), new THREE.MeshBasicMaterial({color:new THREE.Color(i,i,i*0.97), side:THREE.DoubleSide})); m.position.set(x,y,z); m.lookAt(0,0,0); room.add(m); };
+  panel(6,3,0,3.9,0,3.2);     // overhead softbox
+  panel(3,4,-5.5,1.5,2,2.2);  // key left
+  panel(3,4,5.5,1.5,-1,1.2);  // fill right
+  panel(5,2,0,1,-5.8,0.9);    // back
+  scene.environment = pm.fromScene(room, 0.04).texture;
+})();
+
+const key = new THREE.DirectionalLight(0xfff7ee, 1.15);
+key.position.set(-2.5, 4.5, 3); key.castShadow = true;
+key.shadow.mapSize.set(2048,2048); key.shadow.radius = 6; key.shadow.bias = -0.0004;
+Object.assign(key.shadow.camera, {left:-2,right:2,top:2,bottom:-2,near:1,far:12});
+scene.add(key);
+scene.add(new THREE.HemisphereLight(0xffffff, 0xb9b4aa, 0.35));
+
+/* ground: shadow catcher + contact blob */
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(10,10), new THREE.ShadowMaterial({opacity:0.16}));
+ground.rotation.x = -Math.PI/2; ground.receiveShadow = true; scene.add(ground);
+(function blob(){
+  const c = document.createElement("canvas"); c.width = c.height = 256;
+  const g = c.getContext("2d"), r = g.createRadialGradient(128,128,10,128,128,128);
+  r.addColorStop(0,"rgba(0,0,0,.55)"); r.addColorStop(.55,"rgba(0,0,0,.18)"); r.addColorStop(1,"rgba(0,0,0,0)");
+  g.fillStyle = r; g.fillRect(0,0,256,256);
+  const m = new THREE.Mesh(new THREE.PlaneGeometry(2.7,1.25), new THREE.MeshBasicMaterial({map:new THREE.CanvasTexture(c), transparent:true, depthWrite:false}));
+  m.rotation.x = -Math.PI/2; m.position.y = 0.002; scene.add(m);
+})();
+
+/* ---------- bouclé texture (procedural, tileable) ---------- */
+const TS = 512;
+function rng(seed){ return () => (seed = (seed*16807) % 2147483647) / 2147483647; }
+const heightCanvas = (() => {
+  const c = document.createElement("canvas"); c.width = c.height = TS;
+  const g = c.getContext("2d"), R = rng(7);
+  g.fillStyle = "rgb(95,95,95)"; g.fillRect(0,0,TS,TS);
+  g.lineCap = "round";
+  for (let i=0; i<11000; i++){
+    const x = R()*TS, y = R()*TS, rad = 2.2 + R()*3.6, v = 120 + R()*135 | 0;
+    const a0 = R()*Math.PI*2, sweep = Math.PI*(1.1 + R()*0.9);
+    g.strokeStyle = `rgb(${v},${v},${v})`; g.lineWidth = 1.4 + R()*1.4;
+    for (const dx of [-TS,0,TS]) for (const dy of [-TS,0,TS]) {
+      if (x+dx < -8 || x+dx > TS+8 || y+dy < -8 || y+dy > TS+8) continue;
+      g.beginPath(); g.arc(x+dx, y+dy, rad, a0, a0+sweep); g.stroke();
+    }
+  }
+  return c;
+})();
+const H = heightCanvas.getContext("2d").getImageData(0,0,TS,TS).data;
+
+function normalMap(){
+  const c = document.createElement("canvas"); c.width = c.height = TS;
+  const g = c.getContext("2d"), out = g.createImageData(TS,TS), s = 2.4;
+  const h = (x,y) => H[(((y+TS)%TS)*TS + ((x+TS)%TS))*4] / 255;
+  for (let y=0; y<TS; y++) for (let x=0; x<TS; x++){
+    const dx = (h(x+1,y) - h(x-1,y)) * s, dy = (h(x,y+1) - h(x,y-1)) * s;
+    const l = Math.hypot(dx,dy,1), i = (y*TS+x)*4;
+    out.data[i]   = (-dx/l*0.5+0.5)*255;
+    out.data[i+1] = ( dy/l*0.5+0.5)*255;
+    out.data[i+2] = (1/l*0.5+0.5)*255;
+    out.data[i+3] = 255;
+  }
+  g.putImageData(out,0,0);
+  return c;
+}
+function albedo(hex){
+  const c = document.createElement("canvas"); c.width = c.height = TS;
+  const g = c.getContext("2d"), out = g.createImageData(TS,TS);
+  const col = new THREE.Color(hex), r = col.r*255, gg = col.g*255, b = col.b*255;
+  for (let i=0; i<TS*TS*4; i+=4){
+    const k = 0.66 + (H[i]/255)*0.52;
+    out.data[i] = Math.min(255,r*k); out.data[i+1] = Math.min(255,gg*k); out.data[i+2] = Math.min(255,b*k); out.data[i+3] = 255;
+  }
+  g.putImageData(out,0,0);
+  return c;
+}
+const tex = (canvasEl, srgb) => {
+  const t = new THREE.CanvasTexture(canvasEl);
+  t.wrapS = t.wrapT = THREE.RepeatWrapping;
+  t.anisotropy = renderer.capabilities.getMaxAnisotropy();
+  if (srgb) t.encoding = THREE.sRGBEncoding;
+  return t;
+};
+const nTex = tex(normalMap(), false);
+
+/* one material per fabric, built lazily and cached */
+const fabricMats = {};
+const swatchURL = {};
+function fabricMaterial(f){
+  if (fabricMats[f.id]) return fabricMats[f.id];
+  const a = albedo(f.hex);
+  swatchURL[f.id] = a.toDataURL("image/jpeg", 0.85);
+  const m = new THREE.MeshPhysicalMaterial({
+    map: tex(a, true), normalMap: nTex, normalScale: new THREE.Vector2(1.3,1.3),
+    roughness: 0.95, envMapIntensity: 0.55, sheen: 0.35, sheenRoughness: 0.75,
+    sheenColor: new THREE.Color(f.hex).lerp(new THREE.Color(0xffffff), 0.2),
+  });
+  return fabricMats[f.id] = m;
+}
+
+/* ---------- geometry: soft rounded blocks ---------- */
+const TILE = 0.11;  // metres per texture repeat (loop size on the real fabric)
+function softBlock(w,h,d,r,puff=0,seg=28){
+  const geo = new THREE.BoxGeometry(w,h,d, seg, Math.max(8,seg*h/w|0), Math.max(8,seg*d/w|0));
+  const p = geo.attributes.position, v = new THREE.Vector3(), inner = new THREE.Vector3(), n = new THREE.Vector3();
+  const hx=w/2, hy=h/2, hz=d/2;
+  for (let i=0; i<p.count; i++){
+    v.fromBufferAttribute(p,i);
+    inner.set(THREE.MathUtils.clamp(v.x,-hx+r,hx-r), THREE.MathUtils.clamp(v.y,-hy+r,hy-r), THREE.MathUtils.clamp(v.z,-hz+r,hz-r));
+    n.subVectors(v,inner);
+    if (n.lengthSq() < 1e-12) continue;
+    n.normalize();
+    v.copy(inner).addScaledVector(n, r);
+    if (puff){
+      const u = v.x/hx, t = v.y/hy, s = v.z/hz;
+      const swell = (1-u*u)*(1-t*t) * Math.abs(n.z) + (1-u*u)*(1-s*s) * Math.abs(n.y) + (1-t*t)*(1-s*s) * Math.abs(n.x);
+      v.addScaledVector(n, puff*Math.max(0,swell));
+    }
+    p.setXYZ(i, v.x, v.y, v.z);
+  }
+  geo.computeVertexNormals();
+  /* box-projected UVs in metres so the weave stays the same size on every part */
+  const nm = geo.attributes.normal, uv = geo.attributes.uv;
+  for (let i=0; i<p.count; i++){
+    const ax = Math.abs(nm.getX(i)), ay = Math.abs(nm.getY(i)), az = Math.abs(nm.getZ(i));
+    const x = p.getX(i), y = p.getY(i), z = p.getZ(i);
+    if (ax >= ay && ax >= az) uv.setXY(i, z/TILE, y/TILE);
+    else if (ay >= az)        uv.setXY(i, x/TILE, z/TILE);
+    else                      uv.setXY(i, x/TILE, y/TILE);
+  }
+  return geo;
+}
+
+/* ---------- the sofa (metres; 2.20 W × 0.95 D × 0.85 H) ---------- */
+const sofa = new THREE.Group(); scene.add(sofa);
+const fabricMeshes = [];
+const add = (geo, x,y,z, rx=0,ry=0,rz=0) => {
+  const m = new THREE.Mesh(geo, null);
+  m.position.set(x,y,z); m.rotation.set(rx,ry,rz);
+  m.castShadow = m.receiveShadow = true;
+  sofa.add(m); fabricMeshes.push(m); return m;
+};
+const W=2.20, D=0.95, ARM=0.30, INNER=W-2*ARM+0.04;
+
+// arms: tall, very rounded, full depth
+const armGeo = softBlock(ARM, 0.56, D, 0.145, 0.012);
+add(armGeo, -(W/2-ARM/2), 0.04+0.28, 0);
+add(armGeo,  (W/2-ARM/2), 0.04+0.28, 0);
+// back frame
+add(softBlock(INNER, 0.62, 0.20, 0.08, 0.006), 0, 0.06+0.31, -D/2+0.10);
+// seat base (plinth under the cushion)
+add(softBlock(INNER-0.04, 0.17, D-0.16, 0.06, 0.004), 0, 0.06+0.085, -0.02);
+// seat cushion: one long bench cushion, rounded front
+add(softBlock(INNER-0.02, 0.21, D-0.25, 0.095, 0.024, 40), 0, 0.22+0.105, 0.11);
+// back cushions: two, tilted back slightly
+const bc = softBlock(INNER/2-0.005, 0.36, 0.20, 0.07, 0.012, 32);
+add(bc, -INNER/4, 0.46+0.18, -D/2+0.27, -0.14);
+add(bc,  INNER/4, 0.46+0.18, -D/2+0.27, -0.14);
+// scatter cushions leaning in the corners
+const sc = softBlock(0.40, 0.40, 0.15, 0.11, 0.018, 32);
+add(sc, -INNER/2+0.24, 0.43+0.19, -0.13, -0.36,  0.34,  0.12);
+add(sc,  INNER/2-0.24, 0.43+0.19, -0.13, -0.36, -0.34, -0.12);
+// hidden feet
+const footMat = new THREE.MeshStandardMaterial({color:0x3a2a1e, roughness:0.6});
+const footGeo = new THREE.CylinderGeometry(0.022,0.025,0.06,16);
+for (const [x,z] of [[-0.9,0.35],[0.9,0.35],[-0.9,-0.35],[0.9,-0.35]]){
+  const f = new THREE.Mesh(footGeo, footMat); f.position.set(x,0.03,z); f.castShadow = true; sofa.add(f);
+}
+
+/* ---------- fabric UI ---------- */
+const sw = $("swatches");
+let current = null;
+function select(f, focus){
+  current = f;
+  const mat = fabricMaterial(f);
+  for (const m of fabricMeshes) m.material = mat;
+  $("fabric-name").textContent = f.name;
+  $("spec-fabric").textContent = f.name.toLowerCase();
+  for (const b of sw.children){
+    const on = b.dataset.id === f.id;
+    b.setAttribute("aria-checked", on); b.tabIndex = on ? 0 : -1;
+    if (on && focus) b.focus();
+  }
+  try { history.replaceState(null, "", "#" + f.id); } catch(e) {}
+  /* Shopify hook: keep the theme's variant input in step with the 3D view */
+  const vInput = document.querySelector('form[action*="/cart/add"] [name="id"]');
+  if (vInput) { vInput.value = f.variant; vInput.dispatchEvent(new Event("change", {bubbles:true})); }
+  $("toast").textContent = "";
+}
+CFG.fabrics.forEach(f => {
+  fabricMaterial(f);
+  const b = document.createElement("button");
+  b.type = "button"; b.className = "sw"; b.dataset.id = f.id;
+  b.setAttribute("role","radio"); b.setAttribute("aria-label", f.name);
+  b.style.backgroundImage = `url(${swatchURL[f.id]})`;
+  b.innerHTML = `<span>${f.name}</span>`;
+  b.addEventListener("click", () => select(f));
+  sw.appendChild(b);
+});
+sw.addEventListener("keydown", e => {
+  const i = CFG.fabrics.indexOf(current);
+  const step = {ArrowRight:1, ArrowDown:1, ArrowLeft:-1, ArrowUp:-1}[e.key];
+  if (!step) return;
+  e.preventDefault();
+  select(CFG.fabrics[(i + step + CFG.fabrics.length) % CFG.fabrics.length], true);
+});
+const fromHash = CFG.fabrics.find(f => f.id === location.hash.slice(1));
+select(fromHash || CFG.fabrics[0]);
+
+$("buy").addEventListener("click", () => {
+  $("toast").textContent = `Added to basket: ${CFG.product}, ${current.name}.`;
+});
+
+/* ---------- view controls ---------- */
+const stopSpin = () => { controls.autoRotate = false; $("hint").classList.add("gone"); };
+controls.addEventListener("start", stopSpin);
+function dolly(f){
+  stopSpin();
+  const off = camera.position.clone().sub(controls.target);
+  const len = THREE.MathUtils.clamp(off.length()*f, controls.minDistance, controls.maxDistance);
+  camera.position.copy(controls.target).add(off.setLength(len));
+}
+$("zin").onclick = () => dolly(0.82);
+$("zout").onclick = () => dolly(1.22);
+$("reset").onclick = () => { camera.position.copy(HOME); controls.target.copy(TARGET); controls.autoRotate = !reduceMotion; };
+canvas.addEventListener("keydown", e => {
+  const off = camera.position.clone().sub(controls.target);
+  const rot = {ArrowLeft:0.12, ArrowRight:-0.12}[e.key];
+  if (rot){ e.preventDefault(); stopSpin(); off.applyAxisAngle(new THREE.Vector3(0,1,0), rot); camera.position.copy(controls.target).add(off); }
+  if (e.key === "+" || e.key === "=") dolly(0.88);
+  if (e.key === "-") dolly(1.14);
+});
+
+/* ---------- size + loop ---------- */
+const stage = canvas.parentElement;
+function resize(){
+  const w = stage.clientWidth, h = stage.clientHeight;
+  renderer.setSize(w, h, false);
+  camera.aspect = w/h;
+  camera.fov = w < 560 ? 36 : 30;
+  camera.updateProjectionMatrix();
+  /* fit the sofa's width (plus margin) into the frame */
+  const vH = THREE.MathUtils.degToRad(camera.fov), hH = 2*Math.atan(Math.tan(vH/2)*camera.aspect);
+  const fitW = 1.30 / Math.tan(hH/2), fitH = 0.62 / Math.tan(vH/2);
+  const first = !HOME.lengthSq();
+  homeDist = Math.max(fitW, fitH) + 0.4;
+  HOME.copy(TARGET).addScaledVector(HOME_DIR, homeDist);
+  controls.maxDistance = homeDist * 1.6; controls.minDistance = Math.min(1.6, homeDist*0.5);
+  if (first) camera.position.copy(HOME);
+}
+new ResizeObserver(resize).observe(stage); resize();
+let drawn = false;
+renderer.setAnimationLoop(() => { controls.update(); renderer.render(scene, camera); if (!drawn){ drawn = true; $("loading").remove(); } });
+})();
+</script>
+</body>
+</html>
